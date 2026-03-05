@@ -237,6 +237,7 @@ const (
 	ErrPullLoadFailed   = "Error: could not load gitmap.json: %v\n"
 	ErrPullNotFound     = "Error: no repo found matching '%s'\n"
 	ErrPullNotRepo      = "Error: %s is not a git repository\n"
+	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
 )
 
 // CLI help text.
