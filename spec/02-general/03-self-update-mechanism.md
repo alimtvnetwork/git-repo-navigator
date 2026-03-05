@@ -275,5 +275,6 @@ is needed.
    source changed but the version constant wasn't bumped.
 8. **Log verbosely during update** — self-update failures are hard
    to debug without detailed logs of each step.
-9. **Clean up temp files proactively** — don't rely on the OS to
-   purge `%TEMP%`; delete stale update copies on every startup.
+9. **Prefer explicit cleanup commands over auto-cleanup** — let
+   the user decide when to remove artifacts; `.old` files serve as
+   a manual rollback option until explicitly cleaned up.
