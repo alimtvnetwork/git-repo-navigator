@@ -209,7 +209,22 @@ function Deploy-Binary {
     }
 
     $destFile = Join-Path $target $Config.binaryName
-    Copy-Item $BinaryPath $destFile -Force
+
+    $maxAttempts = 20
+    $attempt = 1
+    while ($true) {
+        try {
+            Copy-Item $BinaryPath $destFile -Force -ErrorAction Stop
+            break
+        } catch {
+            if ($attempt -ge $maxAttempts) {
+                throw
+            }
+            Write-Warn "Target binary is in use; retrying ($attempt/$maxAttempts)..."
+            Start-Sleep -Milliseconds 500
+            $attempt++
+        }
+    }
 
     $binDir   = Split-Path $BinaryPath -Parent
     $dataDir  = Join-Path $binDir "data"
