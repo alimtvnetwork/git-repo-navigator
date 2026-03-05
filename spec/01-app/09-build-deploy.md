@@ -163,9 +163,9 @@ Before executing gitmap, the script prints diagnostic context:
 
 ## Deploy Target
 
-The default deploy path (`E:\bin-run`) is assumed to be on the system
-`PATH`, so after deployment the user can run `gitmap` from any terminal
-without specifying the full path.
+The default deploy path (`E:\bin-run`) contains a `gitmap/` subfolder
+with the binary and data. `E:\bin-run\gitmap` must be on the system
+`PATH` so the tool can be run from any terminal.
 
 ## Logging
 
