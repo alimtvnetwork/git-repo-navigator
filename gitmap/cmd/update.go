@@ -100,6 +100,7 @@ Set-Location "%s"
 Write-Host ""
 Write-Host "  Pulling and rebuilding gitmap..." -ForegroundColor Cyan
 Write-Host ""
+Start-Sleep -Milliseconds 1200
 & "%s"
 Write-Host ""
 $newBinary = Join-Path "%s" "bin\gitmap.exe"
