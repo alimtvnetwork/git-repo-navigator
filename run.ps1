@@ -4,25 +4,29 @@
 .DESCRIPTION
     Pulls latest code, resolves Go dependencies, builds the binary
     into ./bin, copies data folder, deploys to a target directory,
-    and optionally runs gitmap on a specified path.
+    and optionally runs gitmap with any arguments.
 .EXAMPLES
-    .\run.ps1                        # pull, build, deploy
-    .\run.ps1 -NoPull                # skip git pull
-    .\run.ps1 -NoDeploy              # skip deploy step
-    .\run.ps1 -Run                   # build + run on parent folder
-    .\run.ps1 -Run -RunPath "D:\repos"  # build + run on specific path
-    .\run.ps1 -Run -RunArgs "--mode ssh --output csv"
+    .\run.ps1                                    # pull, build, deploy
+    .\run.ps1 -NoPull                            # skip git pull
+    .\run.ps1 -NoDeploy                          # skip deploy step
+    .\run.ps1 -R scan                            # build + scan parent folder
+    .\run.ps1 -R scan D:\repos                   # build + scan specific path
+    .\run.ps1 -R scan D:\repos --mode ssh        # build + scan with flags
+    .\run.ps1 -R clone .\gitmap-output\gitmap.json --target-dir .\restored
+    .\run.ps1 -R help                            # build + show help
+    .\run.ps1 -NoPull -NoDeploy -R scan          # just build and scan
 .NOTES
     Configuration is read from gitmap/powershell.json.
+    -R accepts ALL gitmap CLI arguments after it (scan, clone, help, flags, paths).
+    If -R is used with no arguments, it defaults to: scan <parent folder>
 #>
 
 param(
     [switch]$NoPull,
     [switch]$NoDeploy,
-    [switch]$Run,
-    [string]$RunPath,
-    [string]$RunArgs,
-    [string]$DeployPath
+    [string]$DeployPath,
+    [Parameter(ValueFromRemainingArguments = $true)]
+    [string[]]$R
 )
 
 $ErrorActionPreference = "Stop"
@@ -221,29 +225,17 @@ function Deploy-Binary {
 
 # ── Run gitmap ────────────────────────────────────────────────
 function Invoke-Run {
-    param($Config, $BinaryPath, $TargetPath, $ExtraArgs)
+    param($Config, $BinaryPath, [string[]]$CliArgs)
 
     Write-Host ""
     Write-Step "RUN" "Executing gitmap"
 
-    $scanPath = $TargetPath
-    if ($scanPath.Length -eq 0) {
-        $scanPath = Split-Path $RepoRoot -Parent
-        Write-Info "No path provided, scanning parent: $scanPath"
-    } else {
-        Write-Info "Scanning: $scanPath"
-    }
-
-    $fullCmd = "& `"$BinaryPath`" scan `"$scanPath`""
-    if ($ExtraArgs.Length -gt 0) {
-        $fullCmd = "$fullCmd $ExtraArgs"
-        Write-Info "Extra args: $ExtraArgs"
-    }
-
+    $resolvedArgs = Resolve-RunArgs -CliArgs $CliArgs
+    Write-Info "Command: gitmap $($resolvedArgs -join ' ')"
     Write-Host "  $('─' * 50)" -ForegroundColor DarkGray
     Write-Host ""
 
-    Invoke-Expression $fullCmd
+    & $BinaryPath @resolvedArgs
 
     Write-Host ""
     if ($LASTEXITCODE -eq 0) {
@@ -251,6 +243,20 @@ function Invoke-Run {
     } else {
         Write-Fail "gitmap exited with code $LASTEXITCODE"
     }
+}
+
+# ── Resolve run arguments ─────────────────────────────────────
+function Resolve-RunArgs {
+    param([string[]]$CliArgs)
+
+    if ($CliArgs.Count -eq 0) {
+        $parentDir = Split-Path $RepoRoot -Parent
+        Write-Info "No args provided, defaulting to: scan $parentDir"
+
+        return @("scan", $parentDir)
+    }
+
+    return $CliArgs
 }
 
 # ── Main ──────────────────────────────────────────────────────
@@ -272,8 +278,8 @@ if (-not $NoDeploy) {
     Write-Info "Skipping deploy (--NoDeploy)"
 }
 
-if ($Run) {
-    Invoke-Run -Config $config -BinaryPath $binaryPath -TargetPath $RunPath -ExtraArgs $RunArgs
+if ($R.Count -gt 0) {
+    Invoke-Run -Config $config -BinaryPath $binaryPath -CliArgs $R
 }
 
 Write-Host ""
