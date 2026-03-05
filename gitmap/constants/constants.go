@@ -73,6 +73,11 @@ const (
 	GitRevParse     = "rev-parse"
 	GitAbbrevRef    = "--abbrev-ref"
 	GitHEAD         = "HEAD"
+	GitTag          = "tag"
+	GitCheckout     = "checkout"
+	GitPush         = "push"
+	GitLsRemote     = "ls-remote"
+	GitLsRemoteTags = "--tags"
 )
 
 // Clone instruction format.
