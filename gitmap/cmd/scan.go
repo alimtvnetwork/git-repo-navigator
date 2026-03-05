@@ -52,6 +52,7 @@ func addToDesktop(records []model.ScanRecord, enabled bool) {
 	if enabled {
 		summary := desktop.AddRepos(records)
 		fmt.Printf(constants.MsgDesktopSummary, summary.Added, summary.Failed)
+	}
 }
 
 // openOutputFolder opens the output directory in the OS file explorer.
@@ -71,7 +72,7 @@ func openOutputFolder(outputDir string, enabled bool) {
 	_ = cmd.Start()
 	fmt.Printf(constants.MsgOpenedFolder, outputDir)
 }
-}
+
 
 // resolveOutputDir determines the output directory relative to scan root.
 func resolveOutputDir(cfgDir, scanDir string) string {
