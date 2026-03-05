@@ -132,10 +132,17 @@ function Resolve-Dependencies {
     Write-Step "2/4" "Resolving Go dependencies"
     Push-Location $GitMapDir
     try {
+        $prevPref = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
         $tidyOutput = go mod tidy 2>&1
-        if ($LASTEXITCODE -ne 0) {
+        $tidyExit = $LASTEXITCODE
+        $ErrorActionPreference = $prevPref
+
+        if ($tidyExit -ne 0) {
             Write-Fail "go mod tidy failed"
-            Write-Host "  $tidyOutput" -ForegroundColor Red
+            foreach ($line in $tidyOutput) {
+                Write-Host "  $line" -ForegroundColor Red
+            }
             exit 1
         }
         Write-Success "Dependencies resolved"
