@@ -30,16 +30,22 @@ func executeUpdate(repoPath string) {
 }
 
 // writeUpdateScript creates a temporary PowerShell script for self-update.
+// Writes with UTF-8 BOM so PowerShell correctly handles Unicode characters.
 func writeUpdateScript(repoPath string) string {
 	runPS1 := filepath.Join(repoPath, "run.ps1")
 	script := buildUpdateScript(repoPath, runPS1)
 	tmpFile := filepath.Join(os.TempDir(), "gitmap-update.ps1")
-	os.WriteFile(tmpFile, []byte(script), constants.DirPermission)
+
+	// UTF-8 BOM prefix for PowerShell compatibility
+	bom := []byte{0xEF, 0xBB, 0xBF}
+	content := append(bom, []byte(script)...)
+	os.WriteFile(tmpFile, content, constants.DirPermission)
 
 	return tmpFile
 }
 
 // buildUpdateScript generates the PowerShell script content.
+// Uses ASCII-safe characters to avoid encoding issues.
 func buildUpdateScript(repoPath, runPS1 string) string {
 	return fmt.Sprintf(`# gitmap self-update script (auto-generated)
 Set-Location "%s"
@@ -51,9 +57,9 @@ Write-Host ""
 $newBinary = Join-Path "%s" "bin\gitmap.exe"
 if (Test-Path $newBinary) {
     $version = & $newBinary help 2>&1 | Select-String -Pattern "v\d+\.\d+\.\d+" | ForEach-Object { $_.Matches[0].Value }
-    Write-Host "  ✓ Updated to gitmap $version" -ForegroundColor Green
+    Write-Host "  [OK] Updated to gitmap $version" -ForegroundColor Green
 } else {
-    Write-Host "  ✓ Update complete" -ForegroundColor Green
+    Write-Host "  [OK] Update complete" -ForegroundColor Green
 }
 Write-Host ""
 `, repoPath, runPS1, repoPath)
