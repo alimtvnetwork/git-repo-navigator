@@ -53,6 +53,10 @@ func dispatch(command string) {
 		runSetup(os.Args[2:])
 		return
 	}
+	if command == constants.CmdStatus || command == constants.CmdStatusAlias {
+		runStatus()
+		return
+	}
 	if command == constants.CmdHelp {
 		printUsage()
 		return
