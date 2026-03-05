@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // runUpdate handles the "update" subcommand.
@@ -21,8 +22,20 @@ func runUpdate() {
 		os.Exit(1)
 	}
 
+	// Check for --verbose flag anywhere in remaining args.
+	verboseMode := hasFlag("--verbose")
+
 	// If we're already running from the update copy, do the actual update.
-	if len(os.Args) > 2 && os.Args[2] == "--from-copy" {
+	if hasFlag("--from-copy") {
+		if verboseMode {
+			log, err := verbose.Init()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: could not create verbose log: %v\n", err)
+			} else {
+				defer log.Close()
+				log.Log("update --from-copy starting, repo=%s", repoPath)
+			}
+		}
 		fmt.Printf(constants.MsgUpdateStarting)
 		fmt.Printf(constants.MsgUpdateRepoPath, repoPath)
 		executeUpdate(repoPath)
@@ -42,7 +55,11 @@ func runUpdate() {
 	}
 
 	// Re-launch from the copy and immediately exit parent to release lock.
-	cmd := exec.Command(copyPath, "update", "--from-copy")
+	copyArgs := []string{"update", "--from-copy"}
+	if verboseMode {
+		copyArgs = append(copyArgs, "--verbose")
+	}
+	cmd := exec.Command(copyPath, copyArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
@@ -51,6 +68,17 @@ func runUpdate() {
 		os.Exit(1)
 	}
 	os.Exit(0)
+}
+
+// hasFlag checks if a flag is present in os.Args[2:].
+func hasFlag(name string) bool {
+	for _, arg := range os.Args[2:] {
+		if arg == name {
+			return true
+		}
+	}
+
+	return false
 }
 
 // copyFile copies src to dst.
@@ -75,6 +103,11 @@ func copyFile(src, dst string) error {
 func executeUpdate(repoPath string) {
 	scriptPath := writeUpdateScript(repoPath)
 	defer os.Remove(scriptPath)
+
+	log := verbose.Get()
+	if log != nil {
+		log.Log("executing update script: %s", scriptPath)
+	}
 
 	runUpdateScript(scriptPath)
 }
@@ -121,6 +154,12 @@ func runUpdateScript(scriptPath string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
+
+	log := verbose.Get()
+	if log != nil {
+		log.Log("update script exited: err=%v", err)
+	}
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrUpdateFailed, err)
 		os.Exit(1)

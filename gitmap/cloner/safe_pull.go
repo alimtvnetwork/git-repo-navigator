@@ -13,6 +13,7 @@ import (
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
+	"github.com/user/gitmap/verbose"
 )
 
 var (
@@ -36,15 +37,33 @@ func isGitRepo(path string) bool {
 }
 
 func safePullRepo(rec model.ScanRecord, repoDir string) model.CloneResult {
+	log := verbose.Get()
+	if log != nil {
+		log.Log("safe-pull starting: %s → %s", rec.RepoName, repoDir)
+	}
+
 	var lastError string
 	for attempt := 1; attempt <= constants.SafePullRetryAttempts; attempt++ {
 		output, err := runGitPull(repoDir)
+		if log != nil {
+			log.Log("pull attempt %d/%d for %s: exit=%v output=%s",
+				attempt, constants.SafePullRetryAttempts, rec.RepoName, err, trimOutput(output))
+		}
 		if err == nil {
+			if log != nil {
+				log.Log("safe-pull succeeded: %s (attempt %d)", rec.RepoName, attempt)
+			}
 			return model.CloneResult{Record: rec, Success: true}
 		}
 
-		_ = clearReadOnlyAttrs(repoDir, output)
+		cleared := clearReadOnlyAttrs(repoDir, output)
+		if log != nil && cleared {
+			log.Log("cleared read-only attributes for blocked files in %s", repoDir)
+		}
 		diagnosis := buildPullDiagnosis(repoDir, output)
+		if log != nil {
+			log.Log("diagnosis for %s: %s", rec.RepoName, diagnosis)
+		}
 		lastError = fmt.Sprintf(
 			"safe-pull failed (attempt %d/%d): %v\n%s\nDiagnosis: %s",
 			attempt,
@@ -57,6 +76,10 @@ func safePullRepo(rec model.ScanRecord, repoDir string) model.CloneResult {
 		if attempt < constants.SafePullRetryAttempts {
 			time.Sleep(time.Duration(constants.SafePullRetryDelayMS) * time.Millisecond)
 		}
+	}
+
+	if log != nil {
+		log.Log("safe-pull FAILED after all retries: %s — %s", rec.RepoName, lastError)
 	}
 
 	return model.CloneResult{Record: rec, Success: false, Error: lastError}

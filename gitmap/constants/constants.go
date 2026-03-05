@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.3.4"
+const Version = "1.4.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -41,6 +41,7 @@ const (
 	DefaultCSVFile       = "gitmap.csv"
 	DefaultJSONFile      = "gitmap.json"
 	DefaultTextFile      = "gitmap.txt"
+	DefaultVerboseLogDir = "gitmap-output"
 	DefaultStructureFile = "folder-structure.md"
 	DefaultCloneScript          = "clone.ps1"
 	DefaultDirectCloneScript    = "direct-clone.ps1"
@@ -174,6 +175,7 @@ const (
 	MsgCloneComplete    = "\nClone complete: %d succeeded, %d failed\n"
 	MsgAutoSafePull     = "Existing repos detected — safe-pull enabled automatically.\n"
 	MsgOpenedFolder     = "Opened output folder: %s\n"
+	MsgVerboseLogFile   = "Verbose log: %s\n"
 	MsgDesktopSyncStart   = "\n  Syncing repos to GitHub Desktop from %s...\n"
 	MsgDesktopSyncSkipped = "  ⊘ Skipped (already exists): %s\n"
 	MsgDesktopSyncAdded   = "  ✓ Added to GitHub Desktop: %s\n"
@@ -242,7 +244,12 @@ const (
 	HelpCloneFlags    = "Clone flags:"
 	HelpTargetDir     = "  --target-dir <dir>  Base directory for clones (default: .)"
 	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics (auto-enabled)"
+	HelpVerbose       = "  --verbose           Write detailed debug log to a timestamped file"
 )
+
+// Global flags help.
+const (
+	HelpGlobalFlags  = "Global flags (clone, update):"
 
 // Flag descriptions.
 const (
@@ -255,6 +262,7 @@ const (
 	FlagDescSafePull   = "If repo exists, run safe git pull with retries and unlock diagnostics"
 	FlagDescGHDesktop  = "Add discovered repos to GitHub Desktop"
 	FlagDescOpen       = "Open output folder after scan completes"
+	FlagDescVerbose    = "Write detailed stdout/stderr debug log to a timestamped file"
 )
 
 // Clone and Desktop scripts are now generated from Go templates
@@ -265,7 +273,10 @@ const DirPermission = 0o755
 
 // Safe-pull defaults.
 const (
-	SafePullRetryAttempts   = 4
-	SafePullRetryDelayMS    = 600
+	SafePullRetryAttempts    = 4
+	SafePullRetryDelayMS     = 600
 	WindowsPathWarnThreshold = 240
 )
+
+// Verbose log file.
+const VerboseLogFileFmt = "gitmap-verbose-%s.log"
