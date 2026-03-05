@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.9.0"
+const Version = "2.0.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -54,6 +54,9 @@ const (
 	DefaultOutputFolder  = "gitmap-output"
 	DefaultBranch        = "main"
 	DefaultDir           = "."
+	DefaultVersionFile   = "version.json"
+	DefaultReleaseDir    = ".release"
+	DefaultLatestFile    = "latest.json"
 )
 
 // Git commands and arguments.
@@ -70,6 +73,11 @@ const (
 	GitRevParse     = "rev-parse"
 	GitAbbrevRef    = "--abbrev-ref"
 	GitHEAD         = "HEAD"
+	GitTag          = "tag"
+	GitCheckout     = "checkout"
+	GitPush         = "push"
+	GitLsRemote     = "ls-remote"
+	GitLsRemoteTags = "--tags"
 )
 
 // Clone instruction format.
@@ -106,6 +114,10 @@ const (
 	CmdStatusAlias      = "st"
 	CmdExec             = "exec"
 	CmdExecAlias        = "x"
+	CmdRelease          = "release"
+	CmdReleaseAlias     = "r"
+	CmdReleaseBranch      = "release-branch"
+	CmdReleaseBranchAlias = "rb"
 )
 
 // GitHub Desktop.
@@ -251,6 +263,23 @@ const (
 	ErrStatusLoadFailed = "Error: could not load gitmap.json for status: %v\nRun 'gitmap scan' first.\n"
 	ErrExecUsage        = "Usage: gitmap exec <git-args...>\nExample: gitmap exec fetch --prune"
 	ErrExecLoadFailed   = "Error: could not load gitmap.json: %v\nRun 'gitmap scan' first.\n"
+	ErrReleaseVersionRequired = "Error: version is required.\nProvide a version argument, use --bump, or create a version.json file."
+	ErrReleaseUsage           = "Usage: gitmap release [version] [--assets <path>] [--commit <sha>] [--branch <name>] [--bump major|minor|patch] [--draft] [--dry-run]"
+	ErrReleaseBranchUsage     = "Usage: gitmap release-branch <release/vX.Y.Z> [--assets <path>] [--draft]"
+	ErrReleaseAlreadyExists   = "Error: version %s is already released. See .release/%s.json for details.\n"
+	ErrReleaseTagExists       = "Error: tag %s already exists.\n"
+	ErrReleaseBranchNotFound  = "Error: branch %s does not exist.\n"
+	ErrReleaseCommitNotFound  = "Error: commit %s not found.\n"
+	ErrReleaseInvalidVersion  = "Error: '%s' is not a valid version.\n"
+	ErrReleaseBumpNoLatest    = "Error: no previous release found. Create an initial release before using --bump.\n"
+	ErrReleaseBumpConflict    = "Error: --bump cannot be used with an explicit version argument.\n"
+	ErrReleaseCommitBranch    = "Error: --commit and --branch are mutually exclusive.\n"
+	ErrReleaseGHNotFound      = "Warning: 'gh' CLI not found. Attempting GitHub API fallback.\n"
+	ErrReleaseGHTokenMissing  = "Error: no GITHUB_TOKEN found. Set GITHUB_TOKEN env var or install 'gh' CLI.\n"
+	ErrReleasePushFailed      = "Error: failed to push to remote: %v\n"
+	ErrReleaseGHFailed        = "Error: failed to create GitHub release: %v\n"
+	ErrReleaseVersionLoad     = "Error: could not read version.json: %v\n"
+	ErrReleaseMetaWrite       = "Error: could not write release metadata: %v\n"
 )
 
 // CLI help text.
@@ -267,6 +296,8 @@ const (
 	HelpSetup       = "  setup               Configure Git diff/merge tool, aliases & core settings"
 	HelpStatus      = "  status (st)         Show dirty/clean, ahead/behind, stash for all repos"
 	HelpExec        = "  exec (x) <args...>  Run any git command across all repos"
+	HelpRelease     = "  release (r) [ver]   Create release branch, tag, and GitHub release"
+	HelpReleaseBr   = "  release-branch (rb) Complete release from existing release branch"
 	HelpHelp        = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"
@@ -281,6 +312,13 @@ const (
 	HelpTargetDir     = "  --target-dir <dir>  Base directory for clones (default: .)"
 	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics (auto-enabled)"
 	HelpVerbose       = "  --verbose           Write detailed debug log to a timestamped file"
+	HelpReleaseFlags  = "Release flags:"
+	HelpAssets        = "  --assets <path>     Directory or file to attach to the release"
+	HelpCommit        = "  --commit <sha>      Create release from a specific commit"
+	HelpRelBranch     = "  --branch <name>     Create release from latest commit of a branch"
+	HelpBump          = "  --bump major|minor|patch  Auto-increment from latest released version"
+	HelpDraft         = "  --draft             Create an unpublished draft release"
+	HelpDryRun        = "  --dry-run           Preview release steps without executing"
 )
 
 // Flag descriptions.
@@ -298,6 +336,11 @@ const (
 	FlagDescVerbose    = "Write detailed stdout/stderr debug log to a timestamped file"
 	FlagDescSetupConfig = "Path to git-setup.json config file"
 	FlagDescDryRun     = "Preview changes without applying them"
+	FlagDescAssets     = "Directory or file to attach to the release"
+	FlagDescCommit     = "Create release from a specific commit"
+	FlagDescRelBranch  = "Create release from latest commit of a branch"
+	FlagDescBump       = "Auto-increment version: major, minor, or patch"
+	FlagDescDraft      = "Create an unpublished draft release"
 )
 
 // Clone and Desktop scripts are now generated from Go templates
@@ -323,4 +366,28 @@ const (
 	SetupSectionAlias = "Aliases"
 	SetupSectionCred  = "Credential Helper"
 	SetupSectionCore  = "Core Settings"
+)
+
+// Release messages.
+const (
+	MsgReleaseStart       = "\n  Creating release %s...\n"
+	MsgReleaseBranch      = "  ✓ Created branch %s\n"
+	MsgReleaseTag         = "  ✓ Created tag %s\n"
+	MsgReleasePushed      = "  ✓ Pushed branch and tag to origin\n"
+	MsgReleaseGH          = "  ✓ GitHub release created\n"
+	MsgReleaseGHDraft     = "  ✓ GitHub draft release created\n"
+	MsgReleaseMeta        = "  ✓ Release metadata written to %s\n"
+	MsgReleaseLatest      = "  ✓ Marked %s as latest release\n"
+	MsgReleaseAttach      = "  ✓ Attached %s\n"
+	MsgReleaseChangelog   = "  ✓ Using CHANGELOG.md as release body\n"
+	MsgReleaseReadme      = "  ✓ Attached README.md\n"
+	MsgReleaseDryRun      = "  [dry-run] %s\n"
+	MsgReleaseComplete    = "\n  Release %s complete.\n"
+	MsgReleaseBranchStart = "\n  Completing release from %s...\n"
+	MsgReleaseVersionRead = "  → Version from %s: %s\n"
+	MsgReleaseBumpResult  = "  → Bumped %s → %s\n"
+	ReleaseBranchPrefix   = "release/"
+	ChangelogFile         = "CHANGELOG.md"
+	ReadmeFile            = "README.md"
+	GHBin                 = "gh"
 )
