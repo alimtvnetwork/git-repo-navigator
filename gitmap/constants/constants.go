@@ -164,6 +164,8 @@ const (
 	MsgDirectCloneSSH   = "Direct SSH clone script written to %s\n"
 	MsgDesktopScript    = "Desktop registration script written to %s\n"
 	MsgCloneComplete    = "\nClone complete: %d succeeded, %d failed\n"
+	MsgAutoSafePull     = "Existing repos detected — safe-pull enabled automatically.\n"
+	MsgOpenedFolder     = "Opened output folder: %s\n"
 	MsgDesktopSyncStart   = "\n  Syncing repos to GitHub Desktop from %s...\n"
 	MsgDesktopSyncSkipped = "  ⊘ Skipped (already exists): %s\n"
 	MsgDesktopSyncAdded   = "  ✓ Added to GitHub Desktop: %s\n"
