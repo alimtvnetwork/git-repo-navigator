@@ -90,8 +90,8 @@ func resolveOutputDir(cfgDir, scanDir string) string {
 }
 
 // writeAllOutputs writes terminal, CSV, JSON, text, folder structure, and clone scripts.
-func writeAllOutputs(records []model.ScanRecord, outputDir, outFile string) {
-	writeTerminalOutput(records, outputDir)
+func writeAllOutputs(records []model.ScanRecord, outputDir, outFile string, quiet bool) {
+	writeTerminalOutput(records, outputDir, quiet)
 	writeCSVOutput(records, outputDir, outFile)
 	writeJSONOutput(records, outputDir)
 	writeTextOutput(records, outputDir)
