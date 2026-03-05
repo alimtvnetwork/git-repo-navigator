@@ -69,9 +69,66 @@ Reads from `./gitmap-output/gitmap.json` in the current directory.
 - Skips repos whose paths no longer exist on disk.
 - Logs per-repo success/skip/failure and prints a summary.
 
+### `gitmap setup` (no alias)
+
+Configure Git global settings — diff/merge tools, aliases, credential
+helper, and core options — from a JSON config file.
+
+- Reads `./data/git-setup.json` by default (override with `--config`).
+- Compares each setting against the current `git config --global` value.
+- Only applies settings that differ; unchanged values are skipped.
+- Supports `--dry-run` to preview changes without writing anything.
+- Color-coded output: ✓ applied, ⊘ unchanged, ✗ failed.
+
+**`git-setup.json` format:**
+
+```json
+{
+  "diffTool": {
+    "name": "vscode",
+    "cmd": "code --wait --diff $LOCAL $REMOTE"
+  },
+  "mergeTool": {
+    "name": "vscode",
+    "cmd": "code --wait $MERGED"
+  },
+  "aliases": {
+    "co": "checkout",
+    "st": "status",
+    "br": "branch",
+    "lg": "log --oneline --graph --all"
+  },
+  "credentialHelper": "manager",
+  "core": {
+    "autocrlf": "true",
+    "longpaths": "true",
+    "editor": "code --wait"
+  }
+}
+```
+
+Each top-level key maps to a section header in the output. All fields
+are optional — omit a section to leave those settings untouched.
+
+### `gitmap status` (alias: `st`)
+
+Show a live dashboard of all scanned repos with current branch,
+dirty/clean state, ahead/behind counts, stash entries, and file
+change breakdown (staged/modified/untracked). Reads from
+`./gitmap-output/gitmap.json`.
+
+### `gitmap exec <git-args...>` (alias: `x`)
+
+Run any git command across all repos from `./gitmap-output/gitmap.json`.
+Arguments after `exec` are passed directly to `git` inside each repo directory.
+
+- Skips repos whose paths no longer exist on disk.
+- Shows per-repo success/failure with captured output.
+- Prints a summary of succeeded/failed/missing counts.
+
 ### `gitmap version` (alias: `v`)
 
-Prints the current version number (e.g., `gitmap v1.6.0`) and exits.
+Prints the current version number (e.g., `gitmap v1.9.0`) and exits.
 
 ### `gitmap help`
 
@@ -90,6 +147,8 @@ All aliases are single-letter or short abbreviations for faster usage:
 | `pull`           | `p`   |
 | `rescan`         | `rs`  |
 | `desktop-sync`   | `ds`  |
+| `status`         | `st`  |
+| `exec`           | `x`   |
 | `version`        | `v`   |
 
 ---
@@ -149,6 +208,13 @@ activates whenever existing repos are detected during a clone operation.
 |------------------------|--------------------------------------|---------|
 | `--verbose`            | Write detailed debug log to a timestamped file | `false` |
 
+## Setup Flags
+
+| Flag                   | Description                          | Default                    |
+|------------------------|--------------------------------------|----------------------------|
+| `--config <path>`      | Path to git-setup.json config file   | `./data/git-setup.json`    |
+| `--dry-run`            | Preview changes without applying     | `false`                    |
+
 ## Examples
 
 ```bash
@@ -192,6 +258,18 @@ gitmap p my-api      # partial match works
 # Sync existing scan output to GitHub Desktop
 gitmap desktop-sync
 gitmap ds            # alias
+
+# Configure Git global settings (preview first)
+gitmap setup --dry-run
+gitmap setup
+
+# Show repo status dashboard
+gitmap status
+gitmap st            # alias
+
+# Run git fetch across all repos
+gitmap exec fetch --prune
+gitmap x status -s   # alias
 
 # Self-update from source repo
 gitmap update
