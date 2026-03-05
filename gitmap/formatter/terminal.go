@@ -6,6 +6,7 @@ import (
 	"io"
 	"text/tabwriter"
 
+	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
 
@@ -22,13 +23,11 @@ func Terminal(w io.Writer, records []model.ScanRecord) error {
 
 // writeTerminalHeader prints the column header line.
 func writeTerminalHeader(tw *tabwriter.Writer) error {
-	_, err := fmt.Fprintln(tw,
-		"REPO\tBRANCH\tPATH\tCLONE INSTRUCTION")
+	_, err := fmt.Fprintln(tw, constants.TerminalHeader)
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintln(tw,
-		"----\t------\t----\t-----------------")
+	_, err = fmt.Fprintln(tw, constants.TerminalSeparator)
 
 	return err
 }
@@ -47,7 +46,7 @@ func writeTerminalRows(tw *tabwriter.Writer, records []model.ScanRecord) error {
 
 // writeOneRow prints a single record row.
 func writeOneRow(tw *tabwriter.Writer, r model.ScanRecord) error {
-	_, err := fmt.Fprintf(tw, "%s\t%s\t%s\t%s\n",
+	_, err := fmt.Fprintf(tw, constants.TerminalRowFmt,
 		r.RepoName, r.Branch, r.RelativePath, r.CloneInstruction)
 
 	return err

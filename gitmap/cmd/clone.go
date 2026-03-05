@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/user/gitmap/cloner"
+	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
 
@@ -12,8 +13,8 @@ import (
 func runClone(args []string) {
 	source, targetDir := parseCloneFlags(args)
 	if len(source) == 0 {
-		fmt.Fprintln(os.Stderr, "Error: source file is required")
-		fmt.Fprintln(os.Stderr, "Usage: gitmap clone <source> [--target-dir <dir>]")
+		fmt.Fprintln(os.Stderr, constants.ErrSourceRequired)
+		fmt.Fprintln(os.Stderr, constants.ErrCloneUsage)
 		os.Exit(1)
 	}
 	executeClone(source, targetDir)
@@ -23,7 +24,7 @@ func runClone(args []string) {
 func executeClone(source, targetDir string) {
 	summary, err := cloner.CloneFromFile(source, targetDir)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Clone error: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrCloneFailed, err)
 		os.Exit(1)
 	}
 	printSummary(summary)
@@ -31,8 +32,7 @@ func executeClone(source, targetDir string) {
 
 // printSummary displays clone results to the user.
 func printSummary(s model.CloneSummary) {
-	fmt.Printf("\nClone complete: %d succeeded, %d failed\n",
-		s.Succeeded, s.Failed)
+	fmt.Printf(constants.MsgCloneComplete, s.Succeeded, s.Failed)
 	if s.Failed > 0 {
 		printFailures(s)
 	}
@@ -40,9 +40,9 @@ func printSummary(s model.CloneSummary) {
 
 // printFailures lists each failed clone operation.
 func printFailures(s model.CloneSummary) {
-	fmt.Println("\nFailed clones:")
+	fmt.Println(constants.MsgFailedClones)
 	for _, e := range s.Errors {
-		fmt.Printf("  - %s (%s): %s\n",
+		fmt.Printf(constants.MsgFailedEntry,
 			e.Record.RepoName, e.Record.RelativePath, e.Error)
 	}
 }

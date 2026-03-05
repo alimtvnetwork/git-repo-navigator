@@ -40,32 +40,32 @@ func dispatch(command string) {
 
 // printUsage displays help text for all commands.
 func printUsage() {
-	fmt.Println("Usage: gitmap <command> [flags]")
+	fmt.Println(constants.HelpUsage)
 	fmt.Println()
-	fmt.Println("Commands:")
-	fmt.Println("  scan [dir]          Scan directory for Git repos")
-	fmt.Println("  clone <source>      Re-clone from CSV/JSON/text file")
-	fmt.Println("  help                Show this help message")
+	fmt.Println(constants.HelpCommands)
+	fmt.Println(constants.HelpScan)
+	fmt.Println(constants.HelpClone)
+	fmt.Println(constants.HelpHelp)
 	fmt.Println()
-	fmt.Println("Scan flags:")
-	fmt.Println("  --config <path>     Config file (default: ./data/config.json)")
-	fmt.Println("  --mode ssh|https    Clone URL style (default: https)")
-	fmt.Println("  --output csv|json|terminal  Output format (default: terminal)")
-	fmt.Println("  --output-path <dir> Output directory (default: ./gitmap-output)")
-	fmt.Println("  --out-file <path>   Exact output file path")
+	fmt.Println(constants.HelpScanFlags)
+	fmt.Println(constants.HelpConfig)
+	fmt.Println(constants.HelpMode)
+	fmt.Println(constants.HelpOutput)
+	fmt.Println(constants.HelpOutputPath)
+	fmt.Println(constants.HelpOutFile)
 	fmt.Println()
-	fmt.Println("Clone flags:")
-	fmt.Println("  --target-dir <dir>  Base directory for clones (default: .)")
+	fmt.Println(constants.HelpCloneFlags)
+	fmt.Println(constants.HelpTargetDir)
 }
 
 // parseScanFlags parses flags for the scan command.
 func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outputPath string) {
 	fs := flag.NewFlagSet(constants.CmdScan, flag.ExitOnError)
-	cfgFlag := fs.String("config", constants.DefaultConfigPath, "Path to config file")
-	modeFlag := fs.String("mode", "", "Clone URL style: https or ssh")
-	outputFlag := fs.String("output", "", "Output format: terminal, csv, json")
-	outFileFlag := fs.String("out-file", "", "Exact output file path")
-	outputPathFlag := fs.String("output-path", "", "Output directory for CSV/JSON")
+	cfgFlag := fs.String("config", constants.DefaultConfigPath, constants.FlagDescConfig)
+	modeFlag := fs.String("mode", "", constants.FlagDescMode)
+	outputFlag := fs.String("output", "", constants.FlagDescOutput)
+	outFileFlag := fs.String("out-file", "", constants.FlagDescOutFile)
+	outputPathFlag := fs.String("output-path", "", constants.FlagDescOutputPath)
 	fs.Parse(args)
 
 	dir = constants.DefaultDir
@@ -79,7 +79,7 @@ func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outp
 // parseCloneFlags parses flags for the clone command.
 func parseCloneFlags(args []string) (source, targetDir string) {
 	fs := flag.NewFlagSet(constants.CmdClone, flag.ExitOnError)
-	targetFlag := fs.String("target-dir", constants.DefaultDir, "Base directory for cloned repos")
+	targetFlag := fs.String("target-dir", constants.DefaultDir, constants.FlagDescTargetDir)
 	fs.Parse(args)
 
 	source = ""
