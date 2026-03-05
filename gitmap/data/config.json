@@ -1,7 +1,7 @@
 {
   "defaultMode": "https",
   "defaultOutput": "terminal",
-  "outputDir": "./output",
+  "outputDir": "./gitmap-output",
   "excludeDirs": [".cache", "node_modules", "vendor", ".venv"],
   "notes": ""
 }

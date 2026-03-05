@@ -45,23 +45,32 @@ func printUsage() {
 	fmt.Println("  clone <source>      Re-clone from CSV/JSON/text file")
 	fmt.Println("  help                Show this help message")
 	fmt.Println()
-	fmt.Println("Run 'gitmap scan --help' or 'gitmap clone --help' for flag details.")
+	fmt.Println("Scan flags:")
+	fmt.Println("  --config <path>     Config file (default: ./data/config.json)")
+	fmt.Println("  --mode ssh|https    Clone URL style (default: https)")
+	fmt.Println("  --output csv|json|terminal  Output format (default: terminal)")
+	fmt.Println("  --output-path <dir> Output directory (default: ./gitmap-output)")
+	fmt.Println("  --out-file <path>   Exact output file path")
+	fmt.Println()
+	fmt.Println("Clone flags:")
+	fmt.Println("  --target-dir <dir>  Base directory for clones (default: .)")
 }
 
 // parseScanFlags parses flags for the scan command.
-func parseScanFlags(args []string) (dir, configPath, mode, output, outFile string) {
+func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outputPath string) {
 	fs := flag.NewFlagSet("scan", flag.ExitOnError)
 	cfgFlag := fs.String("config", "./data/config.json", "Path to config file")
 	modeFlag := fs.String("mode", "", "Clone URL style: https or ssh")
 	outputFlag := fs.String("output", "", "Output format: terminal, csv, json")
-	outFileFlag := fs.String("out-file", "", "Output file path")
+	outFileFlag := fs.String("out-file", "", "Exact output file path")
+	outputPathFlag := fs.String("output-path", "", "Output directory for CSV/JSON")
 	fs.Parse(args)
 
 	dir = "."
 	if fs.NArg() > 0 {
 		dir = fs.Arg(0)
 	}
-	return dir, *cfgFlag, *modeFlag, *outputFlag, *outFileFlag
+	return dir, *cfgFlag, *modeFlag, *outputFlag, *outFileFlag, *outputPathFlag
 }
 
 // parseCloneFlags parses flags for the clone command.

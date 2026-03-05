@@ -8,19 +8,19 @@ import (
 	"github.com/user/gitmap/config"
 	"github.com/user/gitmap/formatter"
 	"github.com/user/gitmap/mapper"
-	"github.com/user/gitmap/scanner"
 	"github.com/user/gitmap/model"
+	"github.com/user/gitmap/scanner"
 )
 
 // runScan handles the "scan" subcommand.
 func runScan(args []string) {
-	dir, cfgPath, mode, output, outFile := parseScanFlags(args)
+	dir, cfgPath, mode, output, outFile, outputPath := parseScanFlags(args)
 	cfg, err := config.LoadFromFile(cfgPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
 		os.Exit(1)
 	}
-	cfg = config.MergeWithFlags(cfg, mode, output, "")
+	cfg = config.MergeWithFlags(cfg, mode, output, outputPath)
 	executeScan(dir, cfg, outFile)
 }
 
@@ -32,6 +32,7 @@ func executeScan(dir string, cfg model.Config, outFile string) {
 		os.Exit(1)
 	}
 	records := mapper.BuildRecords(repos, cfg.DefaultMode, cfg.Notes)
+	fmt.Printf("Found %d repositories.\n", len(records))
 	outputRecords(records, cfg, outFile)
 }
 

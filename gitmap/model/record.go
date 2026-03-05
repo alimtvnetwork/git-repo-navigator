@@ -28,7 +28,7 @@ func DefaultConfig() Config {
 	return Config{
 		DefaultMode:   "https",
 		DefaultOutput: "terminal",
-		OutputDir:     "./output",
+		OutputDir:     "./gitmap-output",
 		ExcludeDirs:   []string{},
 		Notes:         "",
 	}
