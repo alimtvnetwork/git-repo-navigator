@@ -151,11 +151,65 @@ function Resolve-Dependencies {
     }
 }
 
+# -- Pre-build validation --------------------------------------
+function Test-SourceFiles {
+    Write-Info "Validating source files..."
+
+    $requiredFiles = @(
+        "main.go",
+        "go.mod",
+        "cmd/root.go",
+        "cmd/scan.go",
+        "cmd/clone.go",
+        "cmd/update.go",
+        "cmd/pull.go",
+        "cmd/rescan.go",
+        "cmd/desktopsync.go",
+        "constants/constants.go",
+        "config/config.go",
+        "scanner/scanner.go",
+        "mapper/mapper.go",
+        "model/record.go",
+        "formatter/csv.go",
+        "formatter/json.go",
+        "formatter/terminal.go",
+        "formatter/text.go",
+        "formatter/structure.go",
+        "formatter/clonescript.go",
+        "formatter/directclone.go",
+        "formatter/desktopscript.go",
+        "cloner/cloner.go",
+        "cloner/safe_pull.go",
+        "gitutil/gitutil.go",
+        "desktop/desktop.go",
+        "verbose/verbose.go"
+    )
+
+    $missing = @()
+    foreach ($file in $requiredFiles) {
+        $fullPath = Join-Path $GitMapDir $file
+        if (-not (Test-Path $fullPath)) {
+            $missing += $file
+        }
+    }
+
+    if ($missing.Count -gt 0) {
+        Write-Fail "Missing source files ($($missing.Count)):"
+        foreach ($f in $missing) {
+            Write-Host "  - $f" -ForegroundColor Red
+        }
+        exit 1
+    }
+
+    Write-Success "All $($requiredFiles.Count) source files present"
+}
+
 # -- Build binary ----------------------------------------------
 function Build-Binary {
     param($Config)
 
     Write-Step "3/4" "Building $($Config.binaryName)"
+    Test-SourceFiles
 
     $binDir  = Join-Path $RepoRoot $Config.buildOutput
     $outPath = Join-Path $binDir $Config.binaryName
