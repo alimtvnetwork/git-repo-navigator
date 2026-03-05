@@ -262,6 +262,7 @@ const (
 	FlagDescSafePull   = "If repo exists, run safe git pull with retries and unlock diagnostics"
 	FlagDescGHDesktop  = "Add discovered repos to GitHub Desktop"
 	FlagDescOpen       = "Open output folder after scan completes"
+	FlagDescVerbose    = "Write detailed stdout/stderr debug log to a timestamped file"
 )
 
 // Clone and Desktop scripts are now generated from Go templates
