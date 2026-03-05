@@ -43,49 +43,77 @@ func runUpdate():
     exit(0)  # Release file lock immediately
 ```
 
-### Layer 2 — Delayed Rebuild
+### Layer 2 — Skip-if-Current + Delayed Rebuild
 
-The temp copy orchestrates the actual update. It generates and runs
-a script (PowerShell, bash, etc.) that:
+The temp copy orchestrates the actual update. Before rebuilding,
+it checks whether there are any changes to apply:
 
-1. **Waits 1–2 seconds** for the parent process to fully terminate
-   and release all OS-level file handles.
-2. **Runs the build pipeline** (pull source, resolve deps, build,
-   deploy).
-3. **Reports the updated version** so the user can confirm success.
+1. **Capture current version** from the deployed binary.
+2. **Pull latest source** and inspect the output.
+3. **If "Already up to date"** — print a message and exit early.
+   No rebuild, no deploy, no wasted time.
+4. **Otherwise, wait 1–2 seconds** for the parent process to fully
+   terminate and release all OS-level file handles.
+5. **Run the build pipeline** (resolve deps, build, deploy).
+6. **Compare versions** — warn if unchanged (version constant not
+   bumped), confirm if different.
 
 ```
-# Example: generated PowerShell script
+# Example: generated update script
+$oldVersion = & $deployedBinary version 2>&1
+
+$pullOutput = git pull 2>&1
+if ($pullOutput -match "Already up to date") {
+    print("No update needed — already running latest version")
+    exit(0)
+}
+
 Start-Sleep -Seconds 1.2
-Push-Location '<repo-path>'
-& '<build-script>'
-Pop-Location
+& build-script -NoPull   # Already pulled above
+
+$newVersion = & $newBinary version 2>&1
+if ($oldVersion == $newVersion) {
+    warn("Version unchanged — was the version constant bumped?")
+} else {
+    print("Updated: $oldVersion -> $newVersion")
+}
 ```
 
-### Layer 3 — Deploy Retry
+### Layer 3 — Deploy with Rollback
 
-The build pipeline's deploy/copy step wraps file operations in a
-retry loop to handle the race condition where the parent process
-hasn't fully released its handle yet.
+The build pipeline's deploy step includes rollback safety:
 
-Recommended defaults:
-- **Max attempts:** 15–20
-- **Delay between attempts:** 300–500ms
-- **Total timeout:** ~10 seconds
+1. **Backup** the existing binary before overwriting:
+   `toolname.exe` → `toolname.exe.bak`
+2. **Attempt file copy** with retry loop (15–20 attempts × 500ms)
+3. **On success** — delete the backup
+4. **On failure after all retries** — restore the backup so the user
+   still has a working binary
 
 ```
-# Pseudocode — retry loop for file copy
+# Pseudocode — deploy with rollback
+backup = destination + ".bak"
+if fileExists(destination):
+    copy(destination, backup)
+
 attempts = 0
+success = false
 while attempts < maxAttempts:
     try:
         copyFile(source, destination)
+        success = true
         break
     catch fileLocked:
-        log("Target binary in use, retrying...")
+        log("Target in use, retrying...")
         sleep(500ms)
         attempts++
-if attempts >= maxAttempts:
-    fail("Could not overwrite binary after retries")
+
+if success:
+    delete(backup)
+else:
+    # Restore working binary from backup
+    copy(backup, destination)
+    fail("Deploy failed — previous version restored")
 ```
 
 ## Flow Diagram
@@ -98,13 +126,32 @@ User runs: <tool> update
    ├─ Parent exits (releases file lock)
    │
    └─ Temp copy starts
+      ├─ Captures current deployed version
+      ├─ Runs git pull
+      ├─ If already up to date → exits early (no rebuild)
       ├─ Waits 1–2 seconds
-      ├─ Generates temp build script
-      ├─ Runs: build pipeline (pull → build → deploy)
-      │    └─ Deploy step retries if binary still locked
-      ├─ Prints updated version
+      ├─ Runs: build pipeline (deps → build → deploy)
+      │    ├─ Backs up existing binary
+      │    ├─ Deploys new binary (with retry)
+      │    └─ On failure: restores backup
+      ├─ Compares old vs new version
       └─ Cleans up temp script
 ```
+
+## Proactive Temp Cleanup
+
+On every startup (not just after update), the tool scans `%TEMP%`
+for leftover update copies from previous runs and deletes them:
+
+```
+# On tool startup — before dispatching any command
+func cleanupUpdateCopies():
+    for file in glob("%TEMP%/<tool>-update-*.exe"):
+        if file != currentExecutable:
+            tryDelete(file)
+```
+
+This prevents `%TEMP%` from accumulating stale binaries over time.
 
 ## Prerequisites
 
@@ -117,62 +164,25 @@ User runs: <tool> update
 - If the repo path is missing or invalid, the update command should
   print a clear error and exit.
 
-## Recommended Enhancements
+## Optional Enhancements
 
-Beyond the core three-layer pattern, consider these improvements:
-
-### Rollback Safety
-
-Before overwriting the deployed binary, **back it up**:
-
-```
-# Before deploy
-backup = destination + ".bak"
-rename(destination, backup)
-
-# After successful deploy
-delete(backup)
-
-# On failure
-rename(backup, destination)  # Restore working binary
-```
-
-This ensures a failed build never leaves the user without a working
-binary.
-
-### Skip If Already Up-to-Date
-
-Compare the current version against the latest available version
-(from a metadata file, git tag, or version endpoint) and skip the
-update if they match:
-
-```
-if currentVersion == latestVersion:
-    print("Already up to date")
-    exit(0)
-```
+Beyond the core pattern, consider these additional improvements:
 
 ### Checksum Verification
 
-After building the new binary, verify its integrity:
+For tools that download pre-built binaries (rather than building
+from source), verify integrity after download:
 
 ```
 expected = readHashFile(buildOutput + ".sha256")
 actual = sha256(newBinary)
 if expected != actual:
-    fail("Binary checksum mismatch — build may be corrupted")
+    fail("Binary checksum mismatch — download may be corrupted")
 ```
 
-### Proactive Temp Cleanup
-
-On startup (not just after update), scan `%TEMP%` for leftover
-update copies from previous runs and delete them:
-
-```
-# On tool startup
-for file in glob("%TEMP%/<tool>-update-*.exe"):
-    tryDelete(file)
-```
+For source-built tools, the version comparison serves a similar
+validation purpose — if the binary runs and reports a version,
+it's structurally valid.
 
 ### Exit Code Propagation
 
@@ -184,22 +194,32 @@ result = runBuildScript(scriptPath)
 exit(result.exitCode)
 ```
 
+### Alternative: Rename Trick (Windows)
+
+Windows blocks *overwriting* a running `.exe` but allows *renaming*
+it. This enables a simpler deploy strategy:
+
+```
+# Instead of retry-on-lock:
+rename("tool.exe", "tool.exe.old")   # Works even while running
+copy(newBinary, "tool.exe")          # No lock conflict
+# On next startup: delete("tool.exe.old")
+```
+
+This is more deterministic than retry loops but requires the deploy
+step to run from a different process than the one holding the lock.
+
 ## Error Handling
 
 | Scenario | Behavior |
 |----------|----------|
 | No repo path configured | Print error, exit 1 |
 | Repo path doesn't exist | Print error, exit 1 |
-| Build/compile fails | Script exits with error |
-| Deploy locked after retries | Throw/fail with clear message |
+| Already up to date | Print message, exit 0 (no rebuild) |
+| Build/compile fails | Script exits with error, backup remains |
+| Deploy locked after retries | Restore backup, fail with clear message |
 | Temp copy fails to launch | Print error, exit 1 |
-| Version unchanged after update | Warn user (possible build issue) |
-
-## Cleanup
-
-- The temp copy binary persists in `%TEMP%` until proactively cleaned
-  or the OS purges temp files.
-- The generated build script is deleted immediately after execution.
+| Version unchanged after update | Warn user (version constant not bumped) |
 
 ## Platform Considerations
 
@@ -227,5 +247,11 @@ is needed.
    the update actually applied.
 5. **Always provide a rollback path** — if the update fails
    mid-deploy, the user should still have a working binary.
-6. **Log verbosely during update** — self-update failures are hard
+6. **Skip unnecessary rebuilds** — check for source changes before
+   rebuilding to save time and avoid confusion.
+7. **Compare versions before and after** — catch cases where the
+   source changed but the version constant wasn't bumped.
+8. **Log verbosely during update** — self-update failures are hard
    to debug without detailed logs of each step.
+9. **Clean up temp files proactively** — don't rely on the OS to
+   purge `%TEMP%`; delete stale update copies on every startup.
