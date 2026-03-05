@@ -39,7 +39,6 @@ func executeScan(dir string, cfg model.Config, outFile string, ghDesktop bool) {
 		os.Exit(1)
 	}
 	records := mapper.BuildRecords(repos, cfg.DefaultMode, cfg.Notes)
-	fmt.Printf(constants.MsgFoundRepos, len(records))
 	outputDir := resolveOutputDir(cfg.OutputDir, absDir)
 	writeAllOutputs(records, outputDir, outFile)
 	addToDesktop(records, ghDesktop)

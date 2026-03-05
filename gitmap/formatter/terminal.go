@@ -4,50 +4,172 @@ package formatter
 import (
 	"fmt"
 	"io"
-	"text/tabwriter"
+	"sort"
+	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
 
-// Terminal writes records to the given writer as a formatted table.
+// Terminal writes a professional colored output to the given writer.
 func Terminal(w io.Writer, records []model.ScanRecord) error {
-	tw := tabwriter.NewWriter(w, 0, 4, 2, ' ', 0)
-	err := writeTerminalHeader(tw)
-	if err != nil {
-		return err
-	}
+	printBanner(w, len(records))
+	printRepoList(w, records)
+	printFolderTree(w, records)
+	printCloneHelp(w)
 
-	return writeTerminalRows(tw, records)
+	return nil
 }
 
-// writeTerminalHeader prints the column header line.
-func writeTerminalHeader(tw *tabwriter.Writer) error {
-	_, err := fmt.Fprintln(tw, constants.TerminalHeader)
-	if err != nil {
-		return err
-	}
-	_, err = fmt.Fprintln(tw, constants.TerminalSeparator)
-
-	return err
+// printBanner writes the header section.
+func printBanner(w io.Writer, count int) {
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermBannerTop+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermBannerTitle+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermBannerBottom+constants.ColorReset+"\n")
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, constants.ColorGreen+constants.TermFoundFmt+constants.ColorReset+"\n", count)
+	fmt.Fprintln(w)
 }
 
-// writeTerminalRows prints each record as a table row.
-func writeTerminalRows(tw *tabwriter.Writer, records []model.ScanRecord) error {
+// printRepoList writes each repo with folder name and clone instruction.
+func printRepoList(w io.Writer, records []model.ScanRecord) {
+	fmt.Fprintf(w, constants.ColorYellow+constants.TermReposHeader+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorDim+constants.TermSeparator+constants.ColorReset+"\n")
 	for _, r := range records {
-		err := writeOneRow(tw, r)
-		if err != nil {
-			return err
+		printOneRepo(w, r)
+	}
+	fmt.Fprintln(w)
+}
+
+// printOneRepo writes a single repo entry.
+func printOneRepo(w io.Writer, r model.ScanRecord) {
+	fmt.Fprintf(w, constants.ColorGreen+constants.TermRepoIcon+constants.ColorReset, r.RepoName)
+	fmt.Fprintf(w, constants.ColorDim+constants.TermPathLine+constants.ColorReset, r.RelativePath)
+	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneLine+constants.ColorReset, r.CloneInstruction)
+	fmt.Fprintln(w)
+}
+
+// printFolderTree writes the folder structure to terminal.
+func printFolderTree(w io.Writer, records []model.ScanRecord) {
+	fmt.Fprintf(w, constants.ColorYellow+constants.TermTreeHeader+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorDim+constants.TermSeparator+constants.ColorReset+"\n")
+	paths := collectTermPaths(records)
+	tree := buildTermTree(paths)
+	renderTermTree(w, tree, "")
+	fmt.Fprintln(w)
+}
+
+// printCloneHelp writes instructions for cloning on another machine.
+func printCloneHelp(w io.Writer) {
+	fmt.Fprintf(w, constants.ColorYellow+constants.TermCloneHeader+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorDim+constants.TermSeparator+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep1+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd1+constants.ColorReset+"\n")
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep2+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd2+constants.ColorReset+"\n")
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep3+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd3+constants.ColorReset+"\n")
+	fmt.Fprintln(w)
+}
+
+// termPathEntry holds path info for tree rendering.
+type termPathEntry struct {
+	Path   string
+	Branch string
+}
+
+// collectTermPaths extracts and sorts paths from records.
+func collectTermPaths(records []model.ScanRecord) []termPathEntry {
+	entries := make([]termPathEntry, 0, len(records))
+	for _, r := range records {
+		entries = append(entries, termPathEntry{
+			Path: r.RelativePath, Branch: r.Branch,
+		})
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].Path < entries[j].Path
+	})
+
+	return entries
+}
+
+// termNode represents a folder or repo in the terminal tree.
+type termNode struct {
+	Name     string
+	Children []*termNode
+	IsRepo   bool
+	Branch   string
+}
+
+// buildTermTree constructs a tree from path entries.
+func buildTermTree(entries []termPathEntry) *termNode {
+	root := &termNode{Name: "."}
+	for _, e := range entries {
+		insertTermNode(root, e)
+	}
+
+	return root
+}
+
+// insertTermNode adds a path into the tree.
+func insertTermNode(root *termNode, entry termPathEntry) {
+	parts := strings.Split(entry.Path, "/")
+	current := root
+	for i, part := range parts {
+		child := findTermChild(current, part)
+		if child == nil {
+			child = &termNode{Name: part}
+			current.Children = append(current.Children, child)
+		}
+		if i == len(parts)-1 {
+			child.IsRepo = true
+			child.Branch = entry.Branch
+		}
+		current = child
+	}
+}
+
+// findTermChild looks for a child node by name.
+func findTermChild(node *termNode, name string) *termNode {
+	for _, c := range node.Children {
+		if c.Name == name {
+			return c
 		}
 	}
 
-	return tw.Flush()
+	return nil
 }
 
-// writeOneRow prints a single record row.
-func writeOneRow(tw *tabwriter.Writer, r model.ScanRecord) error {
-	_, err := fmt.Fprintf(tw, constants.TerminalRowFmt,
-		r.RepoName, r.Branch, r.RelativePath, r.CloneInstruction)
+// renderTermTree writes the colored tree to the writer.
+func renderTermTree(w io.Writer, node *termNode, prefix string) {
+	for i, child := range node.Children {
+		connector := constants.TreeBranch
+		nextPrefix := prefix + constants.TreePipe
+		if i == len(node.Children)-1 {
+			connector = constants.TreeCorner
+			nextPrefix = prefix + constants.TreeSpace
+		}
+		renderTermNode(w, child, prefix, connector)
+		if len(child.Children) > 0 {
+			renderTermTree(w, child, nextPrefix)
+		}
+	}
+}
 
-	return err
+// renderTermNode writes a single colored tree node.
+func renderTermNode(w io.Writer, node *termNode, prefix, connector string) {
+	if node.IsRepo {
+		fmt.Fprintf(w, "%s%s %s📦 %s%s %s(%s)%s\n",
+			constants.ColorDim, prefix, connector,
+			constants.ColorGreen, node.Name,
+			constants.ColorDim, node.Branch, constants.ColorReset)
+
+		return
+	}
+	fmt.Fprintf(w, "%s%s %s📁 %s%s%s\n",
+		constants.ColorDim, prefix, connector,
+		constants.ColorYellow, node.Name, constants.ColorReset)
 }
