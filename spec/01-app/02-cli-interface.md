@@ -331,6 +331,9 @@ gitmap x status -s   # alias
 # Self-update from source repo
 gitmap update
 
+# Clean up leftover update artifacts manually
+gitmap update-cleanup
+
 # Create a release from HEAD
 gitmap release v1.2.3
 gitmap r v1.0.0      # alias

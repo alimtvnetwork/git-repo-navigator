@@ -295,6 +295,11 @@ if (Test-Path $newBinary) {
     } else {
         Write-Host "  [OK] Updated: $oldVersion -> $newVersion" -ForegroundColor Green
     }
+
+    # Run update-cleanup to remove temp copies and .old backups
+    Write-Host ""
+    Write-Host "  Cleaning up update artifacts..." -ForegroundColor DarkGray
+    & $newBinary update-cleanup
 } else {
     Write-Host "  [OK] Update complete" -ForegroundColor Green
 }
