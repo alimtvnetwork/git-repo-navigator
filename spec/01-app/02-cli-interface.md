@@ -316,6 +316,34 @@ gitmap x status -s   # alias
 # Self-update from source repo
 gitmap update
 
+# Create a release from HEAD
+gitmap release v1.2.3
+gitmap r v1.0.0      # alias
+
+# Partial version (padded to v1.0.0)
+gitmap release v1
+
+# Release with assets
+gitmap release v2.0.0 --assets ./dist
+
+# Release from specific commit or branch
+gitmap release v1.2.3 --commit abc123
+gitmap release v1.0.0 --branch develop
+
+# Auto-increment version
+gitmap release --bump patch
+gitmap release --bump minor --assets ./bin
+
+# Draft / pre-release
+gitmap release v3.0.0-rc.1 --draft
+
+# Read version from version.json
+gitmap release
+
+# Complete release from existing release branch
+gitmap release-branch release/v1.2.0
+gitmap rb release/v1.2.0
+
 # Print version number
 gitmap version
 gitmap v             # alias
