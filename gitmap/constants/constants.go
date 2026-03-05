@@ -185,10 +185,17 @@ const (
 	TreeSpace            = "    "
 )
 
+// Clone shorthands.
+const (
+	ShorthandJSON = "json"
+	ShorthandCSV  = "csv"
+)
+
 // CLI error messages.
 const (
-	ErrSourceRequired = "Error: source file is required"
-	ErrCloneUsage     = "Usage: gitmap clone <source> [--target-dir <dir>] [--safe-pull]"
+	ErrSourceRequired    = "Error: source file is required"
+	ErrCloneUsage        = "Usage: gitmap clone <source|json|csv> [--target-dir <dir>] [--safe-pull]"
+	ErrShorthandNotFound = "Error: %s not found.\nRun 'gitmap scan' first to generate output files.\n"
 	ErrConfigLoad     = "Error loading config: %v\n"
 	ErrScanFailed     = "Scan error: %v\n"
 	ErrCloneFailed    = "Clone error: %v\n"
