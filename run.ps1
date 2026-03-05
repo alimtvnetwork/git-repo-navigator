@@ -97,9 +97,42 @@ function Load-Config {
     }
 }
 
+# -- Ensure main branch ----------------------------------------
+function Ensure-MainBranch {
+    Push-Location $RepoRoot
+    try {
+        $prevPref = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        $currentBranch = (git rev-parse --abbrev-ref HEAD 2>&1).Trim()
+        $ErrorActionPreference = $prevPref
+
+        if ($currentBranch -ne "main") {
+            Write-Warn "Currently on branch '$currentBranch', switching to main..."
+            $ErrorActionPreference = "Continue"
+            $checkoutOutput = git checkout main 2>&1
+            $checkoutExit = $LASTEXITCODE
+            $ErrorActionPreference = $prevPref
+
+            if ($checkoutExit -ne 0) {
+                Write-Fail "Failed to switch to main branch"
+                foreach ($line in $checkoutOutput) {
+                    Write-Host "  $line" -ForegroundColor Red
+                }
+                exit 1
+            }
+            Write-Success "Switched to main branch"
+        }
+    } finally {
+        Pop-Location
+    }
+}
+
 # -- Git pull --------------------------------------------------
 function Invoke-GitPull {
     Write-Step "1/4" "Pulling latest changes"
+
+    Ensure-MainBranch
+
     Push-Location $RepoRoot
     try {
         # Temporarily allow stderr output from git without throwing NativeCommandError.
