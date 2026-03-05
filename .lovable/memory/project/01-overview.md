@@ -6,7 +6,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 ## Current Version
 
-**v1.1.2** (defined in `gitmap/constants/constants.go`)
+**v1.1.3** (defined in `gitmap/constants/constants.go`)
 
 ## Tech Stack
 
@@ -32,6 +32,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `scan [dir]` | Scan directory for Git repos, output all formats | ✅ Done |
 | `clone <source>` | Re-clone from CSV/JSON/text preserving hierarchy | ✅ Done |
 | `update` | Self-update via copy-and-handoff mechanism | ✅ Done |
+| `desktop-sync` | Sync repos to GitHub Desktop from scan output | ✅ Done |
 | `version` | Print version string and exit | ✅ Done |
 | `help` | Show usage information | ✅ Done |
 
@@ -41,7 +42,7 @@ All written to `gitmap-output/` inside the scanned directory:
 
 | File | Description |
 |------|-------------|
-| Terminal output | Colored banner, repo list, folder tree |
+| Terminal output | Colored banner, repo list, folder tree, clone instructions |
 | `gitmap.csv` | CSV with repo data |
 | `gitmap.json` | JSON with repo data |
 | `folder-structure.md` | Markdown folder tree |

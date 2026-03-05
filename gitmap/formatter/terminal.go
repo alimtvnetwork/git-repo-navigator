@@ -91,17 +91,27 @@ func printOutputFile(w io.Writer, dir, name, desc string) {
 func printCloneHelp(w io.Writer) {
 	fmt.Fprintf(w, constants.ColorYellow+constants.TermCloneHeader+constants.ColorReset+"\n")
 	fmt.Fprintf(w, constants.ColorDim+constants.TermSeparator+constants.ColorReset+"\n")
-	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep1+constants.ColorReset+"\n")
-	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd1+constants.ColorReset+"\n")
+	printCloneStep(w, constants.TermCloneStep1, constants.TermCloneCmd1)
+	printCloneStep(w, constants.TermCloneStep2, constants.TermCloneCmd2)
+	printCloneStep(w, constants.TermCloneStep3, constants.TermCloneCmd3)
+	printCloneStepMulti(w, constants.TermCloneStep4, constants.TermCloneCmd4HTTPS, constants.TermCloneCmd4SSH)
+	printCloneStep(w, constants.TermCloneStep5, constants.TermCloneCmd5)
+	printCloneStep(w, constants.TermCloneStep6, constants.TermCloneCmd6)
+}
+
+// printCloneStep writes a single step with one command.
+func printCloneStep(w io.Writer, step, cmd string) {
+	fmt.Fprintf(w, constants.ColorWhite+step+constants.ColorReset+"\n")
+	fmt.Fprintf(w, constants.ColorCyan+cmd+constants.ColorReset+"\n")
 	fmt.Fprintln(w)
-	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep2+constants.ColorReset+"\n")
-	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd2+constants.ColorReset+"\n")
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, constants.ColorWhite+constants.TermCloneStep3+constants.ColorReset+"\n")
-	fmt.Fprintf(w, constants.ColorCyan+constants.TermCloneCmd3+constants.ColorReset+"\n")
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, constants.ColorWhite+"  4. Or just run the PowerShell script:"+constants.ColorReset+"\n")
-	fmt.Fprintf(w, constants.ColorCyan+"     .\\clone.ps1 -TargetDir .\\projects"+constants.ColorReset+"\n")
+}
+
+// printCloneStepMulti writes a step with multiple command lines.
+func printCloneStepMulti(w io.Writer, step string, cmds ...string) {
+	fmt.Fprintf(w, constants.ColorWhite+step+constants.ColorReset+"\n")
+	for _, cmd := range cmds {
+		fmt.Fprintf(w, constants.ColorCyan+cmd+constants.ColorReset+"\n")
+	}
 	fmt.Fprintln(w)
 }
 

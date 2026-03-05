@@ -9,6 +9,8 @@
 - ✅ Bump version on every code change
 - ✅ Update all spec docs for new features
 - ✅ Create `spec/02-general/` with reusable AI-trainable design guidelines (6 files)
+- ✅ Add `desktop-sync` command to sync repos to GitHub Desktop from scan output
+- ✅ Enhanced terminal output with both HTTPS and SSH clone instructions
 
 ## Pending Suggestions
 
@@ -18,6 +20,7 @@
 
 - ⬜ **Verify update flow**: Run `gitmap update` end-to-end, confirm no file-lock errors
 - ⬜ **Verify SSH output**: Run scan, check `direct-clone-ssh.ps1` contains correct SSH URLs
+- ⬜ **Verify desktop-sync**: Run `gitmap desktop-sync` end-to-end
 - ⬜ **Build documentation site**: Replace placeholder React frontend with actual gitmap docs
 - ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary
 - ⬜ **Add `--dry-run` flag**: Preview scan/clone output without writing files

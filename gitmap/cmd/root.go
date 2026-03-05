@@ -37,6 +37,10 @@ func dispatch(command string) {
 		fmt.Printf("gitmap v%s\n", constants.Version)
 		return
 	}
+	if command == constants.CmdDesktopSync {
+		runDesktopSync()
+		return
+	}
 	if command == constants.CmdHelp {
 		printUsage()
 		return
@@ -56,6 +60,7 @@ func printUsage() {
 	fmt.Println(constants.HelpClone)
 	fmt.Println(constants.HelpUpdate)
 	fmt.Println(constants.HelpVersion)
+	fmt.Println(constants.HelpDesktopSync)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)

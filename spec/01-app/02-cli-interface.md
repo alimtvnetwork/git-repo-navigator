@@ -37,6 +37,16 @@ without encountering a "file in use" lock.
 
 Prints the current version number (e.g., `gitmap v1.1.2`) and exits.
 
+### `gitmap desktop-sync`
+
+Sync previously scanned repos to GitHub Desktop without re-scanning.
+Reads from `./gitmap-output/gitmap.json` in the current directory.
+
+- Validates output directory and JSON file exist.
+- Checks GitHub Desktop CLI is installed.
+- Skips repos whose paths no longer exist on disk.
+- Logs per-repo success/skip/failure and prints a summary.
+
 ### `gitmap help`
 
 Display usage information for all commands and flags.
@@ -78,6 +88,9 @@ gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored
 
 # Clone and register with GitHub Desktop
 gitmap clone ./gitmap-output/gitmap.csv --target-dir ./restored --github-desktop
+
+# Sync existing scan output to GitHub Desktop
+gitmap desktop-sync
 
 # Self-update from source repo
 gitmap update
