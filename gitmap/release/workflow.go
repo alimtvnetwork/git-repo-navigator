@@ -229,11 +229,6 @@ func printDryRun(v Version, branchName, tag, sourceName string, opts Options) er
 		fmt.Printf(constants.MsgReleaseDryRun, "Attach "+a)
 	}
 
-	draftLabel := "GitHub release"
-	if opts.Draft {
-		draftLabel = "GitHub draft release"
-	}
-	fmt.Printf(constants.MsgReleaseDryRun, "Create "+draftLabel)
 	fmt.Printf(constants.MsgReleaseDryRun, "Write metadata to "+constants.DefaultReleaseDir+"/"+v.String()+constants.ExtJSON)
 
 	if v.IsPreRelease() == false {

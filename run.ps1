@@ -332,7 +332,14 @@ function Deploy-Binary {
         Write-Info "Created deploy directory"
     }
 
-    $destFile = Join-Path $target $Config.binaryName
+    # Deploy into nested gitmap/ subfolder
+    $appDir = Join-Path $target "gitmap"
+    if (-not (Test-Path $appDir)) {
+        New-Item -ItemType Directory -Path $appDir -Force | Out-Null
+        Write-Info "Created gitmap app directory"
+    }
+
+    $destFile = Join-Path $appDir $Config.binaryName
 
     $maxAttempts = 20
     $attempt = 1
@@ -352,18 +359,17 @@ function Deploy-Binary {
 
     $binDir   = Split-Path $BinaryPath -Parent
     $dataDir  = Join-Path $binDir "data"
-    $dataDest = Join-Path $target "data"
+    $dataDest = Join-Path $appDir "data"
     if (Test-Path $dataDir) {
         if (Test-Path $dataDest) {
             Remove-Item $dataDest -Recurse -Force
         }
         Copy-Item $dataDir $dataDest -Recurse
-        Write-Info "Copied data folder to deploy target"
+        Write-Info "Copied data folder to gitmap app directory"
     }
 
-    Write-Success "Deployed to $target"
-    $cmdName = $Config.binaryName -replace '\.exe$', ''
-    Write-Info "You can now run: $cmdName"
+    Write-Success "Deployed to $appDir"
+    Write-Info "Ensure $appDir is on your PATH to run: gitmap"
 }
 
 # -- Run gitmap ------------------------------------------------
