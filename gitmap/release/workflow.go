@@ -305,5 +305,5 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool)
 
 	opts := Options{Assets: assetsPath, Draft: draft}
 
-	return pushAndPublish(v, branchName, tag, branchName, opts)
+	return pushAndFinalize(v, branchName, tag, branchName, opts)
 }
