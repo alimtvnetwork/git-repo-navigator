@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.5.0"
+const Version = "1.6.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -47,6 +47,7 @@ const (
 	DefaultDirectCloneScript    = "direct-clone.ps1"
 	DefaultDirectCloneSSHScript = "direct-clone-ssh.ps1"
 	DefaultDesktopScript        = "register-desktop.ps1"
+	DefaultScanCacheFile        = "last-scan.json"
 	DefaultConfigPath    = "./data/config.json"
 	DefaultOutputDir     = "./gitmap-output"
 	DefaultOutputFolder  = "gitmap-output"
@@ -97,6 +98,8 @@ const (
 	CmdDesktopSyncAlias = "ds"
 	CmdPull             = "pull"
 	CmdPullAlias        = "p"
+	CmdRescan           = "rescan"
+	CmdRescanAlias      = "rs"
 )
 
 // GitHub Desktop.
@@ -191,6 +194,8 @@ const (
 	MsgPullSuccess      = "  ✓ %s is up to date.\n"
 	MsgPullFailed       = "  ✗ Pull failed for %s: %s\n"
 	MsgPullAvailable    = "\nAvailable repos:"
+	MsgRescanReplay     = "\n  Rescanning with cached flags (dir: %s)...\n"
+	MsgScanCacheSaved   = "Scan cache written to %s\n"
 	MsgUpdateStarting   = "\n  Updating gitmap from source repo...\n"
 	MsgUpdateRepoPath   = "  → Repo path: %s\n"
 	MsgUpdateVersion    = "\n  ✓ Updated to gitmap v%s\n"
@@ -232,6 +237,7 @@ const (
 	ErrPullLoadFailed   = "Error: could not load gitmap.json: %v\n"
 	ErrPullNotFound     = "Error: no repo found matching '%s'\n"
 	ErrPullNotRepo      = "Error: %s is not a git repository\n"
+	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
 )
 
 // CLI help text.
@@ -244,6 +250,7 @@ const (
 	HelpVersion    = "  version (v)         Show version number"
 	HelpDesktopSync = "  desktop-sync (ds)   Sync repos to GitHub Desktop from output"
 	HelpPull        = "  pull (p) <name>     Pull a specific repo by its name"
+	HelpRescan      = "  rescan (rs)         Re-run last scan with cached flags"
 	HelpHelp        = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"

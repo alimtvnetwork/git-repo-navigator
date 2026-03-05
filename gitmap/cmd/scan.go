@@ -25,11 +25,16 @@ func runScan(args []string) {
 		os.Exit(1)
 	}
 	cfg = config.MergeWithFlags(cfg, mode, output, outputPath)
-	executeScan(dir, cfg, outFile, ghDesktop, openFolder)
+	cache := model.ScanCache{
+		Dir: dir, ConfigPath: cfgPath, Mode: mode, Output: output,
+		OutFile: outFile, OutputPath: outputPath,
+		GithubDesktop: ghDesktop, OpenFolder: openFolder,
+	}
+	executeScan(dir, cfg, outFile, ghDesktop, openFolder, cache)
 }
 
 // executeScan performs the directory scan and outputs results.
-func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFolder bool) {
+func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFolder bool, cache model.ScanCache) {
 	absDir, err := filepath.Abs(dir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrScanFailed, err)
@@ -43,6 +48,7 @@ func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFo
 	records := mapper.BuildRecords(repos, cfg.DefaultMode, cfg.Notes)
 	outputDir := resolveOutputDir(cfg.OutputDir, absDir)
 	writeAllOutputs(records, outputDir, outFile)
+	saveScanCache(outputDir, cache)
 	addToDesktop(records, ghDesktop)
 	openOutputFolder(outputDir, openFolder)
 }
