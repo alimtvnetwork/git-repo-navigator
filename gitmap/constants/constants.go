@@ -188,7 +188,7 @@ const (
 // CLI error messages.
 const (
 	ErrSourceRequired = "Error: source file is required"
-	ErrCloneUsage     = "Usage: gitmap clone <source> [--target-dir <dir>]"
+	ErrCloneUsage     = "Usage: gitmap clone <source> [--target-dir <dir>] [--safe-pull]"
 	ErrConfigLoad     = "Error loading config: %v\n"
 	ErrScanFailed     = "Scan error: %v\n"
 	ErrCloneFailed    = "Clone error: %v\n"
