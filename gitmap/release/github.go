@@ -37,6 +37,23 @@ func GitHubRelease(tag, body string, assets []string, draft bool) error {
 	return ghHTTPRelease(tag, body, draft, token)
 }
 
+// tryInstallGH attempts to install the GitHub CLI using winget.
+// Returns true if installation succeeded and gh is now available.
+func tryInstallGH() bool {
+	fmt.Print(constants.MsgReleaseGHInstalling)
+
+	cmd := exec.Command("winget", "install", "--id", "GitHub.cli", "-e", "--accept-source-agreements", "--accept-package-agreements")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return false
+	}
+
+	// Refresh PATH and check again
+	return ghAvailable()
+}
+
 // ghAvailable checks if the gh CLI is installed.
 func ghAvailable() bool {
 	_, err := exec.LookPath(constants.GHBin)
