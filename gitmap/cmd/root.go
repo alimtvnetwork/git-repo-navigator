@@ -11,8 +11,6 @@ import (
 
 // Run is the main entry point for the CLI.
 func Run() {
-	cleanupUpdateCopies()
-
 	if len(os.Args) < 2 {
 		printUsage()
 		os.Exit(1)
@@ -75,6 +73,10 @@ func dispatch(command string) {
 		printUsage()
 		return
 	}
+	if command == constants.CmdUpdateCleanup {
+		runUpdateCleanup()
+		return
+	}
 	fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
 	printUsage()
 	os.Exit(1)
@@ -98,6 +100,7 @@ func printUsage() {
 	fmt.Println(constants.HelpExec)
 	fmt.Println(constants.HelpRelease)
 	fmt.Println(constants.HelpReleaseBr)
+	fmt.Println(constants.HelpUpdateCleanup)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)

@@ -70,22 +70,118 @@ func runUpdate() {
 	os.Exit(0)
 }
 
-// cleanupUpdateCopies removes leftover temp binaries from previous updates.
-func cleanupUpdateCopies() {
+// runUpdateCleanup handles the "update-cleanup" subcommand.
+// Removes leftover temp binaries from %TEMP% and .old backup files
+// from the deploy directory.
+func runUpdateCleanup() {
+	fmt.Println("\n  Cleaning up update artifacts...")
+
+	tempCleaned := cleanupTempCopies()
+	oldCleaned := cleanupOldBackups()
+
+	total := tempCleaned + oldCleaned
+	if total > 0 {
+		fmt.Printf("  ✓ Removed %d file(s)\n\n", total)
+	} else {
+		fmt.Println("  ✓ Nothing to clean up\n")
+	}
+}
+
+// cleanupTempCopies removes leftover temp binaries from previous updates.
+func cleanupTempCopies() int {
 	pattern := filepath.Join(os.TempDir(), "gitmap-update-*.exe")
 	matches, err := filepath.Glob(pattern)
 	if err != nil {
-		return
+		return 0
 	}
 
 	selfPath, _ := os.Executable()
+	cleaned := 0
 	for _, match := range matches {
 		// Don't delete ourselves if we're running as the update copy.
 		if selfPath != "" && filepath.Clean(match) == filepath.Clean(selfPath) {
 			continue
 		}
-		os.Remove(match)
+		if os.Remove(match) == nil {
+			fmt.Printf("  → Removed temp copy: %s\n", filepath.Base(match))
+			cleaned++
+		}
 	}
+
+	return cleaned
+}
+
+// cleanupOldBackups removes .old backup binaries from the deploy directory.
+func cleanupOldBackups() int {
+	repoPath := constants.RepoPath
+	if len(repoPath) == 0 {
+		return 0
+	}
+
+	// Try to find deploy path from powershell.json
+	configPath := filepath.Join(repoPath, "gitmap", "powershell.json")
+	data, err := os.ReadFile(configPath)
+	if err != nil {
+		return 0
+	}
+
+	// Simple extraction of deployPath from JSON
+	deployPath := extractJSONString(data, "deployPath")
+	if len(deployPath) == 0 {
+		return 0
+	}
+
+	appDir := filepath.Join(deployPath, "gitmap")
+	pattern := filepath.Join(appDir, "*.old")
+	matches, err := filepath.Glob(pattern)
+	if err != nil {
+		return 0
+	}
+
+	cleaned := 0
+	for _, match := range matches {
+		if os.Remove(match) == nil {
+			fmt.Printf("  → Removed backup: %s\n", filepath.Base(match))
+			cleaned++
+		}
+	}
+
+	return cleaned
+}
+
+// extractJSONString extracts a string value from JSON bytes by key.
+// Simple parser to avoid importing encoding/json in cmd package.
+func extractJSONString(data []byte, key string) string {
+	s := string(data)
+	needle := fmt.Sprintf(`"%s"`, key)
+	idx := 0
+	for {
+		i := indexOf(s[idx:], needle)
+		if i < 0 {
+			return ""
+		}
+		idx += i + len(needle)
+		// Skip whitespace and colon
+		for idx < len(s) && (s[idx] == ' ' || s[idx] == ':' || s[idx] == '\t') {
+			idx++
+		}
+		if idx < len(s) && s[idx] == '"' {
+			end := indexOf(s[idx+1:], `"`)
+			if end >= 0 {
+				return s[idx+1 : idx+1+end]
+			}
+		}
+	}
+}
+
+func indexOf(s, substr string) int {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return i
+		}
+	}
+
+	return -1
 }
 
 // hasFlag checks if a flag is present in os.Args[2:].

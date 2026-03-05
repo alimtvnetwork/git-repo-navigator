@@ -341,14 +341,14 @@ function Deploy-Binary {
 
     $destFile = Join-Path $appDir $Config.binaryName
 
-    # Rollback safety: backup existing binary before overwriting
-    $backupFile = "$destFile.bak"
+    # Rollback safety: backup existing binary with .old suffix before overwriting
+    $backupFile = "$destFile.old"
     $hasBackup = $false
     if (Test-Path $destFile) {
         try {
             Copy-Item $destFile $backupFile -Force -ErrorAction Stop
             $hasBackup = $true
-            Write-Info "Backed up existing binary to $($Config.binaryName).bak"
+            Write-Info "Backed up existing binary to $($Config.binaryName).old"
         } catch {
             Write-Warn "Could not create backup: $_"
         }
@@ -382,9 +382,9 @@ function Deploy-Binary {
         }
     }
 
-    # Clean up backup after successful deploy
-    if ($hasBackup -and $deploySuccess -and (Test-Path $backupFile)) {
-        Remove-Item $backupFile -Force -ErrorAction SilentlyContinue
+    # Leave .old file in place — cleaned up by: gitmap update-cleanup
+    if ($hasBackup -and $deploySuccess) {
+        Write-Info "Previous binary kept as $($Config.binaryName).old (run 'gitmap update-cleanup' to remove)"
     }
 
     $binDir   = Split-Path $BinaryPath -Parent
