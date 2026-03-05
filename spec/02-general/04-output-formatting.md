@@ -71,8 +71,43 @@ Structure terminal output as distinct sections:
 1. **Banner** — tool name + version + repo count
 2. **Item list** — each item with icon, path, and key data
 3. **Tree visualization** — hierarchical folder structure
-4. **Output file list** — what files were generated and where
-5. **Next steps** — how to use the output
+4. **Output file list** — what files were generated and where (with full file paths)
+5. **Clone instructions** — step-by-step how to restore on another machine
+6. **Script shortcuts** — direct commands for HTTPS and SSH clone scripts
+7. **Related commands** — other commands the user can run next
+
+### Clone Instructions Section
+
+Always end terminal output with actionable clone/restore instructions.
+Show **both HTTPS and SSH** options so the user can pick. Include:
+
+- The JSON and CSV clone commands
+- The direct PowerShell script paths (HTTPS and SSH)
+- The full clone script with progress/error handling
+- Any related commands (e.g., `desktop-sync`)
+
+```
+■ How to Clone on Another Machine
+──────────────────────────────────────────
+  1. Copy the output files to the target machine:
+     gitmap-output/gitmap.json  (or gitmap.csv)
+
+  2. Clone via JSON (HTTPS):
+     gitmap clone ./gitmap-output/gitmap.json --target-dir ./projects
+
+  3. Clone via CSV:
+     gitmap clone ./gitmap-output/gitmap.csv --target-dir ./projects
+
+  4. Or run the PowerShell script directly:
+     .\direct-clone.ps1       # HTTPS clone commands
+     .\direct-clone-ssh.ps1   # SSH clone commands
+
+  5. Full clone script with progress & error handling:
+     .\clone.ps1 -TargetDir .\projects
+
+  6. Sync repos to GitHub Desktop:
+     gitmap desktop-sync
+```
 
 ### Banner Pattern
 

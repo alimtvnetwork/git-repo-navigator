@@ -60,6 +60,7 @@ func printUsage() {
 	fmt.Println(constants.HelpClone)
 	fmt.Println(constants.HelpUpdate)
 	fmt.Println(constants.HelpVersion)
+	fmt.Println(constants.HelpDesktopSync)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)

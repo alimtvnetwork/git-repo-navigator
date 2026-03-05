@@ -204,6 +204,7 @@ const (
 	HelpClone      = "  clone <source>      Re-clone from CSV/JSON/text file"
 	HelpUpdate     = "  update              Self-update from source repo"
 	HelpVersion    = "  version             Show version number"
+	HelpDesktopSync = "  desktop-sync        Sync repos to GitHub Desktop from output"
 	HelpHelp       = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"

@@ -89,6 +89,9 @@ gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored
 # Clone and register with GitHub Desktop
 gitmap clone ./gitmap-output/gitmap.csv --target-dir ./restored --github-desktop
 
+# Sync existing scan output to GitHub Desktop
+gitmap desktop-sync
+
 # Self-update from source repo
 gitmap update
 
