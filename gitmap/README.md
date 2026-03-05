@@ -169,8 +169,15 @@ CLI flags override config values.
 | `--target-dir <path>` | Base clone directory | `.` |
 | `--safe-pull` | Pull existing repos with retries, read-only clear, and diagnosis (auto-enabled) | `false` |
 | `--github-desktop` | Add cloned repos to GitHub Desktop | `false` |
+| `--verbose` | Write detailed debug log to a timestamped file | `false` |
 
 **Note:** `--safe-pull` is automatically enabled when existing repos are detected in the target directory.
+
+### `gitmap update [--verbose]`
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--verbose` | Write detailed debug log to a timestamped file | `false` |
 
 ---
 
