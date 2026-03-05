@@ -243,6 +243,7 @@ const (
 	ErrPullNotFound     = "Error: no repo found matching '%s'\n"
 	ErrPullNotRepo      = "Error: %s is not a git repository\n"
 	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
+	ErrSetupLoadFailed  = "Error: could not load git-setup.json: %v\n"
 )
 
 // CLI help text.
