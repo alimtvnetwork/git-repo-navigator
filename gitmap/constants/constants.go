@@ -287,6 +287,8 @@ const (
 	FlagDescOpen       = "Open output folder after scan completes"
 	FlagDescQuiet      = "Suppress terminal clone help section"
 	FlagDescVerbose    = "Write detailed stdout/stderr debug log to a timestamped file"
+	FlagDescSetupConfig = "Path to git-setup.json config file"
+	FlagDescDryRun     = "Preview changes without applying them"
 )
 
 // Clone and Desktop scripts are now generated from Go templates
