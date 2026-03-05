@@ -68,6 +68,7 @@ func writeAllOutputs(records []model.ScanRecord, outputDir, outFile string) {
 	writeJSONOutput(records, outputDir)
 	writeFolderStructure(records, outputDir)
 	writeCloneScript(records, outputDir)
+	writeDesktopScript(records, outputDir)
 }
 
 // writeTerminalOutput renders records to stdout.
@@ -124,6 +125,18 @@ func writeCloneScript(records []model.ScanRecord, outputDir string) {
 	defer file.Close()
 	formatter.WriteCloneScript(file, records)
 	fmt.Printf(constants.MsgCloneScript, path)
+}
+
+// writeDesktopScript writes a PowerShell script to register repos with GitHub Desktop.
+func writeDesktopScript(records []model.ScanRecord, outputDir string) {
+	path := filepath.Join(outputDir, constants.DefaultDesktopScript)
+	file, err := createOutputFile(path)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+	formatter.WriteDesktopScript(file, records)
+	fmt.Printf(constants.MsgDesktopScript, path)
 }
 
 // resolveOutFile determines the output file path.
