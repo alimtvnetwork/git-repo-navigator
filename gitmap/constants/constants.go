@@ -79,11 +79,12 @@ const (
 
 // CLI commands.
 const (
-	CmdScan    = "scan"
-	CmdClone   = "clone"
-	CmdUpdate  = "update"
-	CmdVersion = "version"
-	CmdHelp    = "help"
+	CmdScan        = "scan"
+	CmdClone       = "clone"
+	CmdUpdate      = "update"
+	CmdVersion     = "version"
+	CmdHelp        = "help"
+	CmdDesktopSync = "desktop-sync"
 )
 
 // GitHub Desktop.
