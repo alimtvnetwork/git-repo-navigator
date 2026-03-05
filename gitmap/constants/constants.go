@@ -249,6 +249,8 @@ const (
 	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
 	ErrSetupLoadFailed  = "Error: could not load git-setup.json: %v\n"
 	ErrStatusLoadFailed = "Error: could not load gitmap.json for status: %v\nRun 'gitmap scan' first.\n"
+	ErrExecUsage        = "Usage: gitmap exec <git-args...>\nExample: gitmap exec fetch --prune"
+	ErrExecLoadFailed   = "Error: could not load gitmap.json: %v\nRun 'gitmap scan' first.\n"
 )
 
 // CLI help text.
