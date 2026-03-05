@@ -16,6 +16,19 @@ registration script (`register-desktop.ps1`) — written to a
 
 Re-clone repositories from a CSV, JSON, or text file.
 
+### `gitmap update`
+
+Self-update gitmap by pulling latest source and rebuilding. The binary
+embeds the repo path at build time (via `-ldflags`). When invoked, it
+spawns a temporary PowerShell script that:
+
+1. Changes to the embedded source repo directory.
+2. Runs `run.ps1` (pull → build → deploy).
+3. Prints the new version on completion.
+
+This works because the PowerShell process replaces the binary on disk
+while the Go process exits cleanly.
+
 ### `gitmap help`
 
 Display usage information for all commands and flags.
@@ -57,4 +70,7 @@ gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored
 
 # Clone and register with GitHub Desktop
 gitmap clone ./gitmap-output/gitmap.csv --target-dir ./restored --github-desktop
+
+# Self-update from source repo
+gitmap update
 ```

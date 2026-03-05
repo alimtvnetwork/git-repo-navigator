@@ -37,6 +37,15 @@
 - **Given** `--github-desktop` on clone,
   **then** successfully cloned repos are added to GitHub Desktop.
 
+## Update Feature
+
+- **Given** `gitmap update` on a binary built with `run.ps1`,
+  **then** it spawns a PowerShell script that pulls, rebuilds, and deploys,
+  and prints the new version at the end.
+
+- **Given** `gitmap update` on a binary built without ldflags,
+  **then** it prints an error: "repo path not embedded."
+
 ## Config Feature
 
 - **Given** no `--config` flag,

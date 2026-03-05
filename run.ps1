@@ -150,7 +150,9 @@ function Build-Binary {
 
     Push-Location $GitMapDir
     try {
-        $buildOutput = go build -o $outPath . 2>&1
+        $absRepoRoot = (Resolve-Path $RepoRoot).Path
+        $ldflags = "-X 'github.com/user/gitmap/constants.RepoPath=$absRepoRoot'"
+        $buildOutput = go build -ldflags $ldflags -o $outPath . 2>&1
         if ($LASTEXITCODE -ne 0) {
             Write-Fail "Go build failed"
             foreach ($line in $buildOutput) {
