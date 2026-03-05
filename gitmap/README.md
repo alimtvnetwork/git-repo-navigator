@@ -99,6 +99,7 @@ Git repositories discovered by gitmap.
 ```bash
 # Clone using shorthand (auto-resolves to ./gitmap-output/gitmap.json)
 gitmap clone json
+gitmap c json               # shorthand alias
 
 # Clone using CSV shorthand
 gitmap clone csv
