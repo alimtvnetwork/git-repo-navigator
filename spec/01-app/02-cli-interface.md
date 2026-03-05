@@ -89,6 +89,12 @@ gitmap scan ./projects --github-desktop
 # Scan parent directory
 gitmap scan ..
 
+# Clone using shorthand (auto-resolves to ./gitmap-output/gitmap.json)
+gitmap clone json
+
+# Clone using CSV shorthand
+gitmap clone csv
+
 # Clone from JSON, preserving folder structure
 gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored
 

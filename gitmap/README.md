@@ -154,7 +154,9 @@ CLI flags override config values.
 | `--out-file <path>` | Exact CSV output file path | — |
 | `--github-desktop` | Add discovered repos to GitHub Desktop | `false` |
 
-### `gitmap clone <source>`
+### `gitmap clone <source|json|csv>`
+
+**Shorthands:** `gitmap clone json` and `gitmap clone csv` auto-resolve to `./gitmap-output/gitmap.json` and `./gitmap-output/gitmap.csv`.
 
 | Flag | Description | Default |
 |------|-------------|---------|
