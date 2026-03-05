@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,15 +11,64 @@ import (
 )
 
 // runUpdate handles the "update" subcommand.
+// It copies the current binary to a temp file (gitmap-update.exe) and
+// re-launches the update from that copy, so the original exe is not locked
+// when run.ps1 tries to overwrite it during deploy.
 func runUpdate() {
 	repoPath := constants.RepoPath
 	if len(repoPath) == 0 {
 		fmt.Fprintln(os.Stderr, constants.ErrNoRepoPath)
 		os.Exit(1)
 	}
-	fmt.Printf(constants.MsgUpdateStarting)
-	fmt.Printf(constants.MsgUpdateRepoPath, repoPath)
-	executeUpdate(repoPath)
+
+	// If we're already running from the update copy, do the actual update.
+	if len(os.Args) > 2 && os.Args[2] == "--from-copy" {
+		fmt.Printf(constants.MsgUpdateStarting)
+		fmt.Printf(constants.MsgUpdateRepoPath, repoPath)
+		executeUpdate(repoPath)
+		return
+	}
+
+	// Otherwise, copy ourselves and re-launch from the copy.
+	selfPath, err := os.Executable()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error finding executable: %v\n", err)
+		os.Exit(1)
+	}
+
+	copyPath := filepath.Join(os.TempDir(), "gitmap-update.exe")
+	if err := copyFile(selfPath, copyPath); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating update copy: %v\n", err)
+		os.Exit(1)
+	}
+	defer os.Remove(copyPath)
+
+	// Re-launch: gitmap-update.exe update --from-copy
+	cmd := exec.Command(copyPath, "update", "--from-copy")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrUpdateFailed, err)
+		os.Exit(1)
+	}
+}
+
+// copyFile copies src to dst.
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	return err
 }
 
 // executeUpdate writes a temp PS1 script and runs it.
@@ -36,7 +86,6 @@ func writeUpdateScript(repoPath string) string {
 	script := buildUpdateScript(repoPath, runPS1)
 	tmpFile := filepath.Join(os.TempDir(), "gitmap-update.ps1")
 
-	// UTF-8 BOM prefix for PowerShell compatibility
 	bom := []byte{0xEF, 0xBB, 0xBF}
 	content := append(bom, []byte(script)...)
 	os.WriteFile(tmpFile, content, constants.DirPermission)
@@ -45,7 +94,6 @@ func writeUpdateScript(repoPath string) string {
 }
 
 // buildUpdateScript generates the PowerShell script content.
-// Uses ASCII-safe characters to avoid encoding issues.
 func buildUpdateScript(repoPath, runPS1 string) string {
 	return fmt.Sprintf(`# gitmap self-update script (auto-generated)
 Set-Location "%s"
