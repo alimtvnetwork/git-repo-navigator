@@ -147,6 +147,8 @@ All aliases are single-letter or short abbreviations for faster usage:
 | `pull`           | `p`   |
 | `rescan`         | `rs`  |
 | `desktop-sync`   | `ds`  |
+| `status`         | `st`  |
+| `exec`           | `x`   |
 | `version`        | `v`   |
 
 ---
