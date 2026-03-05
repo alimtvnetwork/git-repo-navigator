@@ -145,7 +145,7 @@ func executeSteps(v Version, branchName, tag, sourceRef, sourceName string, opts
 	}
 	fmt.Printf(constants.MsgReleaseTag, tag)
 
-	return pushAndPublish(v, branchName, tag, sourceName, opts)
+	return pushAndFinalize(v, branchName, tag, sourceName, opts)
 }
 
 // pushAndFinalize pushes to remote and writes metadata.
