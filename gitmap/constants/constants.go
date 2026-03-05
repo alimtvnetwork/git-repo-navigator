@@ -275,7 +275,7 @@ const (
 	ErrReleaseBumpConflict    = "Error: --bump cannot be used with an explicit version argument.\n"
 	ErrReleaseCommitBranch    = "Error: --commit and --branch are mutually exclusive.\n"
 	ErrReleaseGHNotFound      = "Warning: 'gh' CLI not found. Attempting GitHub API fallback.\n"
-	ErrReleaseGHTokenMissing  = "Error: no GITHUB_TOKEN found. Set GITHUB_TOKEN env var or install 'gh' CLI.\n"
+	ErrReleaseGHTokenMissing  = "Error: no GITHUB_TOKEN found. Set GITHUB_TOKEN env var or install 'gh' CLI.\n\n  To fix this, either:\n    1. Install gh CLI and authenticate:\n       winget install GitHub.cli\n       gh auth login\n    2. Or set a personal access token:\n       $env:GITHUB_TOKEN = \"ghp_your_token\"\n       (Create one at https://github.com/settings/tokens with 'repo' scope)\n"
 	ErrReleasePushFailed      = "Error: failed to push to remote: %v\n"
 	ErrReleaseGHFailed        = "Error: failed to create GitHub release: %v\n"
 	ErrReleaseVersionLoad     = "Error: could not read version.json: %v\n"
