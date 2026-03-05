@@ -80,6 +80,7 @@ func printUsage() {
 	fmt.Println(constants.HelpPull)
 	fmt.Println(constants.HelpRescan)
 	fmt.Println(constants.HelpSetup)
+	fmt.Println(constants.HelpStatus)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)
