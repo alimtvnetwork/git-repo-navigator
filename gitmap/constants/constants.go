@@ -84,11 +84,43 @@ const (
 	MsgDesktopSummary  = "GitHub Desktop: %d added, %d failed\n"
 )
 
-// Terminal table headers.
+// ANSI color codes.
 const (
-	TerminalHeader    = "REPO\tBRANCH\tPATH\tCLONE INSTRUCTION"
-	TerminalSeparator = "----\t------\t----\t-----------------"
-	TerminalRowFmt    = "%s\t%s\t%s\t%s\n"
+	ColorReset  = "\033[0m"
+	ColorGreen  = "\033[32m"
+	ColorYellow = "\033[33m"
+	ColorCyan   = "\033[36m"
+	ColorWhite  = "\033[97m"
+	ColorDim    = "\033[90m"
+)
+
+// Terminal output sections.
+const (
+	TermBannerTop    = "  ╔══════════════════════════════════════╗"
+	TermBannerTitle  = "  ║            gitmap scan               ║"
+	TermBannerBottom = "  ╚══════════════════════════════════════╝"
+	TermFoundFmt     = "  ✓ Found %d repositories"
+	TermReposHeader  = "  ■ Repositories"
+	TermTreeHeader   = "  ■ Folder Structure"
+	TermCloneHeader  = "  ■ How to Clone on Another Machine"
+	TermSeparator    = "  ──────────────────────────────────────────"
+)
+
+// Terminal repo entry formats.
+const (
+	TermRepoIcon  = "  📦 %s\n"
+	TermPathLine  = "     Path:  %s\n"
+	TermCloneLine = "     Clone: %s\n"
+)
+
+// Terminal clone help text.
+const (
+	TermCloneStep1 = "  1. Copy the output files to the target machine:"
+	TermCloneCmd1  = "     gitmap-output/gitmap.json  (or gitmap.csv)"
+	TermCloneStep2 = "  2. Run the clone command:"
+	TermCloneCmd2  = "     gitmap clone ./gitmap-output/gitmap.json --target-dir ./projects"
+	TermCloneStep3 = "  3. Or clone from CSV:"
+	TermCloneCmd3  = "     gitmap clone ./gitmap-output/gitmap.csv --target-dir ./projects"
 )
 
 // JSON formatting.
