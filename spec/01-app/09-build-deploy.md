@@ -80,7 +80,20 @@ bin/
     └── config.json
 ```
 
-The same structure is replicated at the deploy target.
+## Deploy Structure
+
+The deploy target uses a nested `gitmap/` subfolder:
+
+```
+E:\bin-run\
+└── gitmap\
+    ├── gitmap.exe
+    └── data\
+        └── config.json
+```
+
+The `E:\bin-run\gitmap\` directory must be on the system `PATH` so
+the user can run `gitmap` from any terminal.
 
 ## Embedded Repo Path
 
