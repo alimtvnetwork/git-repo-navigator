@@ -170,6 +170,8 @@ All aliases are single-letter or short abbreviations for faster usage:
 | `desktop-sync`   | `ds`  |
 | `status`         | `st`  |
 | `exec`           | `x`   |
+| `release`        | `r`   |
+| `release-branch` | `rb`  |
 | `version`        | `v`   |
 
 ---
