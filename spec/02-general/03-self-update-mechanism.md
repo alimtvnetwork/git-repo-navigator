@@ -138,20 +138,42 @@ User runs: <tool> update
       └─ Cleans up temp script
 ```
 
-## Proactive Temp Cleanup
+## Cleanup Command
 
-On every startup (not just after update), the tool scans `%TEMP%`
-for leftover update copies from previous runs and deletes them:
+Rather than silently deleting files on startup, provide an explicit
+cleanup subcommand (e.g. `tool update-cleanup`) that removes:
+
+1. **Temp update copies** — `%TEMP%\<tool>-update-*.exe` files left
+   from previous update handoffs
+2. **Old backup binaries** — `*.old` files in the deploy directory
+   from rollback backups
+
+This gives the user visibility and control over artifact removal.
 
 ```
-# On tool startup — before dispatching any command
-func cleanupUpdateCopies():
+# Pseudocode — cleanup command
+func runUpdateCleanup():
+    # Clean temp copies
     for file in glob("%TEMP%/<tool>-update-*.exe"):
         if file != currentExecutable:
-            tryDelete(file)
+            delete(file)
+            print("Removed temp copy: " + basename(file))
+
+    # Clean .old backups from deploy directory
+    for file in glob(deployDir + "/*.old"):
+        delete(file)
+        print("Removed backup: " + basename(file))
+
+    print("Cleanup complete")
 ```
 
-This prevents `%TEMP%` from accumulating stale binaries over time.
+### Why Not Auto-Cleanup on Startup?
+
+- **Transparency** — the user sees exactly what's being deleted
+- **Safety** — `.old` files serve as manual rollback if the new
+  version has issues (user can rename `.old` back)
+- **Performance** — no filesystem scanning on every startup
+- **Explicitness** — follows the principle of least surprise
 
 ## Prerequisites
 
