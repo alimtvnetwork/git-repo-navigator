@@ -216,11 +216,11 @@ const (
 const (
 	HelpUsage      = "Usage: gitmap <command> [flags]"
 	HelpCommands   = "Commands:"
-	HelpScan       = "  scan [dir]          Scan directory for Git repos"
-	HelpClone      = "  clone <source|json|csv>  Re-clone from file (json/csv = auto-resolve)"
+	HelpScan       = "  scan (s) [dir]      Scan directory for Git repos"
+	HelpClone      = "  clone (c) <source|json|csv>  Re-clone from file (json/csv = auto-resolve)"
 	HelpUpdate     = "  update              Self-update from source repo"
-	HelpVersion    = "  version             Show version number"
-	HelpDesktopSync = "  desktop-sync        Sync repos to GitHub Desktop from output"
+	HelpVersion    = "  version (v)         Show version number"
+	HelpDesktopSync = "  desktop-sync (ds)   Sync repos to GitHub Desktop from output"
 	HelpHelp       = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"
@@ -229,9 +229,10 @@ const (
 	HelpOutputPath = "  --output-path <dir> Output directory (default: ./gitmap-output)"
 	HelpOutFile        = "  --out-file <path>   Exact output file path"
 	HelpGitHubDesktop  = "  --github-desktop    Add repos to GitHub Desktop"
+	HelpOpen           = "  --open              Open output folder after scan"
 	HelpCloneFlags    = "Clone flags:"
 	HelpTargetDir     = "  --target-dir <dir>  Base directory for clones (default: .)"
-	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics"
+	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics (auto-enabled)"
 )
 
 // Flag descriptions.
