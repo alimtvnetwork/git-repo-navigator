@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.4.1"
+const Version = "1.4.2"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -246,10 +246,6 @@ const (
 	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics (auto-enabled)"
 	HelpVerbose       = "  --verbose           Write detailed debug log to a timestamped file"
 )
-
-// Global flags help.
-const (
-	HelpGlobalFlags  = "Global flags (clone, update):"
 
 // Flag descriptions.
 const (
