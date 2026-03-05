@@ -92,11 +92,14 @@ func printCloneHelp(w io.Writer) {
 	fmt.Fprintf(w, constants.ColorYellow+constants.TermCloneHeader+constants.ColorReset+"\n")
 	fmt.Fprintf(w, constants.ColorDim+constants.TermSeparator+constants.ColorReset+"\n")
 	printCloneStep(w, constants.TermCloneStep1, constants.TermCloneCmd1)
-	printCloneStep(w, constants.TermCloneStep2, constants.TermCloneCmd2)
-	printCloneStep(w, constants.TermCloneStep3, constants.TermCloneCmd3)
+	printCloneStepMulti(w, constants.TermCloneStep2, constants.TermCloneCmd2, constants.TermCloneCmd2Alt)
+	printCloneStepMulti(w, constants.TermCloneStep3, constants.TermCloneCmd3, constants.TermCloneCmd3Alt)
+	printCloneStep(w, constants.TermCloneStep3b, constants.TermCloneCmd3b)
 	printCloneStepMulti(w, constants.TermCloneStep4, constants.TermCloneCmd4HTTPS, constants.TermCloneCmd4SSH)
 	printCloneStep(w, constants.TermCloneStep5, constants.TermCloneCmd5)
 	printCloneStep(w, constants.TermCloneStep6, constants.TermCloneCmd6)
+	fmt.Fprintf(w, constants.ColorDim+constants.TermCloneNote+constants.ColorReset+"\n")
+	fmt.Fprintln(w)
 }
 
 // printCloneStep writes a single step with one command.
