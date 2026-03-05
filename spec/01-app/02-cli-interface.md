@@ -126,6 +126,27 @@ Arguments after `exec` are passed directly to `git` inside each repo directory.
 - Shows per-repo success/failure with captured output.
 - Prints a summary of succeeded/failed/missing counts.
 
+### `gitmap release [version]` (alias: `r`)
+
+Create a release branch, Git tag, and GitHub release. Version can be
+full (`v1.2.3`), partial (`v1`, `v1.2` — zero-padded), or omitted
+(reads from `version.json`). Supports pre-release suffixes (`-rc.1`,
+`-beta`) and draft mode.
+
+- Checks `.release/` and Git tags to prevent duplicate releases.
+- Auto-detects `CHANGELOG.md` (release body) and `README.md` (asset).
+- Uses `gh` CLI if available, falls back to GitHub REST API.
+- Writes release metadata to `.release/vX.Y.Z.json`.
+- Updates `.release/latest.json` for the highest stable version.
+
+See [12-release-command.md](./12-release-command.md) for full details.
+
+### `gitmap release-branch <branch>` (alias: `rb`)
+
+Complete a release from an existing `release/vX.Y.Z` branch. Creates
+the tag and GitHub release if not already done. Useful when the release
+branch was created manually or by a previous incomplete release.
+
 ### `gitmap version` (alias: `v`)
 
 Prints the current version number (e.g., `gitmap v1.9.0`) and exits.
