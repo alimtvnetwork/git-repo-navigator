@@ -32,6 +32,7 @@ const (
 const (
 	ExtCSV  = ".csv"
 	ExtJSON = ".json"
+	ExtTXT  = ".txt"
 	ExtGit  = ".git"
 )
 
