@@ -35,51 +35,51 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $GitMapDir = Join-Path $RepoRoot "gitmap"
 
-# ── Logging helpers ───────────────────────────────────────────
+# -- Logging helpers -------------------------------------------
 function Write-Step {
     param([string]$Step, [string]$Message)
     Write-Host ""
     Write-Host "  [$Step] " -ForegroundColor Magenta -NoNewline
     Write-Host $Message -ForegroundColor White
-    Write-Host "  $('─' * 50)" -ForegroundColor DarkGray
+    Write-Host ("  " + ("-" * 50)) -ForegroundColor DarkGray
 }
 
 function Write-Success {
     param([string]$Message)
-    Write-Host "  ✓ " -ForegroundColor Green -NoNewline
+    Write-Host "  OK " -ForegroundColor Green -NoNewline
     Write-Host $Message -ForegroundColor Green
 }
 
 function Write-Info {
     param([string]$Message)
-    Write-Host "  → " -ForegroundColor Cyan -NoNewline
+    Write-Host "  -> " -ForegroundColor Cyan -NoNewline
     Write-Host $Message -ForegroundColor Gray
 }
 
 function Write-Warn {
     param([string]$Message)
-    Write-Host "  ⚠ " -ForegroundColor Yellow -NoNewline
+    Write-Host "  !! " -ForegroundColor Yellow -NoNewline
     Write-Host $Message -ForegroundColor Yellow
 }
 
 function Write-Fail {
     param([string]$Message)
-    Write-Host "  ✗ " -ForegroundColor Red -NoNewline
+    Write-Host "  XX " -ForegroundColor Red -NoNewline
     Write-Host $Message -ForegroundColor Red
 }
 
-# ── Banner ────────────────────────────────────────────────────
+# -- Banner ----------------------------------------------------
 function Show-Banner {
     Write-Host ""
-    Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor DarkCyan
-    Write-Host "  ║         " -ForegroundColor DarkCyan -NoNewline
+    Write-Host "  +======================================+" -ForegroundColor DarkCyan
+    Write-Host "  |         " -ForegroundColor DarkCyan -NoNewline
     Write-Host "gitmap builder" -ForegroundColor Cyan -NoNewline
-    Write-Host "              ║" -ForegroundColor DarkCyan
-    Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor DarkCyan
+    Write-Host "              |" -ForegroundColor DarkCyan
+    Write-Host "  +======================================+" -ForegroundColor DarkCyan
     Write-Host ""
 }
 
-# ── Load config ───────────────────────────────────────────────
+# -- Load config -----------------------------------------------
 function Load-Config {
     $configPath = Join-Path $GitMapDir "powershell.json"
     if (Test-Path $configPath) {
@@ -97,7 +97,7 @@ function Load-Config {
     }
 }
 
-# ── Git pull ──────────────────────────────────────────────────
+# -- Git pull --------------------------------------------------
 function Invoke-GitPull {
     Write-Step "1/4" "Pulling latest changes"
     Push-Location $RepoRoot
@@ -117,7 +117,7 @@ function Invoke-GitPull {
     }
 }
 
-# ── Resolve dependencies ─────────────────────────────────────
+# -- Resolve dependencies -------------------------------------
 function Resolve-Dependencies {
     Write-Step "2/4" "Resolving Go dependencies"
     Push-Location $GitMapDir
@@ -134,7 +134,7 @@ function Resolve-Dependencies {
     }
 }
 
-# ── Build binary ──────────────────────────────────────────────
+# -- Build binary ----------------------------------------------
 function Build-Binary {
     param($Config)
 
@@ -169,12 +169,12 @@ function Build-Binary {
     }
 
     $size = (Get-Item $outPath).Length / 1MB
-    Write-Success ("Binary built ({0:N2} MB) → $outPath" -f $size)
+    Write-Success ("Binary built ({0:N2} MB) -> $outPath" -f $size)
 
     return $outPath
 }
 
-# ── Copy data folder ─────────────────────────────────────────
+# -- Copy data folder -----------------------------------------
 function Copy-DataFolder {
     param($BinDir)
 
@@ -190,7 +190,7 @@ function Copy-DataFolder {
     }
 }
 
-# ── Deploy to target directory ────────────────────────────────
+# -- Deploy to target directory --------------------------------
 function Deploy-Binary {
     param($Config, $BinaryPath, $OverridePath)
 
@@ -227,7 +227,7 @@ function Deploy-Binary {
     Write-Info "You can now run: $cmdName"
 }
 
-# ── Run gitmap ────────────────────────────────────────────────
+# -- Run gitmap ------------------------------------------------
 function Invoke-Run {
     param($Config, $BinaryPath, [string[]]$CliArgs)
 
@@ -247,7 +247,7 @@ function Invoke-Run {
     if ($resolvedArgs.Count -ge 2 -and $resolvedArgs[0] -eq "scan") {
         Write-Info "Scan target: $($resolvedArgs[1])"
     }
-    Write-Host "  $('─' * 50)" -ForegroundColor DarkGray
+    Write-Host ("  " + ("-" * 50)) -ForegroundColor DarkGray
     Write-Host ""
 
     $proc = Start-Process -FilePath $BinaryPath -ArgumentList $resolvedArgs -WorkingDirectory $binDir -NoNewWindow -Wait -PassThru
@@ -260,7 +260,7 @@ function Invoke-Run {
     }
 }
 
-# ── Resolve run arguments ─────────────────────────────────────
+# -- Resolve run arguments -------------------------------------
 function Resolve-RunArgs {
     param([string[]]$CliArgs)
 
@@ -290,7 +290,7 @@ function Resolve-RunArgs {
     return $resolved
 }
 
-# ── Main ──────────────────────────────────────────────────────
+# -- Main ------------------------------------------------------
 Show-Banner
 $config = Load-Config
 
