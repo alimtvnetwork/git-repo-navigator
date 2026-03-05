@@ -256,7 +256,22 @@ function Resolve-RunArgs {
         return @("scan", $parentDir)
     }
 
-    return $CliArgs
+    # Resolve relative paths to absolute so Start-Process works correctly
+    $resolved = @()
+    foreach ($arg in $CliArgs) {
+        if ($arg -match '^(\.\.[\\/]|\.[\\/]|\.\.?$)' -and -not $arg.StartsWith('-')) {
+            $absPath = (Resolve-Path $arg -ErrorAction SilentlyContinue).Path
+            if ($absPath) {
+                $resolved += $absPath
+            } else {
+                $resolved += (Join-Path (Get-Location) $arg)
+            }
+        } else {
+            $resolved += $arg
+        }
+    }
+
+    return $resolved
 }
 
 # ── Main ──────────────────────────────────────────────────────
