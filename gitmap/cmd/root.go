@@ -57,6 +57,10 @@ func dispatch(command string) {
 		runStatus()
 		return
 	}
+	if command == constants.CmdExec || command == constants.CmdExecAlias {
+		runExec(os.Args[2:])
+		return
+	}
 	if command == constants.CmdHelp {
 		printUsage()
 		return
@@ -81,6 +85,7 @@ func printUsage() {
 	fmt.Println(constants.HelpRescan)
 	fmt.Println(constants.HelpSetup)
 	fmt.Println(constants.HelpStatus)
+	fmt.Println(constants.HelpExec)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)

@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.8.0"
+const Version = "1.9.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -104,6 +104,8 @@ const (
 	CmdSetup            = "setup"
 	CmdStatus           = "status"
 	CmdStatusAlias      = "st"
+	CmdExec             = "exec"
+	CmdExecAlias        = "x"
 )
 
 // GitHub Desktop.
@@ -247,6 +249,8 @@ const (
 	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
 	ErrSetupLoadFailed  = "Error: could not load git-setup.json: %v\n"
 	ErrStatusLoadFailed = "Error: could not load gitmap.json for status: %v\nRun 'gitmap scan' first.\n"
+	ErrExecUsage        = "Usage: gitmap exec <git-args...>\nExample: gitmap exec fetch --prune"
+	ErrExecLoadFailed   = "Error: could not load gitmap.json: %v\nRun 'gitmap scan' first.\n"
 )
 
 // CLI help text.
@@ -262,6 +266,7 @@ const (
 	HelpRescan      = "  rescan (rs)         Re-run last scan with cached flags"
 	HelpSetup       = "  setup               Configure Git diff/merge tool, aliases & core settings"
 	HelpStatus      = "  status (st)         Show dirty/clean, ahead/behind, stash for all repos"
+	HelpExec        = "  exec (x) <args...>  Run any git command across all repos"
 	HelpHelp        = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"
