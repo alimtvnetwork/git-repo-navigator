@@ -112,6 +112,14 @@ func printUsage() {
 	fmt.Println(constants.HelpTargetDir)
 	fmt.Println(constants.HelpSafePull)
 	fmt.Println(constants.HelpVerbose)
+	fmt.Println()
+	fmt.Println(constants.HelpReleaseFlags)
+	fmt.Println(constants.HelpAssets)
+	fmt.Println(constants.HelpCommit)
+	fmt.Println(constants.HelpRelBranch)
+	fmt.Println(constants.HelpBump)
+	fmt.Println(constants.HelpDraft)
+	fmt.Println(constants.HelpDryRun)
 }
 
 // parseScanFlags parses flags for the scan command.
