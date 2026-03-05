@@ -1,0 +1,49 @@
+// Package model defines the core data structures for gitmap.
+package model
+
+// ScanRecord holds all information about a discovered Git repository.
+type ScanRecord struct {
+	ID               string `json:"id"               csv:"id"`
+	RepoName         string `json:"repoName"         csv:"repoName"`
+	HTTPSUrl         string `json:"httpsUrl"          csv:"httpsUrl"`
+	SSHUrl           string `json:"sshUrl"            csv:"sshUrl"`
+	Branch           string `json:"branch"            csv:"branch"`
+	RelativePath     string `json:"relativePath"      csv:"relativePath"`
+	AbsolutePath     string `json:"absolutePath"      csv:"absolutePath"`
+	CloneInstruction string `json:"cloneInstruction"  csv:"cloneInstruction"`
+	Notes            string `json:"notes"             csv:"notes"`
+}
+
+// Config holds application configuration loaded from JSON and CLI flags.
+type Config struct {
+	DefaultMode   string   `json:"defaultMode"`
+	DefaultOutput string   `json:"defaultOutput"`
+	OutputDir     string   `json:"outputDir"`
+	ExcludeDirs   []string `json:"excludeDirs"`
+	Notes         string   `json:"notes"`
+}
+
+// DefaultConfig returns a Config with sensible built-in defaults.
+func DefaultConfig() Config {
+	return Config{
+		DefaultMode:   "https",
+		DefaultOutput: "terminal",
+		OutputDir:     "./output",
+		ExcludeDirs:   []string{},
+		Notes:         "",
+	}
+}
+
+// CloneResult tracks the outcome of a single clone operation.
+type CloneResult struct {
+	Record  ScanRecord
+	Success bool
+	Error   string
+}
+
+// CloneSummary aggregates results of a batch clone operation.
+type CloneSummary struct {
+	Succeeded int
+	Failed    int
+	Errors    []CloneResult
+}
