@@ -225,8 +225,13 @@ const (
 	ErrOutputFailed   = "Output error: %v\n"
 	ErrCreateDir      = "Cannot create directory: %v\n"
 	ErrCreateFile     = "Cannot create file: %v\n"
-	ErrNoRepoPath     = "Error: repo path not embedded. Binary was not built with run.ps1."
-	ErrUpdateFailed   = "Update error: %v\n"
+	ErrNoRepoPath       = "Error: repo path not embedded. Binary was not built with run.ps1."
+	ErrUpdateFailed     = "Update error: %v\n"
+	ErrPullSlugRequired = "Error: repo name is required"
+	ErrPullUsage        = "Usage: gitmap pull <repo-name> [--verbose]"
+	ErrPullLoadFailed   = "Error: could not load gitmap.json: %v\n"
+	ErrPullNotFound     = "Error: no repo found matching '%s'\n"
+	ErrPullNotRepo      = "Error: %s is not a git repository\n"
 )
 
 // CLI help text.
