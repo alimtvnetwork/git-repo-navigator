@@ -51,13 +51,27 @@ embeds the repo path at build time (via `-ldflags`). When invoked:
 2. Launches the copy with `update --from-copy`.
 3. The original process **exits immediately**, releasing the file lock.
 4. The copy spawns a temporary PowerShell script that:
-   - Changes to the embedded source repo directory.
+   - Captures the currently deployed version.
+   - Runs `git pull` — if already up to date, exits early (no rebuild).
    - Waits briefly for the parent to fully exit.
-   - Runs `run.ps1` (pull → build → deploy).
-   - Prints the new version on completion.
+   - Runs `run.ps1 -NoPull` (build → deploy with `.old` rollback backup).
+   - Compares old vs new version (warns if unchanged).
+   - Runs `gitmap update-cleanup` to remove temp copies and `.old` backups.
 
 This two-step handoff ensures the deploy step can overwrite `gitmap.exe`
 without encountering a "file in use" lock.
+
+### `gitmap update-cleanup`
+
+Remove leftover artifacts from the update process:
+
+- **Temp update copies** — `%TEMP%\gitmap-update-*.exe` files from
+  previous copy-and-handoff operations.
+- **Old backup binaries** — `*.old` files in the deploy directory
+  created as rollback backups during deploy.
+
+This command runs automatically at the end of a successful `gitmap update`,
+but can also be invoked manually for ad-hoc cleanup.
 
 ### `gitmap desktop-sync` (alias: `ds`)
 
