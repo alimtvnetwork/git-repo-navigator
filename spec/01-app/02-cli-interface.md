@@ -143,7 +143,7 @@ See [12-release-command.md](./12-release-command.md) for full details.
 ### `gitmap release-branch <branch>` (alias: `rb`)
 
 Complete a release from an existing `release/vX.Y.Z` branch. Creates
-the tag and GitHub release if not already done. Useful when the release
+the tag and pushes if not already done. Useful when the release
 branch was created manually or by a previous incomplete release.
 
 ### `gitmap version` (alias: `v`)
