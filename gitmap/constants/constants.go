@@ -246,6 +246,7 @@ const (
 	ErrPullNotRepo      = "Error: %s is not a git repository\n"
 	ErrRescanNoCache    = "Error: no previous scan found. Run 'gitmap scan' first.\n%v\n"
 	ErrSetupLoadFailed  = "Error: could not load git-setup.json: %v\n"
+	ErrStatusLoadFailed = "Error: could not load gitmap.json for status: %v\nRun 'gitmap scan' first.\n"
 )
 
 // CLI help text.
