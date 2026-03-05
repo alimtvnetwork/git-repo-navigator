@@ -144,6 +144,7 @@ if (Test-Path $newBinary) {
     Write-Host "  [OK] Update complete" -ForegroundColor Green
 }
 Write-Host ""
+exit 0
 `, repoPath, runPS1, repoPath)
 }
 
