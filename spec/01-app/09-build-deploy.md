@@ -80,7 +80,20 @@ bin/
     └── config.json
 ```
 
-The same structure is replicated at the deploy target.
+## Deploy Structure
+
+The deploy target uses a nested `gitmap/` subfolder:
+
+```
+E:\bin-run\
+└── gitmap\
+    ├── gitmap.exe
+    └── data\
+        └── config.json
+```
+
+The `E:\bin-run\gitmap\` directory must be on the system `PATH` so
+the user can run `gitmap` from any terminal.
 
 ## Embedded Repo Path
 
@@ -150,9 +163,9 @@ Before executing gitmap, the script prints diagnostic context:
 
 ## Deploy Target
 
-The default deploy path (`E:\bin-run`) is assumed to be on the system
-`PATH`, so after deployment the user can run `gitmap` from any terminal
-without specifying the full path.
+The default deploy path (`E:\bin-run`) contains a `gitmap/` subfolder
+with the binary and data. `E:\bin-run\gitmap` must be on the system
+`PATH` so the tool can be run from any terminal.
 
 ## Logging
 
