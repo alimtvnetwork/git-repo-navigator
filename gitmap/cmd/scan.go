@@ -115,8 +115,8 @@ func writeTextOutput(records []model.ScanRecord, outputDir string) {
 }
 
 // writeTerminalOutput renders records to stdout.
-func writeTerminalOutput(records []model.ScanRecord, outputDir string) {
-	err := formatter.Terminal(os.Stdout, records, outputDir)
+func writeTerminalOutput(records []model.ScanRecord, outputDir string, quiet bool) {
+	err := formatter.Terminal(os.Stdout, records, outputDir, quiet)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrOutputFailed, err)
 	}
