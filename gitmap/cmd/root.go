@@ -29,6 +29,10 @@ func dispatch(command string) {
 		runClone(os.Args[2:])
 		return
 	}
+	if command == constants.CmdUpdate {
+		runUpdate()
+		return
+	}
 	if command == constants.CmdHelp {
 		printUsage()
 		return
@@ -46,6 +50,7 @@ func printUsage() {
 	fmt.Println(constants.HelpCommands)
 	fmt.Println(constants.HelpScan)
 	fmt.Println(constants.HelpClone)
+	fmt.Println(constants.HelpUpdate)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
 	fmt.Println(constants.HelpScanFlags)

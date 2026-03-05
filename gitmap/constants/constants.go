@@ -4,7 +4,10 @@
 package constants
 
 // Version.
-const Version = "1.0.0"
+const Version = "1.1.0"
+
+// RepoPath is set at build time via -ldflags.
+var RepoPath = ""
 
 // Clone modes.
 const (
@@ -74,9 +77,10 @@ const (
 
 // CLI commands.
 const (
-	CmdScan  = "scan"
-	CmdClone = "clone"
-	CmdHelp  = "help"
+	CmdScan   = "scan"
+	CmdClone  = "clone"
+	CmdUpdate = "update"
+	CmdHelp   = "help"
 )
 
 // GitHub Desktop.
@@ -142,6 +146,9 @@ const (
 	MsgCloneComplete    = "\nClone complete: %d succeeded, %d failed\n"
 	MsgFailedClones     = "\nFailed clones:"
 	MsgFailedEntry      = "  - %s (%s): %s\n"
+	MsgUpdateStarting   = "\n  Updating gitmap from source repo...\n"
+	MsgUpdateRepoPath   = "  → Repo path: %s\n"
+	MsgUpdateVersion    = "\n  ✓ Updated to gitmap v%s\n"
 )
 
 // Folder structure Markdown.
@@ -165,6 +172,8 @@ const (
 	ErrOutputFailed   = "Output error: %v\n"
 	ErrCreateDir      = "Cannot create directory: %v\n"
 	ErrCreateFile     = "Cannot create file: %v\n"
+	ErrNoRepoPath     = "Error: repo path not embedded. Binary was not built with run.ps1."
+	ErrUpdateFailed   = "Update error: %v\n"
 )
 
 // CLI help text.
@@ -173,6 +182,7 @@ const (
 	HelpCommands   = "Commands:"
 	HelpScan       = "  scan [dir]          Scan directory for Git repos"
 	HelpClone      = "  clone <source>      Re-clone from CSV/JSON/text file"
+	HelpUpdate     = "  update              Self-update from source repo"
 	HelpHelp       = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"

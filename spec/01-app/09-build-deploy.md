@@ -81,6 +81,19 @@ bin/
 
 The same structure is replicated at the deploy target.
 
+## Embedded Repo Path
+
+The build step embeds the **absolute path of the source repo** into the
+binary via Go `-ldflags`:
+
+```powershell
+$ldflags = "-X 'github.com/user/gitmap/constants.RepoPath=$absRepoRoot'"
+go build -ldflags $ldflags -o $outPath .
+```
+
+This enables the `gitmap update` command to locate the source repo and
+trigger a self-update without the user needing to know where the repo lives.
+
 ## `-R` Flag Behavior
 
 `-R` is a **switch** parameter. All remaining positional arguments after it
