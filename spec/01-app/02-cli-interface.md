@@ -2,7 +2,7 @@
 
 ## Commands
 
-### `gitmap scan [dir]`
+### `gitmap scan [dir]` (alias: `s`)
 
 Scan `dir` recursively for Git repositories.
 Default: current working directory.
