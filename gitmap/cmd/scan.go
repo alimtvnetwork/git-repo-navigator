@@ -29,7 +29,7 @@ func runScan(args []string) {
 }
 
 // executeScan performs the directory scan and outputs results.
-func executeScan(dir string, cfg model.Config, outFile string, ghDesktop bool) {
+func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFolder bool) {
 	absDir, err := filepath.Abs(dir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrScanFailed, err)
@@ -44,6 +44,7 @@ func executeScan(dir string, cfg model.Config, outFile string, ghDesktop bool) {
 	outputDir := resolveOutputDir(cfg.OutputDir, absDir)
 	writeAllOutputs(records, outputDir, outFile)
 	addToDesktop(records, ghDesktop)
+	openOutputFolder(outputDir, openFolder)
 }
 
 // addToDesktop registers repos with GitHub Desktop if requested.
