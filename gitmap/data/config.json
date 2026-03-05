@@ -1,0 +1,7 @@
+{
+  "defaultMode": "https",
+  "defaultOutput": "terminal",
+  "outputDir": "./output",
+  "excludeDirs": [".cache", "node_modules", "vendor", ".venv"],
+  "notes": ""
+}
