@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "1.2.1"
+const Version = "1.3.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -82,12 +82,16 @@ const (
 
 // CLI commands.
 const (
-	CmdScan        = "scan"
-	CmdClone       = "clone"
-	CmdUpdate      = "update"
-	CmdVersion     = "version"
-	CmdHelp        = "help"
-	CmdDesktopSync = "desktop-sync"
+	CmdScan             = "scan"
+	CmdScanAlias        = "s"
+	CmdClone            = "clone"
+	CmdCloneAlias       = "c"
+	CmdUpdate           = "update"
+	CmdVersion          = "version"
+	CmdVersionAlias     = "v"
+	CmdHelp             = "help"
+	CmdDesktopSync      = "desktop-sync"
+	CmdDesktopSyncAlias = "ds"
 )
 
 // GitHub Desktop.
@@ -133,10 +137,10 @@ const (
 const (
 	TermCloneStep1    = "  1. Copy the output files to the target machine:"
 	TermCloneCmd1     = "     gitmap-output/gitmap.json  (or gitmap.csv)"
-	TermCloneStep2    = "  2. Clone via JSON (HTTPS):"
-	TermCloneCmd2     = "     gitmap clone ./gitmap-output/gitmap.json --target-dir ./projects"
-	TermCloneStep3    = "  3. Clone via CSV:"
-	TermCloneCmd3     = "     gitmap clone ./gitmap-output/gitmap.csv --target-dir ./projects"
+	TermCloneStep2    = "  2. Clone via JSON (shorthand):"
+	TermCloneCmd2     = "     gitmap clone json --target-dir ./projects"
+	TermCloneStep3    = "  3. Clone via CSV (shorthand):"
+	TermCloneCmd3     = "     gitmap clone csv --target-dir ./projects"
 	TermCloneStep4    = "  4. Or run the PowerShell script directly:"
 	TermCloneCmd4HTTPS = "     .\\direct-clone.ps1       # HTTPS clone commands"
 	TermCloneCmd4SSH   = "     .\\direct-clone-ssh.ps1   # SSH clone commands"
@@ -160,6 +164,8 @@ const (
 	MsgDirectCloneSSH   = "Direct SSH clone script written to %s\n"
 	MsgDesktopScript    = "Desktop registration script written to %s\n"
 	MsgCloneComplete    = "\nClone complete: %d succeeded, %d failed\n"
+	MsgAutoSafePull     = "Existing repos detected — safe-pull enabled automatically.\n"
+	MsgOpenedFolder     = "Opened output folder: %s\n"
 	MsgDesktopSyncStart   = "\n  Syncing repos to GitHub Desktop from %s...\n"
 	MsgDesktopSyncSkipped = "  ⊘ Skipped (already exists): %s\n"
 	MsgDesktopSyncAdded   = "  ✓ Added to GitHub Desktop: %s\n"
@@ -210,11 +216,11 @@ const (
 const (
 	HelpUsage      = "Usage: gitmap <command> [flags]"
 	HelpCommands   = "Commands:"
-	HelpScan       = "  scan [dir]          Scan directory for Git repos"
-	HelpClone      = "  clone <source|json|csv>  Re-clone from file (json/csv = auto-resolve)"
+	HelpScan       = "  scan (s) [dir]      Scan directory for Git repos"
+	HelpClone      = "  clone (c) <source|json|csv>  Re-clone from file (json/csv = auto-resolve)"
 	HelpUpdate     = "  update              Self-update from source repo"
-	HelpVersion    = "  version             Show version number"
-	HelpDesktopSync = "  desktop-sync        Sync repos to GitHub Desktop from output"
+	HelpVersion    = "  version (v)         Show version number"
+	HelpDesktopSync = "  desktop-sync (ds)   Sync repos to GitHub Desktop from output"
 	HelpHelp       = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"
@@ -223,9 +229,10 @@ const (
 	HelpOutputPath = "  --output-path <dir> Output directory (default: ./gitmap-output)"
 	HelpOutFile        = "  --out-file <path>   Exact output file path"
 	HelpGitHubDesktop  = "  --github-desktop    Add repos to GitHub Desktop"
+	HelpOpen           = "  --open              Open output folder after scan"
 	HelpCloneFlags    = "Clone flags:"
 	HelpTargetDir     = "  --target-dir <dir>  Base directory for clones (default: .)"
-	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics"
+	HelpSafePull      = "  --safe-pull         Pull existing repos with retry + unlock diagnostics (auto-enabled)"
 )
 
 // Flag descriptions.
@@ -238,6 +245,7 @@ const (
 	FlagDescTargetDir  = "Base directory for cloned repos"
 	FlagDescSafePull   = "If repo exists, run safe git pull with retries and unlock diagnostics"
 	FlagDescGHDesktop  = "Add discovered repos to GitHub Desktop"
+	FlagDescOpen       = "Open output folder after scan completes"
 )
 
 // Clone and Desktop scripts are now generated from Go templates

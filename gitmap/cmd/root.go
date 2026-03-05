@@ -21,11 +21,11 @@ func Run() {
 
 // dispatch routes to the correct subcommand handler.
 func dispatch(command string) {
-	if command == constants.CmdScan {
+	if command == constants.CmdScan || command == constants.CmdScanAlias {
 		runScan(os.Args[2:])
 		return
 	}
-	if command == constants.CmdClone {
+	if command == constants.CmdClone || command == constants.CmdCloneAlias {
 		runClone(os.Args[2:])
 		return
 	}
@@ -33,11 +33,11 @@ func dispatch(command string) {
 		runUpdate()
 		return
 	}
-	if command == constants.CmdVersion {
+	if command == constants.CmdVersion || command == constants.CmdVersionAlias {
 		fmt.Printf("gitmap v%s\n", constants.Version)
 		return
 	}
-	if command == constants.CmdDesktopSync {
+	if command == constants.CmdDesktopSync || command == constants.CmdDesktopSyncAlias {
 		runDesktopSync()
 		return
 	}
@@ -70,6 +70,7 @@ func printUsage() {
 	fmt.Println(constants.HelpOutputPath)
 	fmt.Println(constants.HelpOutFile)
 	fmt.Println(constants.HelpGitHubDesktop)
+	fmt.Println(constants.HelpOpen)
 	fmt.Println()
 	fmt.Println(constants.HelpCloneFlags)
 	fmt.Println(constants.HelpTargetDir)
@@ -77,7 +78,7 @@ func printUsage() {
 }
 
 // parseScanFlags parses flags for the scan command.
-func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outputPath string, ghDesktop bool) {
+func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outputPath string, ghDesktop, openFolder bool) {
 	fs := flag.NewFlagSet(constants.CmdScan, flag.ExitOnError)
 	cfgFlag := fs.String("config", constants.DefaultConfigPath, constants.FlagDescConfig)
 	modeFlag := fs.String("mode", "", constants.FlagDescMode)
@@ -85,6 +86,7 @@ func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outp
 	outFileFlag := fs.String("out-file", "", constants.FlagDescOutFile)
 	outputPathFlag := fs.String("output-path", "", constants.FlagDescOutputPath)
 	ghDesktopFlag := fs.Bool("github-desktop", false, constants.FlagDescGHDesktop)
+	openFlag := fs.Bool("open", false, constants.FlagDescOpen)
 	fs.Parse(args)
 
 	dir = constants.DefaultDir
@@ -92,7 +94,7 @@ func parseScanFlags(args []string) (dir, configPath, mode, output, outFile, outp
 		dir = fs.Arg(0)
 	}
 
-	return dir, *cfgFlag, *modeFlag, *outputFlag, *outFileFlag, *outputPathFlag, *ghDesktopFlag
+	return dir, *cfgFlag, *modeFlag, *outputFlag, *outFileFlag, *outputPathFlag, *ghDesktopFlag, *openFlag
 }
 
 // parseCloneFlags parses flags for the clone command.

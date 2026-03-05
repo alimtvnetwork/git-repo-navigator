@@ -3,7 +3,9 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	"github.com/user/gitmap/config"
 	"github.com/user/gitmap/constants"
@@ -16,18 +18,18 @@ import (
 
 // runScan handles the "scan" subcommand.
 func runScan(args []string) {
-	dir, cfgPath, mode, output, outFile, outputPath, ghDesktop := parseScanFlags(args)
+	dir, cfgPath, mode, output, outFile, outputPath, ghDesktop, openFolder := parseScanFlags(args)
 	cfg, err := config.LoadFromFile(cfgPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrConfigLoad, err)
 		os.Exit(1)
 	}
 	cfg = config.MergeWithFlags(cfg, mode, output, outputPath)
-	executeScan(dir, cfg, outFile, ghDesktop)
+	executeScan(dir, cfg, outFile, ghDesktop, openFolder)
 }
 
 // executeScan performs the directory scan and outputs results.
-func executeScan(dir string, cfg model.Config, outFile string, ghDesktop bool) {
+func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFolder bool) {
 	absDir, err := filepath.Abs(dir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrScanFailed, err)
@@ -42,6 +44,7 @@ func executeScan(dir string, cfg model.Config, outFile string, ghDesktop bool) {
 	outputDir := resolveOutputDir(cfg.OutputDir, absDir)
 	writeAllOutputs(records, outputDir, outFile)
 	addToDesktop(records, ghDesktop)
+	openOutputFolder(outputDir, openFolder)
 }
 
 // addToDesktop registers repos with GitHub Desktop if requested.
@@ -49,7 +52,25 @@ func addToDesktop(records []model.ScanRecord, enabled bool) {
 	if enabled {
 		summary := desktop.AddRepos(records)
 		fmt.Printf(constants.MsgDesktopSummary, summary.Added, summary.Failed)
+}
+
+// openOutputFolder opens the output directory in the OS file explorer.
+func openOutputFolder(outputDir string, enabled bool) {
+	if !enabled {
+		return
 	}
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case constants.OSWindows:
+		cmd = exec.Command("explorer", outputDir)
+	case "darwin":
+		cmd = exec.Command("open", outputDir)
+	default:
+		cmd = exec.Command("xdg-open", outputDir)
+	}
+	_ = cmd.Start()
+	fmt.Printf(constants.MsgOpenedFolder, outputDir)
+}
 }
 
 // resolveOutputDir determines the output directory relative to scan root.

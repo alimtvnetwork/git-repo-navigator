@@ -45,12 +45,16 @@ Every scan **always produces all outputs** — terminal, CSV, JSON, and a folder
 ```bash
 # Scan current directory (outputs everything to ./gitmap-output/)
 gitmap scan
+gitmap s                    # shorthand
 
 # Scan a specific folder with SSH URLs
 gitmap scan ./projects --mode ssh
 
 # Scan and add repos to GitHub Desktop
 gitmap scan ./projects --github-desktop
+
+# Scan and auto-open output folder
+gitmap scan ./projects --open
 
 # Custom output directory
 gitmap scan ./projects --output-path ./my-exports
@@ -95,6 +99,7 @@ Git repositories discovered by gitmap.
 ```bash
 # Clone using shorthand (auto-resolves to ./gitmap-output/gitmap.json)
 gitmap clone json
+gitmap c json               # shorthand alias
 
 # Clone using CSV shorthand
 gitmap clone csv
@@ -109,7 +114,7 @@ gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored --safe-pull
 gitmap clone ./gitmap-output/gitmap.json --target-dir ./restored --github-desktop
 ```
 
-The clone command recreates the exact folder hierarchy from the `relativePath` field in each record. With `--safe-pull`, existing repos are updated using retry/unlock diagnostics for Windows unlink failures. With `--github-desktop`, successfully cloned repos are automatically registered in GitHub Desktop.
+The clone command recreates the exact folder hierarchy from the `relativePath` field in each record. **Safe-pull is automatically enabled** when existing repos are detected in the target directory — it retries failed pulls, clears read-only attributes, and diagnoses Windows unlink issues. The `--safe-pull` flag can also be set explicitly. With `--github-desktop`, successfully cloned repos are automatically registered in GitHub Desktop.
 
 ---
 
@@ -153,6 +158,7 @@ CLI flags override config values.
 | `--output-path <dir>` | Output directory | `gitmap-output/` in scan dir |
 | `--out-file <path>` | Exact CSV output file path | — |
 | `--github-desktop` | Add discovered repos to GitHub Desktop | `false` |
+| `--open` | Open output folder after scan | `false` |
 
 ### `gitmap clone <source|json|csv>`
 
@@ -161,8 +167,10 @@ CLI flags override config values.
 | Flag | Description | Default |
 |------|-------------|---------|
 | `--target-dir <path>` | Base clone directory | `.` |
-| `--safe-pull` | Pull existing repos with retries, read-only clear, and diagnosis | `false` |
+| `--safe-pull` | Pull existing repos with retries, read-only clear, and diagnosis (auto-enabled) | `false` |
 | `--github-desktop` | Add cloned repos to GitHub Desktop | `false` |
+
+**Note:** `--safe-pull` is automatically enabled when existing repos are detected in the target directory.
 
 ---
 
