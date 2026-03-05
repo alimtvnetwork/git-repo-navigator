@@ -70,6 +70,7 @@ func printUsage() {
 	fmt.Println(constants.HelpOutputPath)
 	fmt.Println(constants.HelpOutFile)
 	fmt.Println(constants.HelpGitHubDesktop)
+	fmt.Println(constants.HelpOpen)
 	fmt.Println()
 	fmt.Println(constants.HelpCloneFlags)
 	fmt.Println(constants.HelpTargetDir)
