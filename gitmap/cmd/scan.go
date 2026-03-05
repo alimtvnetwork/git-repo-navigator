@@ -18,7 +18,7 @@ func runScan(args []string) {
 	dir, cfgPath, mode, output, outFile, outputPath := parseScanFlags(args)
 	cfg, err := config.LoadFromFile(cfgPath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading config: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrConfigLoad, err)
 		os.Exit(1)
 	}
 	cfg = config.MergeWithFlags(cfg, mode, output, outputPath)
@@ -29,11 +29,11 @@ func runScan(args []string) {
 func executeScan(dir string, cfg model.Config, outFile string) {
 	repos, err := scanner.ScanDir(dir, cfg.ExcludeDirs)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Scan error: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrScanFailed, err)
 		os.Exit(1)
 	}
 	records := mapper.BuildRecords(repos, cfg.DefaultMode, cfg.Notes)
-	fmt.Printf("Found %d repositories.\n", len(records))
+	fmt.Printf(constants.MsgFoundRepos, len(records))
 	outputRecords(records, cfg, outFile)
 }
 
@@ -54,7 +54,7 @@ func outputRecords(records []model.ScanRecord, cfg model.Config, outFile string)
 func writeTerminalOutput(records []model.ScanRecord) {
 	err := formatter.Terminal(os.Stdout, records)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Output error: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrOutputFailed, err)
 	}
 }
 
@@ -67,7 +67,7 @@ func writeCSVOutput(records []model.ScanRecord, cfg model.Config, outFile string
 	}
 	defer file.Close()
 	formatter.WriteCSV(file, records)
-	fmt.Printf("CSV written to %s\n", path)
+	fmt.Printf(constants.MsgCSVWritten, path)
 }
 
 // writeJSONOutput writes records to a JSON file.
@@ -79,7 +79,7 @@ func writeJSONOutput(records []model.ScanRecord, cfg model.Config, outFile strin
 	}
 	defer file.Close()
 	formatter.WriteJSON(file, records)
-	fmt.Printf("JSON written to %s\n", path)
+	fmt.Printf(constants.MsgJSONWritten, path)
 }
 
 // resolveOutFile determines the output file path.
@@ -95,13 +95,13 @@ func resolveOutFile(outFile, outputDir, defaultName string) string {
 func createOutputFile(path string) (*os.File, error) {
 	err := os.MkdirAll(filepath.Dir(path), constants.DirPermission)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Cannot create directory: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrCreateDir, err)
 
 		return nil, err
 	}
 	file, err := os.Create(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Cannot create file: %v\n", err)
+		fmt.Fprintf(os.Stderr, constants.ErrCreateFile, err)
 
 		return nil, err
 	}
