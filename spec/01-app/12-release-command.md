@@ -58,6 +58,15 @@ branch creation.
 | `--dry-run`        | Preview steps without executing     | `false` |
 | `--verbose`        | Write detailed debug log            | `false` |
 
+### Release-Pending Flags
+
+| Flag               | Description                              | Default |
+|--------------------|------------------------------------------|---------|
+| `--assets <path>`  | Directory or file to record              | (none)  |
+| `--draft`          | Mark release metadata as draft           | `false` |
+| `--dry-run`        | Preview steps without executing          | `false` |
+| `--verbose`        | Write detailed debug log                 | `false` |
+
 ---
 
 ## Mutual Exclusivity Rules
