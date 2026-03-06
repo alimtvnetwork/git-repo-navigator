@@ -115,3 +115,53 @@ func TestParseExecFlags_NoArgs(t *testing.T) {
 		t.Errorf("expected empty gitArgs, got %v", gitArgs)
 	}
 }
+
+func TestParsePullFlags_NoFlags(t *testing.T) {
+	slug, group, all, verbose := parsePullFlags([]string{"my-repo"})
+	if slug != "my-repo" {
+		t.Errorf("expected slug=my-repo, got %q", slug)
+	}
+	if len(group) > 0 || all || verbose {
+		t.Error("expected no group/all/verbose")
+	}
+}
+
+func TestParsePullFlags_GroupLong(t *testing.T) {
+	slug, group, all, _ := parsePullFlags([]string{"--group", "backend"})
+	if len(slug) > 0 {
+		t.Errorf("expected empty slug, got %q", slug)
+	}
+	if group != "backend" {
+		t.Errorf("expected group=backend, got %q", group)
+	}
+	if all {
+		t.Error("expected all=false")
+	}
+}
+
+func TestParsePullFlags_GroupShort(t *testing.T) {
+	_, group, _, _ := parsePullFlags([]string{"-g", "infra"})
+	if group != "infra" {
+		t.Errorf("expected group=infra, got %q", group)
+	}
+}
+
+func TestParsePullFlags_All(t *testing.T) {
+	slug, group, all, _ := parsePullFlags([]string{"--all"})
+	if len(slug) > 0 || len(group) > 0 {
+		t.Error("expected empty slug and group")
+	}
+	if all != true {
+		t.Error("expected all=true")
+	}
+}
+
+func TestParsePullFlags_AllWithVerbose(t *testing.T) {
+	_, _, all, verbose := parsePullFlags([]string{"--all", "--verbose"})
+	if all != true {
+		t.Error("expected all=true")
+	}
+	if verbose != true {
+		t.Error("expected verbose=true")
+	}
+}

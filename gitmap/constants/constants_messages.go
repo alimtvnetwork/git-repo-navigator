@@ -51,6 +51,8 @@ const (
 	MsgPullSuccess        = "  ✓ %s is up to date.\n"
 	MsgPullFailed         = "  ✗ Pull failed for %s: %s\n"
 	MsgPullAvailable      = "\nAvailable repos:"
+	MsgPullListEntry      = "  - %s\n"
+	WarnVerboseLogFailed  = "Warning: could not create verbose log: %v\n"
 	MsgRescanReplay       = "\n  Rescanning with cached flags (dir: %s)...\n"
 	MsgScanCacheSaved     = "Scan cache written to %s\n"
 	MsgDBUpsertDone       = "Database updated: %d repos upserted\n"
