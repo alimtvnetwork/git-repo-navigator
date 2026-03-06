@@ -231,8 +231,7 @@ func truncSha(sha string) string {
 
 // parseLatestBranchFlags parses flags for the latest-branch command.
 // Supports positional integer shorthand: `gitmap lb 3` == `gitmap lb --top 3`.
-// Supports --format (terminal|json|csv), --json shorthand, --no-fetch, and --sort.
-func parseLatestBranchFlags(args []string) (remote string, allRemotes, containsFallback bool, top int, format string, noFetch bool, sortBy string) {
+func parseLatestBranchFlags(args []string) (remote string, allRemotes, containsFallback bool, top int, format string, noFetch bool, sortBy string, filter string) {
 	fs := flag.NewFlagSet(constants.CmdLatestBranch, flag.ExitOnError)
 	remoteFlag := fs.String("remote", "origin", constants.FlagDescLBRemote)
 	allRemotesFlag := fs.Bool("all-remotes", false, constants.FlagDescLBAllRemotes)
@@ -242,6 +241,7 @@ func parseLatestBranchFlags(args []string) (remote string, allRemotes, containsF
 	jsonFlag := fs.Bool("json", false, constants.FlagDescLBJSON)
 	noFetchFlag := fs.Bool("no-fetch", false, constants.FlagDescLBNoFetch)
 	sortFlag := fs.String("sort", constants.SortByDate, constants.FlagDescLBSort)
+	filterFlag := fs.String("filter", "", constants.FlagDescLBFilter)
 	fs.Parse(args)
 
 	// Positional integer shorthand for --top.
@@ -257,5 +257,5 @@ func parseLatestBranchFlags(args []string) (remote string, allRemotes, containsF
 		outFormat = constants.OutputJSON
 	}
 
-	return *remoteFlag, *allRemotesFlag, *containsFlag, *topFlag, outFormat, *noFetchFlag, *sortFlag
+	return *remoteFlag, *allRemotesFlag, *containsFlag, *topFlag, outFormat, *noFetchFlag, *sortFlag, *filterFlag
 }
