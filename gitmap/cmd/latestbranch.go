@@ -73,7 +73,16 @@ func runLatestBranch(args []string) {
 		}
 	}
 
-	// 5. Read tip commits.
+	// 5. Filter by pattern.
+	if len(filter) > 0 {
+		refs = gitutil.FilterByPattern(refs, filter)
+		if len(refs) == 0 {
+			fmt.Fprintf(os.Stderr, constants.ErrLatestBranchNoMatch, filter)
+			os.Exit(1)
+		}
+	}
+
+	// 6. Read tip commits.
 	items, err := gitutil.ReadBranchTips(refs)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrLatestBranchNoCommits+"\n")
