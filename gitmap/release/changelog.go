@@ -46,14 +46,12 @@ func ReadChangelog() ([]ChangelogEntry, error) {
 			continue
 		}
 
-		if inSection == false {
-			continue
-		}
-
-		if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") {
-			note := strings.TrimSpace(line[2:])
-			if len(note) > 0 {
-				current.Notes = append(current.Notes, note)
+		if inSection {
+			if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") {
+				note := strings.TrimSpace(line[2:])
+				if len(note) > 0 {
+					current.Notes = append(current.Notes, note)
+				}
 			}
 		}
 	}
