@@ -4,6 +4,7 @@ package gitutil
 import (
 	"fmt"
 	"os/exec"
+	"path/filepath"
 	"sort"
 	"strings"
 	"time"
