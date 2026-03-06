@@ -35,6 +35,16 @@ const (
 	CmdDoctor              = "doctor"
 	CmdLatestBranch        = "latest-branch"
 	CmdLatestBranchAlias   = "lb"
+	CmdList                = "list"
+	CmdListAlias           = "ls"
+	CmdGroup               = "group"
+	CmdGroupAlias          = "g"
+	CmdGroupCreate         = "create"
+	CmdGroupAdd            = "add"
+	CmdGroupRemove         = "remove"
+	CmdGroupList           = "list"
+	CmdGroupShow           = "show"
+	CmdGroupDelete         = "delete"
 )
 
 // Clone shorthands.
