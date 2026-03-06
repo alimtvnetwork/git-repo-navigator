@@ -89,7 +89,7 @@ func printStatusSummary(s statusSummary) {
 	fmt.Println()
 	fmt.Printf("  %s%s%s\n", constants.ColorDim, constants.TermTableRule, constants.ColorReset)
 	parts := buildSummaryParts(s)
-	fmt.Printf("  %s\n\n", strings.Join(parts, " · "))
+	fmt.Printf("  %s\n\n", strings.Join(parts, constants.SummaryJoinSep))
 }
 
 // buildSummaryParts assembles summary line segments.
