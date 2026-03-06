@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
-	"sort"
-	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
