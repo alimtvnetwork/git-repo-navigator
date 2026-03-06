@@ -111,7 +111,16 @@ func ReadBranchTips(refs []string) ([]RemoteBranchInfo, error) {
 // SortByDateDesc sorts items by CommitDate descending.
 func SortByDateDesc(items []RemoteBranchInfo) {
 	sort.Slice(items, func(i, j int) bool {
+
 		return items[i].CommitDate.After(items[j].CommitDate)
+	})
+}
+
+// SortByNameAsc sorts items by branch name (RemoteRef) ascending.
+func SortByNameAsc(items []RemoteBranchInfo) {
+	sort.Slice(items, func(i, j int) bool {
+
+		return items[i].RemoteRef < items[j].RemoteRef
 	})
 }
 
