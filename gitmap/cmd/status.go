@@ -73,7 +73,7 @@ func printStatusTable(records []model.ScanRecord) statusSummary {
 		constants.StatusTableColumns[4], constants.StatusTableColumns[5],
 		constants.ColorReset)
 	fmt.Printf("  %s%s%s\n", constants.ColorDim,
-		strings.Repeat("─", 70), constants.ColorReset)
+		constants.TermTableRule, constants.ColorReset)
 
 	for _, rec := range records {
 		printOneStatus(rec, &s)
