@@ -342,6 +342,7 @@ func runUpdateScript(scriptPath string) {
 		"-NoProfile", "-NoLogo", "-File", scriptPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
 	err := cmd.Run()
 
 	log := verbose.Get()
