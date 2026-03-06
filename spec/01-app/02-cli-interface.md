@@ -34,6 +34,8 @@ against `repoName` values in `./gitmap-output/gitmap.json`.
 - **Exact match** takes priority; falls back to partial/substring match (case-insensitive).
 - Lists all available repo names if no match is found.
 - Supports `--verbose` for debug logging.
+- Supports `--group` (`-g`) to pull all repos in a named group.
+- Supports `--all` to pull every repo tracked in the database.
 
 ### `gitmap rescan` (alias: `rs`)
 
