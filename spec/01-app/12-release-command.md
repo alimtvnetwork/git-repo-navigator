@@ -25,6 +25,14 @@ Create a release branch, Git tag, and push to remote.
 Complete a release from an existing `release/vX.Y.Z` branch.
 Creates the tag and pushes if not already done.
 
+### `gitmap release-pending` (alias: `rp`)
+
+Release all `release/v*` branches that are missing tags. Scans
+local branches for `release/vX.Y.Z` patterns, checks whether the
+corresponding `vX.Y.Z` tag already exists, and creates+pushes tags
+for any that are untagged. Useful for batch-releasing after manual
+branch creation.
+
 ---
 
 ## Flags
