@@ -284,11 +284,12 @@ is needed.
    delay before attempting to overwrite.
 2. **Always add retry logic** for file operations on deployed
    binaries — even with the handoff, a small timing window exists.
-3. **Never run the build script from the same process** that holds
-   the file lock on the target binary.
-4. **The parent MUST use `cmd.Start()` + `os.Exit(0)`, never
-   `cmd.Run()`** — synchronous wait holds the lock during the
-   entire pipeline, making PATH sync impossible.
+3. **The handoff copy is a different file** — the parent's lock on
+   the original binary does not conflict with the worker. Rename-first
+   in `run.ps1` handles the locked active PATH binary.
+4. **The parent MUST use `cmd.Run()` (foreground/blocking)** — keeps
+   the terminal session stable. NEVER use `cmd.Start()` + `os.Exit(0)`
+   which detaches and breaks the command line.
 5. **Use rename-first, not copy-first** for PATH sync — Windows
    blocks overwrite of a running `.exe` but allows renaming it.
 6. **Bump the version on every change** so the user can confirm
