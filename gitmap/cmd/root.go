@@ -142,6 +142,7 @@ func printUsage() {
 	fmt.Println(constants.HelpLatestBr)
 	fmt.Println(constants.HelpList)
 	fmt.Println(constants.HelpGroup)
+	fmt.Println(constants.HelpDBReset)
 	fmt.Println(constants.HelpUpdateCleanup)
 	fmt.Println(constants.HelpHelp)
 	fmt.Println()
