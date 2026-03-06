@@ -24,14 +24,14 @@ func printOneStatus(rec model.ScanRecord, s *statusSummary) {
 	filesText := formatFileCounts(rs)
 	branchText := fmt.Sprintf("%s%s%s", constants.ColorCyan, truncate(rs.Branch, 12), constants.ColorReset)
 
-	fmt.Printf("  %-22s %s  %s  %s  %s  %s\n",
+	fmt.Printf(constants.StatusRowFmt,
 		truncate(rec.RepoName, 22),
 		branchText, stateIcon, syncText, stashText, filesText)
 }
 
 // printMissingRepo prints a row for a repo not found on disk.
 func printMissingRepo(name string, s *statusSummary) {
-	fmt.Printf("  %s%-22s %s⊘ not found%s\n",
+	fmt.Printf(constants.StatusMissingFmt,
 		constants.ColorDim, truncate(name, 22),
 		constants.ColorYellow, constants.ColorReset)
 	s.Missing++

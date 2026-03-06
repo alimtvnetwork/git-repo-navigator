@@ -74,7 +74,7 @@ func printStatusTable(records []model.ScanRecord) statusSummary {
 
 // printStatusHeader prints the table column header row.
 func printStatusHeader() {
-	fmt.Printf("  %s%-22s %-12s %-8s %-10s %-8s %-6s%s\n",
+	fmt.Printf(constants.StatusHeaderFmt,
 		constants.ColorWhite,
 		constants.StatusTableColumns[0], constants.StatusTableColumns[1],
 		constants.StatusTableColumns[2], constants.StatusTableColumns[3],
@@ -89,31 +89,31 @@ func printStatusSummary(s statusSummary) {
 	fmt.Println()
 	fmt.Printf("  %s%s%s\n", constants.ColorDim, constants.TermTableRule, constants.ColorReset)
 	parts := buildSummaryParts(s)
-	fmt.Printf("  %s\n\n", strings.Join(parts, " · "))
+	fmt.Printf("  %s\n\n", strings.Join(parts, constants.SummaryJoinSep))
 }
 
 // buildSummaryParts assembles summary line segments.
 func buildSummaryParts(s statusSummary) []string {
 	parts := []string{
-		fmt.Sprintf("%d repos", s.Total),
+		fmt.Sprintf(constants.SummaryReposFmt, s.Total),
 	}
 	if s.Clean > 0 {
-		parts = append(parts, fmt.Sprintf("%s%d clean%s", constants.ColorGreen, s.Clean, constants.ColorReset))
+		parts = append(parts, fmt.Sprintf("%s"+constants.SummaryCleanFmt+"%s", constants.ColorGreen, s.Clean, constants.ColorReset))
 	}
 	if s.Dirty > 0 {
-		parts = append(parts, fmt.Sprintf("%s%d dirty%s", constants.ColorYellow, s.Dirty, constants.ColorReset))
+		parts = append(parts, fmt.Sprintf("%s"+constants.SummaryDirtyFmt+"%s", constants.ColorYellow, s.Dirty, constants.ColorReset))
 	}
 	if s.Ahead > 0 {
-		parts = append(parts, fmt.Sprintf("%s%d ahead%s", constants.ColorCyan, s.Ahead, constants.ColorReset))
+		parts = append(parts, fmt.Sprintf("%s"+constants.SummaryAheadFmt+"%s", constants.ColorCyan, s.Ahead, constants.ColorReset))
 	}
 	if s.Behind > 0 {
-		parts = append(parts, fmt.Sprintf("%s%d behind%s", constants.ColorYellow, s.Behind, constants.ColorReset))
+		parts = append(parts, fmt.Sprintf("%s"+constants.SummaryBehindFmt+"%s", constants.ColorYellow, s.Behind, constants.ColorReset))
 	}
 	if s.Stashed > 0 {
-		parts = append(parts, fmt.Sprintf("%d stashed", s.Stashed))
+		parts = append(parts, fmt.Sprintf(constants.SummaryStashedFmt, s.Stashed))
 	}
 	if s.Missing > 0 {
-		parts = append(parts, fmt.Sprintf("%s%d missing%s", constants.ColorYellow, s.Missing, constants.ColorReset))
+		parts = append(parts, fmt.Sprintf("%s"+constants.SummaryMissingFmt+"%s", constants.ColorYellow, s.Missing, constants.ColorReset))
 	}
 
 	return parts
