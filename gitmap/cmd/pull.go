@@ -46,8 +46,35 @@ func parsePullFlags(args []string) (slug string, verboseFlag bool) {
 	return slug, *vFlag
 }
 
-// executePull loads gitmap.json, finds the repo by slug, and pulls it.
+// executePull uses DB-first lookup with JSON fallback to find and pull repos.
 func executePull(slug string) {
+	matches := lookupBySlugDBFirst(slug)
+	if len(matches) == 0 {
+		fmt.Fprintf(os.Stderr, constants.ErrPullNotFound, slug)
+		os.Exit(1)
+	}
+
+	for _, rec := range matches {
+		pullOneRepo(rec)
+	}
+}
+
+// lookupBySlugDBFirst tries the database first, then falls back to JSON.
+func lookupBySlugDBFirst(slug string) []model.ScanRecord {
+	db, err := openDB()
+	if err == nil {
+		defer db.Close()
+		repos, dbErr := db.FindBySlug(strings.ToLower(slug))
+		if dbErr == nil && len(repos) > 0 {
+			return repos
+		}
+	}
+
+	return lookupBySlugJSON(slug)
+}
+
+// lookupBySlugJSON loads gitmap.json and matches by repo name.
+func lookupBySlugJSON(slug string) []model.ScanRecord {
 	jsonPath := filepath.Join(constants.DefaultOutputFolder, constants.DefaultJSONFile)
 	records, err := loadJSONRecords(jsonPath)
 	if err != nil {
@@ -55,16 +82,7 @@ func executePull(slug string) {
 		os.Exit(1)
 	}
 
-	matches := findBySlug(records, slug)
-	if len(matches) == 0 {
-		fmt.Fprintf(os.Stderr, constants.ErrPullNotFound, slug)
-		listAvailableRepos(records)
-		os.Exit(1)
-	}
-
-	for _, rec := range matches {
-		pullOneRepo(rec)
-	}
+	return findBySlug(records, slug)
 }
 
 // loadJSONRecords reads ScanRecords from a JSON file.
