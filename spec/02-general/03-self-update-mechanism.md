@@ -26,21 +26,21 @@ A three-layer approach that reliably bypasses file locks:
 ### Layer 1 — Copy and Re-launch
 
 1. The running binary copies itself to a temp location:
-   `%TEMP%\<toolname>-update-<pid>.exe`
-2. It launches the temp copy with a flag (e.g. `update --from-copy`)
+   `%TEMP%\<toolname>-update-<pid>.exe` (or same directory as the active binary).
+2. It launches the temp copy with a hidden worker command (e.g. `update-runner`)
    to indicate it's the delegated updater.
 3. The parent **exits immediately** to release the file lock.
 
 ```
 # Pseudocode — applies to any compiled language
 func runUpdate():
-    if isRunningFromCopy():
-        executeUpdate(repoPath)
-        return
-    
     tempPath = copyBinaryToTemp()
-    launchProcess(tempPath, ["update", "--from-copy"])
+    launchProcess(tempPath, ["update-runner"])
     exit(0)  # Release file lock immediately
+
+func runUpdateRunner():
+    # This is the worker — runs from the temp copy
+    executeUpdate(repoPath)
 ```
 
 ### Layer 2 — Skip-if-Current + Delayed Rebuild
