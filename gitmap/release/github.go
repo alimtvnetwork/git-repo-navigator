@@ -21,11 +21,11 @@ func CollectAssets(assetsPath string) []string {
 		return nil
 	}
 
-	if info.IsDir() == false {
-		return []string{assetsPath}
+	if info.IsDir() {
+		return collectDirFiles(assetsPath)
 	}
 
-	return collectDirFiles(assetsPath)
+	return []string{assetsPath}
 }
 
 // collectDirFiles returns all file paths in a directory.
