@@ -32,6 +32,13 @@ const (
 // OS platform constants.
 const OSDarwin = "darwin"
 
+// OS file-explorer commands.
+const (
+	CmdExplorer = "explorer"
+	CmdOpen     = "open"
+	CmdXdgOpen  = "xdg-open"
+)
+
 // Desktop sync error messages.
 const (
 	ErrDesktopReadFailed  = "Error reading %s: %v\n"
