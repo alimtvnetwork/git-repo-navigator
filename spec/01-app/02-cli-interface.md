@@ -136,7 +136,10 @@ are optional — omit a section to leave those settings untouched.
 Show a live dashboard of all scanned repos with current branch,
 dirty/clean state, ahead/behind counts, stash entries, and file
 change breakdown (staged/modified/untracked). Reads from
-`./gitmap-output/gitmap.json`.
+`./gitmap-output/gitmap.json` by default.
+
+- Supports `--group` (`-g`) to show status for repos in a named group.
+- Supports `--all` to show status for every repo tracked in the database.
 
 ### `gitmap exec <git-args...>` (alias: `x`)
 
