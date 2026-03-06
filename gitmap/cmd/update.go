@@ -281,6 +281,52 @@ if ($cmd) {
     }
 }
 
+
+function Sync-ActivePathBinary {
+    param(
+        [string]$ActivePath,
+        [string]$DeployedPath
+    )
+
+    if ((-not $ActivePath) -or (-not $DeployedPath)) {
+        return $false
+    }
+    if ((-not (Test-Path $ActivePath)) -or (-not (Test-Path $DeployedPath))) {
+        return $false
+    }
+
+    $activeResolved = (Resolve-Path $ActivePath).Path
+    $deployedResolved = (Resolve-Path $DeployedPath).Path
+    if ($activeResolved -eq $deployedResolved) {
+        return $true
+    }
+
+    Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
+    Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
+    Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
+
+    $maxAttempts = 20
+    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+        try {
+            Copy-Item $DeployedPath $ActivePath -Force -ErrorAction Stop
+            $syncedVersion = & $ActivePath version 2>&1
+            Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
+            Write-Host "  Active PATH version is now: $syncedVersion" -ForegroundColor Green
+            return $true
+        } catch {
+            if ($attempt -lt $maxAttempts) {
+                Write-Host "  [WARN] Active PATH binary is in use; retrying ($attempt/$maxAttempts)..." -ForegroundColor Yellow
+                Start-Sleep -Milliseconds 500
+            }
+        }
+    }
+
+    Write-Host "  [WARN] Could not sync active PATH binary after retries." -ForegroundColor Yellow
+    Write-Host "         Close terminals/apps using gitmap and run:" -ForegroundColor Yellow
+    Write-Host ("         Copy-Item \"" + $DeployedPath + "\" \"" + $ActivePath + "\" -Force") -ForegroundColor Yellow
+    return $false
+}
+
 Write-Host ""
 Write-Host "  Current deployed version: $oldVersion" -ForegroundColor DarkGray
 Write-Host "  Current source version:   $sourceVersion" -ForegroundColor DarkGray
@@ -303,23 +349,7 @@ if ($pullText -match "Already up to date") {
     }
 
     if ($needsRebuild -eq $false) {
-        if ($activeBinary -and $deployedBinary -and (Test-Path $activeBinary) -and (Test-Path $deployedBinary)) {
-            $activeResolved = (Resolve-Path $activeBinary).Path
-            $deployedResolved = (Resolve-Path $deployedBinary).Path
-            if ($activeResolved -ne $deployedResolved) {
-                Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
-                Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
-                Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
-                try {
-                    Copy-Item $deployedBinary $activeBinary -Force -ErrorAction Stop
-                    Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
-                    $activeVersion = & $activeBinary version 2>&1
-                    Write-Host "  Active PATH version is now: $activeVersion" -ForegroundColor Green
-                } catch {
-                    Write-Host "  [WARN] Could not sync active PATH binary: $_" -ForegroundColor Yellow
-                }
-            }
-        }
+        Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
 
         Write-Host "  Source is already up to date." -ForegroundColor Yellow
         Write-Host ""
@@ -366,22 +396,8 @@ if ($deployedBinary) {
 }
 
 # Sync active PATH binary when it differs
-if ($activeBinary -and $deployedBinary -and (Test-Path $activeBinary) -and (Test-Path $deployedBinary)) {
-    $activeResolved = (Resolve-Path $activeBinary).Path
-    $deployedResolved = (Resolve-Path $deployedBinary).Path
-    if ($activeResolved -ne $deployedResolved) {
-        Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
-        Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
-        Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
-        try {
-            Copy-Item $deployedBinary $activeBinary -Force -ErrorAction Stop
-            Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
-            $activeVersion = & $activeBinary version 2>&1
-            Write-Host "  Active PATH version is now: $activeVersion" -ForegroundColor Green
-        } catch {
-            Write-Host "  [WARN] Could not sync active PATH binary: $_" -ForegroundColor Yellow
-        }
-    }
+if ($activeBinary -and $deployedBinary) {
+    Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
 }
 
 # Show changelog bullets for updated version
