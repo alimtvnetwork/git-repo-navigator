@@ -26,6 +26,7 @@ param(
     [switch]$NoPull,
     [switch]$NoDeploy,
     [string]$DeployPath = "",
+    [switch]$Update,
     [switch]$R,
     [Parameter(ValueFromRemainingArguments=$true)]
     [string[]]$RunArgs
@@ -473,6 +474,11 @@ function Resolve-RunArgs {
 Show-Banner
 $config = Load-Config
 
+if ($Update) {
+    Write-Info "Update mode enabled (-Update)"
+    $NoPull = $true
+}
+
 if (-not $NoPull) {
     Invoke-GitPull
 } else {
@@ -576,10 +582,24 @@ if (-not $NoDeploy) {
     Write-Info "Skipping deploy (-NoDeploy)"
 }
 
-if (Test-Path $binaryPath) {
+$changelogBinaryPath = $binaryPath
+$activeCmdForChangelog = Get-Command gitmap -ErrorAction SilentlyContinue
+if ($activeCmdForChangelog -and (Test-Path $activeCmdForChangelog.Source)) {
+    $changelogBinaryPath = $activeCmdForChangelog.Source
+} elseif ($deployedBinaryPath -and (Test-Path $deployedBinaryPath)) {
+    $changelogBinaryPath = $deployedBinaryPath
+}
+
+if (Test-Path $changelogBinaryPath) {
     Write-Host ""
     Write-Info "Latest changelog:"
-    & $binaryPath changelog --latest
+    & $changelogBinaryPath changelog --latest
+
+    if ($Update) {
+        Write-Host ""
+        Write-Info "Running update cleanup"
+        & $changelogBinaryPath update-cleanup
+    }
 }
 
 if ($R) {
