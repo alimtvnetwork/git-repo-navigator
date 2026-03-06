@@ -269,7 +269,6 @@ const (
 	MsgUpdateStarting   = "\n  Updating gitmap from source repo...\n"
 	MsgUpdateRepoPath   = "  → Repo path: %s\n"
 	MsgUpdateVersion    = "\n  ✓ Updated to gitmap v%s\n"
-	MsgLatestBranchFetching = "\n  Fetching remote refs..."
 )
 
 // Latest-branch error messages.
