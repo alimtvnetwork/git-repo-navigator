@@ -45,6 +45,7 @@ const (
 	CmdGroupList           = "list"
 	CmdGroupShow           = "show"
 	CmdGroupDelete         = "delete"
+	CmdDBReset             = "db-reset"
 )
 
 // Clone shorthands.
