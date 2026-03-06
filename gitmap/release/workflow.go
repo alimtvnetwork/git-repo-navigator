@@ -4,6 +4,15 @@ package release
 
 import (
 	"fmt"
+	"os/exec"
+	"strings"
+	"time"
+
+	"github.com/user/gitmap/constants"
+)
+
+import (
+	"fmt"
 	"time"
 
 	"github.com/user/gitmap/constants"
