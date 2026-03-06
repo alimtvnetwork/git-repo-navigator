@@ -7,6 +7,7 @@ const (
 	SetupSectionAlias = "Aliases"
 	SetupSectionCred  = "Credential Helper"
 	SetupSectionCore  = "Core Settings"
+	SetupGlobalFlag   = "--global"
 )
 
 // Release messages.
