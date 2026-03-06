@@ -131,6 +131,7 @@ func performRelease(v Version, sourceRef, sourceName string, opts Options) error
 		if len(originalBranch) > 0 {
 			fmt.Printf(constants.MsgReleaseDryRun, "Switch back to "+originalBranch)
 		}
+
 		return err
 	}
 
