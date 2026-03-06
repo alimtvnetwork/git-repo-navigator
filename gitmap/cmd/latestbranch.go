@@ -137,7 +137,7 @@ func printLatestBranchJSON(branchNames []string, remote, sha, commitDate string,
 			out.Top = append(out.Top, latestBranchTopItem{
 				Branch:     rName,
 				Sha:        truncSha(item.Sha),
-				CommitDate: item.CommitDate.Format("2006-01-02T15:04:05-07:00"),
+				CommitDate: gitutil.FormatDisplayDate(item.CommitDate),
 				Subject:    item.Subject,
 			})
 		}
