@@ -397,6 +397,12 @@ if ($pullText -match "Already up to date") {
 
     if ($needsRebuild -eq $false) {
         Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
+        Ensure-ActiveVersionMatchesSource -ActivePath $activeBinary -ExpectedVersion $sourceVersion | Out-Null
+
+        if ($syncFailed) {
+            Write-Host ""
+            exit 1
+        }
 
         Write-Host "  Source is already up to date." -ForegroundColor Yellow
         Write-Host ""
