@@ -123,22 +123,21 @@ else:
 ```
 User runs: <tool> update
    │
-   ├─ Parent copies self → %TEMP%\<tool>-update-<pid>.exe
-   ├─ Parent launches copy with: update-runner
-   ├─ Parent exits (releases file lock)
+   ├─ Parent copies self → <tool>-update-<pid>.exe (same dir, fallback %TEMP%)
+   ├─ Parent launches copy with: update-runner (foreground/blocking)
+   ├─ Parent waits for worker to complete (terminal stays attached)
    │
-   └─ Temp copy starts
+   └─ Worker (update-runner) starts
       ├─ Captures current deployed version
-      ├─ Runs git pull
-      ├─ If already up to date → exits early (no rebuild)
-      ├─ Waits 1–2 seconds
-      ├─ Runs: build pipeline (deps → build → deploy)
+      ├─ Runs: run.ps1 -Update (pull → build → deploy)
       │    ├─ Backs up existing binary as .old
       │    ├─ Deploys new binary (with retry)
+      │    ├─ PATH sync: rename-first (.old), then copy new
       │    └─ On failure: restores .old backup
       ├─ Compares old vs new version
+      ├─ Runs: <tool> changelog --latest
       ├─ Runs: <tool> update-cleanup (auto)
-      │    ├─ Removes %TEMP%\<tool>-update-*.exe
+      │    ├─ Removes <tool>-update-*.exe
       │    └─ Removes *.old from deploy directory
       └─ Cleans up temp script
 ```
