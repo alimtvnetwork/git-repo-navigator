@@ -281,6 +281,52 @@ if ($cmd) {
     }
 }
 
+
+function Sync-ActivePathBinary {
+    param(
+        [string]$ActivePath,
+        [string]$DeployedPath
+    )
+
+    if ((-not $ActivePath) -or (-not $DeployedPath)) {
+        return $false
+    }
+    if ((-not (Test-Path $ActivePath)) -or (-not (Test-Path $DeployedPath))) {
+        return $false
+    }
+
+    $activeResolved = (Resolve-Path $ActivePath).Path
+    $deployedResolved = (Resolve-Path $DeployedPath).Path
+    if ($activeResolved -eq $deployedResolved) {
+        return $true
+    }
+
+    Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
+    Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
+    Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
+
+    $maxAttempts = 20
+    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+        try {
+            Copy-Item $DeployedPath $ActivePath -Force -ErrorAction Stop
+            $syncedVersion = & $ActivePath version 2>&1
+            Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
+            Write-Host "  Active PATH version is now: $syncedVersion" -ForegroundColor Green
+            return $true
+        } catch {
+            if ($attempt -lt $maxAttempts) {
+                Write-Host "  [WARN] Active PATH binary is in use; retrying ($attempt/$maxAttempts)..." -ForegroundColor Yellow
+                Start-Sleep -Milliseconds 500
+            }
+        }
+    }
+
+    Write-Host "  [WARN] Could not sync active PATH binary after retries." -ForegroundColor Yellow
+    Write-Host "         Close terminals/apps using gitmap and run:" -ForegroundColor Yellow
+    Write-Host ("         Copy-Item \"" + $DeployedPath + "\" \"" + $ActivePath + "\" -Force") -ForegroundColor Yellow
+    return $false
+}
+
 Write-Host ""
 Write-Host "  Current deployed version: $oldVersion" -ForegroundColor DarkGray
 Write-Host "  Current source version:   $sourceVersion" -ForegroundColor DarkGray
