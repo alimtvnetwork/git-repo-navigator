@@ -472,7 +472,7 @@ $config = Load-Config
 if (-not $NoPull) {
     Invoke-GitPull
 } else {
-    Write-Info "Skipping git pull (--NoPull)"
+    Write-Info "Skipping git pull (-NoPull)"
 }
 
 Resolve-Dependencies
@@ -485,7 +485,7 @@ Write-Info "Version: $versionOutput"
 if (-not $NoDeploy) {
     Deploy-Binary -Config $config -BinaryPath $binaryPath -OverridePath $DeployPath
 } else {
-    Write-Info "Skipping deploy (--NoDeploy)"
+    Write-Info "Skipping deploy (-NoDeploy)"
 }
 
 if ($R) {
