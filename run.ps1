@@ -382,7 +382,7 @@ function Deploy-Binary {
         }
     }
 
-    # Leave .old file in place — cleaned up by: gitmap update-cleanup
+    # Leave .old file in place - cleaned up by: gitmap update-cleanup
     if ($hasBackup -and $deploySuccess) {
         Write-Info "Previous binary kept as $($Config.binaryName).old (run 'gitmap update-cleanup' to remove)"
     }
