@@ -353,6 +353,8 @@ const (
 	FlagDescRelBranch  = "Create release from latest commit of a branch"
 	FlagDescBump       = "Auto-increment version: major, minor, or patch"
 	FlagDescDraft      = "Create an unpublished draft release"
+	FlagDescLatest     = "Show only the latest changelog entry"
+	FlagDescLimit      = "Number of changelog versions to show"
 )
 
 // Clone and Desktop scripts are now generated from Go templates
