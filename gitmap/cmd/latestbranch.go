@@ -80,8 +80,12 @@ func runLatestBranch(args []string) {
 		os.Exit(1)
 	}
 
-	// 6. Sort by date descending.
-	gitutil.SortByDateDesc(items)
+	// 6. Sort.
+	if sortBy == constants.SortByName {
+		gitutil.SortByNameAsc(items)
+	} else {
+		gitutil.SortByDateDesc(items)
+	}
 
 	// 7. Pick latest.
 	latest := items[0]
