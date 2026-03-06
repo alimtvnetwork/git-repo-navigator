@@ -165,7 +165,7 @@ func printLatestBranchCSV(items []gitutil.RemoteBranchInfo, remote string, top i
 			rName,
 			remote,
 			truncSha(item.Sha),
-			item.CommitDate.Format("2006-01-02T15:04:05-07:00"),
+			gitutil.FormatDisplayDate(item.CommitDate),
 			item.Subject,
 			item.RemoteRef,
 		})
