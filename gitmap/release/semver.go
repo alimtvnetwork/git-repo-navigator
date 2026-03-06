@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/user/gitmap/constants"
 )
 
 // Version represents a parsed semantic version.
