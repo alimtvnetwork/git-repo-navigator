@@ -128,6 +128,7 @@ const (
 	CmdReleasePendingAlias = "rp"
 	CmdChangelog          = "changelog"
 	CmdChangelogAlias     = "cl"
+	CmdChangelogMD        = "changelog.md"
 )
 
 // GitHub Desktop.
