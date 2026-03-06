@@ -68,7 +68,7 @@ A bare integer argument (e.g. `gitmap lb 3`) is shorthand for
   Latest branch: feature/v1.5.1
   Remote:        origin
   SHA:           a1b2c3d
-  Commit date:   2025-03-06T14:22:31+01:00
+  Commit date:   06-Mar-2025 03:22 PM
   Subject:       Fix auth token refresh
   Ref:           origin/feature/v1.5.1
 ```
