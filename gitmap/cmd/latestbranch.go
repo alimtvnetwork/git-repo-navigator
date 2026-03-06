@@ -34,7 +34,7 @@ type latestBranchTopItem struct {
 
 // runLatestBranch handles the 'latest-branch' / 'lb' command.
 func runLatestBranch(args []string) {
-	remote, allRemotes, containsFallback, top, format, noFetch := parseLatestBranchFlags(args)
+	remote, allRemotes, containsFallback, top, format, noFetch, sortBy := parseLatestBranchFlags(args)
 	isMachine := format == constants.OutputJSON || format == constants.OutputCSV
 
 	// 1. Validate git repo.
