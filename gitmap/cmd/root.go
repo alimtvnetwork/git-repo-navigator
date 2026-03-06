@@ -113,7 +113,7 @@ func dispatch(command string) {
 		runUpdateCleanup()
 		return
 	}
-	fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
+	fmt.Fprintf(os.Stderr, constants.ErrUnknownCommand, command)
 	printUsage()
 	os.Exit(1)
 }
