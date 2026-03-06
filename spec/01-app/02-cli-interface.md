@@ -375,6 +375,7 @@ activates whenever existing repos are detected during a clone operation.
 | `--format <fmt>`        | Output format: `terminal`, `json`, `csv`             | `terminal` |
 | `--json`                | Shorthand for `--format json`                        | `false`    |
 | `--no-fetch`            | Skip `git fetch` (use existing remote refs)          | `false`    |
+| `--sort <order>`        | Sort order: `date` (descending) or `name` (A-Z)     | `date`     |
 
 ## Examples
 
@@ -499,4 +500,5 @@ gitmap lb --all-remotes          # include all remotes
 gitmap lb --contains-fallback    # fall back to --contains if --points-at is empty
 gitmap lb --no-fetch             # skip fetch, use existing remote refs
 gitmap lb 3 --no-fetch --json    # fast: no fetch, top 3 as JSON
+gitmap lb 5 --sort name          # top 5 sorted alphabetically by branch name
 ```

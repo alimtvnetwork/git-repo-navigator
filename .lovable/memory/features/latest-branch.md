@@ -10,13 +10,14 @@ The 'latest-branch' (alias 'lb') command identifies the most recently updated re
 - `--format <fmt>` — output format: `terminal` (default), `json`, `csv`
 - `--json` — shorthand for `--format json`
 - `--no-fetch` — skip `git fetch --all --prune` (use existing remote refs)
+- `--sort <order>` — sort order: `date` (default, descending) or `name` (alphabetical A-Z)
 
 ## Positional integer shorthand
 A bare integer positional argument acts as shorthand for `--top`:
 `gitmap lb 3` is equivalent to `gitmap lb --top 3`.
 
 ## Date display
-All dates are formatted via `gitutil.FormatDisplayDate`: UTC → local timezone → `DD-Mon-YYYY hh:mm AM/PM` (e.g. `06-Mar-2026 09:17 AM`).
+All dates are formatted via `gitutil.FormatDisplayDate`: UTC → local timezone → `DD-Mon-YYYY hh:mm AM/PM`.
 
 ## Output formats
 - **terminal** — human-readable key-value display + optional top-N table
@@ -25,9 +26,7 @@ All dates are formatted via `gitutil.FormatDisplayDate`: UTC → local timezone 
 
 ## Files
 - `cmd/latestbranch.go` — CLI handler, flag parsing, output
-- `gitutil/latestbranch.go` — Git operations (fetch, list, log, resolve)
+- `gitutil/latestbranch.go` — Git operations (fetch, list, log, resolve, sort)
 - `gitutil/dateformat.go` — centralized date formatting
-- `constants/constants.go` — command name, alias, messages, flags, date layout
+- `constants/constants.go` — command name, alias, messages, flags, sort orders
 - `spec/01-app/14-latest-branch.md` — full specification
-- `spec/01-app/15-date-display-format.md` — date format spec
-- `spec/02-general/07-date-display-format.md` — general date pattern
