@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "2.7.0"
+const Version = "2.8.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -250,6 +250,7 @@ const (
 	ErrLatestBranchNoRefs     = "Error: no remote-tracking branches found for remote '%s'.\n"
 	ErrLatestBranchNoRefsAll  = "Error: no remote-tracking branches found on any remote."
 	ErrLatestBranchNoCommits  = "Error: could not read commit info for remote branches."
+	ErrLatestBranchNoMatch   = "Error: no branches matching filter '%s'.\n"
 )
 
 // Folder structure Markdown.
@@ -387,6 +388,7 @@ const (
 	FlagDescLBFormat      = "Output format: terminal, json, csv (default: terminal)"
 	FlagDescLBNoFetch     = "Skip git fetch (use existing remote refs)"
 	FlagDescLBSort        = "Sort order: date (default, descending) or name (alphabetical)"
+	FlagDescLBFilter      = "Filter branches by glob or substring pattern"
 )
 
 // Sort orders.
