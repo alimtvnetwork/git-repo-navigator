@@ -120,3 +120,15 @@ func buildInstruction(url, branch, relPath string) string {
 
 	return fmt.Sprintf(constants.CloneInstructionFmt, branch, url, relPath)
 }
+
+// buildSlug derives a lowercase slug from the HTTPS URL.
+// Falls back to repoName when the URL is empty.
+func buildSlug(httpsURL, repoName string) string {
+	if len(httpsURL) == 0 {
+		return strings.ToLower(repoName)
+	}
+	base := filepath.Base(httpsURL)
+	trimmed := strings.TrimSuffix(base, constants.ExtGit)
+
+	return strings.ToLower(trimmed)
+}
