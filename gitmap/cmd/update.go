@@ -265,274 +265,72 @@ func writeUpdateScript(repoPath string) string {
 }
 
 // buildUpdateScript generates the PowerShell script content.
-// Ensures active PATH binary is synced and prints changelog bullets.
+// It delegates update execution to run.ps1 -Update and verifies active PATH sync.
 func buildUpdateScript(repoPath, runPS1 string) string {
 	return fmt.Sprintf(`# gitmap self-update script (auto-generated)
 Set-Location "%s"
 
-# Detect deployed binary from powershell.json
-$deployedBinary = $null
-$oldVersion = "unknown"
 $configPath = Join-Path "%s" "gitmap\powershell.json"
+$deployedBinary = $null
 if (Test-Path $configPath) {
     $cfg = Get-Content $configPath | ConvertFrom-Json
     if ($cfg.deployPath) {
         $deployedBinary = Join-Path $cfg.deployPath "gitmap\gitmap.exe"
-        if (Test-Path $deployedBinary) {
-            $oldVersion = & $deployedBinary version 2>&1
-        }
     }
 }
 
-# Detect source version from constants.go
-$sourceVersion = "unknown"
-$constantsPath = Join-Path "%s" "gitmap\constants\constants.go"
-if (Test-Path $constantsPath) {
-    $match = Select-String -Path $constantsPath -Pattern 'const Version = "([^"]+)"' | Select-Object -First 1
-    if ($match -and $match.Matches.Count -gt 0) {
-        $sourceVersion = "gitmap v" + $match.Matches[0].Groups[1].Value
-    }
-}
-
-# Detect active gitmap on PATH (what the user invokes)
 $activeBinary = $null
-$activeVersion = "unknown"
-$cmd = Get-Command gitmap -ErrorAction SilentlyContinue
-if ($cmd) {
-    $activeBinary = $cmd.Source
-    if (Test-Path $activeBinary) {
-        $activeVersion = & $activeBinary version 2>&1
-    }
-}
-
-$syncFailed = $false
-
-function Sync-ActivePathBinary {
-    param(
-        [string]$ActivePath,
-        [string]$DeployedPath
-    )
-
-    if ((-not $ActivePath) -or (-not $DeployedPath)) {
-        return $false
-    }
-    if ((-not (Test-Path $ActivePath)) -or (-not (Test-Path $DeployedPath))) {
-        return $false
-    }
-
-    $activeResolved = (Resolve-Path $ActivePath).Path
-    $deployedResolved = (Resolve-Path $DeployedPath).Path
-    if ($activeResolved -eq $deployedResolved) {
-        return $true
-    }
-
-    Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
-    Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
-    Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
-
-    $maxAttempts = 20
-    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
-        try {
-            Copy-Item $DeployedPath $ActivePath -Force -ErrorAction Stop
-            $syncedVersion = & $ActivePath version 2>&1
-            Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
-            Write-Host "  Active PATH version is now: $syncedVersion" -ForegroundColor Green
-            return $true
-        } catch {
-            if ($attempt -lt $maxAttempts) {
-                Write-Host "  [WARN] Active PATH binary is in use; retrying ($attempt/$maxAttempts)..." -ForegroundColor Yellow
-                Start-Sleep -Milliseconds 500
-            }
-        }
-    }
-
-    $backupActive = "$ActivePath.old"
-    try {
-        if (Test-Path $backupActive) {
-            Remove-Item $backupActive -Force -ErrorAction SilentlyContinue
-        }
-        Rename-Item $ActivePath $backupActive -Force -ErrorAction Stop
-        Copy-Item $DeployedPath $ActivePath -Force -ErrorAction Stop
-        $syncedVersion = & $ActivePath version 2>&1
-        Write-Host "  [OK] Synced active PATH binary via rename fallback." -ForegroundColor Green
-        Write-Host "  Active PATH version is now: $syncedVersion" -ForegroundColor Green
-        return $true
-    } catch {
-        if ((Test-Path $backupActive) -and (-not (Test-Path $ActivePath))) {
-            try {
-                Copy-Item $backupActive $ActivePath -Force -ErrorAction Stop
-            } catch {
-            }
-        }
-    }
-
-    # Last resort: terminate stale gitmap processes holding the old binary, then retry once.
-    try {
-        $staleProcs = Get-CimInstance Win32_Process -Filter "Name='gitmap.exe'" -ErrorAction SilentlyContinue |
-            Where-Object { $_.ExecutablePath -and ((Resolve-Path $_.ExecutablePath -ErrorAction SilentlyContinue).Path -eq $activeResolved) -and ($_.ProcessId -ne $PID) }
-        foreach ($p in $staleProcs) {
-            Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
-        }
-        if ($staleProcs) {
-            Start-Sleep -Milliseconds 500
-            Copy-Item $DeployedPath $ActivePath -Force -ErrorAction Stop
-            $syncedVersion = & $ActivePath version 2>&1
-            Write-Host "  [OK] Synced active PATH binary after stopping stale gitmap process(es)." -ForegroundColor Green
-            Write-Host "  Active PATH version is now: $syncedVersion" -ForegroundColor Green
-            return $true
-        }
-    } catch {
-    }
-
-    Write-Host "  [FAIL] Could not sync active PATH binary after retries and fallback attempts." -ForegroundColor Red
-    Write-Host "         Close terminals/apps using gitmap and run:" -ForegroundColor Red
-    Write-Host ("         Copy-Item \"" + $DeployedPath + "\" \"" + $ActivePath + "\" -Force") -ForegroundColor Red
-    Write-Host ("         or run commands directly from deployed binary: \"" + $DeployedPath + "\" <command>") -ForegroundColor Red
-    $script:syncFailed = $true
-    return $false
-}
-
-function Ensure-ActiveVersionMatchesSource {
-    param(
-        [string]$ActivePath,
-        [string]$ExpectedVersion
-    )
-
-    if ((-not $ActivePath) -or (-not (Test-Path $ActivePath))) {
-        return $true
-    }
-    if ((-not $ExpectedVersion) -or ($ExpectedVersion -eq "unknown")) {
-        return $true
-    }
-
-    $actualVersion = & $ActivePath version 2>&1
-    if ($actualVersion -ne $ExpectedVersion) {
-        Write-Host "  [FAIL] Active PATH binary is still stale." -ForegroundColor Red
-        Write-Host "         Active:   $actualVersion" -ForegroundColor Red
-        Write-Host "         Expected: $ExpectedVersion" -ForegroundColor Red
-        $script:syncFailed = $true
-        return $false
-    }
-
-    return $true
+$activeBefore = "unknown"
+$cmdBefore = Get-Command gitmap -ErrorAction SilentlyContinue
+if ($cmdBefore -and (Test-Path $cmdBefore.Source)) {
+    $activeBinary = $cmdBefore.Source
+    $activeBefore = & $activeBinary version 2>&1
 }
 
 Write-Host ""
-Write-Host "  Current deployed version: $oldVersion" -ForegroundColor DarkGray
-Write-Host "  Current source version (from constants.go): $sourceVersion" -ForegroundColor DarkGray
-if ($activeBinary) {
-    Write-Host "  Current PATH binary: $activeBinary" -ForegroundColor DarkGray
-    Write-Host "  Current PATH version (actual executable): $activeVersion" -ForegroundColor DarkGray
+Write-Host "  Starting update via run.ps1 -Update" -ForegroundColor Cyan
+& "%s" -Update
+$runExit = $LASTEXITCODE
+if (($runExit -ne 0) -and ($runExit -ne $null)) {
+    exit $runExit
 }
 
-# Check if there are changes to pull
-$prevPref = $ErrorActionPreference
-$ErrorActionPreference = "Continue"
-$pullOutput = git pull 2>&1
-$ErrorActionPreference = $prevPref
-$pullText = ($pullOutput | Out-String).Trim()
-
-if ($pullText -match "Already up to date") {
-    $needsRebuild = $false
-    if ($sourceVersion -ne "unknown" -and $oldVersion -ne "unknown" -and $oldVersion -ne $sourceVersion) {
-        $needsRebuild = $true
-    }
-
-    if ($needsRebuild -eq $false) {
-        Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
-        Ensure-ActiveVersionMatchesSource -ActivePath $activeBinary -ExpectedVersion $sourceVersion | Out-Null
-
-        if ($syncFailed) {
-            Write-Host ""
-            exit 1
-        }
-
-        Write-Host "  Source is already up to date." -ForegroundColor Yellow
-        Write-Host ""
-        Write-Host "  No update needed - you are running the latest source." -ForegroundColor Green
-
-        $changelogBinary = $activeBinary
-        if ((-not $changelogBinary) -or (-not (Test-Path $changelogBinary))) {
-            $changelogBinary = $deployedBinary
-        }
-        if ($changelogBinary -and (Test-Path $changelogBinary)) {
-            Write-Host ""
-            Write-Host "  Latest changelog:" -ForegroundColor Cyan
-            & $changelogBinary changelog --latest
-        }
-
-        Write-Host ""
-        exit 0
-    }
-
-    Write-Host "  Source is up to date, but binary version mismatch detected. Rebuilding..." -ForegroundColor Yellow
+$activeAfter = "unknown"
+$deployedAfter = "unknown"
+$cmdAfter = Get-Command gitmap -ErrorAction SilentlyContinue
+if ($cmdAfter -and (Test-Path $cmdAfter.Source)) {
+    $activeBinary = $cmdAfter.Source
+    $activeAfter = & $activeBinary version 2>&1
 }
-
-Write-Host "  Changes detected, rebuilding..." -ForegroundColor Cyan
-Write-Host ""
-Start-Sleep -Milliseconds 1200
-& "%s" -NoPull
-Write-Host ""
-
-# Compare deployed versions before/after update
-$newVersion = "unknown"
 if ($deployedBinary -and (Test-Path $deployedBinary)) {
-    $newVersion = & $deployedBinary version 2>&1
+    $deployedAfter = & $deployedBinary version 2>&1
 }
 
-if ($oldVersion -eq $newVersion) {
-    Write-Host "  [WARN] Version unchanged after update ($newVersion)" -ForegroundColor Yellow
-    Write-Host "  The source changed but the version constant may not have been bumped." -ForegroundColor Yellow
-} else {
-    Write-Host "  [OK] Updated: $oldVersion -> $newVersion" -ForegroundColor Green
-}
+Write-Host ""
+Write-Host "  Version before:   $activeBefore" -ForegroundColor DarkGray
+Write-Host "  Version active:   $activeAfter" -ForegroundColor DarkGray
+Write-Host "  Version deployed: $deployedAfter" -ForegroundColor DarkGray
 
-if ($deployedBinary) {
-    Write-Host "  Deployed binary: $deployedBinary" -ForegroundColor DarkGray
-}
-
-# Sync active PATH binary when it differs
-if ($activeBinary -and $deployedBinary) {
-    Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
-    Ensure-ActiveVersionMatchesSource -ActivePath $activeBinary -ExpectedVersion $sourceVersion | Out-Null
-}
-
-# Show changelog bullets for updated version
-$changelogBinary = $activeBinary
-if ((-not $changelogBinary) -or (-not (Test-Path $changelogBinary))) {
-    $changelogBinary = $deployedBinary
-}
-if ($changelogBinary -and (Test-Path $changelogBinary)) {
-    Write-Host ""
-    Write-Host "  Changelog:" -ForegroundColor Cyan
-    if ($newVersion -and $newVersion -ne "unknown") {
-        & $changelogBinary changelog $newVersion
-    } else {
-        & $changelogBinary changelog --latest
-    }
-}
-
-# Run update-cleanup to remove temp copies and .old backups
-$cleanupBinary = Join-Path "%s" "bin\gitmap.exe"
-if ($deployedBinary -and (Test-Path $deployedBinary)) {
-    $cleanupBinary = $deployedBinary
-}
-
-if (Test-Path $cleanupBinary) {
-    Write-Host ""
-    Write-Host "  Cleaning up update artifacts..." -ForegroundColor DarkGray
-    & $cleanupBinary update-cleanup
-}
-
-if ($syncFailed) {
-    Write-Host "" 
-    Write-Host "  [FAIL] Update finished, but active PATH binary is still stale." -ForegroundColor Red
+if (($activeAfter -eq "unknown") -or ($deployedAfter -eq "unknown") -or ($activeAfter -ne $deployedAfter)) {
+    Write-Host "  [FAIL] Active PATH version does not match deployed version." -ForegroundColor Red
     exit 1
+}
+
+Write-Host "  [OK] Active PATH binary matches deployed version." -ForegroundColor Green
+
+if ($activeBinary -and (Test-Path $activeBinary)) {
+    Write-Host ""
+    Write-Host "  Latest changelog:" -ForegroundColor Cyan
+    & $activeBinary changelog --latest
+
+    Write-Host ""
+    Write-Host "  Cleaning update artifacts..." -ForegroundColor DarkGray
+    & $activeBinary update-cleanup
 }
 
 Write-Host ""
 exit 0
-`, repoPath, repoPath, repoPath, runPS1, repoPath)
+`, repoPath, repoPath, runPS1)
 }
 
 // runUpdateScript executes the PowerShell script with output piped to terminal.

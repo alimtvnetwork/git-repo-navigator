@@ -33,6 +33,10 @@ func dispatch(command string) {
 		runUpdate()
 		return
 	}
+	if command == constants.CmdUpdateRunner {
+		runUpdateRunner()
+		return
+	}
 	if command == constants.CmdVersion || command == constants.CmdVersionAlias {
 		fmt.Printf("gitmap v%s\n", constants.Version)
 		return

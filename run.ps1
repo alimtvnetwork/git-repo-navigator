@@ -582,10 +582,24 @@ if (-not $NoDeploy) {
     Write-Info "Skipping deploy (-NoDeploy)"
 }
 
-if (Test-Path $binaryPath) {
+$changelogBinaryPath = $binaryPath
+$activeCmdForChangelog = Get-Command gitmap -ErrorAction SilentlyContinue
+if ($activeCmdForChangelog -and (Test-Path $activeCmdForChangelog.Source)) {
+    $changelogBinaryPath = $activeCmdForChangelog.Source
+} elseif ($deployedBinaryPath -and (Test-Path $deployedBinaryPath)) {
+    $changelogBinaryPath = $deployedBinaryPath
+}
+
+if (Test-Path $changelogBinaryPath) {
     Write-Host ""
     Write-Info "Latest changelog:"
-    & $binaryPath changelog --latest
+    & $changelogBinaryPath changelog --latest
+
+    if ($Update) {
+        Write-Host ""
+        Write-Info "Running update cleanup"
+        & $changelogBinaryPath update-cleanup
+    }
 }
 
 if ($R) {
