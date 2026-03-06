@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.11
+- Rename-first PATH sync in `-Update` mode: renames active binary to `.old` before copying, eliminating lock-retry loops.
+- Parent `update` handoff uses `cmd.Start()` + `os.Exit(0)` to release file lock before worker runs.
+- Handoff diagnostic log prints active exe and copy paths at update start.
+- Spec consistency pass: all four update-flow specs now enforce identical rules.
+
 ## v2.3.10
 - Fixed `Read-Host` error in non-interactive PowerShell sessions during update by removing trailing prompt.
 - Parent `update` process now exits immediately (handoff copy runs synchronously via `update-runner`).
