@@ -81,6 +81,10 @@ func dispatch(command string) {
 		runChangelog([]string{"--open"})
 		return
 	}
+	if command == constants.CmdDoctor {
+		runDoctor()
+		return
+	}
 	if command == constants.CmdHelp {
 		printUsage()
 		return
