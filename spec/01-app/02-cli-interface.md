@@ -376,6 +376,7 @@ activates whenever existing repos are detected during a clone operation.
 | `--json`                | Shorthand for `--format json`                        | `false`    |
 | `--no-fetch`            | Skip `git fetch` (use existing remote refs)          | `false`    |
 | `--sort <order>`        | Sort order: `date` (descending) or `name` (A-Z)     | `date`     |
+| `--filter <pattern>`   | Filter branches by glob or substring pattern         | `""`       |
 
 ## Examples
 

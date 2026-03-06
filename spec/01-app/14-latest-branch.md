@@ -60,6 +60,7 @@ A bare integer argument (e.g. `gitmap lb 3`) is shorthand for
 | `--json`              | bool   | `false`    | Shorthand for `--format json`                    |
 | `--no-fetch`          | bool   | `false`    | Skip `git fetch` (use existing remote refs)      |
 | `--sort <order>`      | string | `date`     | Sort order: `date` (descending) or `name` (A-Z)  |
+| `--filter <pattern>`  | string | `""`       | Filter branches by glob or substring pattern     |
 
 ## Output Format
 
