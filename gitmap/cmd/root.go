@@ -38,7 +38,7 @@ func dispatch(command string) {
 		return
 	}
 	if command == constants.CmdVersion || command == constants.CmdVersionAlias {
-		fmt.Printf("gitmap v%s\n", constants.Version)
+		fmt.Printf(constants.MsgVersionFmt, constants.Version)
 		return
 	}
 	if command == constants.CmdDesktopSync || command == constants.CmdDesktopSyncAlias {
