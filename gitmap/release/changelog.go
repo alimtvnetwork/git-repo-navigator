@@ -46,14 +46,12 @@ func ReadChangelog() ([]ChangelogEntry, error) {
 			continue
 		}
 
-		if inSection == false {
-			continue
-		}
-
-		if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") {
-			note := strings.TrimSpace(line[2:])
-			if len(note) > 0 {
-				current.Notes = append(current.Notes, note)
+		if inSection {
+			if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") {
+				note := strings.TrimSpace(line[2:])
+				if len(note) > 0 {
+					current.Notes = append(current.Notes, note)
+				}
 			}
 		}
 	}
@@ -93,11 +91,11 @@ func NormalizeVersion(version string) string {
 	if len(v) == 0 {
 		return ""
 	}
-	if strings.HasPrefix(v, "v") == false {
-		v = "v" + v
+	if strings.HasPrefix(v, "v") {
+		return v
 	}
 
-	return v
+	return "v" + v
 }
 
 // parseVersionHeader extracts the version token from a markdown heading.
@@ -116,10 +114,9 @@ func parseVersionHeader(header string) string {
 	if len(version) == 0 {
 		return ""
 	}
-
-	if strings.HasPrefix(version, "v") == false {
-		version = "v" + version
+	if strings.HasPrefix(version, "v") {
+		return version
 	}
 
-	return version
+	return "v" + version
 }

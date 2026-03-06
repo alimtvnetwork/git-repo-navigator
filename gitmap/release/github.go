@@ -21,11 +21,11 @@ func CollectAssets(assetsPath string) []string {
 		return nil
 	}
 
-	if info.IsDir() == false {
-		return []string{assetsPath}
+	if info.IsDir() {
+		return collectDirFiles(assetsPath)
 	}
 
-	return collectDirFiles(assetsPath)
+	return []string{assetsPath}
 }
 
 // collectDirFiles returns all file paths in a directory.
@@ -37,9 +37,10 @@ func collectDirFiles(dir string) []string {
 	}
 
 	for _, entry := range entries {
-		if entry.IsDir() == false {
-			files = append(files, filepath.Join(dir, entry.Name()))
+		if entry.IsDir() {
+			continue
 		}
+		files = append(files, filepath.Join(dir, entry.Name()))
 	}
 
 	return files

@@ -7,6 +7,7 @@ const (
 	SetupSectionAlias = "Aliases"
 	SetupSectionCred  = "Credential Helper"
 	SetupSectionCore  = "Core Settings"
+	SetupGlobalFlag   = "--global"
 )
 
 // Release messages.
@@ -32,4 +33,5 @@ const (
 	ReleaseBranchPrefix     = "release/"
 	ChangelogFile           = "CHANGELOG.md"
 	ReadmeFile              = "README.md"
+	ReleaseTagPrefix        = "Release "
 )

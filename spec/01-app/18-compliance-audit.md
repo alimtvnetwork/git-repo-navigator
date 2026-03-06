@@ -60,12 +60,12 @@ Last updated: 2026-03-06
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `constants.go` | ~30 | ✅ Pass | |
+| `constants.go` | ~110 | ✅ Pass | Added bump level constants |
 | `constants_cli.go` | ~60 | ✅ Pass | |
 | `constants_doctor.go` | ~50 | ✅ Pass | OS/binary constants added |
-| `constants_git.go` | ~45 | ✅ Pass | |
+| `constants_git.go` | ~55 | ✅ Pass | Added 12 git arg constants |
 | `constants_messages.go` | ~130 | ✅ Pass | OS command constants added |
-| `constants_release.go` | ~35 | ✅ Pass | |
+| `constants_release.go` | ~37 | ✅ Pass | Added SetupGlobalFlag, ReleaseTagPrefix |
 | `constants_store.go` | ~20 | ✅ Pass | |
 | `constants_terminal.go` | ~180 | ✅ Pass | Format strings extracted |
 | `constants_update.go` | ~40 | ✅ Pass | PS/shell constants added |
@@ -74,23 +74,23 @@ Last updated: 2026-03-06
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `workflow.go` | ~416 | ⚠️ Pending trim | Needs deletion of lines 165–416 (moved to split files) |
+| `workflow.go` | ~163 | ✅ Pass | Trimmed from 416; imports cleaned; magic strings fixed |
 | `workflowfinalize.go` | ~130 | ✅ Pass | Extracted from workflow.go |
 | `workflowbranch.go` | ~165 | ✅ Pass | Extracted from workflow.go |
 | `gitops.go` | ~100 | ✅ Pass | Rewritten; query functions extracted |
 | `gitopsquery.go` | ~135 | ✅ Pass | Extracted from gitops.go |
-| `changelog.go` | ~120 | ⚠️ Negation | `== false` on lines 56, 73 |
-| `github.go` | ~60 | ⚠️ Negation | `== false` on line 30 |
-| `metadata.go` | ~130 | ⚠️ Negation | `== false` on line 78 |
+| `changelog.go` | ~120 | ✅ Pass | Fixed `== false` → positive logic (3 occurrences) |
+| `github.go` | ~66 | ✅ Pass | Fixed `IsDir() == false` → positive logic (2 occurrences) |
+| `metadata.go` | ~145 | ✅ Pass | Fixed `GreaterThan == false` → `latestIsHigher` helper |
 | `metadata_test.go` | ~40 | ✅ Pass | |
-| `semver.go` | ~120 | ⚠️ Switch | `switch` on line 90; needs if/else chain |
+| `semver.go` | ~160 | ✅ Pass | Fixed switch → if/else chain; added constants import |
 | `semver_test.go` | ~80 | ✅ Pass | |
 
 ## Package: `formatter`
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `terminal.go` | ~223 | ⚠️ Pending trim | Needs deletion of lines 125–223 (moved to terminaltree.go) |
+| `terminal.go` | ~124 | ✅ Pass | Trimmed from 223; fixed `!quiet` → positive guard |
 | `terminaltree.go` | ~110 | ✅ Pass | Extracted from terminal.go |
 | `csv.go` | ~60 | ✅ Pass | |
 | `json.go` | ~30 | ✅ Pass | |
@@ -107,21 +107,21 @@ Last updated: 2026-03-06
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
 | `cloner.go` | ~90 | ✅ Pass | |
-| `safe_pull.go` | ~213 | ⚠️ Pending trim | Needs deletion of lines 112–213 (moved to pulldiag.go) |
+| `safe_pull.go` | ~110 | ✅ Pass | Trimmed from 213; diagnosis functions extracted |
 | `pulldiag.go` | ~130 | ✅ Pass | Extracted from safe_pull.go |
 
 ## Package: `setup`
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `setup.go` | ~206 | ⚠️ Pending trim | Needs deletion of lines 133–206 (moved to setupapply.go) |
+| `setup.go` | ~131 | ✅ Pass | Trimmed from 206; apply functions extracted |
 | `setupapply.go` | ~100 | ✅ Pass | Extracted from setup.go |
 
 ## Package: `config`
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `config.go` | ~50 | ⚠️ Negation | `os.IsNotExist` on line 17 |
+| `config.go` | ~78 | ✅ Pass | Fixed `os.IsNotExist` → `errors.Is(err, fs.ErrNotExist)` |
 | `config_test.go` | ~30 | ✅ Pass | |
 
 ## Package: `scanner`
@@ -171,13 +171,21 @@ Last updated: 2026-03-06
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `verbose.go` | ~60 | ⚠️ Negation | `!l.enabled` on line 53 |
+| `verbose.go` | ~78 | ✅ Pass | Fixed `!l.enabled` → positive guard with `writeLogEntry` helper |
 
-## Pending Work Summary
+## Audit Totals
 
-| Category | Count | Details |
-|----------|-------|---------|
-| File trims (over 200 lines) | 4 | `workflow.go`, `terminal.go`, `safe_pull.go`, `setup.go` |
-| Negation fixes (`== false`, `!`, `os.IsNotExist`) | 5 | `changelog.go`, `github.go`, `metadata.go`, `config.go`, `verbose.go` |
-| Switch → if/else | 1 | `semver.go` |
-| Missing constants | ~10 | Git args, bump levels, release tag prefix |
+| Metric | Count |
+|--------|-------|
+| Total files audited | 75 |
+| Passing | 75 |
+| Pending | 0 |
+
+## Wave 2 Changes Applied
+
+| Category | Files Changed | Details |
+|----------|--------------|---------|
+| File trims (≤200 lines) | 4 | `workflow.go` 416→163, `terminal.go` 223→124, `safe_pull.go` 213→110, `setup.go` 206→131 |
+| Negation fixes | 6 | `changelog.go` (3×), `github.go` (2×), `metadata.go`, `semver.go`, `verbose.go`, `config.go` |
+| Switch → if/else | 1 | `semver.go` Bump function |
+| Constants added | 3 files | 12 git args, 3 bump levels, `SetupGlobalFlag`, `ReleaseTagPrefix` |

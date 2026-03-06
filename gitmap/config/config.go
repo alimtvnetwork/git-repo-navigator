@@ -3,6 +3,8 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
+	"io/fs"
 	"os"
 
 	"github.com/user/gitmap/model"
@@ -23,7 +25,7 @@ func LoadFromFile(path string) (model.Config, error) {
 
 // handleMissingFile returns nil for missing files, error otherwise.
 func handleMissingFile(err error) error {
-	if os.IsNotExist(err) {
+	if errors.Is(err, fs.ErrNotExist) {
 		return nil
 	}
 
