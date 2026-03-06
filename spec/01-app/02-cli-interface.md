@@ -220,9 +220,17 @@ Prints clear confirmation with version verification after sync.
 
 If issues are found, each is accompanied by a recommended fix command.
 
+### `gitmap latest-branch` (alias: `lb`)
+
+Find the most recently updated remote branch by commit date. Fetches
+all remotes, reads tip commits, sorts by date, and resolves the branch
+name via `--points-at`.
+
+See [14-latest-branch.md](./14-latest-branch.md) for full details.
+
 ### `gitmap version` (alias: `v`)
 
-Prints the current version number (e.g., `gitmap v2.3.6`) and exits.
+Prints the current version number (e.g., `gitmap v2.4.0`) and exits.
 
 ### `gitmap help`
 
