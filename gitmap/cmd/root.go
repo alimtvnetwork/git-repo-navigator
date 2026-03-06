@@ -58,7 +58,7 @@ func dispatch(command string) {
 		return
 	}
 	if command == constants.CmdStatus || command == constants.CmdStatusAlias {
-		runStatus()
+		runStatus(os.Args[2:])
 		return
 	}
 	if command == constants.CmdExec || command == constants.CmdExecAlias {

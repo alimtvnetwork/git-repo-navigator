@@ -135,6 +135,7 @@ const (
 	FlagDescLBSort        = "Sort order: date (default, descending) or name (alphabetical)"
 	FlagDescLBFilter      = "Filter branches by glob or substring pattern"
 	FlagDescGroup         = "Filter by group name"
+	FlagDescAll           = "Run against all tracked repos from database"
 	FlagDescListVerbose   = "Show full paths and URLs"
 	FlagDescGroupDesc     = "Optional group description"
 	FlagDescGroupColor    = "Terminal color for group display"
