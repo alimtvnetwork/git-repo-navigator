@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -12,7 +13,76 @@ import (
 )
 
 // runStatus handles the "status" subcommand.
-func runStatus() {
+func runStatus(args []string) {
+	groupName, all := parseStatusFlags(args)
+	records := loadStatusByScope(groupName, all)
+
+	printStatusBanner(len(records))
+	summary := printStatusTable(records)
+	printStatusSummary(summary)
+}
+
+// parseStatusFlags parses --group and --all flags.
+func parseStatusFlags(args []string) (groupName string, all bool) {
+	fs := flag.NewFlagSet(constants.CmdStatus, flag.ExitOnError)
+	gFlag := fs.String("group", "", constants.FlagDescGroup)
+	fs.StringVar(gFlag, "g", "", constants.FlagDescGroup)
+	aFlag := fs.Bool("all", false, constants.FlagDescAll)
+	fs.Parse(args)
+
+	return *gFlag, *aFlag
+}
+
+// loadStatusByScope returns records filtered by group, all DB repos, or JSON fallback.
+func loadStatusByScope(groupName string, all bool) []model.ScanRecord {
+	if len(groupName) > 0 {
+		return loadRecordsByGroup(groupName)
+	}
+	if all {
+		return loadAllRecordsDB()
+	}
+
+	return loadRecordsJSONFallback()
+}
+
+// loadRecordsByGroup loads repos from a specific group in the database.
+func loadRecordsByGroup(groupName string) []model.ScanRecord {
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrListDBFailed, err)
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	records, err := db.ShowGroup(groupName)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+
+	return records
+}
+
+// loadAllRecordsDB loads all repos from the database.
+func loadAllRecordsDB() []model.ScanRecord {
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrListDBFailed, err)
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	records, err := db.ListRepos()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+
+	return records
+}
+
+// loadRecordsJSONFallback loads records from gitmap.json.
+func loadRecordsJSONFallback() []model.ScanRecord {
 	jsonPath := filepath.Join(constants.DefaultOutputFolder, constants.DefaultJSONFile)
 	records, err := loadStatusRecords(jsonPath)
 	if err != nil {
@@ -20,9 +90,7 @@ func runStatus() {
 		os.Exit(1)
 	}
 
-	printStatusBanner(len(records))
-	summary := printStatusTable(records)
-	printStatusSummary(summary)
+	return records
 }
 
 // loadStatusRecords reads ScanRecords from gitmap.json.

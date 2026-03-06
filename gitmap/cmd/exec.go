@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -14,19 +15,13 @@ import (
 
 // runExec handles the "exec" subcommand.
 func runExec(args []string) {
-	if len(args) == 0 {
+	groupName, all, gitArgs := parseExecFlags(args)
+	if len(gitArgs) == 0 {
 		fmt.Fprintln(os.Stderr, constants.ErrExecUsage)
 		os.Exit(1)
 	}
 
-	jsonPath := filepath.Join(constants.DefaultOutputFolder, constants.DefaultJSONFile)
-	records, err := loadExecRecords(jsonPath)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, constants.ErrExecLoadFailed, err)
-		os.Exit(1)
-	}
-
-	gitArgs := args
+	records := loadExecByScope(groupName, all)
 	printExecBanner(gitArgs, len(records))
 
 	var succeeded, failed, missing int
@@ -50,7 +45,42 @@ func runExec(args []string) {
 	printExecSummary(succeeded, failed, missing, len(records))
 }
 
-// loadExecRecords reads ScanRecords from gitmap.json.
+// parseExecFlags parses --group and --all flags, returning remaining args as git args.
+func parseExecFlags(args []string) (groupName string, all bool, gitArgs []string) {
+	fs := flag.NewFlagSet(constants.CmdExec, flag.ExitOnError)
+	gFlag := fs.String("group", "", constants.FlagDescGroup)
+	fs.StringVar(gFlag, "g", "", constants.FlagDescGroup)
+	aFlag := fs.Bool("all", false, constants.FlagDescAll)
+	fs.Parse(args)
+
+	return *gFlag, *aFlag, fs.Args()
+}
+
+// loadExecByScope returns records filtered by group, all DB repos, or JSON fallback.
+func loadExecByScope(groupName string, all bool) []model.ScanRecord {
+	if len(groupName) > 0 {
+		return loadRecordsByGroup(groupName)
+	}
+	if all {
+		return loadAllRecordsDB()
+	}
+
+	return loadExecRecordsJSON()
+}
+
+// loadExecRecordsJSON reads ScanRecords from gitmap.json.
+func loadExecRecordsJSON() []model.ScanRecord {
+	jsonPath := filepath.Join(constants.DefaultOutputFolder, constants.DefaultJSONFile)
+	records, err := loadExecRecords(jsonPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrExecLoadFailed, err)
+		os.Exit(1)
+	}
+
+	return records
+}
+
+// loadExecRecords reads ScanRecords from a JSON file.
 func loadExecRecords(path string) ([]model.ScanRecord, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
