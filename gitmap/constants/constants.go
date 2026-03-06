@@ -288,8 +288,9 @@ const (
 	ErrReleasePushFailed      = "Error: failed to push to remote: %v\n"
 	ErrReleaseVersionLoad     = "Error: could not read version.json: %v\n"
 	ErrReleaseMetaWrite       = "Error: could not write release metadata: %v\n"
-	ErrChangelogRead          = "Error: could not read CHANGELOG.md: %v\n"
+	ErrChangelogRead            = "Error: could not read CHANGELOG.md: %v\n"
 	ErrChangelogVersionNotFound = "Error: version %s not found in CHANGELOG.md\n"
+	ErrChangelogOpen            = "Error: could not open CHANGELOG.md: %v\n"
 )
 
 // CLI help text.
