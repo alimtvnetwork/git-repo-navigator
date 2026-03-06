@@ -297,6 +297,8 @@ func validateExistingBranch(branchName string, v Version) error {
 
 // completeBranchRelease checks out the branch and runs tag/push/release.
 func completeBranchRelease(v Version, branchName, assetsPath string, draft bool) error {
+	originalBranch, _ := CurrentBranchName()
+
 	err := CheckoutBranch(branchName)
 	if err != nil {
 		return fmt.Errorf("checkout branch: %w", err)
@@ -311,5 +313,10 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool)
 
 	opts := Options{Assets: assetsPath, Draft: draft}
 
-	return pushAndFinalize(v, branchName, tag, branchName, opts)
+	err = pushAndFinalize(v, branchName, tag, branchName, opts)
+	if err != nil {
+		return err
+	}
+
+	return returnToBranch(originalBranch)
 }
