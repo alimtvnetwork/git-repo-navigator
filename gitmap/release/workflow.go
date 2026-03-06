@@ -4,10 +4,13 @@ package release
 
 import (
 	"fmt"
+	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/user/gitmap/constants"
 )
+
 
 // Options holds all parameters for a release operation.
 type Options struct {
@@ -122,13 +125,24 @@ func performRelease(v Version, sourceRef, sourceName string, opts Options) error
 	branchName := constants.ReleaseBranchPrefix + v.String()
 	tag := v.String()
 
+	originalBranch, _ := CurrentBranchName()
+
 	fmt.Printf(constants.MsgReleaseStart, tag)
 
 	if opts.DryRun {
-		return printDryRun(v, branchName, tag, sourceName, opts)
+		err := printDryRun(v, branchName, tag, sourceName, opts)
+		if len(originalBranch) > 0 {
+			fmt.Printf(constants.MsgReleaseDryRun, "Switch back to "+originalBranch)
+		}
+		return err
 	}
 
-	return executeSteps(v, branchName, tag, sourceRef, sourceName, opts)
+	err := executeSteps(v, branchName, tag, sourceRef, sourceName, opts)
+	if err != nil {
+		return err
+	}
+
+	return returnToBranch(originalBranch)
 }
 
 // executeSteps runs each release step in sequence.
@@ -286,6 +300,8 @@ func validateExistingBranch(branchName string, v Version) error {
 
 // completeBranchRelease checks out the branch and runs tag/push/release.
 func completeBranchRelease(v Version, branchName, assetsPath string, draft bool) error {
+	originalBranch, _ := CurrentBranchName()
+
 	err := CheckoutBranch(branchName)
 	if err != nil {
 		return fmt.Errorf("checkout branch: %w", err)
@@ -300,5 +316,101 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool)
 
 	opts := Options{Assets: assetsPath, Draft: draft}
 
-	return pushAndFinalize(v, branchName, tag, branchName, opts)
+	err = pushAndFinalize(v, branchName, tag, branchName, opts)
+	if err != nil {
+		return err
+	}
+
+	return returnToBranch(originalBranch)
+}
+
+// returnToBranch switches back to the original branch after a release.
+func returnToBranch(branch string) error {
+	if len(branch) == 0 {
+		return nil
+	}
+
+	err := CheckoutBranch(branch)
+	if err != nil {
+		return fmt.Errorf("switch back to %s: %w", branch, err)
+	}
+
+	fmt.Printf(constants.MsgReleaseSwitchedBack, branch)
+
+	return nil
+}
+
+// ExecutePending finds all release branches without tags and releases them.
+func ExecutePending(assetsPath string, draft bool, dryRun bool) error {
+	branches, err := listReleaseBranches()
+	if err != nil {
+		return fmt.Errorf("could not list release branches: %w", err)
+	}
+
+	if len(branches) == 0 {
+		fmt.Println(constants.MsgReleasePendingNone)
+		return nil
+	}
+
+	pending := filterPendingBranches(branches)
+
+	if len(pending) == 0 {
+		fmt.Println(constants.MsgReleasePendingNone)
+		return nil
+	}
+
+	fmt.Printf(constants.MsgReleasePendingFound, len(pending))
+
+	for _, branchName := range pending {
+		err := ExecuteFromBranch(branchName, assetsPath, draft, dryRun)
+		if err != nil {
+			fmt.Printf(constants.MsgReleasePendingFailed, branchName, err)
+			continue
+		}
+	}
+
+	return nil
+}
+
+// listReleaseBranches returns all local branches matching release/v*.
+func listReleaseBranches() ([]string, error) {
+	cmd := exec.Command(constants.GitBin, "branch", "--list", constants.ReleaseBranchPrefix+"v*")
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, err
+	}
+
+	lines := strings.Split(strings.TrimSpace(string(out)), "\n")
+	var branches []string
+
+	for _, line := range lines {
+		branch := strings.TrimSpace(line)
+		branch = strings.TrimPrefix(branch, "* ")
+		if len(branch) > 0 {
+			branches = append(branches, branch)
+		}
+	}
+
+	return branches, nil
+}
+
+// filterPendingBranches returns branches whose version tag does not exist.
+func filterPendingBranches(branches []string) []string {
+	var pending []string
+
+	for _, branch := range branches {
+		v, err := extractVersionFromBranch(branch)
+		if err != nil {
+			continue
+		}
+
+		tag := v.String()
+		if TagExistsLocally(tag) || TagExistsRemote(tag) {
+			continue
+		}
+
+		pending = append(pending, branch)
+	}
+
+	return pending
 }

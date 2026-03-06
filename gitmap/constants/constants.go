@@ -4,7 +4,7 @@
 package constants
 
 // Version.
-const Version = "2.2.3"
+const Version = "2.3.0"
 
 // RepoPath is set at build time via -ldflags.
 var RepoPath = ""
@@ -124,6 +124,8 @@ const (
 	CmdReleaseAlias     = "r"
 	CmdReleaseBranch      = "release-branch"
 	CmdReleaseBranchAlias = "rb"
+	CmdReleasePending      = "release-pending"
+	CmdReleasePendingAlias = "rp"
 )
 
 // GitHub Desktop.
@@ -302,6 +304,7 @@ const (
 	HelpExec        = "  exec (x) <args...>  Run any git command across all repos"
 	HelpRelease     = "  release (r) [ver]   Create release branch, tag, and push"
 	HelpReleaseBr   = "  release-branch (rb) Complete release from existing release branch"
+	HelpReleasePend = "  release-pending (rp) Release all pending branches without tags"
 	HelpHelp        = "  help                Show this help message"
 	HelpScanFlags  = "Scan flags:"
 	HelpConfig     = "  --config <path>     Config file (default: ./data/config.json)"
@@ -388,6 +391,10 @@ const (
 	MsgReleaseBranchStart  = "\n  Completing release from %s...\n"
 	MsgReleaseVersionRead  = "  → Version from %s: %s\n"
 	MsgReleaseBumpResult   = "  → Bumped %s → %s\n"
+	MsgReleaseSwitchedBack = "  ✓ Switched back to %s\n"
+	MsgReleasePendingNone  = "  No pending release branches found.\n"
+	MsgReleasePendingFound = "\n  Found %d pending release branch(es).\n"
+	MsgReleasePendingFailed = "  ✗ Failed to release %s: %v\n"
 	ReleaseBranchPrefix    = "release/"
 	ChangelogFile          = "CHANGELOG.md"
 	ReadmeFile             = "README.md"
