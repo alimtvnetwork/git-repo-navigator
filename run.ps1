@@ -366,7 +366,7 @@ function Deploy-Binary {
             if ($attempt -ge $maxAttempts) {
                 # Restore backup on failure
                 if ($hasBackup -and (Test-Path $backupFile)) {
-                    Write-Warn "Deploy failed — restoring previous binary from backup"
+                    Write-Warn "Deploy failed - restoring previous binary from backup"
                     try {
                         Copy-Item $backupFile $destFile -Force -ErrorAction Stop
                         Write-Success "Rollback complete — previous version restored"
