@@ -349,23 +349,7 @@ if ($pullText -match "Already up to date") {
     }
 
     if ($needsRebuild -eq $false) {
-        if ($activeBinary -and $deployedBinary -and (Test-Path $activeBinary) -and (Test-Path $deployedBinary)) {
-            $activeResolved = (Resolve-Path $activeBinary).Path
-            $deployedResolved = (Resolve-Path $deployedBinary).Path
-            if ($activeResolved -ne $deployedResolved) {
-                Write-Host "  [WARN] PATH points to a different gitmap binary." -ForegroundColor Yellow
-                Write-Host "         Active:   $activeResolved" -ForegroundColor Yellow
-                Write-Host "         Deployed: $deployedResolved" -ForegroundColor Yellow
-                try {
-                    Copy-Item $deployedBinary $activeBinary -Force -ErrorAction Stop
-                    Write-Host "  [OK] Synced active PATH binary with deployed build." -ForegroundColor Green
-                    $activeVersion = & $activeBinary version 2>&1
-                    Write-Host "  Active PATH version is now: $activeVersion" -ForegroundColor Green
-                } catch {
-                    Write-Host "  [WARN] Could not sync active PATH binary: $_" -ForegroundColor Yellow
-                }
-            }
-        }
+        Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
 
         Write-Host "  Source is already up to date." -ForegroundColor Yellow
         Write-Host ""
