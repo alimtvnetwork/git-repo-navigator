@@ -314,6 +314,23 @@ activates whenever existing repos are detected during a clone operation.
 | `--draft`         | Create an unpublished draft release | `false` |
 | `--verbose`       | Write detailed debug log            | `false` |
 
+## Release-Pending Flags
+
+| Flag              | Description                              | Default |
+|-------------------|------------------------------------------|---------|
+| `--assets <path>` | Directory or file to attach              | (none)  |
+| `--draft`         | Mark release metadata as draft           | `false` |
+| `--dry-run`       | Preview steps without executing          | `false` |
+| `--verbose`       | Write detailed debug log                 | `false` |
+
+## Changelog Flags
+
+| Flag              | Description                              | Default |
+|-------------------|------------------------------------------|---------|
+| `--latest`        | Show only the most recent version        | `false` |
+| `--limit <n>`     | Max number of versions to display        | `5`     |
+| `--open`          | Open CHANGELOG.md in default application | `false` |
+
 ## Examples
 
 ```bash
@@ -403,6 +420,21 @@ gitmap release
 # Complete release from existing release branch
 gitmap release-branch release/v1.2.0
 gitmap rb release/v1.2.0
+
+# Release all untagged release branches
+gitmap release-pending
+gitmap rp            # alias
+gitmap release-pending --dry-run
+
+# View changelog
+gitmap changelog             # last 5 versions
+gitmap cl --latest           # most recent only
+gitmap changelog v2.3.0      # specific version
+gitmap changelog --open      # open CHANGELOG.md
+gitmap changelog.md          # shorthand for --open
+
+# Diagnose environment issues
+gitmap doctor
 
 # Print version number
 gitmap version
