@@ -235,6 +235,15 @@ const (
 	MsgUpdateStarting   = "\n  Updating gitmap from source repo...\n"
 	MsgUpdateRepoPath   = "  → Repo path: %s\n"
 	MsgUpdateVersion    = "\n  ✓ Updated to gitmap v%s\n"
+	MsgLatestBranchFetching = "\n  Fetching remote refs..."
+)
+
+// Latest-branch error messages.
+const (
+	ErrLatestBranchNotRepo    = "Error: not inside a Git repository."
+	ErrLatestBranchNoRefs     = "Error: no remote-tracking branches found for remote '%s'.\n"
+	ErrLatestBranchNoRefsAll  = "Error: no remote-tracking branches found on any remote."
+	ErrLatestBranchNoCommits  = "Error: could not read commit info for remote branches."
 )
 
 // Folder structure Markdown.
