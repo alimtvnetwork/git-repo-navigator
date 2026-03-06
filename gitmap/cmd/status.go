@@ -74,7 +74,7 @@ func printStatusTable(records []model.ScanRecord) statusSummary {
 
 // printStatusHeader prints the table column header row.
 func printStatusHeader() {
-	fmt.Printf("  %s%-22s %-12s %-8s %-10s %-8s %-6s%s\n",
+	fmt.Printf(constants.StatusHeaderFmt,
 		constants.ColorWhite,
 		constants.StatusTableColumns[0], constants.StatusTableColumns[1],
 		constants.StatusTableColumns[2], constants.StatusTableColumns[3],
