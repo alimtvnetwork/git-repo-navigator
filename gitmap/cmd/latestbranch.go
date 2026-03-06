@@ -184,16 +184,6 @@ func resolveBranchNames(sha, remote string, containsFallback bool) []string {
 // parseLatestBranchFlags parses flags and returns a config struct.
 func parseLatestBranchFlags(args []string) latestBranchConfig {
 	fs := flag.NewFlagSet(constants.CmdLatestBranch, flag.ExitOnError)
-	cfg := registerLatestBranchFlags(fs)
-	fs.Parse(args)
-	cfg.top = resolvePositionalTop(fs, cfg.top)
-	cfg.format = resolveOutputFormat(cfg.format, cfg.format == constants.OutputJSON)
-
-	return cfg
-}
-
-// registerLatestBranchFlags registers all flags and returns initial config.
-func registerLatestBranchFlags(fs *flag.FlagSet) latestBranchConfig {
 	var cfg latestBranchConfig
 	var allRemotes, noFetch, jsonOut bool
 	fs.StringVar(&cfg.remote, "remote", "origin", constants.FlagDescLBRemote)
@@ -205,12 +195,34 @@ func registerLatestBranchFlags(fs *flag.FlagSet) latestBranchConfig {
 	fs.BoolVar(&noFetch, "no-fetch", false, constants.FlagDescLBNoFetch)
 	fs.StringVar(&cfg.sortBy, "sort", constants.SortByDate, constants.FlagDescLBSort)
 	fs.StringVar(&cfg.filter, "filter", "", constants.FlagDescLBFilter)
+	fs.Parse(args)
 
-	// Resolve positive-logic booleans after Parse via deferred init.
-	// Note: these are set correctly after fs.Parse() is called by the caller.
-	// We use a wrapper approach instead — see parseLatestBranchFlags.
-	cfg.filterByRemote = true
-	cfg.shouldFetch = true
+	return resolveLatestBranchConfig(fs, cfg, allRemotes, noFetch, jsonOut)
+}
+
+// resolveLatestBranchConfig converts parsed flags into positive-logic config.
+func resolveLatestBranchConfig(fs *flag.FlagSet, cfg latestBranchConfig, allRemotes, noFetch, jsonOut bool) latestBranchConfig {
+	cfg.filterByRemote = allRemotes == false
+	cfg.shouldFetch = noFetch == false
+	if jsonOut {
+		cfg.format = constants.OutputJSON
+	}
+	cfg.top = resolvePositionalTop(fs, cfg.top)
 
 	return cfg
+}
+
+// resolvePositionalTop checks for a bare integer positional argument.
+func resolvePositionalTop(fs *flag.FlagSet, current int) int {
+	if current > 0 || fs.NArg() == 0 {
+
+		return current
+	}
+	n, err := strconv.Atoi(fs.Arg(0))
+	if err == nil && n > 0 {
+
+		return n
+	}
+
+	return current
 }
