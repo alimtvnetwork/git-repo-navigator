@@ -451,6 +451,7 @@ if ($deployedBinary) {
 # Sync active PATH binary when it differs
 if ($activeBinary -and $deployedBinary) {
     Sync-ActivePathBinary -ActivePath $activeBinary -DeployedPath $deployedBinary | Out-Null
+    Ensure-ActiveVersionMatchesSource -ActivePath $activeBinary -ExpectedVersion $sourceVersion | Out-Null
 }
 
 # Show changelog bullets for updated version
