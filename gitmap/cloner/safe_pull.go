@@ -41,6 +41,13 @@ func IsGitRepo(path string) bool {
 	return err == nil
 }
 
+// IsMissingRepo returns true when the path is not a valid git repository.
+func IsMissingRepo(path string) bool {
+	_, err := os.Stat(filepath.Join(path, ".git"))
+
+	return err != nil
+}
+
 // SafePullOne runs safe-pull on a single repo. Exported for use by the pull command.
 func SafePullOne(rec model.ScanRecord, repoDir string) model.CloneResult {
 	return safePullRepo(rec, repoDir)
