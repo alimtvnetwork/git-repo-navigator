@@ -12,9 +12,9 @@ import (
 )
 
 // runUpdate handles the "update" subcommand.
-// It copies the current binary to a temp file and re-launches update from
-// that copy. The parent exits immediately so the original binary lock is
-// released before deploy overwrites gitmap.exe.
+// It creates a handoff copy of the active binary and re-launches a hidden
+// worker command from that copy. The parent exits immediately so file locks
+// are released before deploy overwrites gitmap.exe.
 func runUpdate() {
 	repoPath := constants.RepoPath
 	if len(repoPath) == 0 {
@@ -22,25 +22,7 @@ func runUpdate() {
 		os.Exit(1)
 	}
 
-	// Check for --verbose flag anywhere in remaining args.
 	verboseMode := hasFlag("--verbose")
-
-	// If we're already running from the update copy, do the actual update.
-	if hasFlag("--from-copy") {
-		if verboseMode {
-			log, err := verbose.Init()
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Warning: could not create verbose log: %v\n", err)
-			} else {
-				defer log.Close()
-				log.Log("update --from-copy starting, repo=%s", repoPath)
-			}
-		}
-		fmt.Printf(constants.MsgUpdateStarting)
-		fmt.Printf(constants.MsgUpdateRepoPath, repoPath)
-		executeUpdate(repoPath)
-		return
-	}
 
 	selfPath, err := os.Executable()
 	if err != nil {
@@ -48,17 +30,21 @@ func runUpdate() {
 		os.Exit(1)
 	}
 
-	copyPath := filepath.Join(os.TempDir(), fmt.Sprintf("gitmap-update-%d.exe", os.Getpid()))
+	copyPath := filepath.Join(filepath.Dir(selfPath), fmt.Sprintf("gitmap-update-%d.exe", os.Getpid()))
 	if err := copyFile(selfPath, copyPath); err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating update copy: %v\n", err)
-		os.Exit(1)
+		fallbackPath := filepath.Join(os.TempDir(), fmt.Sprintf("gitmap-update-%d.exe", os.Getpid()))
+		if errFallback := copyFile(selfPath, fallbackPath); errFallback != nil {
+			fmt.Fprintf(os.Stderr, "Error creating update copy: %v\n", err)
+			os.Exit(1)
+		}
+		copyPath = fallbackPath
 	}
 
-	// Re-launch from the copy and immediately exit parent to release lock.
-	copyArgs := []string{"update", "--from-copy"}
+	copyArgs := []string{constants.CmdUpdateRunner}
 	if verboseMode {
 		copyArgs = append(copyArgs, "--verbose")
 	}
+
 	cmd := exec.Command(copyPath, copyArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -67,7 +53,32 @@ func runUpdate() {
 		fmt.Fprintf(os.Stderr, constants.ErrUpdateFailed, err)
 		os.Exit(1)
 	}
+
 	os.Exit(0)
+}
+
+// runUpdateRunner is a hidden command that performs the real update work.
+func runUpdateRunner() {
+	repoPath := constants.RepoPath
+	if len(repoPath) == 0 {
+		fmt.Fprintln(os.Stderr, constants.ErrNoRepoPath)
+		os.Exit(1)
+	}
+
+	verboseMode := hasFlag("--verbose")
+	if verboseMode {
+		log, err := verbose.Init()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: could not create verbose log: %v\n", err)
+		} else {
+			defer log.Close()
+			log.Log("update-runner starting, repo=%s", repoPath)
+		}
+	}
+
+	fmt.Printf(constants.MsgUpdateStarting)
+	fmt.Printf(constants.MsgUpdateRepoPath, repoPath)
+	executeUpdate(repoPath)
 }
 
 // runUpdateCleanup handles the "update-cleanup" subcommand.
