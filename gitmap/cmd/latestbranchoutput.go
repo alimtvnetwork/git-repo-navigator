@@ -8,8 +8,6 @@ import (
 	"os"
 	"strings"
 
-	// already imported above but ensuring constants is present
-
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/gitutil"
 )
