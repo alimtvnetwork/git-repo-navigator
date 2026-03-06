@@ -51,14 +51,13 @@ func runUpdate() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
-	if err := cmd.Run(); err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
-			os.Exit(exitErr.ExitCode())
-		}
+	if err := cmd.Start(); err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrUpdateFailed, err)
 		os.Exit(1)
 	}
-}
+
+	// Parent must exit immediately to release lock on active binary.
+	os.Exit(0)
 
 // runUpdateRunner is a hidden command that performs the real update work.
 func runUpdateRunner() {
