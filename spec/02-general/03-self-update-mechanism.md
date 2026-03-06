@@ -122,7 +122,7 @@ else:
 User runs: <tool> update
    │
    ├─ Parent copies self → %TEMP%\<tool>-update-<pid>.exe
-   ├─ Parent launches copy with: update --from-copy
+   ├─ Parent launches copy with: update-runner
    ├─ Parent exits (releases file lock)
    │
    └─ Temp copy starts

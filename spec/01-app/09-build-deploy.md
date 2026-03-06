@@ -200,10 +200,10 @@ file handle when deploy starts.
 ## Self-Update Flow (`gitmap update`)
 
 1. `gitmap update` detects the active `gitmap` executable currently resolved by `PATH`.
-2. It creates a handoff copy beside that active binary (same directory), such as `gitmap.exe.old` or `gitmap-update-<pid>.exe`.
-3. It launches the handoff copy with `update --from-copy` and exits immediately to release file locks.
-4. The handoff copy resolves the repo path and runs `run.ps1 -Update` from the repo root.
-5. `run.ps1 -Update` performs pull -> build -> deploy, then safe PATH sync with retry + rename fallback.
+2. It creates a handoff copy beside that active binary (same directory), such as `gitmap-update-<pid>.exe` (fallback to `%TEMP%` if locked).
+3. It launches the handoff copy with the hidden `update-runner` command and exits immediately to release file locks.
+4. The handoff copy (`update-runner`) resolves the repo path and runs `run.ps1 -Update` from the repo root.
+5. `run.ps1 -Update` performs the full pipeline: pull → build → deploy, then safe PATH sync with retry + rename fallback.
 6. The updater prints executable-derived version comparison (`before` vs `after`) using `gitmap version`.
 7. It runs `gitmap changelog --latest` using the updated binary.
 8. It runs `gitmap update-cleanup` to remove temporary handoff and `.old` artifacts.
