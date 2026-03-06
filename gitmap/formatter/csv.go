@@ -4,14 +4,9 @@ import (
 	"encoding/csv"
 	"io"
 
+	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
-
-// csvHeaders defines the column order for CSV output.
-var csvHeaders = []string{
-	"repoName", "httpsUrl", "sshUrl", "branch",
-	"relativePath", "absolutePath", "cloneInstruction", "notes",
-}
 
 // WriteCSV writes records to the given writer in CSV format.
 func WriteCSV(w io.Writer, records []model.ScanRecord) error {
