@@ -94,7 +94,7 @@ func buildTopItems(items []gitutil.RemoteBranchInfo, top int) []latestBranchTopI
 func printLatestCSV(items []gitutil.RemoteBranchInfo, remote string, top int) {
 	count := resolveTopCount(top, len(items))
 	w := csv.NewWriter(os.Stdout)
-	w.Write([]string{"branch", "remote", "sha", "commitDate", "subject", "ref"})
+	w.Write(constants.LatestBranchCSVHeaders)
 	for _, item := range items[:count] {
 		writeCSVRow(w, item, remote)
 	}
