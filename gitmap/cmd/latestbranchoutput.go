@@ -13,7 +13,6 @@ import (
 )
 
 
-
 // latestBranchJSON is the JSON output structure.
 type latestBranchJSON struct {
 	Branch     []string              `json:"branch"`
