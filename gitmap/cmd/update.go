@@ -330,8 +330,6 @@ if ($activeBinary -and (Test-Path $activeBinary)) {
 }
 
 Write-Host ""
-Write-Host "  Press Enter to continue..." -ForegroundColor DarkGray -NoNewline
-Read-Host
 exit 0
 `, repoPath, repoPath, runPS1)
 }
