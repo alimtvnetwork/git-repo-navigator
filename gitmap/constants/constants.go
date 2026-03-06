@@ -130,6 +130,7 @@ const (
 	CmdChangelog          = "changelog"
 	CmdChangelogAlias     = "cl"
 	CmdChangelogMD        = "changelog.md"
+	CmdDoctor             = "doctor"
 )
 
 // GitHub Desktop.
