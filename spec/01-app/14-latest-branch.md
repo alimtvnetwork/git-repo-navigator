@@ -84,7 +84,25 @@ Appends a table after the main output:
   2025-03-04T17:45:12+01:00      release/v2.3.0        b7c8d9e  Bump version
 ```
 
-## Error Messages
+### With `--format csv`
+
+Outputs CSV with a header row to stdout. When combined with `--top`,
+all N rows are included:
+
+```
+branch,remote,sha,commitDate,subject,ref
+feature/v1.5.1,origin,a1b2c3d,2025-03-06T14:22:31+01:00,Fix auth token refresh,origin/feature/v1.5.1
+```
+
+### With `--format csv --top 3`
+
+```
+branch,remote,sha,commitDate,subject,ref
+feature/v1.5.1,origin,a1b2c3d,2025-03-06T14:22:31+01:00,Fix auth token refresh,origin/feature/v1.5.1
+main,origin,d4e5f6a,2025-03-05T09:10:00+01:00,Merge PR #42,origin/main
+release/v2.3.0,origin,b7c8d9e,2025-03-04T17:45:12+01:00,Bump version,origin/release/v2.3.0
+```
+
 
 | Condition                        | Message                                                              |
 |----------------------------------|----------------------------------------------------------------------|
