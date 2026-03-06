@@ -12,10 +12,10 @@ const (
 
 // Status banner box-drawing.
 const (
-	StatusBannerTop    = "  ╔══════════════════════════════════════╗"
-	StatusBannerTitle  = "  ║         gitmap status                ║"
-	StatusBannerBottom = "  ╚══════════════════════════════════════╝"
-	StatusRepoCountFmt = "  %d repos from gitmap-output/gitmap.json"
+	StatusBannerTop    = "╔══════════════════════════════════════╗"
+	StatusBannerTitle  = "║         gitmap status                ║"
+	StatusBannerBottom = "╚══════════════════════════════════════╝"
+	StatusRepoCountFmt = "%d repos from gitmap-output/gitmap.json"
 	StatusMissingFmt   = "  %-22s ⊘ not found"
 )
 
