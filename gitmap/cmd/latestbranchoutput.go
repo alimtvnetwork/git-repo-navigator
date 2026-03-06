@@ -94,7 +94,7 @@ func buildTopItems(items []gitutil.RemoteBranchInfo, top int) []latestBranchTopI
 func printLatestCSV(items []gitutil.RemoteBranchInfo, remote string, top int) {
 	count := resolveTopCount(top, len(items))
 	w := csv.NewWriter(os.Stdout)
-	w.Write([]string{"branch", "remote", "sha", "commitDate", "subject", "ref"})
+	w.Write(constants.LatestBranchCSVHeaders)
 	for _, item := range items[:count] {
 		writeCSVRow(w, item, remote)
 	}
@@ -154,7 +154,9 @@ func printTerminalTopTable(items []gitutil.RemoteBranchInfo, remote string, top 
 	}
 	fmt.Println()
 	fmt.Printf("  Top %d most recently updated remote branches (%s):\n", count, remote)
-	fmt.Printf("  %-30s %-30s %-9s %s\n", "DATE", "BRANCH", "SHA", "SUBJECT")
+	fmt.Printf("  %-30s %-30s %-9s %s\n",
+		constants.LatestBranchTableColumns[0], constants.LatestBranchTableColumns[1],
+		constants.LatestBranchTableColumns[2], constants.LatestBranchTableColumns[3])
 	for _, item := range items[:count] {
 		fmt.Printf("  %-30s %-30s %-9s %s\n",
 			gitutil.FormatDisplayDate(item.CommitDate),

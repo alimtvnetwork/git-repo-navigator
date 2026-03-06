@@ -418,6 +418,26 @@ const (
 	FlagDescLBFilter      = "Filter branches by glob or substring pattern"
 )
 
+// CSV headers.
+var ScanCSVHeaders = []string{
+	"repoName", "httpsUrl", "sshUrl", "branch",
+	"relativePath", "absolutePath", "cloneInstruction", "notes",
+}
+
+var LatestBranchCSVHeaders = []string{
+	"branch", "remote", "sha", "commitDate", "subject", "ref",
+}
+
+// Status terminal table header columns.
+var StatusTableColumns = []string{
+	"REPO", "BRANCH", "STATE", "SYNC", "STASH", "FILES",
+}
+
+// Latest-branch terminal table header columns.
+var LatestBranchTableColumns = []string{
+	"DATE", "BRANCH", "SHA", "SUBJECT",
+}
+
 // Sort orders.
 const (
 	SortByDate = "date"
