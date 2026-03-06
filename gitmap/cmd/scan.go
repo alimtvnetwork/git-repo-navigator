@@ -14,6 +14,7 @@ import (
 	"github.com/user/gitmap/mapper"
 	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/scanner"
+	"github.com/user/gitmap/store"
 )
 
 // runScan handles the "scan" subcommand.
