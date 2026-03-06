@@ -1,0 +1,50 @@
+package constants
+
+// Git commands and arguments.
+const (
+	GitBin          = "git"
+	GitClone        = "clone"
+	GitPull         = "pull"
+	GitBranchFlag   = "-b"
+	GitDirFlag      = "-C"
+	GitFFOnlyFlag   = "--ff-only"
+	GitConfigCmd    = "config"
+	GitGetFlag      = "--get"
+	GitRemoteOrigin = "remote.origin.url"
+	GitRevParse     = "rev-parse"
+	GitAbbrevRef    = "--abbrev-ref"
+	GitHEAD         = "HEAD"
+	GitTag          = "tag"
+	GitCheckout     = "checkout"
+	GitPush         = "push"
+	GitLsRemote     = "ls-remote"
+	GitLsRemoteTags = "--tags"
+)
+
+// Git arguments for latest-branch operations.
+const (
+	GitFetch              = "fetch"
+	GitBranch             = "branch"
+	GitLog                = "log"
+	GitForEachRef         = "for-each-ref"
+	GitArgAll             = "--all"
+	GitArgPrune           = "--prune"
+	GitArgRemote          = "-r"
+	GitArgContains        = "--contains"
+	GitArgInsideWorkTree  = "--is-inside-work-tree"
+	GitLogTipFormat       = "--format=%cI|%H|%s"
+	GitLogDelimiter       = "|"
+	GitLogFieldCount      = 3
+	GitPointsAtFmt        = "--points-at=%s"
+	GitRefsRemotesFmt     = "refs/remotes/%s"
+	GitFormatRefnameShort = "--format=%(refname:short)"
+	HeadPointer           = " -> "
+	ShaDisplayLength      = 7
+)
+
+// Clone instruction format.
+const (
+	CloneInstructionFmt = "git clone -b %s %s %s"
+	HTTPSFromSSHFmt     = "https://%s/%s"
+	SSHFromHTTPSFmt     = "git@%s:%s"
+)
