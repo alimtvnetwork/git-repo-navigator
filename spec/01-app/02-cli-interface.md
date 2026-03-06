@@ -482,4 +482,14 @@ gitmap doctor
 # Print version number
 gitmap version
 gitmap v             # alias
+
+# Find the most recently updated remote branch
+gitmap lb                        # latest branch (single)
+gitmap lb 5                      # top 5 most recently updated branches
+gitmap lb --top 5                # same as above
+gitmap lb --json                 # latest branch as structured JSON
+gitmap lb 3 --json               # top 3 as JSON
+gitmap lb --remote upstream      # filter to a specific remote
+gitmap lb --all-remotes          # include all remotes
+gitmap lb --contains-fallback    # fall back to --contains if --points-at is empty
 ```
