@@ -472,6 +472,27 @@ activates whenever existing repos are detected during a clone operation.
 | `--sort <order>`        | Sort order: `date` (descending) or `name` (A-Z)     | `date`     |
 | `--filter <pattern>`   | Filter branches by glob or substring pattern         | `""`       |
 
+## List Flags
+
+| Flag                   | Description                          | Default |
+|------------------------|--------------------------------------|---------|
+| `--group <name>` / `-g`| Filter by group name                | (none)  |
+| `--verbose`            | Show full paths and URLs            | `false` |
+
+## List-Versions Flags
+
+| Flag       | Description                              | Default |
+|------------|------------------------------------------|---------|
+| `--json`   | Output as JSON array                     | `false` |
+| `--limit`  | Show only the top N versions (0 = all)   | `0`     |
+
+## List-Releases Flags
+
+| Flag       | Description                              | Default |
+|------------|------------------------------------------|---------|
+| `--json`   | Output as JSON array                     | `false` |
+| `--limit`  | Show only the top N releases (0 = all)   | `0`     |
+
 ## Examples
 
 ```bash
