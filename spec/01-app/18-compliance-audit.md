@@ -18,7 +18,7 @@ Last updated: 2026-03-07
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `root.go` | ~60 | ✅ Pass | |
+| `root.go` | ~70 | ✅ Pass | Added revert + revert-runner dispatch |
 | `rootflags.go` | ~50 | ✅ Pass | |
 | `rootusage.go` | ~45 | ✅ Pass | |
 | `scan.go` | ~113 | ✅ Pass | Split from 257 lines |
