@@ -15,6 +15,11 @@ registration script (`register-desktop.ps1`) — written to a
 After each scan, a **`last-scan.json`** cache file is written to
 `gitmap-output/` so the scan can be replayed with `gitmap rescan`.
 
+After repo upsert, the scan also **imports `.release/v*.json` metadata
+files** from the scan root into the `Releases` database table. This
+keeps the DB in sync with on-disk release history automatically.
+See [22-scan-release-import.md](./22-scan-release-import.md) for details.
+
 ### `gitmap clone <source|json|csv>` (alias: `c`)
 
 Re-clone repositories from a CSV, JSON, or text file.
@@ -238,9 +243,69 @@ A bare integer positional argument is shorthand for `--top`:
 
 See [14-latest-branch.md](./14-latest-branch.md) for full details.
 
+### `gitmap list` (alias: `ls`)
+
+Show all tracked repositories from the SQLite database with slugs and
+repo names in a table format.
+
+- Supports `--group` (`-g`) to filter by a named group.
+- Supports `--verbose` to show full paths alongside slugs.
+- If the database is empty, instructs the user to run `gitmap scan` first.
+
+### `gitmap group` (alias: `g`)
+
+Manage repository groups. Subcommands:
+
+- `gitmap group create <name> [--description "..."] [--color <color>]` — create a group.
+- `gitmap group add <group> <slug...>` — add repos to a group by slug.
+- `gitmap group remove <group> <slug...>` — remove repos from a group.
+- `gitmap group list` — list all groups with repo counts.
+- `gitmap group show <name>` — show repos in a group.
+- `gitmap group delete <name>` — delete a group (repos are not deleted).
+
+See [17-repo-grouping.md](./17-repo-grouping.md) for full details.
+
+### `gitmap db-reset --confirm`
+
+Drop all database tables and recreate them. Requires `--confirm` flag
+to prevent accidental data loss. Clears all tracked repos, groups, and
+releases from the SQLite database.
+
+### `gitmap list-versions` (alias: `lv`)
+
+List all Git release tags (matching `v*`) sorted from highest to lowest
+semantic version. Attaches changelog notes from `CHANGELOG.md` as
+sub-points under each version.
+
+- Supports `--json` for structured JSON output.
+- Supports `--limit N` to show only the top N versions (0 = all).
+- Data source: `git tag` (reads directly from Git, not the database).
+
+See [19-list-versions.md](./19-list-versions.md) for full details.
+
+### `gitmap list-releases` (alias: `lr`)
+
+Query the `Releases` table in the SQLite database and display stored
+release records in a table format (version, tag, branch, draft, latest,
+date).
+
+- Supports `--json` for structured JSON output.
+- Supports `--limit N` to show only the top N releases (0 = all).
+- Data source: `Releases` DB table (populated by `gitmap release` and scan import).
+
+See [21-list-releases.md](./21-list-releases.md) for full details.
+
+### `gitmap revert <version>`
+
+Revert to a specific release version by checking out the corresponding
+Git tag and rebuilding.
+
+- Requires the tag to exist locally (suggests `git fetch --tags` if missing).
+- Uses a two-step handoff similar to `update` for binary replacement.
+
 ### `gitmap version` (alias: `v`)
 
-Prints the current version number (e.g., `gitmap v2.4.0`) and exits.
+Prints the current version number (e.g., `gitmap v2.16.0`) and exits.
 
 ### `gitmap help`
 
@@ -266,10 +331,16 @@ All aliases are single-letter or short abbreviations for faster usage:
 | `release-pending`| `rp`  |
 | `changelog`      | `cl`  |
 | `latest-branch`  | `lb`  |
+| `list`           | `ls`  |
+| `group`          | `g`   |
+| `list-versions`  | `lv`  |
+| `list-releases`  | `lr`  |
 | `version`        | `v`   |
 | `update`         | —     |
 | `update-cleanup` | —     |
 | `doctor`         | —     |
+| `db-reset`       | —     |
+| `revert`         | —     |
 
 ---
 
@@ -400,6 +471,27 @@ activates whenever existing repos are detected during a clone operation.
 | `--no-fetch`            | Skip `git fetch` (use existing remote refs)          | `false`    |
 | `--sort <order>`        | Sort order: `date` (descending) or `name` (A-Z)     | `date`     |
 | `--filter <pattern>`   | Filter branches by glob or substring pattern         | `""`       |
+
+## List Flags
+
+| Flag                   | Description                          | Default |
+|------------------------|--------------------------------------|---------|
+| `--group <name>` / `-g`| Filter by group name                | (none)  |
+| `--verbose`            | Show full paths and URLs            | `false` |
+
+## List-Versions Flags
+
+| Flag       | Description                              | Default |
+|------------|------------------------------------------|---------|
+| `--json`   | Output as JSON array                     | `false` |
+| `--limit`  | Show only the top N versions (0 = all)   | `0`     |
+
+## List-Releases Flags
+
+| Flag       | Description                              | Default |
+|------------|------------------------------------------|---------|
+| `--json`   | Output as JSON array                     | `false` |
+| `--limit`  | Show only the top N releases (0 = all)   | `0`     |
 
 ## Examples
 
@@ -548,4 +640,38 @@ gitmap lb 3 --no-fetch --json    # fast: no fetch, top 3 as JSON
 gitmap lb 5 --sort name          # top 5 sorted alphabetically by branch name
 gitmap lb --filter 'feature/*'   # only branches matching feature/*
 gitmap lb 5 --filter release     # top 5 branches containing "release"
+
+# List tracked repos
+gitmap list
+gitmap ls                        # alias
+gitmap list --group backend      # filter by group
+gitmap list --verbose            # show full paths
+
+# Manage groups
+gitmap group create backend --description "Backend services"
+gitmap g create frontend --color green
+gitmap group add backend my-api my-worker
+gitmap group remove backend my-worker
+gitmap group list                # show all groups with counts
+gitmap group show backend        # show repos in group
+gitmap group delete old-group
+
+# List versions (from Git tags)
+gitmap list-versions
+gitmap lv                        # alias
+gitmap lv --limit 5              # top 5 versions
+gitmap lv --json                 # JSON output
+gitmap lv --limit 3 --json       # top 3 as JSON
+
+# List releases (from database)
+gitmap list-releases
+gitmap lr                        # alias
+gitmap lr --limit 10             # top 10 releases
+gitmap lr --json                 # JSON output
+
+# Reset database
+gitmap db-reset --confirm
+
+# Revert to a previous version
+gitmap revert v2.9.0
 ```
