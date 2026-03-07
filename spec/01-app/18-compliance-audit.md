@@ -64,7 +64,7 @@ Last updated: 2026-03-07
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
 | `constants.go` | ~110 | ✅ Pass | Added bump level constants |
-| `constants_cli.go` | ~60 | ✅ Pass | |
+| `constants_cli.go` | ~155 | ✅ Pass | Added list-versions, revert, FlagJSON |
 | `constants_doctor.go` | ~50 | ✅ Pass | OS/binary constants added |
 | `constants_git.go` | ~55 | ✅ Pass | Added 12 git arg constants |
 | `constants_messages.go` | ~130 | ✅ Pass | OS command constants added |
