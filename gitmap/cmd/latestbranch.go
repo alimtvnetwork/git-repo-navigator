@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/gitutil"
