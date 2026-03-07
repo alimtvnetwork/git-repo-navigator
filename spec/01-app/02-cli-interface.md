@@ -640,4 +640,38 @@ gitmap lb 3 --no-fetch --json    # fast: no fetch, top 3 as JSON
 gitmap lb 5 --sort name          # top 5 sorted alphabetically by branch name
 gitmap lb --filter 'feature/*'   # only branches matching feature/*
 gitmap lb 5 --filter release     # top 5 branches containing "release"
+
+# List tracked repos
+gitmap list
+gitmap ls                        # alias
+gitmap list --group backend      # filter by group
+gitmap list --verbose            # show full paths
+
+# Manage groups
+gitmap group create backend --description "Backend services"
+gitmap g create frontend --color green
+gitmap group add backend my-api my-worker
+gitmap group remove backend my-worker
+gitmap group list                # show all groups with counts
+gitmap group show backend        # show repos in group
+gitmap group delete old-group
+
+# List versions (from Git tags)
+gitmap list-versions
+gitmap lv                        # alias
+gitmap lv --limit 5              # top 5 versions
+gitmap lv --json                 # JSON output
+gitmap lv --limit 3 --json       # top 3 as JSON
+
+# List releases (from database)
+gitmap list-releases
+gitmap lr                        # alias
+gitmap lr --limit 10             # top 10 releases
+gitmap lr --json                 # JSON output
+
+# Reset database
+gitmap db-reset --confirm
+
+# Revert to a previous version
+gitmap revert v2.9.0
 ```
