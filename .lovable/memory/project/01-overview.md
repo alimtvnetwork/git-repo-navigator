@@ -46,6 +46,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `list` | `ls` | Show all tracked repos with slugs | ✅ Done |
 | `group <sub>` | `g` | Manage repo groups | ✅ Done |
 | `list-versions` | `lv` | Show all release tags with changelog | ✅ Done |
+| `list-releases` | `lr` | Show stored releases from database | ✅ Done |
 | `revert <ver>` | — | Revert to a specific release version | ✅ Done |
 | `doctor` | — | Diagnose PATH, deploy, and version issues | ✅ Done |
 | `update` | — | Self-update via copy-and-handoff + auto-cleanup | ✅ Done |
