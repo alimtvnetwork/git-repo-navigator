@@ -328,5 +328,6 @@ Total: **9 files**, **~310 constants** + **9 vars** across 17 categories.
 | Update UI messages | `MsgUpdateActive`, `MsgUpdateCleanStart`, `MsgUpdateCleanDone`, `MsgUpdateCleanNone`, `MsgUpdateTempRemoved`, `MsgUpdateOldRemoved`, `UpdateRunnerLogStart`, `UpdateScriptLogExec`, `UpdateScriptLogExit` |
 | Update errors | `ErrUpdateExecFind`, `ErrUpdateCopyFail` |
 | Update PS script | `UpdatePSHeader`, `UpdatePSDeployDetect`, `UpdatePSVersionBefore`, `UpdatePSRunUpdate`, `UpdatePSVersionAfter`, `UpdatePSVerify`, `UpdatePSPostActions` |
+| Revert PS script | `RevertPSHeader`, `RevertPSBuild`, `RevertPSPostActions` |
 | Backup glob | `OldBackupGlob` |
 | PowerShell args | `PSBin`, `PSExecPolicy`, `PSBypass`, `PSNoProfile`, `PSNoLogo`, `PSFile`, `PSNonInteractive`, `PSCommand` |
