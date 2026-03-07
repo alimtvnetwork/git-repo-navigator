@@ -496,6 +496,7 @@ activates whenever existing repos are detected during a clone operation.
 |------------|------------------------------------------|---------|
 | `--json`   | Output as JSON array                     | `false` |
 | `--limit`  | Show only the top N releases (0 = all)   | `0`     |
+| `--source` | Filter by source: `release` or `import`  | (all)   |
 
 ## Examples
 
