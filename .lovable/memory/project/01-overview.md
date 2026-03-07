@@ -30,7 +30,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 | Command | Alias | Description | Status |
 |---------|-------|-------------|--------|
-| `scan [dir]` | `s` | Scan directory for Git repos, output all formats | ✅ Done |
+| `scan [dir]` | `s` | Scan directory for Git repos, output all formats, auto-import releases | ✅ Done |
 | `clone <source>` | `c` | Re-clone from CSV/JSON/text preserving hierarchy | ✅ Done |
 | `pull <name>` | `p` | Pull a specific repo by name | ✅ Done |
 | `rescan` | `rs` | Re-run last scan with cached flags | ✅ Done |
