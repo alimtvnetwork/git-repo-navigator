@@ -7,26 +7,24 @@ import (
 	"github.com/google/uuid"
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
-	"github.com/user/gitmap/release"
 )
 
 // UpsertRelease inserts or updates a release record in the database.
-func (db *DB) UpsertRelease(meta release.ReleaseMeta) error {
+func (db *DB) UpsertRelease(r model.ReleaseRecord) error {
 	id := uuid.New().String()
-	changelog := joinChangelog(meta.Changelog)
-	draft := boolToInt(meta.Draft)
-	preRelease := boolToInt(meta.PreRelease)
-	isLatest := boolToInt(meta.IsLatest)
+	draft := boolToInt(r.Draft)
+	preRelease := boolToInt(r.PreRelease)
+	isLatest := boolToInt(r.IsLatest)
 
-	if meta.IsLatest {
+	if r.IsLatest {
 		if err := db.clearLatest(); err != nil {
 			return err
 		}
 	}
 
 	_, err := db.conn.Exec(constants.SQLUpsertRelease,
-		id, meta.Version, meta.Tag, meta.Branch, meta.SourceBranch,
-		meta.Commit, changelog, draft, preRelease, isLatest, meta.CreatedAt,
+		id, r.Version, r.Tag, r.Branch, r.SourceBranch,
+		r.CommitSha, r.Changelog, draft, preRelease, isLatest, r.CreatedAt,
 	)
 	if err != nil {
 		return fmt.Errorf(constants.ErrDBReleaseUpsert, err)
@@ -104,8 +102,8 @@ func scanOneRelease(row interface{ Scan(dest ...any) error }) (model.ReleaseReco
 	return scanOneReleaseRow(row)
 }
 
-// joinChangelog joins changelog notes into a newline-separated string.
-func joinChangelog(notes []string) string {
+// JoinChangelog joins changelog notes into a newline-separated string.
+func JoinChangelog(notes []string) string {
 	if len(notes) == 0 {
 		return ""
 	}
