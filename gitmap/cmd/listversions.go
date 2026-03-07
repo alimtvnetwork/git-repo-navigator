@@ -45,6 +45,29 @@ func hasListVersionsJSONFlag(args []string) bool {
 	return false
 }
 
+// parseListVersionsLimit extracts the --limit N value from args.
+func parseListVersionsLimit(args []string) int {
+	for i, arg := range args {
+		if arg == constants.FlagLimit && i+1 < len(args) {
+			n, err := strconv.Atoi(args[i+1])
+			if err == nil && n > 0 {
+				return n
+			}
+		}
+	}
+
+	return 0
+}
+
+// applyVersionLimit trims entries to at most n items (0 means no limit).
+func applyVersionLimit(entries []versionEntry, n int) []versionEntry {
+	if n <= 0 || n >= len(entries) {
+		return entries
+	}
+
+	return entries[:n]
+}
+
 // collectVersionEntries reads tags, parses, sorts, and attaches changelog.
 func collectVersionEntries() []versionEntry {
 	versions := collectVersionTags()
