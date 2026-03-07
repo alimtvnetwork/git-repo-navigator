@@ -433,6 +433,7 @@ activates whenever existing repos are detected during a clone operation.
 | `--branch <name>`             | Create release from latest commit of a branch    | (none)  |
 | `--bump major\|minor\|patch`  | Auto-increment from latest released version      | (none)  |
 | `--draft`                     | Create an unpublished draft release              | `false` |
+| `--dry-run`                   | Preview release steps without executing          | `false` |
 | `--verbose`                   | Write detailed debug log                         | `false` |
 
 ## Release-Branch Flags
