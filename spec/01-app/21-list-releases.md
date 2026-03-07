@@ -62,6 +62,7 @@ Releases (3 found)
     "draft": false,
     "preRelease": false,
     "isLatest": true,
+    "source": "release",
     "createdAt": "2026-03-07T10:00:00Z"
   }
 ]
