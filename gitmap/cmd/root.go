@@ -115,6 +115,16 @@ func dispatchUtility(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdRevert {
+		runRevert(os.Args[2:])
+
+		return true
+	}
+	if command == constants.CmdRevertRunner {
+		runRevertRunner()
+
+		return true
+	}
 	if command == constants.CmdVersion || command == constants.CmdVersionAlias {
 		fmt.Printf(constants.MsgVersionFmt, constants.Version)
 
