@@ -37,6 +37,8 @@ func writeMetadata(v Version, branchName, tag, sourceName string, assets []strin
 	}
 	fmt.Printf(constants.MsgReleaseMeta, constants.DefaultReleaseDir+"/"+v.String()+constants.ExtJSON)
 
+	LastMeta = &meta
+
 	return updateLatestIfStable(v)
 }
 
