@@ -174,3 +174,21 @@ const (
 	ErrChangelogVersionNotFound = "Error: version %s not found in CHANGELOG.md\n"
 	ErrChangelogOpen            = "Error: could not open CHANGELOG.md: %v\n"
 )
+
+// List-versions error messages.
+const (
+	ErrListVersionsNoTags = "Error: no version tags found. Create a release first."
+)
+
+// Revert messages.
+const (
+	MsgRevertCheckout       = "  → Checking out %s...\n"
+	MsgRevertStarting       = "\n  Building reverted version...\n"
+	MsgRevertDone           = "\n  ✓ Revert complete.\n"
+	ErrRevertUsage          = "Usage: gitmap revert <version>\nExample: gitmap revert v2.9.0"
+	ErrRevertTagNotFound    = "Error: tag %s not found locally. Run 'git fetch --tags' first.\n"
+	ErrRevertCheckoutFailed = "Error: git checkout failed: %v\n"
+	ErrRevertFailed         = "Revert error: %v\n"
+	RevertScriptLogExec     = "executing revert script: %s"
+	RevertScriptLogExit     = "revert script exited: err=%v"
+)
