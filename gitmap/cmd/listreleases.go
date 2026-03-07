@@ -105,7 +105,7 @@ func printReleaseRow(r model.ReleaseRecord) {
 		latest = constants.MsgYes
 	}
 
-	fmt.Printf(constants.MsgListReleasesRowFmt, r.Version, r.Tag, r.Branch, draft, latest, r.CreatedAt)
+	fmt.Printf(constants.MsgListReleasesRowFmt, r.Version, r.Tag, r.Branch, draft, latest, r.Source, r.CreatedAt)
 }
 
 // printReleasesJSON renders releases as JSON to stdout.
