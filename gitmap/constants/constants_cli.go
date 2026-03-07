@@ -46,6 +46,10 @@ const (
 	CmdGroupShow           = "show"
 	CmdGroupDelete         = "delete"
 	CmdDBReset             = "db-reset"
+	CmdListVersions        = "list-versions"
+	CmdListVersionsAlias   = "lv"
+	CmdRevert              = "revert"
+	CmdRevertRunner        = "revert-runner"
 )
 
 // Clone shorthands.
@@ -57,6 +61,7 @@ const (
 
 // CLI flag values.
 const FlagOpenValue = "--open"
+const FlagJSON = "--json"
 
 // Usage header.
 const UsageHeaderFmt = "gitmap v%s\n\n"
@@ -85,6 +90,8 @@ const (
 	HelpGroup         = "  group (g) <sub>     Manage repo groups (create, add, remove, list, show, delete)"
 	HelpDBReset       = "  db-reset --confirm  Clear all tracked repos and groups from the database"
 	HelpHelp          = "  help                Show this help message"
+	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first"
+	HelpRevert        = "  revert <version>    Revert to a specific release version"
 	HelpScanFlags     = "Scan flags:"
 	HelpConfig        = "  --config <path>     Config file (default: ./data/config.json)"
 	HelpMode          = "  --mode ssh|https    Clone URL style (default: https)"
