@@ -94,6 +94,7 @@ const (
 	HelpDBReset       = "  db-reset --confirm  Clear all tracked repos and groups from the database"
 	HelpHelp          = "  help                Show this help message"
 	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first (--limit N, --json)"
+	HelpListReleases  = "  list-releases (lr)  Show stored releases from database (--limit N, --json)"
 	HelpRevert        = "  revert <version>    Revert to a specific release version"
 	HelpScanFlags     = "Scan flags:"
 	HelpConfig        = "  --config <path>     Config file (default: ./data/config.json)"
