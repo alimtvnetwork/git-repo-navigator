@@ -49,7 +49,7 @@ func printSetupBanner(dryRun bool) {
 func printSetupSummary(r setup.SetupResult) {
 	fmt.Println()
 	fmt.Printf("  %s%s%s\n", constants.ColorDim, constants.TermSeparator, constants.ColorReset)
-	_ = filepath.Abs(".")
+	_, _ = filepath.Abs(".")
 	printSetupCounts(r)
 	printSetupErrors(r)
 	fmt.Println()

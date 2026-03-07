@@ -41,6 +41,11 @@ const (
 	StatusHeaderFmt  = "  %s%-22s %-12s %-8s %-10s %-8s %-6s%s\n"
 )
 
+// Status table column headers.
+var StatusTableColumns = []string{
+	"REPO", "STATUS", "SYNC", "BRANCH", "STASH", "FILES",
+}
+
 // Summary format strings.
 const (
 	SummaryJoinSep      = " · "
