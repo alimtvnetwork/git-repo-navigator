@@ -38,6 +38,7 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateAbsPathIndex,
 		constants.SQLCreateGroups,
 		constants.SQLCreateGroupRepos,
+		constants.SQLCreateReleases,
 	}
 
 	for _, stmt := range statements {
@@ -54,6 +55,7 @@ func (db *DB) Reset() error {
 	drops := []string{
 		constants.SQLDropGroupRepos,
 		constants.SQLDropGroups,
+		constants.SQLDropReleases,
 		constants.SQLDropRepos,
 	}
 

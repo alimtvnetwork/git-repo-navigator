@@ -7,6 +7,9 @@ import (
 	"github.com/user/gitmap/constants"
 )
 
+// LastMeta holds the most recent release metadata after Execute completes.
+var LastMeta *ReleaseMeta
+
 // pushAndFinalize pushes to remote and writes metadata.
 func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options) error {
 	err := PushBranchAndTag(branchName, tag)
@@ -33,6 +36,8 @@ func writeMetadata(v Version, branchName, tag, sourceName string, assets []strin
 		return fmt.Errorf(constants.ErrReleaseMetaWrite, err)
 	}
 	fmt.Printf(constants.MsgReleaseMeta, constants.DefaultReleaseDir+"/"+v.String()+constants.ExtJSON)
+
+	LastMeta = &meta
 
 	return updateLatestIfStable(v)
 }
@@ -78,6 +83,10 @@ func updateLatestIfStable(v Version) error {
 		fmt.Printf(constants.MsgReleaseComplete, v.String())
 
 		return nil
+	}
+
+	if LastMeta != nil {
+		LastMeta.IsLatest = true
 	}
 
 	err := WriteLatest(v)

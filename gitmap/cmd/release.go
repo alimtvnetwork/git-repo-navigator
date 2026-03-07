@@ -7,7 +7,9 @@ import (
 	"os"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/release"
+	"github.com/user/gitmap/store"
 )
 
 // runRelease handles the 'release' command.
@@ -31,6 +33,8 @@ func executeRelease(version, assets, commit, branch, bump string, draft, dryRun,
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
 		os.Exit(1)
 	}
+
+	persistReleaseToDB()
 }
 
 // validateReleaseFlags checks for mutually exclusive flags.
@@ -63,4 +67,37 @@ func parseReleaseFlags(args []string) (version, assets, commit, branch, bump str
 	}
 
 	return version, *assetsFlag, *commitFlag, *branchFlag, *bumpFlag, *draftFlag, *dryRunFlag, *verboseFlag
+}
+
+// persistReleaseToDB saves the release metadata to SQLite if available.
+func persistReleaseToDB() {
+	meta := release.LastMeta
+	if meta == nil {
+		return
+	}
+
+	db, err := store.Open(constants.DefaultOutputFolder)
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	_ = db.Migrate()
+	_ = db.UpsertRelease(metaToRecord(*meta))
+}
+
+// metaToRecord converts a ReleaseMeta to a ReleaseRecord for DB storage.
+func metaToRecord(m release.ReleaseMeta) model.ReleaseRecord {
+	return model.ReleaseRecord{
+		Version:      m.Version,
+		Tag:          m.Tag,
+		Branch:       m.Branch,
+		SourceBranch: m.SourceBranch,
+		CommitSha:    m.Commit,
+		Changelog:    store.JoinChangelog(m.Changelog),
+		Draft:        m.Draft,
+		PreRelease:   m.PreRelease,
+		IsLatest:     m.IsLatest,
+		CreatedAt:    m.CreatedAt,
+	}
 }

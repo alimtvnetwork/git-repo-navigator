@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.14.0
+- Added `Releases` table to SQLite database: stores release metadata (version, tag, branch, commit, changelog, flags) persistently.
+- Release workflow now auto-persists metadata to the database after successful releases.
+- Converted all database table and column names from snake_case to PascalCase (`Repos`, `Groups`, `GroupRepos`, `Releases`).
+- Added `store/release.go` with `UpsertRelease`, `ListReleases`, `FindReleaseByTag` methods.
+- Added `model/release.go` with `ReleaseRecord` struct.
+- Note: existing databases will need `gitmap db-reset --confirm` to adopt the new schema.
+
 ## v2.13.0
 - Release metadata JSON (`.release/vX.Y.Z.json`) now includes a `changelog` field with notes from CHANGELOG.md (gracefully omitted if unreadable).
 - `gitmap list-versions` (`lv`) now shows changelog notes as sub-points under each version in terminal output.
