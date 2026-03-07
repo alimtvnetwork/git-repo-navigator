@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.13.0
+- Release metadata JSON (`.release/vX.Y.Z.json`) now includes a `changelog` field with notes from CHANGELOG.md (gracefully omitted if unreadable).
+- `gitmap list-versions` (`lv`) now shows changelog notes as sub-points under each version in terminal output.
+- `gitmap list-versions --json` includes changelog array per version in JSON output.
+
 ## v2.12.0
 - Added `gitmap list-versions` (`lv`) command: lists all release tags sorted highest-first, with `--json` output support.
 - Added `gitmap revert <version>` command: checks out a release tag and rebuilds/deploys via handoff (same mechanism as `update`).
