@@ -91,7 +91,7 @@ const (
 	HelpGroup         = "  group (g) <sub>     Manage repo groups (create, add, remove, list, show, delete)"
 	HelpDBReset       = "  db-reset --confirm  Clear all tracked repos and groups from the database"
 	HelpHelp          = "  help                Show this help message"
-	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first"
+	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first (--limit N, --json)"
 	HelpRevert        = "  revert <version>    Revert to a specific release version"
 	HelpScanFlags     = "Scan flags:"
 	HelpConfig        = "  --config <path>     Config file (default: ./data/config.json)"
