@@ -6,7 +6,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 ## Current Version
 
-**v2.14.0** (defined in `gitmap/constants/constants.go`)
+**v2.16.0** (defined in `gitmap/constants/constants.go`)
 
 ## Tech Stack
 
@@ -30,7 +30,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 | Command | Alias | Description | Status |
 |---------|-------|-------------|--------|
-| `scan [dir]` | `s` | Scan directory for Git repos, output all formats | ✅ Done |
+| `scan [dir]` | `s` | Scan directory for Git repos, output all formats, auto-import releases | ✅ Done |
 | `clone <source>` | `c` | Re-clone from CSV/JSON/text preserving hierarchy | ✅ Done |
 | `pull <name>` | `p` | Pull a specific repo by name | ✅ Done |
 | `rescan` | `rs` | Re-run last scan with cached flags | ✅ Done |
@@ -46,6 +46,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `list` | `ls` | Show all tracked repos with slugs | ✅ Done |
 | `group <sub>` | `g` | Manage repo groups | ✅ Done |
 | `list-versions` | `lv` | Show all release tags with changelog | ✅ Done |
+| `list-releases` | `lr` | Show stored releases from database | ✅ Done |
 | `revert <ver>` | — | Revert to a specific release version | ✅ Done |
 | `doctor` | — | Diagnose PATH, deploy, and version issues | ✅ Done |
 | `update` | — | Self-update via copy-and-handoff + auto-cleanup | ✅ Done |
