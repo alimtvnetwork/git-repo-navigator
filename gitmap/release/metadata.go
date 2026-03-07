@@ -129,6 +129,19 @@ func ReadVersionFile() (string, error) {
 	return vf.Version, nil
 }
 
+// ReadReleaseMeta reads and unmarshals a single .release/vX.Y.Z.json file.
+func ReadReleaseMeta(path string) (ReleaseMeta, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return ReleaseMeta{}, err
+	}
+
+	var meta ReleaseMeta
+	err = json.Unmarshal(data, &meta)
+
+	return meta, err
+}
+
 // latestFilePath returns the path to latest.json.
 func latestFilePath() string {
 	return filepath.Join(constants.DefaultReleaseDir, constants.DefaultLatestFile)
