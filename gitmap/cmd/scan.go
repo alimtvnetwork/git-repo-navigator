@@ -50,6 +50,7 @@ func executeScan(dir string, cfg model.Config, outFile string, ghDesktop, openFo
 	writeAllOutputs(records, outputDir, outFile, quiet)
 	saveScanCache(outputDir, cache)
 	upsertToDB(records, outputDir)
+	importReleases(absDir, outputDir)
 	addToDesktop(records, ghDesktop)
 	openOutputFolder(outputDir, openFolder)
 }
