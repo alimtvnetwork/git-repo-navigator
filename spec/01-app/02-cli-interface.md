@@ -379,10 +379,12 @@ activates whenever existing repos are detected during a clone operation.
 |------------------------|--------------------------------------|----------------------|
 | `--config <path>`      | Path to JSON config file             | `./data/config.json` |
 | `--mode ssh \| https`  | Clone URL style                      | `https`              |
+| `--output csv\|json\|terminal` | Output format                | `terminal`           |
 | `--output-path <dir>`  | Output directory                     | `gitmap-output/` in scan dir |
 | `--out-file <path>`    | Exact CSV output file path           | auto                 |
 | `--github-desktop`     | Add discovered repos to GitHub Desktop | `false`            |
 | `--open`               | Open output folder after scan completes | `false`           |
+| `--quiet`              | Suppress clone help section (for CI/scripted use) | `false` |
 
 ## Clone Flags
 
@@ -431,6 +433,7 @@ activates whenever existing repos are detected during a clone operation.
 | `--branch <name>`             | Create release from latest commit of a branch    | (none)  |
 | `--bump major\|minor\|patch`  | Auto-increment from latest released version      | (none)  |
 | `--draft`                     | Create an unpublished draft release              | `false` |
+| `--dry-run`                   | Preview release steps without executing          | `false` |
 | `--verbose`                   | Write detailed debug log                         | `false` |
 
 ## Release-Branch Flags
