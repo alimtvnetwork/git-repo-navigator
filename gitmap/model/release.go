@@ -1,0 +1,17 @@
+// Package model defines the core data structures for gitmap.
+package model
+
+// ReleaseRecord holds release metadata stored in the database.
+type ReleaseRecord struct {
+	ID           string `json:"id"`
+	Version      string `json:"version"`
+	Tag          string `json:"tag"`
+	Branch       string `json:"branch"`
+	SourceBranch string `json:"sourceBranch"`
+	CommitSha    string `json:"commitSha"`
+	Changelog    string `json:"changelog"`
+	Draft        bool   `json:"draft"`
+	PreRelease   bool   `json:"preRelease"`
+	IsLatest     bool   `json:"isLatest"`
+	CreatedAt    string `json:"createdAt"`
+}
