@@ -16,6 +16,7 @@ gitmap lv [flags]
 | Flag       | Short | Default | Description                        |
 |------------|-------|---------|------------------------------------|
 | `--json`   |       | false   | Output as JSON array               |
+| `--limit`  |       | 0       | Show only the top N versions (0 = all) |
 
 ## Behavior
 
