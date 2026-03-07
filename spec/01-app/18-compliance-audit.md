@@ -1,6 +1,6 @@
 # Compliance Audit Summary
 
-Last updated: 2026-03-06
+Last updated: 2026-03-07
 
 ## Rules Checked
 
@@ -18,9 +18,9 @@ Last updated: 2026-03-06
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
-| `root.go` | ~60 | ✅ Pass | |
+| `root.go` | ~70 | ✅ Pass | Added revert + revert-runner dispatch |
 | `rootflags.go` | ~50 | ✅ Pass | |
-| `rootusage.go` | ~45 | ✅ Pass | |
+| `rootusage.go` | ~47 | ✅ Pass | Added list-versions + revert help |
 | `scan.go` | ~113 | ✅ Pass | Split from 257 lines |
 | `scanoutput.go` | ~155 | ✅ Pass | Extracted from scan.go |
 | `clone.go` | ~140 | ✅ Pass | |
@@ -55,33 +55,36 @@ Last updated: 2026-03-06
 | `grouplist.go` | ~50 | ✅ Pass | |
 | `groupshow.go` | ~60 | ✅ Pass | |
 | `flags_test.go` | ~40 | ✅ Pass | |
+| `listversions.go` | ~140 | ✅ Pass | New: list-versions command with changelog sub-points |
+| `revert.go` | ~90 | ✅ Pass | New: revert command, validation, checkout, handoff |
+| `revertscript.go` | ~85 | ✅ Pass | New: revert-runner, PS1 script generation |
 
 ## Package: `constants`
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
 | `constants.go` | ~110 | ✅ Pass | Added bump level constants |
-| `constants_cli.go` | ~60 | ✅ Pass | |
+| `constants_cli.go` | ~155 | ✅ Pass | Added list-versions, revert, FlagJSON |
 | `constants_doctor.go` | ~50 | ✅ Pass | OS/binary constants added |
 | `constants_git.go` | ~55 | ✅ Pass | Added 12 git arg constants |
-| `constants_messages.go` | ~130 | ✅ Pass | OS command constants added |
+| `constants_messages.go` | ~195 | ✅ Pass | Added list-versions + revert messages |
 | `constants_release.go` | ~37 | ✅ Pass | Added SetupGlobalFlag, ReleaseTagPrefix |
 | `constants_store.go` | ~20 | ✅ Pass | |
-| `constants_terminal.go` | ~180 | ✅ Pass | Format strings extracted |
-| `constants_update.go` | ~40 | ✅ Pass | PS/shell constants added |
+| `constants_terminal.go` | ~180 | ✅ Pass | Added StatusTableColumns |
+| `constants_update.go` | ~140 | ✅ Pass | Added revert PS script templates |
 
 ## Package: `release`
 
 | File | Lines | Status | Notes |
 |------|-------|--------|-------|
 | `workflow.go` | ~163 | ✅ Pass | Trimmed from 416; imports cleaned; magic strings fixed |
-| `workflowfinalize.go` | ~130 | ✅ Pass | Extracted from workflow.go |
+| `workflowfinalize.go` | ~145 | ✅ Pass | Added loadChangelogNotes helper |
 | `workflowbranch.go` | ~165 | ✅ Pass | Extracted from workflow.go |
 | `gitops.go` | ~100 | ✅ Pass | Rewritten; query functions extracted |
 | `gitopsquery.go` | ~135 | ✅ Pass | Extracted from gitops.go |
 | `changelog.go` | ~120 | ✅ Pass | Fixed `== false` → positive logic (3 occurrences) |
 | `github.go` | ~66 | ✅ Pass | Fixed `IsDir() == false` → positive logic (2 occurrences) |
-| `metadata.go` | ~145 | ✅ Pass | Fixed `GreaterThan == false` → `latestIsHigher` helper |
+| `metadata.go` | ~145 | ✅ Pass | Added Changelog field to ReleaseMeta |
 | `metadata_test.go` | ~40 | ✅ Pass | |
 | `semver.go` | ~160 | ✅ Pass | Fixed switch → if/else chain; added constants import |
 | `semver_test.go` | ~80 | ✅ Pass | |
@@ -177,8 +180,8 @@ Last updated: 2026-03-06
 
 | Metric | Count |
 |--------|-------|
-| Total files audited | 75 |
-| Passing | 75 |
+| Total files audited | 80 |
+| Passing | 80 |
 | Pending | 0 |
 
 ## Wave 2 Changes Applied
@@ -194,7 +197,7 @@ Last updated: 2026-03-06
 
 ## Constants Inventory
 
-Total: **9 files**, **~280 constants** + **8 vars** across 17 categories.
+Total: **9 files**, **~310 constants** + **9 vars** across 17 categories.
 
 ### `constants.go` — Core Defaults (111 lines)
 
@@ -230,12 +233,12 @@ Total: **9 files**, **~280 constants** + **8 vars** across 17 categories.
 
 | Category | Constants |
 |----------|-----------|
-| Command names | `CmdScan`, `CmdClone`, `CmdUpdate`, `CmdUpdateRunner`, `CmdUpdateCleanup`, `CmdVersion`, `CmdHelp`, `CmdDesktopSync`, `CmdPull`, `CmdRescan`, `CmdSetup`, `CmdStatus`, `CmdExec`, `CmdRelease`, `CmdReleaseBranch`, `CmdReleasePending`, `CmdChangelog`, `CmdDoctor`, `CmdLatestBranch`, `CmdList`, `CmdGroup`, `CmdDBReset` |
-| Command aliases | `CmdScanAlias`, `CmdCloneAlias`, `CmdVersionAlias`, `CmdDesktopSyncAlias`, `CmdPullAlias`, `CmdRescanAlias`, `CmdStatusAlias`, `CmdExecAlias`, `CmdReleaseAlias`, `CmdReleaseBranchAlias`, `CmdReleasePendingAlias`, `CmdChangelogAlias`, `CmdLatestBranchAlias`, `CmdListAlias`, `CmdGroupAlias` |
+| Command names | `CmdScan`, `CmdClone`, `CmdUpdate`, `CmdUpdateRunner`, `CmdUpdateCleanup`, `CmdVersion`, `CmdHelp`, `CmdDesktopSync`, `CmdPull`, `CmdRescan`, `CmdSetup`, `CmdStatus`, `CmdExec`, `CmdRelease`, `CmdReleaseBranch`, `CmdReleasePending`, `CmdChangelog`, `CmdDoctor`, `CmdLatestBranch`, `CmdList`, `CmdGroup`, `CmdDBReset`, `CmdListVersions`, `CmdRevert`, `CmdRevertRunner` |
+| Command aliases | `CmdScanAlias`, `CmdCloneAlias`, `CmdVersionAlias`, `CmdDesktopSyncAlias`, `CmdPullAlias`, `CmdRescanAlias`, `CmdStatusAlias`, `CmdExecAlias`, `CmdReleaseAlias`, `CmdReleaseBranchAlias`, `CmdReleasePendingAlias`, `CmdChangelogAlias`, `CmdLatestBranchAlias`, `CmdListAlias`, `CmdGroupAlias`, `CmdListVersionsAlias` |
 | Group subcommands | `CmdGroupCreate`, `CmdGroupAdd`, `CmdGroupRemove`, `CmdGroupList`, `CmdGroupShow`, `CmdGroupDelete`, `CmdChangelogMD` |
 | Clone shorthands | `ShorthandJSON`, `ShorthandCSV`, `ShorthandText` |
-| Flag values | `FlagOpenValue` |
-| Usage/help text | `UsageHeaderFmt`, `HelpUsage`, `HelpCommands`, `HelpScan`, `HelpClone`, `HelpUpdate`, `HelpUpdateCleanup`, `HelpVersion`, `HelpDesktopSync`, `HelpPull`, `HelpRescan`, `HelpSetup`, `HelpStatus`, `HelpExec`, `HelpRelease`, `HelpReleaseBr`, `HelpReleasePend`, `HelpChangelog`, `HelpDoctor`, `HelpLatestBr`, `HelpList`, `HelpGroup`, `HelpDBReset`, `HelpHelp`, `HelpScanFlags`, `HelpConfig`, `HelpMode`, `HelpOutput`, `HelpOutputPath`, `HelpOutFile`, `HelpGitHubDesktop`, `HelpOpen`, `HelpQuiet`, `HelpCloneFlags`, `HelpTargetDir`, `HelpSafePull`, `HelpVerbose`, `HelpReleaseFlags`, `HelpAssets`, `HelpCommit`, `HelpRelBranch`, `HelpBump`, `HelpDraft`, `HelpDryRun` |
+| Flag values | `FlagOpenValue`, `FlagJSON` |
+| Usage/help text | `UsageHeaderFmt`, `HelpUsage`, `HelpCommands`, `HelpScan`, `HelpClone`, `HelpUpdate`, `HelpUpdateCleanup`, `HelpVersion`, `HelpDesktopSync`, `HelpPull`, `HelpRescan`, `HelpSetup`, `HelpStatus`, `HelpExec`, `HelpRelease`, `HelpReleaseBr`, `HelpReleasePend`, `HelpChangelog`, `HelpDoctor`, `HelpLatestBr`, `HelpList`, `HelpGroup`, `HelpDBReset`, `HelpHelp`, `HelpListVersions`, `HelpRevert`, `HelpScanFlags`, `HelpConfig`, `HelpMode`, `HelpOutput`, `HelpOutputPath`, `HelpOutFile`, `HelpGitHubDesktop`, `HelpOpen`, `HelpQuiet`, `HelpCloneFlags`, `HelpTargetDir`, `HelpSafePull`, `HelpVerbose`, `HelpReleaseFlags`, `HelpAssets`, `HelpCommit`, `HelpRelBranch`, `HelpBump`, `HelpDraft`, `HelpDryRun` |
 | Flag descriptions | `FlagDescConfig`, `FlagDescMode`, `FlagDescOutput`, `FlagDescOutFile`, `FlagDescOutputPath`, `FlagDescTargetDir`, `FlagDescSafePull`, `FlagDescGHDesktop`, `FlagDescOpen`, `FlagDescQuiet`, `FlagDescVerbose`, `FlagDescSetupConfig`, `FlagDescDryRun`, `FlagDescAssets`, `FlagDescCommit`, `FlagDescRelBranch`, `FlagDescBump`, `FlagDescDraft`, `FlagDescLatest`, `FlagDescLimit`, `FlagDescOpenChangelog`, `FlagDescLBRemote`, `FlagDescLBAllRemotes`, `FlagDescLBContains`, `FlagDescLBTop`, `FlagDescLBJSON`, `FlagDescLBFormat`, `FlagDescLBNoFetch`, `FlagDescLBSort`, `FlagDescLBFilter`, `FlagDescGroup`, `FlagDescAll`, `FlagDescListVerbose`, `FlagDescGroupDesc`, `FlagDescGroupColor`, `FlagDescConfirm` |
 
 ### `constants_terminal.go` — UI & Display (173 lines)
@@ -256,7 +259,7 @@ Total: **9 files**, **~280 constants** + **8 vars** across 17 categories.
 | Folder structure MD | `StructureTitle`, `StructureDescription`, `StructureRepoFmt`, `TreeBranch`, `TreeCorner`, `TreePipe`, `TreeSpace` |
 | CSV headers | `ScanCSVHeaders` (var), `LatestBranchCSVHeaders` (var) |
 | Latest-branch display | `LBTermLatestFmt`, `LBTermRemoteFmt`, `LBTermSHAFmt`, `LBTermDateFmt`, `LBTermSubjectFmt`, `LBTermRefFmt`, `LBTermTopHdrFmt`, `LBTermRowFmt` |
-| Latest-branch table | `LatestBranchTableColumns` (var), `StatusTableColumns` (var — in terminal) |
+| Latest-branch table | `LatestBranchTableColumns` (var), `StatusTableColumns` (var) |
 
 ### `constants_messages.go` — User Messages & Errors (176 lines)
 
@@ -275,6 +278,8 @@ Total: **9 files**, **~280 constants** + **8 vars** across 17 categories.
 | List/group messages | `MsgListHeader`, `MsgListSeparator`, `MsgListRowFmt`, `MsgListVerboseFmt`, `MsgListEmpty`, `MsgGroupCreated`, `MsgGroupDeleted`, `MsgGroupAdded`, `MsgGroupRemoved`, `MsgGroupHeader`, `MsgGroupRowFmt`, `MsgGroupShowHeader`, `MsgGroupShowRowFmt`, `MsgGroupEmpty`, `ErrGroupNameReq`, `ErrGroupUsage`, `ErrGroupSlugReq`, `ErrListDBFailed`, `ErrNoDatabase`, `MsgDBResetDone`, `ErrDBResetFailed`, `ErrDBResetNoConfirm` |
 | Latest-branch errors | `ErrLatestBranchNotRepo`, `ErrLatestBranchNoRefs`, `ErrLatestBranchNoRefsAll`, `ErrLatestBranchNoCommits`, `ErrLatestBranchNoMatch` |
 | CLI errors | `ErrSourceRequired`, `ErrCloneUsage`, `ErrShorthandNotFound`, `ErrConfigLoad`, `ErrScanFailed`, `ErrCloneFailed`, `ErrOutputFailed`, `ErrCreateDir`, `ErrCreateFile`, `ErrNoRepoPath`, `ErrUpdateFailed`, `ErrPullSlugRequired`, `ErrPullUsage`, `ErrPullLoadFailed`, `ErrPullNotFound`, `ErrPullNotRepo`, `ErrRescanNoCache`, `ErrSetupLoadFailed`, `ErrStatusLoadFailed`, `ErrExecUsage`, `ErrExecLoadFailed`, `ErrReleaseVersionRequired`, `ErrReleaseUsage`, `ErrReleaseBranchUsage`, `ErrReleaseAlreadyExists`, `ErrReleaseTagExists`, `ErrReleaseBranchNotFound`, `ErrReleaseCommitNotFound`, `ErrReleaseInvalidVersion`, `ErrReleaseBumpNoLatest`, `ErrReleaseBumpConflict`, `ErrReleaseCommitBranch`, `ErrReleasePushFailed`, `ErrReleaseVersionLoad`, `ErrReleaseMetaWrite`, `ErrChangelogRead`, `ErrChangelogVersionNotFound`, `ErrChangelogOpen` |
+| List-versions errors | `ErrListVersionsNoTags` |
+| Revert messages | `MsgRevertCheckout`, `MsgRevertStarting`, `MsgRevertDone`, `ErrRevertUsage`, `ErrRevertTagNotFound`, `ErrRevertCheckoutFailed`, `ErrRevertFailed`, `RevertScriptLogExec`, `RevertScriptLogExit` |
 
 ### `constants_release.go` — Release & Setup (37 lines)
 
@@ -323,5 +328,6 @@ Total: **9 files**, **~280 constants** + **8 vars** across 17 categories.
 | Update UI messages | `MsgUpdateActive`, `MsgUpdateCleanStart`, `MsgUpdateCleanDone`, `MsgUpdateCleanNone`, `MsgUpdateTempRemoved`, `MsgUpdateOldRemoved`, `UpdateRunnerLogStart`, `UpdateScriptLogExec`, `UpdateScriptLogExit` |
 | Update errors | `ErrUpdateExecFind`, `ErrUpdateCopyFail` |
 | Update PS script | `UpdatePSHeader`, `UpdatePSDeployDetect`, `UpdatePSVersionBefore`, `UpdatePSRunUpdate`, `UpdatePSVersionAfter`, `UpdatePSVerify`, `UpdatePSPostActions` |
+| Revert PS script | `RevertPSHeader`, `RevertPSBuild`, `RevertPSPostActions` |
 | Backup glob | `OldBackupGlob` |
 | PowerShell args | `PSBin`, `PSExecPolicy`, `PSBypass`, `PSNoProfile`, `PSNoLogo`, `PSFile`, `PSNonInteractive`, `PSCommand` |
