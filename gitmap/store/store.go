@@ -55,6 +55,7 @@ func (db *DB) Reset() error {
 	drops := []string{
 		constants.SQLDropGroupRepos,
 		constants.SQLDropGroups,
+		constants.SQLDropReleases,
 		constants.SQLDropRepos,
 	}
 
