@@ -8,6 +8,7 @@ import (
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/release"
+	"github.com/user/gitmap/store"
 )
 
 // runRelease handles the 'release' command.
@@ -31,6 +32,8 @@ func executeRelease(version, assets, commit, branch, bump string, draft, dryRun,
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
 		os.Exit(1)
 	}
+
+	persistReleaseToDB()
 }
 
 // validateReleaseFlags checks for mutually exclusive flags.
