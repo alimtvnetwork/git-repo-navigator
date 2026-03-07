@@ -50,6 +50,8 @@ const (
 	CmdListVersionsAlias   = "lv"
 	CmdRevert              = "revert"
 	CmdRevertRunner        = "revert-runner"
+	CmdListReleases        = "list-releases"
+	CmdListReleasesAlias   = "lr"
 )
 
 // Clone shorthands.
