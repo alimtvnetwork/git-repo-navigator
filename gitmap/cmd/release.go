@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/release"
 	"github.com/user/gitmap/store"
 )
