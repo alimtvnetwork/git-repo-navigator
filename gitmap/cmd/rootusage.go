@@ -40,6 +40,8 @@ func printUsageCommands() {
 	fmt.Println(constants.HelpGroup)
 	fmt.Println(constants.HelpDBReset)
 	fmt.Println(constants.HelpUpdateCleanup)
+	fmt.Println(constants.HelpListVersions)
+	fmt.Println(constants.HelpRevert)
 	fmt.Println(constants.HelpHelp)
 }
 
