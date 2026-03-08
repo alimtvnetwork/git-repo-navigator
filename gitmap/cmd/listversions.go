@@ -213,11 +213,11 @@ type lvJSONEntry struct {
 	Changelog []string `json:"changelog,omitempty"`
 }
 
-// printVersionEntriesJSON prints versions with changelog as JSON.
+// printVersionEntriesJSON prints versions with source and changelog as JSON.
 func printVersionEntriesJSON(entries []versionEntry) {
 	out := make([]lvJSONEntry, len(entries))
 	for i, e := range entries {
-		out[i] = lvJSONEntry{Version: e.Version.String(), Changelog: e.Notes}
+		out[i] = lvJSONEntry{Version: e.Version.String(), Source: e.Source, Changelog: e.Notes}
 	}
 
 	data, _ := json.MarshalIndent(out, "", constants.JSONIndent)
