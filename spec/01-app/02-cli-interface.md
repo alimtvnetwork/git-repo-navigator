@@ -461,6 +461,7 @@ activates whenever existing repos are detected during a clone operation.
 | `--latest`        | Show only the most recent version        | `false` |
 | `--limit <n>`     | Max number of versions to display        | `5`     |
 | `--open`          | Open CHANGELOG.md in default application | `false` |
+| `--source`        | Filter by source: `release` or `import`  | (all)   |
 
 ## Latest-Branch Flags
 
