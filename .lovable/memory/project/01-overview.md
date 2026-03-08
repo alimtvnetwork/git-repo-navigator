@@ -6,7 +6,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 ## Current Version
 
-**v2.16.0** (defined in `gitmap/constants/constants.go`)
+**v2.17.0** (defined in `gitmap/constants/constants.go`)
 
 ## Tech Stack
 
