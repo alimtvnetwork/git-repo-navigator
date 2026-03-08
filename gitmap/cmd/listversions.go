@@ -13,10 +13,11 @@ import (
 	"github.com/user/gitmap/release"
 )
 
-// versionEntry pairs a parsed version with its changelog notes.
+// versionEntry pairs a parsed version with its changelog notes and source.
 type versionEntry struct {
 	Version release.Version
 	Notes   []string
+	Source  string
 }
 
 // runListVersions handles the "list-versions" command.
