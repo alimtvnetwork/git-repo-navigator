@@ -99,17 +99,39 @@ func applyVersionLimit(entries []versionEntry, n int) []versionEntry {
 	return entries[:n]
 }
 
-// collectVersionEntries reads tags, parses, sorts, and attaches changelog.
+// collectVersionEntries reads tags, parses, sorts, and attaches changelog + source.
 func collectVersionEntries() []versionEntry {
 	versions := collectVersionTags()
 	changelog := loadChangelogMap()
+	sources := loadVersionSourceMap()
 
 	entries := make([]versionEntry, len(versions))
 	for i, v := range versions {
-		entries[i] = versionEntry{Version: v, Notes: changelog[v.String()]}
+		entries[i] = versionEntry{Version: v, Notes: changelog[v.String()], Source: sources[v.String()]}
 	}
 
 	return entries
+}
+
+// loadVersionSourceMap reads the Releases table to build a tag→source map.
+func loadVersionSourceMap() map[string]string {
+	db, err := openDB()
+	if err != nil {
+		return map[string]string{}
+	}
+	defer db.Close()
+
+	releases, err := db.ListReleases()
+	if err != nil {
+		return map[string]string{}
+	}
+
+	m := make(map[string]string, len(releases))
+	for _, r := range releases {
+		m[r.Tag] = r.Source
+	}
+
+	return m
 }
 
 // collectVersionTags reads git tags, parses, sorts descending.
