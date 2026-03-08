@@ -41,7 +41,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `release [ver]` | `r` | Create release branch, tag, push, persist to DB | ✅ Done |
 | `release-branch` | `rb` | Complete release from existing branch | ✅ Done |
 | `release-pending` | `rp` | Release all pending branches without tags | ✅ Done |
-| `changelog [ver]` | `cl` | Show concise release notes | ✅ Done |
+| `changelog [ver]` | `cl` | Show concise release notes, filterable by `--source` | ✅ Done |
 | `latest-branch` | `lb` | Find most recently updated remote branch | ✅ Done |
 | `list` | `ls` | Show all tracked repos with slugs | ✅ Done |
 | `group <sub>` | `g` | Manage repo groups | ✅ Done |
