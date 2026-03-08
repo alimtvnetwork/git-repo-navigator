@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.18.0
+- Added `gitmap seo-write` (`sw`) command: automated SEO commit scheduler that stages, commits, and pushes files on a randomized interval.
+- Supports CSV input mode (`--csv`) for user-provided title/description pairs.
+- Supports template mode with placeholder substitution (`{service}`, `{area}`, `{url}`, `{company}`, `{phone}`, `{email}`, `{address}`).
+- Pre-seeded `data/seo-templates.json` with 25 title and 20 description templates (500 unique combinations).
+- Added `CommitTemplates` SQLite table for persistent template storage with auto-seeding on first run.
+- Rotation mode: when pending files are exhausted, appends/reverts text in a target file to maintain commit activity.
+- Configurable interval (`--interval min-max`), commit limit (`--max-commits`), file selection (`--files`), and dry-run preview.
+- Added `--template <path>` flag to load templates from a custom JSON file at runtime.
+- Added `--create-template` / `ct` shorthand to scaffold a sample `seo-templates.json` in the current directory.
+- Graceful shutdown on Ctrl+C (finishes current commit before exiting).
+
 ## v2.17.0
 - Added `Source` column to the `Releases` table: tracks whether each release was created via `gitmap release` (`release`) or imported from `.release/` files (`import`).
 - Added `--source` flag to `gitmap list-releases` (`lr`): filter releases by origin (`--source release` or `--source import`).
