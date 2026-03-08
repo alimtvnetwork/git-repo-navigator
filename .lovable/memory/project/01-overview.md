@@ -64,6 +64,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `Groups` | Named collections of repos |
 | `GroupRepos` | Join table linking repos to groups |
 | `Releases` | Release metadata with changelog and source tracking (`release` or `import`) |
+| `CommitTemplates` | SEO commit message templates (title/description) with placeholders |
 
 ## Output Files (per scan)
 
