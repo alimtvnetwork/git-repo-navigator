@@ -43,6 +43,7 @@ func printUsageCommands() {
 	fmt.Println(constants.HelpListVersions)
 	fmt.Println(constants.HelpListReleases)
 	fmt.Println(constants.HelpRevert)
+	fmt.Println(constants.HelpSEOWrite)
 	fmt.Println(constants.HelpHelp)
 }
 
