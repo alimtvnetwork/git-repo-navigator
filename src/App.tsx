@@ -8,6 +8,7 @@ import Commands from "./pages/Commands";
 import GettingStarted from "./pages/GettingStarted";
 import Config from "./pages/Config";
 import Architecture from "./pages/Architecture";
+import Watch from "./pages/Watch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/getting-started" element={<GettingStarted />} />
           <Route path="/config" element={<Config />} />
           <Route path="/architecture" element={<Architecture />} />
+          <Route path="/watch" element={<Watch />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
