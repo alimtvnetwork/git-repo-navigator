@@ -561,6 +561,16 @@ function Invoke-Tests {
 Show-Banner
 $config = Load-Config
 
+if ($Test) {
+    Write-Info "Test mode enabled (-t)"
+    Resolve-Dependencies
+    Invoke-Tests
+    Write-Host ""
+    Write-Success "All done!"
+    Write-Host ""
+    exit 0
+}
+
 if ($Update) {
     Write-Info "Update mode enabled (-Update)"
 }
