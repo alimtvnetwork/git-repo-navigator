@@ -2,8 +2,10 @@ package constants
 
 // Amend command.
 const (
-	CmdAmend      = "amend"
-	CmdAmendAlias = "am"
+	CmdAmend          = "amend"
+	CmdAmendAlias     = "am"
+	CmdAmendList      = "amend-list"
+	CmdAmendListAlias = "al"
 )
 
 // Amend flag names.
