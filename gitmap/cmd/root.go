@@ -234,6 +234,11 @@ func dispatchMisc(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdExport || command == constants.CmdExportAlias {
+		runExport(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }

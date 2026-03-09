@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.23.0
+- Added `gitmap export` (`ex`) command: export the full database as a portable JSON file.
+- Exports all tables: repos, groups (with member repo slugs), releases, command history, and bookmarks.
+- Default output: `gitmap-export.json`; accepts optional custom file path.
+- Summary line shows counts for each exported section.
+
 ## v2.22.0
 - Added `gitmap bookmark` (`bk`) command: save and replay frequently-used command+flag combinations.
 - Subcommands: `save`, `list`, `run`, `delete` — full CRUD for saved bookmarks.
