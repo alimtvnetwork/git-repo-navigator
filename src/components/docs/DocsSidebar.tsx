@@ -4,6 +4,7 @@ import {
   Rocket,
   Settings,
   Boxes,
+  Monitor,
   Sun,
   Moon,
 } from "lucide-react";
