@@ -69,6 +69,3 @@ func buildReplayArgs(command string, extra []string) []string {
 
 	return result
 }
-
-// ignore: time import used by timeNow var
-var _ = time.Now
