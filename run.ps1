@@ -15,10 +15,12 @@
     .\run.ps1 -R clone .\gitmap-output\gitmap.json --target-dir .\restored
     .\run.ps1 -R help                            # build + show help
     .\run.ps1 -NoPull -NoDeploy -R scan          # just build and scan
+    .\run.ps1 -t                                 # run all unit tests with reports
 .NOTES
     Configuration is read from gitmap/powershell.json.
     -R accepts ALL gitmap CLI arguments after it (scan, clone, help, flags, paths).
     If -R is used with no arguments, it defaults to: scan <parent folder>
+    -t runs all Go unit tests and writes reports to gitmap/data/unit-test-reports/.
 #>
 
 [CmdletBinding(PositionalBinding=$false)]
