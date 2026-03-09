@@ -214,6 +214,16 @@ func dispatchMisc(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdHistory || command == constants.CmdHistoryAlias {
+		runHistory(os.Args[2:])
+
+		return true
+	}
+	if command == constants.CmdHistoryReset || command == constants.CmdHistoryResetAlias {
+		runHistoryReset(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }
