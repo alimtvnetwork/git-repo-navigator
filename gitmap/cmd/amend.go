@@ -88,7 +88,7 @@ func executeAmend(f amendFlags) {
 	prevName, prevEmail := detectPreviousAuthor(commits)
 
 	if f.dryRun {
-		printAmendDryRun(commits, f)
+		printAmendDryRun(commits, f, prevName, prevEmail)
 
 		returnToBranch(f, originalBranch)
 
@@ -96,7 +96,7 @@ func executeAmend(f amendFlags) {
 	}
 
 	fmt.Print(constants.MsgAmendWarnRewrite)
-	printAmendHeader(f, commits, targetBranch)
+	printAmendHeader(f, commits, targetBranch, prevName, prevEmail)
 
 	runFilterBranch(f, commits)
 	printAmendProgress(commits)
