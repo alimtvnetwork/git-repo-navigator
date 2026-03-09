@@ -254,6 +254,11 @@ func dispatchMisc(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdDiffProfiles || command == constants.CmdDiffProfilesAlias {
+		runDiffProfiles(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }
