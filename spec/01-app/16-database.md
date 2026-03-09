@@ -96,6 +96,26 @@ tag exists, update all fields. Otherwise, insert a new row. When a new
 stable release is marked as latest, all other releases have `IsLatest`
 cleared to 0 first.
 
+### Amendments Table
+
+| Column        | Type    | Constraints               | Notes                              |
+|---------------|---------|---------------------------|------------------------------------|
+| Id            | TEXT    | PRIMARY KEY               | UUID                               |
+| Branch        | TEXT    | NOT NULL                  | Target branch name                 |
+| FromCommit    | TEXT    | NOT NULL                  | First commit SHA in range          |
+| ToCommit      | TEXT    | NOT NULL                  | Last commit SHA (HEAD at amend)    |
+| TotalCommits  | INTEGER | NOT NULL                  | Number of commits rewritten        |
+| PreviousName  | TEXT    | DEFAULT ''                | Original author name               |
+| PreviousEmail | TEXT    | DEFAULT ''                | Original author email              |
+| NewName       | TEXT    | DEFAULT ''                | Replacement author name            |
+| NewEmail      | TEXT    | DEFAULT ''                | Replacement author email           |
+| Mode          | TEXT    | NOT NULL                  | `all`, `range`, or `head`          |
+| ForcePushed   | INTEGER | DEFAULT 0                 | 1 = force-push was executed        |
+| CreatedAt     | TEXT    | DEFAULT CURRENT_TIMESTAMP |                                    |
+
+**Insert only:** Each amend operation inserts a new row. No upsert — every
+operation is a unique audit record.
+
 ---
 
 ## Slug Generation
