@@ -5,6 +5,7 @@ import {
   Settings,
   Boxes,
   Monitor,
+  Hammer,
   Sun,
   Moon,
 } from "lucide-react";
