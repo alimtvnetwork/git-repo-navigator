@@ -123,6 +123,8 @@ const (
 	HelpSEODryRunFlag = "  --dry-run           Preview commit messages without executing"
 	HelpSEOTemplateF  = "  --template <path>   Load templates from a custom JSON file"
 	HelpSEOCreateTpl  = "  --create-template   Generate sample seo-templates.json (alias: ct)"
+	HelpSEOAuthorName = "  --author-name <n>   Git author name for commits"
+	HelpSEOAuthorEmail = "  --author-email <e>  Git author email for commits"
 )
 
 // CommitTemplates table.
