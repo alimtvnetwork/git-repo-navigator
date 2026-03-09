@@ -744,4 +744,30 @@ gitmap db-reset --confirm
 
 # Revert to a previous version
 gitmap revert v2.9.0
+
+# SEO-write — template mode with placeholders
+gitmap seo-write --url example.com --service "Web Design" --area "London" --company "Acme Ltd"
+gitmap sw --url example.com --service Plumbing --area Manchester --max-commits 50
+
+# SEO-write — CSV mode
+gitmap seo-write --csv ./commits.csv
+gitmap sw --csv ./commits.csv --interval 30-90
+
+# SEO-write — dry run (preview without committing)
+gitmap sw --url example.com --service SEO --area Bristol --dry-run
+
+# SEO-write — custom template file
+gitmap sw --url example.com --template ./my-templates.json --service Roofing --area Leeds
+
+# SEO-write — create starter template
+gitmap seo-write --create-template
+gitmap seo-write ct                    # shorthand
+
+# SEO-write — rotation mode with explicit file
+gitmap sw --url example.com --service HVAC --area York --rotate-file index.html --max-commits 100
+
+# SEO-write — all placeholders
+gitmap sw --url example.com --service "Pest Control" --area "Edinburgh" \
+  --company "BugFree Ltd" --phone "0800 123 456" --email info@bugfree.com \
+  --address "10 High Street, Edinburgh"
 ```
