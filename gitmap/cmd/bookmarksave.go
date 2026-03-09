@@ -50,7 +50,7 @@ func saveBookmarkToDB(name, command, args, flags string) {
 	checkBookmarkNotExists(db, name)
 
 	record := model.BookmarkRecord{
-		ID:      fmt.Sprintf("bk-%d", now().UnixNano()),
+		ID:      fmt.Sprintf("bk-%d", timeNow().UnixNano()),
 		Name:    name,
 		Command: command,
 		Args:    args,
@@ -77,9 +77,4 @@ func checkBookmarkNotExists(db interface {
 
 	fmt.Fprintf(os.Stderr, constants.ErrBookmarkExists, name)
 	os.Exit(1)
-}
-
-// now returns the current time (extracted for testability).
-func now() interface{ UnixNano() int64 } {
-	return timeNow()
 }

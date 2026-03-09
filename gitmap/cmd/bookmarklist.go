@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
@@ -100,6 +99,3 @@ func deleteBookmarkFromDB(name string) {
 
 	fmt.Printf(constants.MsgBookmarkDeleted, name)
 }
-
-// ignore unused imports for string building
-var _ = strings.Join
