@@ -1,14 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
-	"time"
 
 	"github.com/user/gitmap/constants"
-	"github.com/user/gitmap/model"
 )
 
 // runBookmark handles the "bookmark" subcommand routing.
