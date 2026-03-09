@@ -15,10 +15,24 @@ type DB struct {
 	conn *sql.DB
 }
 
-// Open creates or opens the SQLite database at the standard location.
+// Open creates or opens the SQLite database for the active profile.
 func Open(outputDir string) (*DB, error) {
-	dbPath := buildDBPath(outputDir)
+	dbFile := ActiveProfileDBFile(outputDir)
+	dbPath := filepath.Join(outputDir, constants.DBDir, dbFile)
 
+	return openDBAt(dbPath)
+}
+
+// OpenProfile opens the database for a specific named profile.
+func OpenProfile(outputDir, profileName string) (*DB, error) {
+	dbFile := ProfileDBFile(profileName)
+	dbPath := filepath.Join(outputDir, constants.DBDir, dbFile)
+
+	return openDBAt(dbPath)
+}
+
+// openDBAt opens a database at an exact path.
+func openDBAt(dbPath string) (*DB, error) {
 	if err := ensureDir(filepath.Dir(dbPath)); err != nil {
 		return nil, fmt.Errorf(constants.ErrDBCreateDir, err)
 	}
@@ -93,9 +107,11 @@ func (db *DB) Conn() *sql.DB {
 	return db.conn
 }
 
-// buildDBPath constructs the full path to the database file.
+// buildDBPath constructs the full path to the default database file.
 func buildDBPath(outputDir string) string {
-	return filepath.Join(outputDir, constants.DBDir, constants.DBFile)
+	dbFile := ActiveProfileDBFile(outputDir)
+
+	return filepath.Join(outputDir, constants.DBDir, dbFile)
 }
 
 // ensureDir creates the directory tree if it doesn't exist.
