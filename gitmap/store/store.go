@@ -41,6 +41,7 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateReleases,
 		constants.SQLCreateCommitTemplates,
 		constants.SQLCreateAmendments,
+		constants.SQLCreateCommandHistory,
 	}
 
 	for _, stmt := range statements {
