@@ -22,7 +22,17 @@ func CloneFromFile(sourcePath, targetDir string, safePull bool) (model.CloneSumm
 		return model.CloneSummary{}, err
 	}
 
-	return cloneAll(records, targetDir, safePull), nil
+	return cloneAll(records, targetDir, safePull, false), nil
+}
+
+// CloneFromFileQuiet reads a source file and clones with suppressed progress.
+func CloneFromFileQuiet(sourcePath, targetDir string, safePull bool) (model.CloneSummary, error) {
+	records, err := loadRecords(sourcePath)
+	if err != nil {
+		return model.CloneSummary{}, err
+	}
+
+	return cloneAll(records, targetDir, safePull, true), nil
 }
 
 // loadRecords detects file format and parses records.
