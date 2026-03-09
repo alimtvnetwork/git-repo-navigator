@@ -296,6 +296,42 @@ source, date).
 
 See [21-list-releases.md](./21-list-releases.md) for full details.
 
+### `gitmap seo-write [flags]` (alias: `sw`)
+
+Auto-commit and push SEO-optimized messages to a Git repository on a
+randomized schedule. Designed for populating commit history with
+service/location-specific content.
+
+**Input modes:**
+
+1. **CSV mode** (`--csv <path>`) — reads title/description pairs from a
+   two-column CSV file and commits them in order.
+2. **Template mode** (default) — loads title and description templates
+   from the `CommitTemplates` SQLite table (auto-seeded from
+   `data/seo-templates.json` on first run), substitutes placeholders,
+   and pairs them randomly. Supports 7 placeholders: `{service}`,
+   `{area}`, `{url}`, `{company}`, `{phone}`, `{email}`, `{address}`.
+
+**Workflow:**
+
+1. Resolve commit messages (CSV rows or generated template pairs).
+2. Detect pending files (`--files` glob or `git ls-files --others --modified`).
+3. Round-robin stage → commit → push each file with a random delay.
+4. When pending files are exhausted and commits remain, enter **rotation
+   mode**: pick a target file (`--rotate-file` or auto-detect first
+   `.html`/`.txt`), append text → commit → revert → commit in a cycle.
+5. Stop at `--max-commits` or on Ctrl+C (graceful shutdown).
+
+**Template management:**
+
+- `gitmap seo-write --create-template` or `gitmap seo-write ct` —
+  writes a starter `seo-templates.json` to the current directory for
+  customization.
+- `--template <path>` — load templates from a custom JSON file instead
+  of the database.
+
+See [23-seo-write.md](./23-seo-write.md) for full details.
+
 ### `gitmap revert <version>`
 
 Revert to a specific release version by checking out the corresponding
@@ -306,7 +342,7 @@ Git tag and rebuilding.
 
 ### `gitmap version` (alias: `v`)
 
-Prints the current version number (e.g., `gitmap v2.16.0`) and exits.
+Prints the current version number (e.g., `gitmap v2.18.0`) and exits.
 
 ### `gitmap help`
 
