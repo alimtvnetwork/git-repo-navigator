@@ -6,52 +6,62 @@ import (
 	"os"
 
 	"github.com/user/gitmap/constants"
-	"github.com/user/gitmap/gitutil"
 )
+
+// goModOpts holds parsed flags for the gomod command.
+type goModOpts struct {
+	newPath string
+	dryRun  bool
+	noMerge bool
+	noTidy  bool
+	verbose bool
+	exts    []string
+}
 
 // runGoMod is the entry point for the gomod command.
 func runGoMod(args []string) {
-	newPath, dryRun, noMerge, noTidy, verbose := parseGoModFlags(args)
+	opts := parseGoModFlags(args)
 
-	if len(newPath) == 0 {
+	if len(opts.newPath) == 0 {
 		fmt.Fprint(os.Stderr, constants.ErrGoModUsage)
 		os.Exit(1)
 	}
 
 	oldPath := readModulePath()
-	validateGoModPreconditions(oldPath, newPath)
+	validateGoModPreconditions(oldPath, opts.newPath)
 
-	if dryRun {
-		runGoModDryRun(oldPath, newPath)
+	if opts.dryRun {
+		runGoModDryRun(oldPath, opts.newPath, opts.exts)
 
 		return
 	}
 
 	originalBranch := goModCurrentBranch()
-	slug := deriveSlug(newPath)
+	slug := deriveSlug(opts.newPath)
 	backupBranch, featureBranch := createGoModBranches(slug)
 
-	fileCount := replaceModulePath(oldPath, newPath, verbose)
-	runGoModTidy(noTidy)
-	commitGoModChanges(oldPath, newPath, fileCount)
+	fileCount := replaceModulePath(oldPath, opts.newPath, opts.verbose, opts.exts)
+	runGoModTidy(opts.noTidy)
+	commitGoModChanges(oldPath, opts.newPath, fileCount)
 
-	if noMerge {
-		printGoModSummaryNoMerge(oldPath, newPath, fileCount, backupBranch, featureBranch)
+	if opts.noMerge {
+		printGoModSummaryNoMerge(oldPath, opts.newPath, fileCount, backupBranch, featureBranch)
 
 		return
 	}
 
-	mergeGoModBranch(originalBranch, featureBranch, newPath)
-	printGoModSummary(oldPath, newPath, fileCount, backupBranch, featureBranch, originalBranch)
+	mergeGoModBranch(originalBranch, featureBranch, opts.newPath)
+	printGoModSummary(oldPath, opts.newPath, fileCount, backupBranch, featureBranch, originalBranch)
 }
 
 // parseGoModFlags parses flags for the gomod command.
-func parseGoModFlags(args []string) (string, bool, bool, bool, bool) {
+func parseGoModFlags(args []string) goModOpts {
 	fs := flag.NewFlagSet(constants.CmdGoMod, flag.ExitOnError)
 	dryRun := fs.Bool(constants.FlagGoModDryRun, false, constants.FlagDescGoModDryRun)
 	noMerge := fs.Bool(constants.FlagGoModNoMerge, false, constants.FlagDescGoModNoMerge)
 	noTidy := fs.Bool(constants.FlagGoModNoTidy, false, constants.FlagDescGoModNoTidy)
 	verbose := fs.Bool("verbose", false, constants.FlagDescVerbose)
+	extFlag := fs.String(constants.FlagGoModExt, "", constants.FlagDescGoModExt)
 	fs.Parse(args)
 
 	newPath := ""
@@ -59,7 +69,16 @@ func parseGoModFlags(args []string) (string, bool, bool, bool, bool) {
 		newPath = fs.Arg(0)
 	}
 
-	return newPath, *dryRun, *noMerge, *noTidy, *verbose
+	exts := parseExtFlag(*extFlag)
+
+	return goModOpts{
+		newPath: newPath,
+		dryRun:  *dryRun,
+		noMerge: *noMerge,
+		noTidy:  *noTidy,
+		verbose: *verbose,
+		exts:    exts,
+	}
 }
 
 // validateGoModPreconditions checks all prerequisites before starting.
@@ -78,8 +97,8 @@ func validateGoModPreconditions(oldPath, newPath string) {
 }
 
 // runGoModDryRun previews changes without modifying files.
-func runGoModDryRun(oldPath, newPath string) {
-	files := findGoFilesWithPath(oldPath)
+func runGoModDryRun(oldPath, newPath string, exts []string) {
+	files := findFilesWithPath(oldPath, exts)
 
 	fmt.Print(constants.MsgGoModDryHeader)
 	fmt.Printf(constants.MsgGoModDryOld, oldPath)
