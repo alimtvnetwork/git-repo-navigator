@@ -14,6 +14,7 @@ const (
 	HelpGoModNoMrg = "  --no-merge          Commit on feature branch but do not merge back"
 	HelpGoModNoTdy = "  --no-tidy           Skip go mod tidy after replacement"
 	HelpGoModVerb  = "  --verbose           Print each file path as it is modified"
+	HelpGoModExt   = "  --ext <exts>        Comma-separated extensions to filter (e.g. *.go,*.md); default: all files"
 )
 
 // GoMod flag names.
@@ -21,6 +22,7 @@ const (
 	FlagGoModDryRun  = "dry-run"
 	FlagGoModNoMerge = "no-merge"
 	FlagGoModNoTidy  = "no-tidy"
+	FlagGoModExt     = "ext"
 )
 
 // GoMod flag descriptions.
@@ -28,6 +30,7 @@ const (
 	FlagDescGoModDryRun  = "Preview changes without modifying files or branches"
 	FlagDescGoModNoMerge = "Commit on feature branch but do not merge back"
 	FlagDescGoModNoTidy  = "Skip go mod tidy after replacement"
+	FlagDescGoModExt     = "Comma-separated file extensions to filter (e.g. *.go,*.md); default: all files"
 )
 
 // GoMod file and directory constants.
@@ -62,14 +65,14 @@ const (
 	MsgGoModDryNew        = "  New: %s\n"
 	MsgGoModDryFiles      = "  Files that would change: %d\n"
 	MsgGoModDryFile       = "  %s\n"
-	MsgGoModNoImports     = "Warning: no import paths found to replace (only go.mod updated)\n"
+	MsgGoModNoImports     = "Warning: no files found containing the old path to replace (only go.mod updated)\n"
 	MsgGoModTidyWarn      = "Warning: go mod tidy failed: %v (continuing)\n"
 	MsgGoModNothingRename = "module path is already %s, nothing to rename\n"
 )
 
 // GoMod error messages.
 const (
-	ErrGoModUsage         = "usage: gitmap gomod <new-module-path> [--dry-run] [--no-merge] [--no-tidy] [--verbose]\n"
+	ErrGoModUsage         = "usage: gitmap gomod <new-module-path> [--ext *.go,*.md] [--dry-run] [--no-merge] [--no-tidy] [--verbose]\n"
 	ErrGoModNoFile        = "error: go.mod not found in current directory\n"
 	ErrGoModNoModule      = "error: no module directive found in go.mod\n"
 	ErrGoModNotRepo       = "error: not inside a git repository\n"
@@ -94,7 +97,7 @@ const (
 )
 
 // GoMod commit message format.
-const GoModCommitMsgFmt = "refactor: rename go module path\n\nOld: %s\nNew: %s\n\nReplaced module directive in go.mod and all import paths\nacross %d .go files."
+const GoModCommitMsgFmt = "refactor: rename go module path\n\nOld: %s\nNew: %s\n\nReplaced module directive in go.mod and all matching paths\nacross %d files."
 
 // GoMod merge message format.
 const GoModMergeMsgFmt = "merge: module rename to %s"

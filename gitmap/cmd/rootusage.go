@@ -140,4 +140,5 @@ func printUsageGoModFlags() {
 	fmt.Println(constants.HelpGoModNoMrg)
 	fmt.Println(constants.HelpGoModNoTdy)
 	fmt.Println(constants.HelpGoModVerb)
+	fmt.Println(constants.HelpGoModExt)
 }

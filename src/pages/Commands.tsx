@@ -145,15 +145,17 @@ const commands = [
   },
   {
     name: "gomod", alias: "gm", description: "Rename Go module path across repo with branch safety",
-    usage: "gitmap gomod <new-module-path> [--dry-run] [--no-merge] [--no-tidy] [--verbose]",
+    usage: "gitmap gomod <new-module-path> [--ext *.go,*.md] [--dry-run] [--no-merge] [--no-tidy] [--verbose]",
     flags: [
+      { flag: "--ext <exts>", description: "Comma-separated extensions to filter (e.g. *.go,*.md); default: all files" },
       { flag: "--dry-run", description: "Preview changes without modifying files or branches" },
       { flag: "--no-merge", description: "Commit on feature branch but do not merge back" },
       { flag: "--no-tidy", description: "Skip go mod tidy after replacement" },
       { flag: "--verbose", description: "Print each file path as it is modified" },
     ],
     examples: [
-      { command: 'gitmap gomod "x/y"', description: "Rename module path to x/y" },
+      { command: 'gitmap gomod "x/y"', description: "Rename module path in all files" },
+      { command: 'gitmap gomod "x/y" --ext "*.go,*.md"', description: "Only replace in .go and .md files" },
       { command: 'gitmap gomod "github.com/new/name" --dry-run', description: "Preview what would change" },
       { command: 'gitmap gomod "github.com/new/name" --no-merge', description: "Replace but stay on feature branch" },
     ],
