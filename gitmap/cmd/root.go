@@ -264,6 +264,11 @@ func dispatchMisc(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdGoMod || command == constants.CmdGoModAlias {
+		runGoMod(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }
