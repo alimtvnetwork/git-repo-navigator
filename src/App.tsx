@@ -10,6 +10,7 @@ import GettingStarted from "./pages/GettingStarted";
 import Config from "./pages/Config";
 import Architecture from "./pages/Architecture";
 import Watch from "./pages/Watch";
+import Release from "./pages/Release";
 import MakefilePage from "./pages/Makefile";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/config" element={<Config />} />
           <Route path="/architecture" element={<Architecture />} />
           <Route path="/watch" element={<Watch />} />
+          <Route path="/release" element={<Release />} />
           <Route path="/gomod" element={<GoMod />} />
           <Route path="/makefile" element={<MakefilePage />} />
           <Route path="*" element={<NotFound />} />

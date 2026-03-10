@@ -7,6 +7,7 @@ import {
   Monitor,
   Hammer,
   GitBranch,
+  Tag,
   Sun,
   Moon,
 } from "lucide-react";
@@ -34,6 +35,7 @@ const navItems = [
   { title: "Configuration", url: "/config", icon: Settings },
   { title: "Architecture", url: "/architecture", icon: Boxes },
   { title: "Watch", url: "/watch", icon: Monitor },
+  { title: "Release", url: "/release", icon: Tag },
   { title: "GoMod", url: "/gomod", icon: GitBranch },
   { title: "Makefile", url: "/makefile", icon: Hammer },
 ];
