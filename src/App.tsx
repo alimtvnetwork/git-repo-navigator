@@ -28,6 +28,7 @@ const App = () => (
           <Route path="/config" element={<Config />} />
           <Route path="/architecture" element={<Architecture />} />
           <Route path="/watch" element={<Watch />} />
+          <Route path="/gomod" element={<GoMod />} />
           <Route path="/makefile" element={<MakefilePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
