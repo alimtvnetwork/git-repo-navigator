@@ -268,8 +268,8 @@ Last updated: 2026-03-10
 
 | Metric | Count |
 |--------|-------|
-| Total files audited | 165 |
-| Passing | 165 |
+| Total files audited | 169 |
+| Passing | 169 |
 | Pending | 0 |
 
 ## Recent Fixes
