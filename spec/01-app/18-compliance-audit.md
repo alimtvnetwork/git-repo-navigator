@@ -91,6 +91,9 @@ Last updated: 2026-03-10
 | `watch.go` | ~60 | ✅ Pass | Watch dashboard entry |
 | `watchformat.go` | ~80 | ✅ Pass | Watch display formatting |
 | `watchops.go` | ~60 | ✅ Pass | Watch refresh loop |
+| `gomod.go` | ~125 | ✅ Pass | GoMod entry point, flag parsing, orchestration |
+| `gomodreplace.go` | ~140 | ✅ Pass | File walking, go.mod parsing, path replacement |
+| `gomodbranch.go` | ~140 | ✅ Pass | Branch creation, merge, slug derivation, git ops |
 | `flags_test.go` | ~40 | ✅ Pass | |
 
 ## Package: `constants`
