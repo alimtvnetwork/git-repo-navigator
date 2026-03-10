@@ -7,7 +7,18 @@ import (
 	"strings"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/gitutil"
 )
+
+// requireInsideWorkTree exits if the current directory is not inside a git repo.
+func requireInsideWorkTree() {
+	if gitutil.IsInsideWorkTree() {
+		return
+	}
+
+	fmt.Fprint(os.Stderr, constants.ErrGoModNotRepo)
+	os.Exit(1)
+}
 
 // deriveSlug sanitizes a module path into a branch-safe slug.
 func deriveSlug(modulePath string) string {
