@@ -293,7 +293,7 @@ Last updated: 2026-03-10
 
 ## Constants Inventory
 
-Total: **21 files**, **~550+ constants** + **~10 vars** across 25+ categories.
+Total: **22 files**, **~580+ constants** + **~11 vars** across 26+ categories.
 
 ### `constants.go` — Core Defaults (111 lines)
 
