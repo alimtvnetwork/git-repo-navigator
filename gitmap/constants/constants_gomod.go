@@ -22,6 +22,7 @@ const (
 	FlagGoModDryRun  = "dry-run"
 	FlagGoModNoMerge = "no-merge"
 	FlagGoModNoTidy  = "no-tidy"
+	FlagGoModExt     = "ext"
 )
 
 // GoMod flag descriptions.
