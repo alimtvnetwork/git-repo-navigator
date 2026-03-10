@@ -121,6 +121,7 @@ Last updated: 2026-03-10
 | `constants_watch.go` | ~52 | ✅ Pass | Watch commands, display, flags |
 | `constants_diffprofile.go` | ~28 | ✅ Pass | Diff-profiles commands and messages |
 | `constants_clone.go` | ~10 | ✅ Pass | Clone progress format strings |
+| `constants_gomod.go` | ~100 | ✅ Pass | GoMod commands, flags, messages, git args |
 
 ## Package: `release`
 
