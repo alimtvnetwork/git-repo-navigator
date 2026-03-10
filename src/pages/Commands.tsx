@@ -143,6 +143,21 @@ const commands = [
     name: "revert", alias: undefined, description: "Revert to a specific release version",
     usage: "gitmap revert <version>",
   },
+  {
+    name: "gomod", alias: "gm", description: "Rename Go module path across repo with branch safety",
+    usage: "gitmap gomod <new-module-path> [--dry-run] [--no-merge] [--no-tidy] [--verbose]",
+    flags: [
+      { flag: "--dry-run", description: "Preview changes without modifying files or branches" },
+      { flag: "--no-merge", description: "Commit on feature branch but do not merge back" },
+      { flag: "--no-tidy", description: "Skip go mod tidy after replacement" },
+      { flag: "--verbose", description: "Print each file path as it is modified" },
+    ],
+    examples: [
+      { command: 'gitmap gomod "x/y"', description: "Rename module path to x/y" },
+      { command: 'gitmap gomod "github.com/new/name" --dry-run', description: "Preview what would change" },
+      { command: 'gitmap gomod "github.com/new/name" --no-merge', description: "Replace but stay on feature branch" },
+    ],
+  },
 ];
 
 const CommandsPage = () => {

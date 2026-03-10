@@ -17,6 +17,7 @@ func printUsage() {
 	printUsageReleaseFlags()
 	printUsageSEOFlags()
 	printUsageAmendFlags()
+	printUsageGoModFlags()
 }
 
 // printUsageCommands prints the available commands section.
@@ -58,6 +59,7 @@ func printUsageCommands() {
 	fmt.Println(constants.HelpCD)
 	fmt.Println(constants.HelpDiffProfiles)
 	fmt.Println(constants.HelpWatch)
+	fmt.Println(constants.HelpGoMod)
 	fmt.Println(constants.HelpHelp)
 }
 
@@ -128,4 +130,14 @@ func printUsageAmendFlags() {
 	fmt.Println(constants.HelpAmendBr)
 	fmt.Println(constants.HelpAmendDry)
 	fmt.Println(constants.HelpAmendForce)
+}
+
+// printUsageGoModFlags prints the gomod flags section.
+func printUsageGoModFlags() {
+	fmt.Println()
+	fmt.Println(constants.HelpGoModFlags)
+	fmt.Println(constants.HelpGoModDry)
+	fmt.Println(constants.HelpGoModNoMrg)
+	fmt.Println(constants.HelpGoModNoTdy)
+	fmt.Println(constants.HelpGoModVerb)
 }
