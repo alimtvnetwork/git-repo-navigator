@@ -30,6 +30,7 @@ const (
 	FlagDescGoModDryRun  = "Preview changes without modifying files or branches"
 	FlagDescGoModNoMerge = "Commit on feature branch but do not merge back"
 	FlagDescGoModNoTidy  = "Skip go mod tidy after replacement"
+	FlagDescGoModExt     = "Comma-separated file extensions to filter (e.g. *.go,*.md); default: all files"
 )
 
 // GoMod file and directory constants.
