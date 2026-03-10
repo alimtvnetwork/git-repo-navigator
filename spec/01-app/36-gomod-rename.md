@@ -92,6 +92,7 @@ Print a summary:
 | `--no-merge` | Create branches and commit but do not merge back. Leave on the feature branch. |
 | `--no-tidy` | Skip `go mod tidy` after replacement. |
 | `--verbose` | Print each file path as it is modified. |
+| `--ext <exts>` | Comma-separated file extensions to restrict replacement (e.g. `*.go,*.md,*.txt`). If omitted, all files in the repo are checked. `go.mod` is always updated regardless of this flag. |
 
 ## Edge Cases
 
