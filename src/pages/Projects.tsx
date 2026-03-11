@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import DocsLayout from "@/components/docs/DocsLayout";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import ProjectDetailDialog from "@/components/projects/ProjectDetailDialog";
+import type { DetectedProject, ProjectType } from "@/components/projects/types";
 
 const PROJECT_TYPES = {
   go: { label: "Go", color: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border-cyan-500/30", icon: Code2 },
@@ -25,30 +27,6 @@ const PROJECT_TYPES = {
   cpp: { label: "C++", color: "bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30", icon: Cpu },
   csharp: { label: "C#", color: "bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/30", icon: Hash },
 };
-
-type ProjectType = keyof typeof PROJECT_TYPES;
-
-interface DetectedProject {
-  id: string;
-  repoName: string;
-  projectType: ProjectType;
-  projectName: string;
-  absolutePath: string;
-  repoPath: string;
-  relativePath: string;
-  primaryIndicator: string;
-  detectedAt: string;
-  goMetadata?: {
-    moduleName: string;
-    goVersion: string;
-    runnables: { name: string; relativePath: string }[];
-  };
-  csharpMetadata?: {
-    slnName: string;
-    sdkVersion: string;
-    projectFiles: { fileName: string; targetFramework: string; outputType: string }[];
-  };
-}
 
 const SAMPLE_PROJECTS: DetectedProject[] = [
   {
@@ -102,7 +80,6 @@ const SAMPLE_PROJECTS: DetectedProject[] = [
 const TypeBadge = ({ type }: { type: ProjectType }) => {
   const config = PROJECT_TYPES[type];
   const Icon = config.icon;
-
   return (
     <Badge variant="outline" className={`${config.color} font-mono text-xs gap-1 border`}>
       <Icon className="h-3 w-3" />
@@ -111,118 +88,67 @@ const TypeBadge = ({ type }: { type: ProjectType }) => {
   );
 };
 
-const ProjectCard = ({ project }: { project: DetectedProject }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="border border-border rounded-lg p-4 hover:border-primary/40 transition-colors bg-card">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <TypeBadge type={project.projectType} />
-            <span className="font-mono text-sm font-semibold text-foreground truncate">
-              {project.projectName}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2">
-            <MapPin className="h-3 w-3 shrink-0" />
-            <span className="font-mono truncate">{project.relativePath === "." ? "(root)" : project.relativePath}</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
-            <FileText className="h-3 w-3 shrink-0" />
-            <span className="font-mono">{project.primaryIndicator}</span>
-          </div>
-        </div>
-        {(project.goMetadata || project.csharpMetadata) && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-muted-foreground hover:text-foreground transition-colors p-1"
-          >
-            {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-          </button>
-        )}
-      </div>
-
-      {expanded && project.goMetadata && (
-        <div className="mt-3 pt-3 border-t border-border space-y-2">
-          <div className="flex gap-4 text-xs text-muted-foreground">
-            <span>Module: <span className="font-mono text-foreground">{project.goMetadata.moduleName}</span></span>
-            <span>Go: <span className="font-mono text-foreground">{project.goMetadata.goVersion}</span></span>
-          </div>
-          {project.goMetadata.runnables.length > 0 && (
-            <div>
-              <span className="text-xs text-muted-foreground">Runnables:</span>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {project.goMetadata.runnables.map((r) => (
-                  <span key={r.name} className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-muted text-xs font-mono">
-                    <FileCode className="h-3 w-3 text-primary" />
-                    {r.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {expanded && project.csharpMetadata && (
-        <div className="mt-3 pt-3 border-t border-border space-y-2">
-          <div className="flex gap-4 text-xs text-muted-foreground">
-            <span>Solution: <span className="font-mono text-foreground">{project.csharpMetadata.slnName}</span></span>
-            <span>SDK: <span className="font-mono text-foreground">{project.csharpMetadata.sdkVersion}</span></span>
-          </div>
-          {project.csharpMetadata.projectFiles.length > 0 && (
-            <div>
-              <span className="text-xs text-muted-foreground">Project files:</span>
-              <div className="space-y-1 mt-1">
-                {project.csharpMetadata.projectFiles.map((f) => (
-                  <div key={f.fileName} className="flex items-center gap-2 text-xs font-mono">
-                    <FileCode className="h-3 w-3 text-primary shrink-0" />
-                    <span className="text-foreground">{f.fileName}</span>
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0">{f.targetFramework}</Badge>
-                    <span className="text-muted-foreground">{f.outputType}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+const ProjectCard = ({ project, onClick }: { project: DetectedProject; onClick: () => void }) => (
+  <div
+    className="border border-border rounded-lg p-4 hover:border-primary/40 transition-colors bg-card cursor-pointer"
+    onClick={onClick}
+  >
+    <div className="flex items-center gap-2 mb-1">
+      <TypeBadge type={project.projectType} />
+      <span className="font-mono text-sm font-semibold text-foreground truncate">
+        {project.projectName}
+      </span>
     </div>
-  );
-};
+    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2">
+      <MapPin className="h-3 w-3 shrink-0" />
+      <span className="font-mono truncate">{project.relativePath === "." ? "(root)" : project.relativePath}</span>
+    </div>
+    <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+      <FileText className="h-3 w-3 shrink-0" />
+      <span className="font-mono">{project.primaryIndicator}</span>
+    </div>
+    {project.goMetadata && project.goMetadata.runnables.length > 0 && (
+      <div className="flex flex-wrap gap-1.5 mt-2">
+        {project.goMetadata.runnables.map((r) => (
+          <span key={r.name} className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-muted text-xs font-mono">
+            <FileCode className="h-3 w-3 text-primary" />
+            {r.name}
+          </span>
+        ))}
+      </div>
+    )}
+    {project.csharpMetadata && project.csharpMetadata.projectFiles.length > 0 && (
+      <div className="flex flex-wrap gap-1.5 mt-2">
+        {project.csharpMetadata.projectFiles.map((f) => (
+          <Badge key={f.fileName} variant="outline" className="text-[10px] px-1.5 py-0">{f.fileName}</Badge>
+        ))}
+      </div>
+    )}
+  </div>
+);
 
 const ProjectsPage = () => {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState<ProjectType | "all">("all");
+  const [selectedProject, setSelectedProject] = useState<DetectedProject | null>(null);
 
   const filtered = SAMPLE_PROJECTS.filter((p) => {
-    if (activeFilter !== "all" && p.projectType !== activeFilter) {
-      return false;
-    }
+    if (activeFilter !== "all" && p.projectType !== activeFilter) return false;
     if (search.length > 0) {
       const q = search.toLowerCase();
-
-      return (
-        p.projectName.toLowerCase().includes(q) ||
-        p.repoName.toLowerCase().includes(q) ||
-        p.absolutePath.toLowerCase().includes(q)
-      );
+      return p.projectName.toLowerCase().includes(q) || p.repoName.toLowerCase().includes(q) || p.absolutePath.toLowerCase().includes(q);
     }
-
     return true;
   });
 
   const grouped = filtered.reduce<Record<string, DetectedProject[]>>((acc, p) => {
     acc[p.repoName] = acc[p.repoName] || [];
     acc[p.repoName].push(p);
-
     return acc;
   }, {});
 
   const typeCounts = SAMPLE_PROJECTS.reduce<Record<string, number>>((acc, p) => {
     acc[p.projectType] = (acc[p.projectType] || 0) + 1;
-
     return acc;
   }, {});
 
@@ -235,11 +161,10 @@ const ProjectsPage = () => {
             Detected Projects
           </h1>
           <p className="text-muted-foreground mt-2">
-            Projects discovered inside Git repositories during scan. Each repo can contain multiple project types.
+            Projects discovered inside Git repositories during scan. Click any project to see full details.
           </p>
         </div>
 
-        {/* Summary cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
           <Card
             className={`cursor-pointer transition-all ${activeFilter === "all" ? "ring-2 ring-primary" : "hover:border-primary/40"}`}
@@ -264,34 +189,25 @@ const ProjectsPage = () => {
           ))}
         </div>
 
-        {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by project name, repo, or path..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 font-mono text-sm"
-          />
+          <Input placeholder="Search by project name, repo, or path..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10 font-mono text-sm" />
         </div>
 
-        {/* Grouped project list */}
         <div className="space-y-6">
           {Object.entries(grouped).map(([repoName, projects]) => (
             <div key={repoName}>
               <div className="flex items-center gap-2 mb-3">
                 <FolderGit2 className="h-4 w-4 text-primary" />
                 <h2 className="font-mono font-semibold text-foreground">{repoName}</h2>
-                <span className="text-xs text-muted-foreground font-mono">
-                  {projects[0].repoPath}
-                </span>
+                <span className="text-xs text-muted-foreground font-mono">{projects[0].repoPath}</span>
                 <Badge variant="secondary" className="ml-auto text-xs">
                   {projects.length} project{projects.length > 1 ? "s" : ""}
                 </Badge>
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 {projects.map((p) => (
-                  <ProjectCard key={p.id} project={p} />
+                  <ProjectCard key={p.id} project={p} onClick={() => setSelectedProject(p)} />
                 ))}
               </div>
             </div>
@@ -305,6 +221,12 @@ const ProjectsPage = () => {
           </div>
         )}
       </div>
+
+      <ProjectDetailDialog
+        project={selectedProject}
+        open={!!selectedProject}
+        onOpenChange={(open) => { if (!open) setSelectedProject(null); }}
+      />
     </DocsLayout>
   );
 };
