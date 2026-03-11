@@ -57,6 +57,13 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateAmendments,
 		constants.SQLCreateCommandHistory,
 		constants.SQLCreateBookmarks,
+		constants.SQLCreateProjectTypes,
+		constants.SQLCreateDetectedProjects,
+		constants.SQLCreateGoProjectMetadata,
+		constants.SQLCreateGoRunnableFiles,
+		constants.SQLCreateCSharpProjectMeta,
+		constants.SQLCreateCSharpProjectFiles,
+		constants.SQLCreateCSharpKeyFiles,
 	}
 
 	for _, stmt := range statements {
@@ -67,7 +74,7 @@ func (db *DB) Migrate() error {
 
 	db.migrateSourceColumn()
 
-	return nil
+	return db.SeedProjectTypes()
 }
 
 // migrateSourceColumn adds the Source column to existing Releases tables.
