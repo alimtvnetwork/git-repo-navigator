@@ -265,6 +265,7 @@ const SQLUpsertDetectedProject = `INSERT INTO DetectedProjects
     ON CONFLICT(RepoId, ProjectTypeId, RelativePath) DO UPDATE SET
         ProjectName=excluded.ProjectName,
         AbsolutePath=excluded.AbsolutePath,
+        RepoPath=excluded.RepoPath,
         PrimaryIndicator=excluded.PrimaryIndicator,
         DetectedAt=CURRENT_TIMESTAMP`
 

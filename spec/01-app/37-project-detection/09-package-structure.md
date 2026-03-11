@@ -39,9 +39,7 @@
 | `cmd/scan.go`                     | Call detector after BuildRecords            |
 | `cmd/scanoutput.go`               | Write project JSON files                    |
 | `cmd/root.go`                     | Register query commands in dispatch         |
-| `store/store.go`                  | Add project detection table migrations      |
-| `constants/constants_store.go`    | Add SQL for all new tables                  |
-| `constants/constants_cli.go`      | Add command names and aliases               |
+| `store/store.go`                  | Add project detection table migrations + drops |
 
 ---
 
