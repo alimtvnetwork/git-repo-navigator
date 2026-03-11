@@ -29,7 +29,8 @@ A reference table for all supported project types.
 | Description | TEXT    | DEFAULT ''        | Human-readable description     |
 
 **Seeding:** This table is seeded during migration with all supported
-project types. The `Id` values are stable UUIDs defined in constants.
+project types. The `Id` values are stable UUIDs (v4) defined in
+constants. Example: `"b3f1a2c4-..."` — never short strings like `"pt-go"`.
 
 ---
 
