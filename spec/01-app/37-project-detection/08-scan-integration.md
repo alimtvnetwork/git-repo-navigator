@@ -40,14 +40,20 @@ repo root
   │   ├─ Check for CMakeLists.txt → classify as "cpp"
   │   ├─ Check for *.vcxproj      → classify as "cpp"
   │   ├─ Check for meson.build    → classify as "cpp"
-  │   ├─ Check for *.csproj       → classify as "csharp"
+  │   ├─ Check for *.sln          → classify as "csharp" (precedence)
+  │   │   └─ Mark directory as sln-covered
+  │   │   └─ Scan for .csproj files + key files (as child records)
+  │   ├─ Check for *.csproj       → classify as "csharp" (only if no parent .sln)
   │   │   └─ Parse .csproj XML for framework/output/SDK
-  │   ├─ Check for *.sln          → classify as "csharp"
-  │   │   └─ Scan for .csproj files + key files
   │   └─ No match                 → continue
   │
   └─ Collect all DetectedProject + metadata records
 ```
+
+**C# precedence rule:** When a `.sln` is found, all `.csproj` files
+beneath it are recorded as `CSharpProjectFiles` child records, **not**
+as separate `DetectedProject` entries. A standalone `.csproj` with no
+ancestor `.sln` becomes its own `DetectedProject`.
 
 ---
 

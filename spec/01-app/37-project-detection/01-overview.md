@@ -35,6 +35,7 @@ detected projects by type using dedicated commands.
 | `08-scan-integration.md`      | Pipeline integration and flow     |
 | `09-package-structure.md`     | New files and modified files      |
 | `10-acceptance-criteria.md`   | Acceptance criteria               |
+| `11-constants-project.md`     | All constants fully defined       |
 
 ---
 

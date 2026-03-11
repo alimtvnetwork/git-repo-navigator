@@ -27,7 +27,8 @@
 | `model/projecttype.go`            | ProjectType struct                          |
 | `model/gometadata.go`             | GoProjectMetadata + GoRunnableFile structs  |
 | `model/csharpmetadata.go`         | CSharpProjectMetadata + related structs     |
-| `constants/constants_project.go`  | Project detection constants                 |
+| `constants/constants_project.go`  | IDs, keys, table names, indicators, commands, messages, errors |
+| `constants/constants_project_sql.go` | All SQL statements (create, upsert, query, cleanup, drop) |
 
 ---
 
@@ -38,9 +39,7 @@
 | `cmd/scan.go`                     | Call detector after BuildRecords            |
 | `cmd/scanoutput.go`               | Write project JSON files                    |
 | `cmd/root.go`                     | Register query commands in dispatch         |
-| `store/store.go`                  | Add project detection table migrations      |
-| `constants/constants_store.go`    | Add SQL for all new tables                  |
-| `constants/constants_cli.go`      | Add command names and aliases               |
+| `store/store.go`                  | Add project detection table migrations + drops |
 
 ---
 
