@@ -97,11 +97,11 @@ CREATE TABLE IF NOT EXISTS ProjectTypes (
 
 ```sql
 INSERT OR IGNORE INTO ProjectTypes (Id, Key, Name, Description) VALUES
-    ('pt-go',     'go',     'Go',      'Go modules and packages'),
-    ('pt-node',   'node',   'Node.js', 'Node.js projects'),
-    ('pt-react',  'react',  'React',   'React applications'),
-    ('pt-cpp',    'cpp',    'C++',     'C and C++ projects'),
-    ('pt-csharp', 'csharp', 'C#',      '.NET and C# projects')
+    ('b3f1a2c4-5d6e-4f7a-8b9c-0d1e2f3a4b5c', 'go',     'Go',      'Go modules and packages'),
+    ('c4d2b3e5-6f7a-4e8b-9c0d-1e2f3a4b5c6d', 'node',   'Node.js', 'Node.js projects'),
+    ('d5e3c4f6-7a8b-4f9c-0d1e-2f3a4b5c6d7e', 'react',  'React',   'React applications'),
+    ('e6f4d5a7-8b9c-4a0d-1e2f-3a4b5c6d7e8f', 'cpp',    'C++',     'C and C++ projects'),
+    ('f7a5e6b8-9c0d-4b1e-2f3a-4b5c6d7e8f9a', 'csharp', 'C#',      '.NET and C# projects')
 ```
 
 ### Create DetectedProjects
