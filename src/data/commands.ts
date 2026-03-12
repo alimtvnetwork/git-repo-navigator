@@ -645,6 +645,13 @@ export const commands: CommandDef[] = [
     category: "utilities",
     name: "doctor", alias: undefined, description: "Diagnose PATH, deploy, and version issues",
     usage: "gitmap doctor [--fix-path]",
+    flags: [
+      { flag: "--fix-path", description: "Attempt to fix PATH issues automatically" },
+    ],
+    examples: [
+      { command: "gitmap doctor", description: "Run diagnostic checks" },
+      { command: "gitmap doctor --fix-path", description: "Diagnose and fix PATH issues" },
+    ],
     seeAlso: [
       { name: "setup", description: "Re-run setup wizard" },
       { name: "update", description: "Self-update to latest version" },
@@ -654,7 +661,14 @@ export const commands: CommandDef[] = [
   {
     category: "utilities",
     name: "update", alias: undefined, description: "Self-update from source repo",
-    usage: "gitmap update",
+    usage: "gitmap update [--verbose]",
+    flags: [
+      { flag: "--verbose", description: "Write detailed debug log during update" },
+    ],
+    examples: [
+      { command: "gitmap update", description: "Self-update to latest version" },
+      { command: "gitmap update --verbose", description: "Update with detailed logging" },
+    ],
     seeAlso: [
       { name: "update-cleanup", description: "Remove update artifacts" },
       { name: "version", description: "Show current version" },
@@ -680,6 +694,10 @@ export const commands: CommandDef[] = [
     category: "utilities",
     name: "version", alias: "v", description: "Show version number",
     usage: "gitmap version",
+    examples: [
+      { command: "gitmap version", description: "Print current version" },
+      { command: "gitmap v", description: "Alias shorthand" },
+    ],
     seeAlso: [
       { name: "update", description: "Self-update to latest version" },
       { name: "doctor", description: "Diagnose version issues" },
@@ -688,7 +706,30 @@ export const commands: CommandDef[] = [
   {
     category: "utilities",
     name: "seo-write", alias: "sw", description: "Auto-commit SEO messages",
-    usage: "gitmap seo-write [flags]",
+    usage: "gitmap seo-write [--url <url>] [--csv <path>] [--dry-run]",
+    flags: [
+      { flag: "--csv <path>", description: "Read title/description pairs from a CSV file" },
+      { flag: "--url <url>", description: "Target website URL (required in template mode)" },
+      { flag: "--service <name>", description: "Service name for {service} placeholder" },
+      { flag: "--area <name>", description: "Area/location for {area} placeholder" },
+      { flag: "--company <name>", description: "Company name for {company} placeholder" },
+      { flag: "--phone <number>", description: "Phone number for {phone} placeholder" },
+      { flag: "--email <address>", description: "Email for {email} placeholder" },
+      { flag: "--address <text>", description: "Address for {address} placeholder" },
+      { flag: "--max-commits <n>", description: "Stop after N commits (0 = unlimited)" },
+      { flag: "--interval <min-max>", description: "Random delay range in seconds (default: 60-120)" },
+      { flag: "--dry-run", description: "Preview commit messages without executing" },
+      { flag: "--template <path>", description: "Load templates from a custom JSON file" },
+      { flag: "--create-template", description: "Write starter seo-templates.json to current dir" },
+      { flag: "--author-name <name>", description: "Git author name for commits" },
+      { flag: "--author-email <email>", description: "Git author email for commits" },
+    ],
+    examples: [
+      { command: "gitmap sw --url example.com --service Plumbing --area London", description: "Template mode with placeholders" },
+      { command: "gitmap seo-write --csv ./commits.csv", description: "CSV mode" },
+      { command: "gitmap sw --url example.com --service SEO --area Bristol --dry-run", description: "Preview without committing" },
+      { command: "gitmap seo-write --create-template", description: "Generate starter template file" },
+    ],
     seeAlso: [
       { name: "scan", description: "Scan directories" },
       { name: "history", description: "View command history" },
