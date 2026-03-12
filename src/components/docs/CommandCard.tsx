@@ -78,7 +78,7 @@ const CommandCard = ({ name, alias, description, usage, flags, examples, seeAlso
                       e.stopPropagation();
                       onNavigate?.(ref.name);
                     }}
-                    className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-border bg-card text-sm font-mono text-foreground hover:border-primary/60 hover:bg-primary/5 transition-colors"
+                    className="group inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-border bg-card text-sm font-mono text-foreground hover:border-primary/60 hover:bg-primary/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:border-primary/60 transition-colors"
                     title={ref.description}
                   >
                     <span>{ref.name}</span>
