@@ -15,9 +15,9 @@ interface Props {
 const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true, forceOpen }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
 
-  if (forceOpen && !open) {
-    setOpen(true);
-  }
+  useEffect(() => {
+    if (forceOpen) setOpen(true);
+  }, [forceOpen]);
 
   return (
     <div className="rounded-lg border border-border overflow-hidden">
