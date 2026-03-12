@@ -60,7 +60,7 @@ gitmap clone json --target-dir ./restored
 gitmap pull --group work --all
 ```
 
-→ Full details: [scan](gitmap/help/scan.md) · [clone](gitmap/help/clone.md) · [pull](gitmap/help/pull.md) · [rescan](gitmap/help/rescan.md) · [desktop-sync](gitmap/help/desktop-sync.md)
+→ Full details: [scan](gitmap/helptext/scan.md) · [clone](gitmap/helptext/clone.md) · [pull](gitmap/helptext/pull.md) · [rescan](gitmap/helptext/rescan.md) · [desktop-sync](gitmap/helptext/desktop-sync.md)
 
 ### Monitoring & Status
 
