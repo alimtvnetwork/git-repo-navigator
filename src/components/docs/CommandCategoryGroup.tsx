@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CommandCard from "./CommandCard";
@@ -9,10 +9,15 @@ interface Props {
   description: string;
   commands: CommandDef[];
   defaultOpen?: boolean;
+  forceOpen?: boolean;
 }
 
-const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true }: Props) => {
+const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true, forceOpen }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
+
+  useEffect(() => {
+    if (forceOpen) setOpen(true);
+  }, [forceOpen]);
 
   return (
     <div className="rounded-lg border border-border overflow-hidden">

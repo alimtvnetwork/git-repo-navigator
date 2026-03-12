@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import DocsLayout from "@/components/docs/DocsLayout";
 import CommandCard from "@/components/docs/CommandCard";
 import CommandCategoryGroup from "@/components/docs/CommandCategoryGroup";
@@ -7,6 +7,17 @@ import { commands, categories } from "@/data/commands";
 
 const CommandsPage = () => {
   const [search, setSearch] = useState("");
+  const [forceOpen, setForceOpen] = useState<string | null>(null);
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleCategoryClick = (key: string) => {
+    setSearch("");
+    setForceOpen(key);
+    setTimeout(() => {
+      categoryRefs.current[key]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setForceOpen(null);
+    }, 50);
+  };
 
   const filtered = useMemo(() => {
     if (!search) return commands;
@@ -33,13 +44,14 @@ const CommandsPage = () => {
         {categories.map((cat) => {
           const count = commands.filter((c) => c.category === cat.key).length;
           return (
-            <div
+            <button
               key={cat.key}
-              className="rounded-lg border border-border bg-card px-3 py-2 text-center"
+              onClick={() => handleCategoryClick(cat.key)}
+              className="rounded-lg border border-border bg-card px-3 py-2 text-center hover:bg-muted/50 hover:border-primary/40 transition-colors cursor-pointer"
             >
               <div className="text-lg font-mono font-bold text-primary">{count}</div>
               <div className="text-[10px] text-muted-foreground font-mono leading-tight truncate">{cat.label}</div>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -63,12 +75,14 @@ const CommandsPage = () => {
             const cmds = filtered.filter((c) => c.category === cat.key);
             if (cmds.length === 0) return null;
             return (
-              <CommandCategoryGroup
-                key={cat.key}
-                label={cat.label}
-                description={cat.description}
-                commands={cmds}
-              />
+              <div key={cat.key} ref={(el) => { categoryRefs.current[cat.key] = el; }}>
+                <CommandCategoryGroup
+                  label={cat.label}
+                  description={cat.description}
+                  commands={cmds}
+                  forceOpen={forceOpen === cat.key}
+                />
+              </div>
             );
           })
         )}
