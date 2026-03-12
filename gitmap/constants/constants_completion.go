@@ -1,10 +1,6 @@
 package constants
 
-// Completion CLI commands.
-const (
-	CmdCompletion      = "completion"
-	CmdCompletionAlias = "cmp"
-)
+// Completion shells.
 
 // Completion shells.
 const (
