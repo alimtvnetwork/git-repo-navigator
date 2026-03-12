@@ -97,6 +97,7 @@ const (
 	HelpList          = "  list (ls)           Show all tracked repos with slugs"
 	HelpGroup         = "  group (g) <sub>     Manage repo groups (create, add, remove, list, show, delete)"
 	HelpDBReset       = "  db-reset --confirm  Clear all tracked repos and groups from the database"
+	HelpCompletion    = "  completion (cmp)    Generate shell tab-completion scripts"
 	HelpHelp          = "  help                Show this help message"
 	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first (--limit N, --json, --source)"
 	HelpListReleases  = "  list-releases (lr)  Show stored releases from database (--limit N, --json, --source)"
