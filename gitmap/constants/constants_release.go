@@ -7,6 +7,7 @@ const (
 	SetupSectionAlias = "Aliases"
 	SetupSectionCred  = "Credential Helper"
 	SetupSectionCore  = "Core Settings"
+	SetupSectionComp  = "■ Shell Completion —"
 	SetupGlobalFlag   = "--global"
 )
 
