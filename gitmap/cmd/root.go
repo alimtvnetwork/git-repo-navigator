@@ -163,6 +163,7 @@ func dispatchMisc(command string) bool {
 		return true
 	}
 	if command == constants.CmdRescan || command == constants.CmdRescanAlias {
+		checkHelp("rescan", os.Args[2:])
 		runRescan()
 
 		return true
