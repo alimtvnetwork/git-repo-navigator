@@ -54,6 +54,8 @@ const (
 	CmdListReleasesAlias   = "lr"
 	CmdCDCmd               = "cd"
 	CmdCDCmdAlias          = "go"
+	CmdCompletion          = "completion"
+	CmdCompletionAlias     = "cmp"
 )
 
 // Clone shorthands.
