@@ -215,7 +215,16 @@ export const commands: CommandDef[] = [
   {
     category: "release",
     name: "release-branch", alias: "rb", description: "Create a release branch without tagging",
-    usage: "gitmap release-branch [version] [--bump major|minor|patch]",
+    usage: "gitmap release-branch [version] [--bump major|minor|patch] [--draft] [--verbose]",
+    flags: [
+      { flag: "--assets <path>", description: "Directory or file to attach" },
+      { flag: "--draft", description: "Create an unpublished draft release" },
+      { flag: "--verbose", description: "Write detailed debug log" },
+    ],
+    examples: [
+      { command: "gitmap release-branch release/v1.2.0", description: "Complete release from existing branch" },
+      { command: "gitmap rb release/v1.2.0", description: "Alias shorthand" },
+    ],
     seeAlso: [
       { name: "release", description: "Full release with tag and push" },
       { name: "release-pending", description: "Show unreleased commits" },
@@ -225,7 +234,17 @@ export const commands: CommandDef[] = [
   {
     category: "release",
     name: "release-pending", alias: "rp", description: "Show unreleased commits since last tag",
-    usage: "gitmap release-pending [--json]",
+    usage: "gitmap release-pending [--dry-run] [--verbose]",
+    flags: [
+      { flag: "--assets <path>", description: "Directory or file to attach" },
+      { flag: "--draft", description: "Mark release metadata as draft" },
+      { flag: "--dry-run", description: "Preview steps without executing" },
+      { flag: "--verbose", description: "Write detailed debug log" },
+    ],
+    examples: [
+      { command: "gitmap release-pending", description: "Release all untagged release branches" },
+      { command: "gitmap rp --dry-run", description: "Preview what would be released" },
+    ],
     seeAlso: [
       { name: "release", description: "Create a release from pending commits" },
       { name: "release-branch", description: "Create a release branch" },
@@ -235,7 +254,19 @@ export const commands: CommandDef[] = [
   {
     category: "release",
     name: "changelog", alias: "cl", description: "Show release notes",
-    usage: "gitmap changelog [version] [--open] [--source]",
+    usage: "gitmap changelog [version] [--latest] [--limit N] [--open] [--source <type>]",
+    flags: [
+      { flag: "--latest", description: "Show only the most recent version" },
+      { flag: "--limit <n>", description: "Max number of versions to display (default: 5)" },
+      { flag: "--open", description: "Open CHANGELOG.md in default application" },
+      { flag: "--source <type>", description: "Filter by source: release or import" },
+    ],
+    examples: [
+      { command: "gitmap changelog", description: "Show last 5 versions" },
+      { command: "gitmap cl --latest", description: "Most recent version only" },
+      { command: "gitmap changelog v2.3.0", description: "Notes for specific version" },
+      { command: "gitmap cl --source release", description: "Only entries from gitmap release" },
+    ],
     seeAlso: [
       { name: "release", description: "Create a release" },
       { name: "list-versions", description: "List available tags" },
