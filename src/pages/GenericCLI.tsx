@@ -634,6 +634,182 @@ const ErrVerboseInit    = "Warning: could not initialize verbose log: %v\\n"`} /
             "Use fmt.Sprintf-style formatting — no structured logging libraries",
           ]} />
         </Section>
+
+        {/* 17 - Progress Tracking */}
+        <Section id="progress" title="17 — Progress Tracking">
+          <P>Batch operations (clone, pull, exec) process many items sequentially. A progress tracker provides real-time visual feedback so the user knows what is happening, how far along the operation is, and how it concluded.</P>
+          <Table
+            headers={["Rule", "Detail"]}
+            rows={[
+              ["Counter format", "[current/total] prefix on every item line"],
+              ["Repo name visible", "Current repository name printed alongside the counter"],
+              ["Elapsed time", "Duration shown on completion of each item and in the summary"],
+              ["Summary at end", "Final line reports total items, elapsed time, success/failure counts"],
+              ["Quiet mode", "--quiet flag suppresses all progress output for programmatic use"],
+              ["Stderr only", "All progress output goes to stderr — stdout is reserved for data"],
+              ["No progress bars", "Counter + name is sufficient; avoid complex progress bar libraries"],
+            ]}
+          />
+          <H3>Package Placement</H3>
+          <CodeBlock code={`cloner/
+├── cloner.go        Core clone/pull logic
+├── progress.go      Progress tracker type
+├── safe_pull.go     Retry-aware pull
+└── pulldiag.go      Pull diagnostics`} />
+          <P>Progress tracking lives in the domain package that owns the batch operation. If multiple packages need it, extract a shared progress/ package.</P>
+          <H3>Progress Type</H3>
+          <CodeBlock code={`type Progress struct {
+    total   int
+    current int
+    start   time.Time
+    quiet   bool
+    cloned  int
+    pulled  int
+    failed  int
+}
+
+var global *Logger`} />
+          <Table
+            headers={["Field", "Purpose"]}
+            rows={[
+              ["total", "Total number of items to process"],
+              ["current", "Running counter, incremented on each Begin() call"],
+              ["start", "Timestamp captured at construction for elapsed time"],
+              ["quiet", "When true, all output methods become no-ops"],
+              ["cloned", "Success counter for new clones"],
+              ["pulled", "Success counter for updates (pulls)"],
+              ["failed", "Failure counter"],
+            ]}
+          />
+          <H3>Constructor</H3>
+          <CodeBlock code={`func NewProgress(total int, quiet bool) *Progress {
+    return &Progress{
+        total: total,
+        start: time.Now(),
+        quiet: quiet,
+    }
+}`} />
+          <BulletList items={[
+            "time.Now() captured once at construction — not per item",
+            "All counters start at zero (Go zero values)",
+            "Caller determines quiet from the --quiet CLI flag",
+          ]} />
+          <H3>Lifecycle Methods</H3>
+          <CodeBlock code={`// Begin — called before processing each item
+func (p *Progress) Begin(name string) {
+    p.current++
+    if p.quiet {
+        return
+    }
+    fmt.Fprintf(os.Stderr, constants.ProgressBeginFmt, p.current, p.total, name)
+}
+
+// Done — called after an item succeeds
+func (p *Progress) Done(result model.CloneResult, pulled bool) {
+    if pulled {
+        p.pulled++
+    } else {
+        p.cloned++
+    }
+    if p.quiet {
+        return
+    }
+    elapsed := time.Since(p.start)
+    fmt.Fprintf(os.Stderr, constants.ProgressDoneFmt, formatDuration(elapsed))
+}
+
+// Fail — called after an item fails
+func (p *Progress) Fail(result model.CloneResult) {
+    p.failed++
+    if p.quiet {
+        return
+    }
+    fmt.Fprintf(os.Stderr, constants.ProgressFailFmt)
+}
+
+// PrintSummary — called once after all items are processed
+func (p *Progress) PrintSummary() {
+    if p.quiet {
+        return
+    }
+    elapsed := time.Since(p.start)
+    fmt.Fprintf(os.Stderr, constants.ProgressSummaryFmt,
+        p.current, p.total, formatDuration(elapsed))
+    fmt.Fprintf(os.Stderr, constants.ProgressDetailFmt,
+        p.cloned, p.pulled, p.failed)
+}`} />
+          <H3>Example Output</H3>
+          <CodeBlock code={`[1/24] repo-name ✓ (2.3s)
+[2/24] another-repo ✓ (1.1s)
+[3/24] broken-repo ✗ failed
+...
+Done: 24/24 (1m 12s)
+  Cloned: 18  Pulled: 5  Failed: 1`} />
+          <H3>Duration Formatting</H3>
+          <CodeBlock code={`func formatDuration(d time.Duration) string {
+    if d < time.Minute {
+        return fmt.Sprintf("%.1fs", d.Seconds())
+    }
+    mins := int(d.Minutes())
+    secs := int(d.Seconds()) % 60
+    return fmt.Sprintf("%dm %ds", mins, secs)
+}`} />
+          <Table
+            headers={["Duration", "Output"]}
+            rows={[
+              ["2.3 seconds", "2.3s"],
+              ["72 seconds", "1m 12s"],
+              ["5 minutes 3 seconds", "5m 3s"],
+            ]}
+          />
+          <H3>Usage Pattern</H3>
+          <CodeBlock code={`func cloneAll(repos []model.Record, quiet bool) {
+    progress := NewProgress(len(repos), quiet)
+
+    for _, repo := range repos {
+        progress.Begin(repo.Name)
+
+        result, err := cloneOne(repo)
+        if err != nil {
+            progress.Fail(result)
+            continue
+        }
+
+        progress.Done(result, repo.Exists)
+    }
+
+    progress.PrintSummary()
+}`} />
+          <BulletList items={[
+            "Create progress tracker before the loop",
+            "Call Begin() first in each iteration",
+            "Call exactly one of Done() or Fail() per item — never both",
+            "Call PrintSummary() after the loop, unconditionally",
+            "Use continue after Fail() — do not abort the batch",
+          ]} />
+          <H3>Quiet Mode</H3>
+          <CodeBlock code={`// In cmd/clone.go
+fs.BoolVar(&quietFlag, constants.FlagQuiet, false, constants.FlagDescQuiet)
+
+// Pass to progress tracker
+progress := cloner.NewProgress(len(repos), quietFlag)`} />
+          <BulletList items={[
+            "All Begin, Done, Fail, and PrintSummary calls become no-ops",
+            "Internal counters still increment (for programmatic access)",
+            "Stdout data output (JSON, CSV) is unaffected",
+          ]} />
+          <H3>Constants</H3>
+          <CodeBlock code={`// constants/constants_clone.go
+const ProgressBeginFmt   = "[%d/%d] %s "
+const ProgressDoneFmt    = "✓ (%s)\\n"
+const ProgressFailFmt    = "✗ failed\\n"
+const ProgressSummaryFmt = "Done: %d/%d (%s)\\n"
+const ProgressDetailFmt  = "  Cloned: %d  Pulled: %d  Failed: %d\\n"
+
+// constants/constants_cli.go
+const FlagQuiet     = "quiet"
+const FlagDescQuiet = "Suppress progress output"`} />
+        </Section>
       </div>
     </DocsLayout>
   );
