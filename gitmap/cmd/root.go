@@ -140,6 +140,7 @@ func dispatchUtility(command string) bool {
 		return true
 	}
 	if command == constants.CmdVersion || command == constants.CmdVersionAlias {
+		checkHelp("version", os.Args[2:])
 		fmt.Printf(constants.MsgVersionFmt, constants.Version)
 
 		return true
