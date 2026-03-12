@@ -244,8 +244,8 @@ For full details, each entry links to `gitmap/helptext/<command>.md`.
 
 ## Implementation Checklist
 
-1. Create `gitmap/help/` directory with all 40 `.md` files
-2. Create `gitmap/helptext/` package with `embed.go` and `print.go`
+1. Create `gitmap/helptext/` directory with all 41 `.md` files
+2. Create `gitmap/helptext/print.go` with `go:embed` and `Print` function
 3. Create `gitmap/cmd/helpcheck.go` with `checkHelp` function
 4. Add `checkHelp` call to every command handler
 5. Update root `README.md` with grouped command reference
