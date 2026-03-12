@@ -108,11 +108,8 @@ const CommandsPage = () => {
                   commands={cmds}
                   forceOpen={forceOpen === cat.key}
                   onNavigate={handleNavigate}
+                  commandRefs={commandRefs}
                 />
-                {/* Hidden refs for individual command scroll targets */}
-                {cmds.map((cmd) => (
-                  <div key={cmd.name} ref={(el) => { commandRefs.current[cmd.name] = el; }} className="contents" />
-                ))}
               </div>
             );
           })
