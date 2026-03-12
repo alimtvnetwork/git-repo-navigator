@@ -82,7 +82,7 @@ gitmap exec fetch --prune
 gitmap lb 5 --format csv
 ```
 
-→ Full details: [status](gitmap/help/status.md) · [watch](gitmap/help/watch.md) · [exec](gitmap/help/exec.md) · [latest-branch](gitmap/help/latest-branch.md)
+→ Full details: [status](gitmap/helptext/status.md) · [watch](gitmap/helptext/watch.md) · [exec](gitmap/helptext/exec.md) · [latest-branch](gitmap/helptext/latest-branch.md)
 
 ### Release & Versioning
 
