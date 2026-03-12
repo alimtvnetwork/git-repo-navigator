@@ -50,7 +50,9 @@ const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true
           >
             <div className="p-2 space-y-1.5">
               {commands.map((cmd) => (
-                <CommandCard key={cmd.name} {...cmd} onNavigate={onNavigate} />
+                <div key={cmd.name} ref={(el) => { if (commandRefs) commandRefs.current[cmd.name] = el; }}>
+                  <CommandCard {...cmd} onNavigate={onNavigate} />
+                </div>
               ))}
             </div>
           </motion.div>
