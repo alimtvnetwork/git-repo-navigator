@@ -136,7 +136,7 @@ gitmap group add work my-api web-app
 gitmap diff-profiles home work
 ```
 
-→ Full details: [cd](gitmap/help/cd.md) · [list](gitmap/help/list.md) · [group](gitmap/help/group.md) · [diff-profiles](gitmap/help/diff-profiles.md)
+→ Full details: [cd](gitmap/helptext/cd.md) · [list](gitmap/helptext/list.md) · [group](gitmap/helptext/group.md) · [diff-profiles](gitmap/helptext/diff-profiles.md)
 
 ### History & Stats
 
