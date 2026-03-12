@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/user/gitmap/completion"
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/setup"
 )
@@ -22,7 +23,30 @@ func runSetup(args []string) {
 
 	printSetupBanner(dryRun)
 	result := setup.Apply(cfg, dryRun)
+	installShellCompletion(dryRun)
 	printSetupSummary(result)
+}
+
+// installShellCompletion detects the shell and installs completions.
+func installShellCompletion(dryRun bool) {
+	shell := completion.DetectShell()
+	fmt.Printf("\n  %s%s %s%s\n", constants.ColorYellow, constants.SetupSectionComp, shell, constants.ColorReset)
+
+	if dryRun {
+		fmt.Printf("  %s[dry-run]%s would install %s completion\n",
+			constants.ColorDim, constants.ColorReset, shell)
+
+		return
+	}
+
+	err := completion.Install(shell)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "  %s%s%s\n", constants.ColorYellow, err, constants.ColorReset)
+
+		return
+	}
+
+	fmt.Fprintf(os.Stderr, constants.MsgCompInstalled, shell)
 }
 
 // parseSetupFlags parses flags for the setup command.
