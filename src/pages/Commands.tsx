@@ -51,7 +51,7 @@ const CommandsPage = () => {
             >
               <div className="text-lg font-mono font-bold text-primary">{count}</div>
               <div className="text-[10px] text-muted-foreground font-mono leading-tight truncate">{cat.label}</div>
-            </div>
+            </button>
           );
         })}
       </div>
