@@ -44,6 +44,7 @@ concrete examples. Adapt syntax to your target language.
 | `14-date-formatting.md` | Centralized date display format |
 | `15-constants-reference.md` | Every constant category with naming patterns |
 | `16-verbose-logging.md` | Verbose/debug logging pattern with `--verbose` flag |
+| `17-progress-tracking.md` | Progress reporting pattern for batch operations |
 
 ---
 
