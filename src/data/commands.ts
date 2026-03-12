@@ -343,7 +343,17 @@ export const commands: CommandDef[] = [
   {
     category: "history",
     name: "amend", alias: "am", description: "Rewrite commit author info",
-    usage: "gitmap amend [commit-hash] --name <name> --email <email>",
+    usage: "gitmap amend [commit-hash] --name <name> --email <email> [--branch <branch>]",
+    examples: [
+      { command: "gitmap amend --name \"John\" --email \"john@example.com\"", description: "Rewrite all commits on current branch" },
+      { command: "gitmap amend abc123 --name \"John\" --email \"john@example.com\"", description: "Rewrite from commit abc123 onwards" },
+      { command: "gitmap amend --name \"Bot\" --email \"bot@ci.com\" --branch main", description: "Rewrite all commits on main branch" },
+    ],
+    flags: [
+      { flag: "--name <name>", description: "New author name for rewritten commits" },
+      { flag: "--email <email>", description: "New author email for rewritten commits" },
+      { flag: "--branch <branch>", description: "Target branch (default: current branch)" },
+    ],
     seeAlso: [
       { name: "amend-list", description: "List previous amendments" },
       { name: "history", description: "View command history" },
@@ -352,7 +362,16 @@ export const commands: CommandDef[] = [
   {
     category: "history",
     name: "amend-list", alias: "al", description: "List previous author amendments",
-    usage: "gitmap amend-list [--json]",
+    usage: "gitmap amend-list [--json] [--limit <n>]",
+    examples: [
+      { command: "gitmap amend-list", description: "Show all amendment audit records" },
+      { command: "gitmap amend-list --json", description: "Output amendments as JSON" },
+      { command: "gitmap amend-list --limit 5", description: "Show last 5 amendments" },
+    ],
+    flags: [
+      { flag: "--json", description: "Output in JSON format" },
+      { flag: "--limit <n>", description: "Limit number of results" },
+    ],
     seeAlso: [
       { name: "amend", description: "Rewrite commit author info" },
       { name: "history", description: "View command history" },
