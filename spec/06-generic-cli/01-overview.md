@@ -41,6 +41,7 @@ concrete examples. Adapt syntax to your target language.
 | `11-build-deploy.md` | Build scripts, deploy, self-update |
 | `12-testing.md` | Test structure, conventions, coverage |
 | `13-checklist.md` | Step-by-step implementation checklist for AI |
+| `14-date-formatting.md` | Centralized date display format |
 
 ---
 
