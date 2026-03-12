@@ -7,6 +7,17 @@ import { commands, categories } from "@/data/commands";
 
 const CommandsPage = () => {
   const [search, setSearch] = useState("");
+  const [forceOpen, setForceOpen] = useState<string | null>(null);
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleCategoryClick = (key: string) => {
+    setSearch("");
+    setForceOpen(key);
+    setTimeout(() => {
+      categoryRefs.current[key]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setForceOpen(null);
+    }, 50);
+  };
 
   const filtered = useMemo(() => {
     if (!search) return commands;
