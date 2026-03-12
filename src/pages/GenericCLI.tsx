@@ -83,6 +83,7 @@ const sections = [
   { id: "constants", label: "Constants Reference" },
   { id: "verbose", label: "Verbose Logging" },
   { id: "progress", label: "Progress Tracking" },
+  { id: "batch", label: "Batch Execution" },
 ];
 
 const GenericCLIPage = () => {
