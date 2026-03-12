@@ -37,6 +37,9 @@ const App = () => (
           <Route path="/gomod" element={<GoMod />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/makefile" element={<MakefilePage />} />
+          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/stats" element={<StatsPage />} />
+          <Route path="/project-detection" element={<ProjectDetectionPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
