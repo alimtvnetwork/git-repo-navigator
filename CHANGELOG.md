@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.9.0
+- Completed flags and examples for all 22 command entries on the documentation site.
+- Added detailed flag tables and usage examples for `seo-write`, `doctor`, `update`, `pull`, `version`, `history-reset`, and `db-reset`.
+- Filled in flags and examples for 15 commands missing both: `rescan`, `desktop-sync`, `status`, `latest-branch`, `release-branch`, `release-pending`, `changelog`, `group`, `list`, `diff-profiles`, `export`, `import`, `profile`, `bookmark`, and `stats`.
+
 ## v2.28.0
 - Removed unused `detector` import from `cmd/scan.go` that caused build failure.
 - Updated documentation site fonts: Ubuntu for headings, Poppins for body text, Ubuntu Mono for code blocks.
