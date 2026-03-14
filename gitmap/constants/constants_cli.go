@@ -124,6 +124,7 @@ const (
 	HelpDraft         = "  --draft             Create an unpublished draft release"
 	HelpDryRun        = "  --dry-run           Preview release steps without executing"
 	HelpCompressFlag  = "  --compress          Wrap assets in .zip (Windows) or .tar.gz archives"
+	HelpChecksumsFlag = "  --checksums         Generate SHA256 checksums.txt for assets"
 )
 
 // Flag descriptions.
