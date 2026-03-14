@@ -22,13 +22,13 @@ func runRelease(args []string) {
 }
 
 // executeRelease builds options and runs the release workflow.
-func executeRelease(version, assets, commit, branch, bump string, draft, dryRun, verbose, compress bool) {
+func executeRelease(version, assets, commit, branch, bump string, draft, dryRun, verbose, compress, checksums bool) {
 	opts := release.Options{
 		Version: version, Assets: assets,
 		Commit: commit, Branch: branch,
 		Bump: bump, Draft: draft,
 		DryRun: dryRun, Verbose: verbose,
-		Compress: compress,
+		Compress: compress, Checksums: checksums,
 	}
 	err := release.Execute(opts)
 	if err != nil {
