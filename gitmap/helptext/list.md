@@ -9,6 +9,12 @@ ls
 ## Usage
 
     gitmap list [--group <name>] [--verbose]
+    gitmap ls go              List only Go projects
+    gitmap ls node            List only Node.js projects
+    gitmap ls react           List only React projects
+    gitmap ls cpp             List only C++ projects
+    gitmap ls csharp          List only C# projects
+    gitmap ls groups          List all groups
 
 ## Flags
 
@@ -33,15 +39,23 @@ ls
     web-app      ~/projects/web-app
     3 repos tracked
 
-### Example 2: List repos in a group
+### Example 2: List only Go projects
 
-    gitmap ls --group work --verbose
+    gitmap ls go
 
 **Output:**
 
-    billing-svc   ~/work/billing-svc   main  origin
-    auth-gateway  ~/work/auth-gateway  main  origin
-    2 repos in group 'work'
+    go     github.com/user/my-api
+           Path: ~/projects/my-api
+
+### Example 3: List all groups
+
+    gitmap ls groups
+
+**Output:**
+
+    GROUP           REPOS   DESCRIPTION
+    backend         3       All backend services
 
 ## See Also
 
