@@ -36,6 +36,7 @@ func AllCommands() []string {
 		"latest-branch", "lb",
 		"list", "ls",
 		"group", "g",
+		"multi-group", "mg",
 		"cd", "go",
 		"update",
 		"version", "v",
