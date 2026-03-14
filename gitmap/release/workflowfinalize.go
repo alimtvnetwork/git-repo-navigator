@@ -140,8 +140,16 @@ func printDryRunSteps(branchName, tag, sourceName string) {
 }
 
 // printDryRunAssets prints asset attachments in dry-run mode.
-func printDryRunAssets(assetsPath string) {
+func printDryRunAssets(assetsPath string, compress bool) {
 	userAssets := CollectAssets(assetsPath)
+
+	if compress && len(userAssets) > 0 {
+		archiveNames := DescribeCompression(userAssets)
+		for _, name := range archiveNames {
+			fmt.Printf(constants.MsgReleaseDryRun, "Compress → "+name)
+		}
+	}
+
 	for _, a := range userAssets {
 		fmt.Printf(constants.MsgReleaseDryRun, "Attach "+a)
 	}
