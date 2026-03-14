@@ -13,6 +13,7 @@ export const changelog: ChangelogEntry[] = [
     ],
   },
   {
+    version: "v2.28.0",
     items: [
       "Removed unused `detector` import from `cmd/scan.go` that caused build failure.",
       "Updated documentation site fonts: Ubuntu for headings, Poppins for body text, Ubuntu Mono for code blocks.",
