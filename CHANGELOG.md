@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.11.0
+- Added Changelog page with timeline view and expand/collapse controls.
+- Added Flag Reference page with sortable, searchable table of all flags.
+- Added Interactive Examples page with animated terminal demos.
+
 ## v2.10.0
 - Version bump for next development cycle.
 
