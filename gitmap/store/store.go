@@ -66,6 +66,7 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateCSharpProjectMeta,
 		constants.SQLCreateCSharpProjectFiles,
 		constants.SQLCreateCSharpKeyFiles,
+		constants.SQLCreateSettings,
 	}
 
 	for _, stmt := range statements {
@@ -87,6 +88,7 @@ func (db *DB) migrateSourceColumn() {
 // Reset drops all tables and recreates them for a fresh start.
 func (db *DB) Reset() error {
 	drops := []string{
+		constants.SQLDropSettings,
 		constants.SQLDropGoRunnableFiles,
 		constants.SQLDropGoProjectMetadata,
 		constants.SQLDropCSharpKeyFiles,

@@ -1,6 +1,6 @@
 # gitmap group
 
-Manage repository groups (create, add, remove, list, show, delete).
+Manage repository groups and activate a group for batch operations.
 
 ## Alias
 
@@ -8,7 +8,13 @@ g
 
 ## Usage
 
-    gitmap group <create|add|remove|list|show|delete> [args]
+    gitmap group <create|add|remove|list|show|delete|pull|status|exec|clear> [args]
+    gitmap g <name>           Activate a group
+    gitmap g                  Show active group
+    gitmap g pull             Pull repos in active group
+    gitmap g status           Show status for active group
+    gitmap g exec <args>      Run git across active group
+    gitmap g clear            Clear active group
 
 ## Flags
 
@@ -23,41 +29,34 @@ g
 
 ## Examples
 
-### Example 1: Create a group and add repos
+### Example 1: Activate a group
 
-    gitmap group create work --desc "Work repositories"
-    gitmap group add work my-api web-app
-
-**Output:**
-
-    ✓ Group 'work' created
-    ✓ Added my-api to 'work'
-    ✓ Added web-app to 'work'
-
-### Example 2: List all groups
-
-    gitmap g list
+    gitmap g backend
 
 **Output:**
 
-    work      5 repos   Work repositories
-    personal  3 repos   Personal projects
-    2 groups
+    Active group set: backend
 
-### Example 3: Show group details
+### Example 2: Pull all repos in active group
 
-    gitmap group show work
+    gitmap g pull
 
 **Output:**
 
-    Group: work (5 repos)
-    billing-svc   ~/work/billing-svc
-    auth-gateway  ~/work/auth-gateway
+    Pulling my-api (main)...
+    ✓ my-api is up to date.
+
+### Example 3: Show active group
+
+    gitmap g
+
+**Output:**
+
+    Active group: backend
 
 ## See Also
 
 - [list](list.md) — View all tracked repos
-- [cd](cd.md) — Navigate to a repo with group filtering
-- [status](status.md) — View status by group
+- [multi-group](multi-group.md) — Select multiple groups
 - [pull](pull.md) — Pull repos by group
-- [diff-profiles](diff-profiles.md) — Compare repos across profiles
+- [status](status.md) — View status by group

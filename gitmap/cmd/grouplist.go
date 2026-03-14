@@ -25,6 +25,7 @@ func runGroupList() {
 	}
 
 	printGroupList(db, groups)
+	printHints(groupListHints())
 }
 
 // printGroupList renders the group table to stdout.
