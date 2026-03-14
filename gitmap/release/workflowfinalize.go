@@ -2,6 +2,7 @@ package release
 
 import (
 	"fmt"
+	"path/filepath"
 	"time"
 
 	"github.com/user/gitmap/constants"
