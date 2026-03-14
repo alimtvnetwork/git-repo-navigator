@@ -5,6 +5,14 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.11.0",
+    items: [
+      "Added Changelog page with timeline view and expand/collapse controls.",
+      "Added Flag Reference page with sortable, searchable table of all flags.",
+      "Added Interactive Examples page with animated terminal demos.",
+    ],
+  },
+  {
     version: "v2.28.0",
     items: [
       "Removed unused `detector` import from `cmd/scan.go` that caused build failure.",
