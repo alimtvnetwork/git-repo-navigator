@@ -32,6 +32,14 @@ func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options
 		}
 	}
 
+	if opts.Checksums && len(assets) > 0 {
+		checksumPath, csErr := GenerateChecksums(assets)
+		if csErr == nil && len(checksumPath) > 0 {
+			fmt.Printf(constants.MsgChecksumGenerated, constants.ChecksumsFile)
+			assets = append(assets, checksumPath)
+		}
+	}
+
 	for _, a := range assets {
 		fmt.Printf(constants.MsgReleaseAttach, a)
 	}
@@ -116,7 +124,7 @@ func updateLatestIfStable(v Version) error {
 // printDryRun shows what would happen without executing.
 func printDryRun(v Version, branchName, tag, sourceName string, opts Options) error {
 	printDryRunSteps(branchName, tag, sourceName)
-	printDryRunAssets(opts.Assets, opts.Compress)
+	printDryRunAssets(opts.Assets, opts.Compress, opts.Checksums)
 	printDryRunMeta(v)
 	fmt.Printf(constants.MsgReleaseComplete, v.String())
 
@@ -140,7 +148,7 @@ func printDryRunSteps(branchName, tag, sourceName string) {
 }
 
 // printDryRunAssets prints asset attachments in dry-run mode.
-func printDryRunAssets(assetsPath string, compress bool) {
+func printDryRunAssets(assetsPath string, compress bool, checksums bool) {
 	userAssets := CollectAssets(assetsPath)
 
 	if compress && len(userAssets) > 0 {
@@ -152,6 +160,10 @@ func printDryRunAssets(assetsPath string, compress bool) {
 
 	for _, a := range userAssets {
 		fmt.Printf(constants.MsgReleaseDryRun, "Attach "+a)
+	}
+
+	if checksums && len(userAssets) > 0 {
+		fmt.Printf(constants.MsgReleaseDryRun, "Generate "+constants.ChecksumsFile+" (SHA256)")
 	}
 }
 
