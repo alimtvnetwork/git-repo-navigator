@@ -366,23 +366,42 @@ export const commands: CommandDef[] = [
   },
   {
     category: "navigation",
-    name: "group", alias: "g", description: "Manage repo groups",
-    usage: "gitmap group <create|add|remove|list|show|delete> [args]",
+    name: "group", alias: "g", description: "Manage repo groups / activate a group for batch operations",
+    usage: "gitmap group <create|add|remove|list|show|delete|pull|status|exec|clear> [args]\ngitmap g <name>    Activate a group\ngitmap g           Show active group",
     flags: [
       { flag: "--description <text>", description: "Group description (for create)" },
       { flag: "--color <name>", description: "Terminal color for the group (for create)" },
     ],
     examples: [
+      { command: "gitmap g backend", description: "Activate a group" },
+      { command: "gitmap g pull", description: "Pull all repos in active group" },
+      { command: "gitmap g status", description: "Status for active group" },
+      { command: "gitmap g exec fetch --prune", description: "Run git across active group" },
       { command: "gitmap group create backend --description \"Backend services\"", description: "Create a group" },
       { command: "gitmap group add backend my-api my-worker", description: "Add repos to a group" },
-      { command: "gitmap group list", description: "Show all groups with counts" },
-      { command: "gitmap group show backend", description: "Show repos in a group" },
+      { command: "gitmap g clear", description: "Clear active group" },
     ],
     seeAlso: [
+      { name: "multi-group", description: "Select multiple groups" },
       { name: "list", description: "List all tracked repos" },
-      { name: "cd", description: "Navigate to repos" },
       { name: "pull", description: "Pull repos by group" },
       { name: "status", description: "Filter status by group" },
+    ],
+  },
+  {
+    category: "navigation",
+    name: "multi-group", alias: "mg", description: "Select multiple groups for batch operations",
+    usage: "gitmap multi-group <group1,group2,...|clear|pull|status|exec>",
+    examples: [
+      { command: "gitmap mg backend,frontend", description: "Select multiple groups" },
+      { command: "gitmap mg pull", description: "Pull repos from all selected groups" },
+      { command: "gitmap mg status", description: "Status for all selected groups" },
+      { command: "gitmap mg clear", description: "Clear multi-group selection" },
+    ],
+    seeAlso: [
+      { name: "group", description: "Manage and activate single groups" },
+      { name: "pull", description: "Pull repos" },
+      { name: "status", description: "View repo statuses" },
     ],
   },
   {
