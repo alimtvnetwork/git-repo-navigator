@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.13.0
+- Added group activation: `gitmap g <name>` sets a persistent active group for batch pull/status/exec.
+- Added `multi-group` (mg) command for selecting and operating on multiple groups at once.
+- Added `gitmap ls <type>` filtering: `gitmap ls go`, `gitmap ls node`, `gitmap ls groups`.
+- Added contextual helper hints shown after command output to aid discoverability.
+- Added Settings table for persistent key-value configuration in SQLite.
+
 ## v2.12.0
 - Added global ⌘K command palette searching across commands, flags, and pages.
 
