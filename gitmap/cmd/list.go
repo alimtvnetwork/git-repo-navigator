@@ -4,15 +4,33 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/store"
 )
 
+// typeKeywords maps list filter keywords to project type keys.
+var typeKeywords = map[string]string{
+	"go":     constants.ProjectKeyGo,
+	"node":   constants.ProjectKeyNode,
+	"nodejs": constants.ProjectKeyNode,
+	"react":  constants.ProjectKeyReact,
+	"cpp":    constants.ProjectKeyCpp,
+	"csharp": constants.ProjectKeyCSharp,
+}
+
 // runList handles the "list" subcommand.
 func runList(args []string) {
 	checkHelp("list", args)
+
+	if len(args) > 0 && isListTypeOrGroups(args[0]) {
+		handleListSpecial(args[0], args[1:])
+
+		return
+	}
+
 	groupFilter, verboseMode := parseListFlags(args)
 	db, err := openDB()
 	if err != nil {
@@ -26,6 +44,32 @@ func runList(args []string) {
 		os.Exit(1)
 	}
 	printListOutput(records, verboseMode)
+	printHints(listHints())
+}
+
+// isListTypeOrGroups checks if the arg is a type keyword or "groups".
+func isListTypeOrGroups(arg string) bool {
+	lower := strings.ToLower(arg)
+	if lower == "groups" {
+		return true
+	}
+	_, ok := typeKeywords[lower]
+
+	return ok
+}
+
+// handleListSpecial handles gitmap ls <type> or gitmap ls groups.
+func handleListSpecial(keyword string, args []string) {
+	lower := strings.ToLower(keyword)
+	if lower == "groups" {
+		runGroupList()
+		printHints(listGroupsHints())
+
+		return
+	}
+	typeKey := typeKeywords[lower]
+	runProjectRepos(typeKey, args)
+	printHints(listTypeHints())
 }
 
 // parseListFlags parses flags for the list command.
