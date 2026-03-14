@@ -24,20 +24,24 @@ func runMultiGroupStatus() {
 	db, records := loadMultiGroupRepos()
 	defer db.Close()
 
-	printStatusRecords(records)
+	printStatusBanner(len(records))
+	summary := printStatusTable(records)
+	printStatusSummary(summary)
 }
 
 // runMultiGroupExec runs a git command across active multi-group repos.
 func runMultiGroupExec(args []string) {
 	if len(args) == 0 {
-		fmt.Fprint(os.Stderr, constants.ErrExecUsage)
+		fmt.Fprintln(os.Stderr, constants.ErrExecUsage)
 		os.Exit(1)
 	}
 
 	db, records := loadMultiGroupRepos()
 	defer db.Close()
 
-	execOnRecords(records, args)
+	printExecBanner(args, len(records))
+	succeeded, failed, missing := execAllRepos(records, args)
+	printExecSummary(succeeded, failed, missing, len(records))
 }
 
 // loadMultiGroupRepos loads all repos from the active multi-group.
