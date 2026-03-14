@@ -346,21 +346,23 @@ export const commands: CommandDef[] = [
   },
   {
     category: "navigation",
-    name: "list", alias: "ls", description: "Show all tracked repos with slugs",
-    usage: "gitmap list [--group <name>] [--verbose]",
+    name: "list", alias: "ls", description: "Show all tracked repos with slugs (supports type filtering)",
+    usage: "gitmap list [--group <name>] [--verbose]\ngitmap ls go|node|react|cpp|csharp    Filter by project type\ngitmap ls groups                       List all groups",
     flags: [
       { flag: "--group <name>", description: "Filter by group name" },
       { flag: "--verbose", description: "Show full paths and URLs" },
     ],
     examples: [
       { command: "gitmap list", description: "List all tracked repos" },
+      { command: "gitmap ls go", description: "List only Go projects" },
+      { command: "gitmap ls node", description: "List only Node.js projects" },
+      { command: "gitmap ls groups", description: "List all defined groups" },
       { command: "gitmap ls --group backend", description: "Filter by group" },
-      { command: "gitmap list --verbose", description: "Show full paths" },
     ],
     seeAlso: [
       { name: "cd", description: "Navigate to a tracked repo" },
-      { name: "scan", description: "Scan directories to populate data" },
-      { name: "group", description: "Manage repo groups" },
+      { name: "group", description: "Manage and activate repo groups" },
+      { name: "multi-group", description: "Select multiple groups" },
       { name: "status", description: "View repo statuses" },
     ],
   },
