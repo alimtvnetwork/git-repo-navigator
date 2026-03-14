@@ -28,6 +28,9 @@ func runProjectRepos(typeKey string, args []string) {
 		return
 	}
 	printProjectList(db, typeKey, jsonOut)
+	if !jsonOut {
+		printHints(projectReposHints())
+	}
 }
 
 // parseProjectReposFlags parses --json and --count flags.
