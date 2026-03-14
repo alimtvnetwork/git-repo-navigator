@@ -19,6 +19,18 @@ func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options
 	fmt.Print(constants.MsgReleasePushed)
 
 	assets := CollectAssets(opts.Assets)
+
+	if opts.Compress && len(assets) > 0 {
+		compressed, compErr := CompressAssets(assets)
+		if compErr == nil && len(compressed) > 0 {
+			for _, a := range compressed {
+				fmt.Printf(constants.MsgCompressArchive, filepath.Base(a), filepath.Base(a))
+			}
+
+			assets = compressed
+		}
+	}
+
 	for _, a := range assets {
 		fmt.Printf(constants.MsgReleaseAttach, a)
 	}
