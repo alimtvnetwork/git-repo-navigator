@@ -27,11 +27,15 @@ Creates the tag and pushes if not already done.
 
 ### `gitmap release-pending` (alias: `rp`)
 
-Release all `release/v*` branches that are missing tags. Scans
-local branches for `release/vX.Y.Z` patterns, checks whether the
-corresponding `vX.Y.Z` tag already exists, and creates+pushes tags
-for any that are untagged. Useful for batch-releasing after manual
-branch creation.
+Release all pending versions from **two sources**:
+
+1. Local `release/v*` branches missing their `vX.Y.Z` tag.
+2. `.release/vX.Y.Z.json` metadata files where neither the branch
+   nor the tag exists — uses the stored `commit` SHA to create
+   branch + tag.
+
+See [45-release-pending-metadata.md](./45-release-pending-metadata.md)
+for the full metadata-based discovery spec.
 
 ---
 

@@ -245,8 +245,8 @@ export const commands: CommandDef[] = [
   },
   {
     category: "release",
-    name: "release-pending", alias: "rp", description: "Show unreleased commits since last tag",
-    usage: "gitmap release-pending [--dry-run] [--verbose]",
+    name: "release-pending", alias: "rp", description: "Release pending versions from branches and metadata files",
+    usage: "gitmap release-pending [--assets <path>] [--draft] [--dry-run] [--verbose]",
     flags: [
       { flag: "--assets <path>", description: "Directory or file to attach" },
       { flag: "--draft", description: "Mark release metadata as draft" },
@@ -254,12 +254,13 @@ export const commands: CommandDef[] = [
       { flag: "--verbose", description: "Write detailed debug log" },
     ],
     examples: [
-      { command: "gitmap release-pending", description: "Release all untagged release branches" },
+      { command: "gitmap release-pending", description: "Release untagged branches and metadata-only versions" },
       { command: "gitmap rp --dry-run", description: "Preview what would be released" },
     ],
     seeAlso: [
-      { name: "release", description: "Create a release from pending commits" },
-      { name: "release-branch", description: "Create a release branch" },
+      { name: "release", description: "Create a release" },
+      { name: "release-branch", description: "Complete from existing branch" },
+      { name: "clear-release-json", description: "Remove a release metadata file" },
       { name: "changelog", description: "View release notes" },
     ],
   },
