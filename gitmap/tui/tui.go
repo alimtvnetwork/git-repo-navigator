@@ -65,7 +65,7 @@ func newRootModel(db *store.DB, repos []model.ScanRecord, groups []model.Group) 
 }
 
 func (m rootModel) Init() tea.Cmd {
-	return nil
+	return m.dashboard.Init()
 }
 
 func (m rootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
