@@ -14,8 +14,7 @@ import (
 func runProjectRepos(typeKey string, args []string) {
 	checkHelp(typeKey+"-repos", args)
 	jsonOut, countOnly := parseProjectReposFlags(args)
-	outputDir := resolveDefaultOutputDir()
-	db, err := store.Open(outputDir)
+	db, err := store.OpenDefault()
 	if err != nil {
 		fmt.Fprint(os.Stderr, constants.MsgProjectNoDB)
 		os.Exit(1)
