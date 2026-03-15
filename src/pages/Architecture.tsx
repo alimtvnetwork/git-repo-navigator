@@ -17,15 +17,23 @@ const ArchitecturePage = () => {
             code={`gitmap/
 ├── cmd/              # CLI command handlers (one file per command)
 ├── cloner/           # Clone and safe-pull logic
-├── config/           # Config file loader
-├── constants/        # All string constants (9 files)
+├── completion/       # Shell completion (bash, zsh, powershell)
+├── config/           # Config file loader + flag merging
+├── constants/        # All string constants (15+ files)
 ├── data/             # Default config and template files
 ├── desktop/          # GitHub Desktop integration
+├── detector/         # Project type detection (Go, Node, React, C++, C#)
 ├── formatter/        # CSV, JSON, terminal, tree output formatters
 ├── gitutil/          # Git command wrappers
+├── helptext/         # Embedded Markdown help files (41 files)
 ├── mapper/           # Directory tree scanner
-├── model/            # Data structures (ScanRecord, Group, Release)
-├── release/          # Release workflow, semver, metadata
+├── model/            # Data structures (ScanRecord, Group, Release, Config)
+├── release/          # Release workflow, semver, assets, cross-compile
+│   ├── assets.go     # Go cross-compilation orchestration
+│   ├── assetstargets.go  # Target matrix + config resolution
+│   ├── assetsupload.go   # GitHub API upload with retry
+│   ├── compress.go   # .zip/.tar.gz archive creation
+│   └── checksums.go  # SHA256 checksum generation
 ├── scanner/          # Recursive repo discovery
 ├── setup/            # Git config applicator
 ├── store/            # SQLite database layer
