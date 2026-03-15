@@ -5,6 +5,15 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.18.0",
+    items: [
+      "Added batch status terminal demo to Batch Actions page showing dirty/clean state across repos.",
+      "Fixed missing `os/exec` import in release asset upload.",
+      "Resolved `deriveSlug` redeclaration conflict in project repos output.",
+      "Removed unused `os` import from audit command.",
+    ],
+  },
+  {
     version: "v2.17.0",
     items: [
       "Added 30-second auto-refresh timer to TUI dashboard via `tea.Tick`.",
