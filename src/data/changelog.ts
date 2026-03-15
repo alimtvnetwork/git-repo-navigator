@@ -5,6 +5,15 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.17.0",
+    items: [
+      "Added 30-second auto-refresh timer to TUI dashboard via `tea.Tick`.",
+      "Dashboard refresh interval configurable via `dashboardRefresh` in `config.json`.",
+      "Added `--refresh` flag to `interactive` command for CLI-level override.",
+      "Refresh interval validates with fallback to default 30s when missing or invalid.",
+    ],
+  },
+  {
     version: "v2.16.0",
     items: [
       "Wired real `gitutil.Status()` into TUI dashboard for live dirty/clean indicators.",
