@@ -214,6 +214,8 @@ export const commands: CommandDef[] = [
       { flag: "--checksums", description: "Generate SHA256 checksums.txt for assets" },
       { flag: "--no-assets", description: "Skip Go binary cross-compilation" },
       { flag: "--targets <list>", description: "Cross-compile targets (e.g. windows/amd64,linux/arm64)" },
+      { flag: "--list-targets", description: "Print resolved target matrix and exit" },
+      { flag: "--verbose", description: "Write detailed debug log" },
     ],
     seeAlso: [
       { name: "release-branch", description: "Create branch without tagging" },
