@@ -17,13 +17,27 @@ type ScanRecord struct {
 	Notes            string `json:"notes"             csv:"notes"`
 }
 
+// ReleaseConfig holds release-specific configuration from config.json.
+type ReleaseConfig struct {
+	Targets   []ReleaseTarget `json:"targets"`
+	Checksums bool            `json:"checksums"`
+	Compress  bool            `json:"compress"`
+}
+
+// ReleaseTarget represents a single GOOS/GOARCH pair in config.json.
+type ReleaseTarget struct {
+	GOOS   string `json:"goos"`
+	GOARCH string `json:"goarch"`
+}
+
 // Config holds application configuration loaded from JSON and CLI flags.
 type Config struct {
-	DefaultMode   string   `json:"defaultMode"`
-	DefaultOutput string   `json:"defaultOutput"`
-	OutputDir     string   `json:"outputDir"`
-	ExcludeDirs   []string `json:"excludeDirs"`
-	Notes         string   `json:"notes"`
+	DefaultMode   string        `json:"defaultMode"`
+	DefaultOutput string        `json:"defaultOutput"`
+	OutputDir     string        `json:"outputDir"`
+	ExcludeDirs   []string      `json:"excludeDirs"`
+	Notes         string        `json:"notes"`
+	Release       ReleaseConfig `json:"release"`
 }
 
 // DefaultConfig returns a Config with sensible built-in defaults.
@@ -35,6 +49,11 @@ func DefaultConfig() Config {
 		OutputDir:     constants.DefaultOutputDir,
 		ExcludeDirs:   []string{},
 		Notes:         "",
+		Release: ReleaseConfig{
+			Targets:   []ReleaseTarget{},
+			Checksums: false,
+			Compress:  false,
+		},
 	}
 }
 

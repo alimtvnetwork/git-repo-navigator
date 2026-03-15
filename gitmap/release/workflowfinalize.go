@@ -81,7 +81,7 @@ func buildGoAssetsIfApplicable(v Version, opts Options) []string {
 		return nil
 	}
 
-	targets, err := ParseTargets(opts.Targets)
+	targets, err := ResolveTargets(opts.Targets, opts.ConfigTargets)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "  ✗ Invalid targets: %v\n", err)
 
@@ -235,7 +235,7 @@ func printDryRunGoAssets(v Version, opts Options) {
 	}
 
 	binName := resolveBinName()
-	targets, err := ParseTargets(opts.Targets)
+	targets, err := ResolveTargets(opts.Targets, opts.ConfigTargets)
 	if err != nil {
 		return
 	}
