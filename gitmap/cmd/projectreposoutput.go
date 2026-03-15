@@ -23,10 +23,10 @@ func printProjectsTerminal(projects []model.DetectedProject) {
 	}
 }
 
-// deriveSlug returns the best cd-friendly name for a project.
+// deriveProjectSlug returns the best cd-friendly name for a project.
 // It prefers RepoName (the Git folder name) and falls back to the
 // last segment of AbsolutePath.
-func deriveSlug(p model.DetectedProject) string {
+func deriveProjectSlug(p model.DetectedProject) string {
 	if p.RepoName != "" {
 		return p.RepoName
 	}
