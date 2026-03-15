@@ -194,7 +194,7 @@ func setGitHubHeaders(req *http.Request, token string) {
 
 // gitOutput runs a git command and returns stdout.
 func gitOutput(args ...string) (string, error) {
-	cmd := gitCmd(args...)
+	cmd := exec.Command(constants.GitBin, args...)
 	out, err := cmd.Output()
 
 	return string(out), err
