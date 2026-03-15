@@ -13,7 +13,16 @@ Override: `--config <path>` flag.
   "defaultOutput": "terminal",
   "outputDir": "./gitmap-output",
   "excludeDirs": [".cache", "node_modules", "vendor", ".venv"],
-  "notes": ""
+  "notes": "",
+  "release": {
+    "targets": [
+      {"goos": "windows", "goarch": "amd64"},
+      {"goos": "linux", "goarch": "amd64"},
+      {"goos": "darwin", "goarch": "arm64"}
+    ],
+    "checksums": true,
+    "compress": false
+  }
 }
 ```
 
