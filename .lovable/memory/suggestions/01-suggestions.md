@@ -33,10 +33,10 @@
 - ✅ Spec 41: Go Release Assets specification document
 - ✅ Config-driven release targets: `release.targets` in `config.json` overrides default matrix
 - ✅ Config-driven `release.checksums` and `release.compress` booleans
+- ✅ `--list-targets` flag: prints resolved target matrix with source label
 
 ## Pending Suggestions
 
 - ⬜ **Build documentation site**: Replace placeholder React frontend with actual gitmap docs (commands, examples, architecture)
 - ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary for CI
-- ⬜ **Add `--list-targets` flag**: Print the default and configured target matrix for inspection
 - ⬜ **Add progress bar for clone**: Show progress during multi-repo clone operations
