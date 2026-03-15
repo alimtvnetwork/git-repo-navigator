@@ -32,19 +32,21 @@
 - ✅ Release metadata JSON includes changelog field from CHANGELOG.md
 - ✅ `list-versions` shows changelog notes as sub-points (terminal + JSON)
 
-### v2.14.0 — Database Releases & PascalCase
-- ✅ Added `Releases` table to SQLite for persistent release metadata
-- ✅ Converted all DB table/column names from snake_case to PascalCase
-- ✅ Release workflow auto-persists to database after successful releases
-
-### v2.18.0 — SEO-Write & Test Infrastructure
-- ✅ `seo-write` (`sw`) command with CSV and template input modes
-- ✅ `CommitTemplates` SQLite table with 25 titles and 20 descriptions seed
-- ✅ Placeholder substitution, rotation mode, dry-run, and graceful shutdown
-- ✅ Unit test suite (50+ tests) across cmd, store, and constants packages
-- ✅ PowerShell test runner (`run.ps1 -t`) with report output to `data/unit-test-reports/`
+### v2.14.0 — Go Release Assets, Compression & Checksums
+- ✅ `--compress` flag: archive assets (.zip for Windows, .tar.gz for others)
+- ✅ `--checksums` flag: generate SHA256 `checksums.txt` for all release assets
+- ✅ Go cross-compilation pipeline: auto-detect `go.mod` + `cmd/` entries
+- ✅ Builds 6 default targets (windows/linux/darwin × amd64/arm64) with `CGO_ENABLED=0`
+- ✅ `--no-assets` flag to skip binary compilation
+- ✅ `--targets` flag for custom OS/arch matrix
+- ✅ Native GitHub API asset upload with retry (no external CLI dependencies)
+- ✅ Dry-run support showing planned binaries, compression, and checksums
+- ✅ Shell completion updated for all new flags (bash/zsh/powershell)
+- ✅ Enhanced `list` (`ls`) output with labeled fields and inline `cd` hints
+- ✅ Spec document: `spec/01-app/41-go-release-assets.md`
 
 ## Pending Work
 
-- ⬜ **Frontend documentation site**: Currently a placeholder React app
-- ⬜ **Cross-platform support**: Currently Windows-only (PowerShell scripts)
+- ⬜ **Frontend documentation site**: Currently a placeholder React app — needs real gitmap docs
+- ⬜ **Cross-platform support**: Currently Windows-only (PowerShell scripts); add shell scripts, cross-compile binary
+- ⬜ **Version bump to post-v2.14.0**: Next feature set will determine minor/patch
