@@ -76,6 +76,7 @@ func printUsageCommands() {
 	fmt.Println(constants.HelpCSharpRepos)
 	fmt.Println(constants.HelpCompletion)
 	fmt.Println(constants.HelpInteractive)
+	fmt.Println(constants.HelpClearReleaseJSON)
 	fmt.Println(constants.HelpHelp)
 }
 
