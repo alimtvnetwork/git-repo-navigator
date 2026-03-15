@@ -24,9 +24,18 @@
 - ✅ PascalCase for all DB table/column names
 - ✅ `seo-write` command with templates, CSV, rotation, and dry-run
 - ✅ Unit test infrastructure with PowerShell runner (`run.ps1 -t`)
+- ✅ `--compress` flag for release assets (.zip/.tar.gz)
+- ✅ `--checksums` flag for SHA256 checksums.txt generation
+- ✅ Go cross-compilation pipeline (6 targets, auto-detect, GitHub upload)
+- ✅ `--no-assets` and `--targets` flags for release customization
+- ✅ Shell completion for all release flags (bash/zsh/powershell)
+- ✅ Enhanced `list` output with labeled fields and inline cd hints
+- ✅ Spec 41: Go Release Assets specification document
 
 ## Pending Suggestions
 
-- ⬜ **Build documentation site**: Replace placeholder React frontend with actual gitmap docs
-- ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary
+- ⬜ **Build documentation site**: Replace placeholder React frontend with actual gitmap docs (commands, examples, architecture)
+- ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary for CI
+- ⬜ **Add `--list-targets` flag**: Print the default and configured target matrix for inspection
 - ⬜ **Add progress bar for clone**: Show progress during multi-repo clone operations
+- ⬜ **Config-driven release targets**: Read `release.targets` from `config.json` as default matrix override

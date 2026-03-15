@@ -6,7 +6,7 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 
 ## Current Version
 
-**v2.18.0** (defined in `gitmap/constants/constants.go`)
+**v2.14.0** (defined in `gitmap/constants/constants.go`)
 
 ## Tech Stack
 
@@ -23,10 +23,12 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `gitmap/` | Go source code for the CLI |
 | `spec/01-app/` | App-specific specification documents |
 | `spec/02-general/` | Reusable design patterns & guidelines (generic, shareable) |
+| `spec/06-generic-cli/` | Generic CLI implementation blueprint |
 | `src/` | React frontend (documentation site) |
 | `.lovable/memory/` | AI memory and tracking |
+| `.release/` | Release metadata JSON files |
 
-## CLI Commands
+## CLI Commands (44 total)
 
 | Command | Alias | Description | Status |
 |---------|-------|-------------|--------|
@@ -38,13 +40,14 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `setup` | — | Configure Git global settings from JSON | ✅ Done |
 | `status` | `st` | Show dirty/clean, ahead/behind for all repos | ✅ Done |
 | `exec <args>` | `x` | Run any git command across all repos | ✅ Done |
-| `release [ver]` | `r` | Create release branch, tag, push, persist to DB | ✅ Done |
+| `release [ver]` | `r` | Create release branch, tag, push, persist to DB, cross-compile Go assets | ✅ Done |
 | `release-branch` | `rb` | Complete release from existing branch | ✅ Done |
 | `release-pending` | `rp` | Release all pending branches without tags | ✅ Done |
 | `changelog [ver]` | `cl` | Show concise release notes, filterable by `--source` | ✅ Done |
 | `latest-branch` | `lb` | Find most recently updated remote branch | ✅ Done |
-| `list` | `ls` | Show all tracked repos with slugs | ✅ Done |
-| `group <sub>` | `g` | Manage repo groups | ✅ Done |
+| `list` | `ls` | Show all tracked repos with slugs, labeled fields, inline cd hints | ✅ Done |
+| `group <sub>` | `g` | Manage repo groups (create/add/remove/show/list/delete) | ✅ Done |
+| `multi-group` | `mg` | Cross-group operations | ✅ Done |
 | `list-versions` | `lv` | Show all release tags with changelog, filterable by `--source` | ✅ Done |
 | `list-releases` | `lr` | Show stored releases from database, filterable by `--source` | ✅ Done |
 | `revert <ver>` | — | Revert to a specific release version | ✅ Done |
@@ -55,6 +58,24 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `version` | `v` | Print version string and exit | ✅ Done |
 | `help` | — | Show usage information | ✅ Done |
 | `seo-write` | `sw` | Automated commit scheduler with SEO-rich messages | ✅ Done |
+| `amend` | `am` | Amend commit author metadata | ✅ Done |
+| `amend-list` | `al` | List amended commits | ✅ Done |
+| `history` | `hi` | Show command execution history | ✅ Done |
+| `history-reset` | `hr` | Clear command history | ✅ Done |
+| `stats` | — | Show repository statistics | ✅ Done |
+| `export` | — | Export repo data | ✅ Done |
+| `import` | — | Import repo data | ✅ Done |
+| `profile` | — | Manage scan profiles | ✅ Done |
+| `diff-profiles` | — | Compare two profiles | ✅ Done |
+| `cd` | — | Navigate to repo directory | ✅ Done |
+| `watch` | `w` | Watch repos for changes | ✅ Done |
+| `bookmark` | `bm` | Save/run bookmarked commands | ✅ Done |
+| `gomod` | — | Go module rename operations | ✅ Done |
+| `completion` | `comp` | Shell completion for bash/zsh/powershell | ✅ Done |
+| `scan-projects` | `sp` | Detect project types (Go, C#, Node, React, C++) | ✅ Done |
+| `go-repos` | — | List Go repositories | ✅ Done |
+| `csharp-repos` | — | List C# repositories | ✅ Done |
+| `audit` | — | Compliance audit | ✅ Done |
 
 ## Database Tables (PascalCase)
 
@@ -66,20 +87,19 @@ gitmap is a portable Go CLI tool that scans directory trees for Git repositories
 | `Releases` | Release metadata with changelog and source tracking (`release` or `import`) |
 | `CommitTemplates` | SEO commit message templates (title/description) with placeholders |
 
-## Output Files (per scan)
+## Release Assets Pipeline (v2.14.0+)
 
-All written to `gitmap-output/` inside the scanned directory:
+The `release` command includes a full Go cross-compilation pipeline:
 
-| File | Description |
-|------|-------------|
-| Terminal output | Colored banner, repo list, folder tree, clone instructions |
-| `gitmap.csv` | CSV with repo data |
-| `gitmap.json` | JSON with repo data |
-| `folder-structure.md` | Markdown folder tree |
-| `clone.ps1` | PowerShell clone script with comments |
-| `direct-clone.ps1` | Plain `git clone` commands (HTTPS) |
-| `direct-clone-ssh.ps1` | Plain `git clone` commands (SSH) |
-| `register-desktop.ps1` | GitHub Desktop registration script |
+| Feature | Description |
+|---------|-------------|
+| Auto-detect | Detects `go.mod` + `cmd/` entries automatically |
+| Cross-compile | Builds for 6 targets: windows/linux/darwin × amd64/arm64 |
+| `--compress` | Archives assets (.zip for Windows, .tar.gz for others) |
+| `--checksums` | Generates SHA256 `checksums.txt` |
+| `--no-assets` | Skips binary compilation |
+| `--targets` | Custom OS/arch matrix (e.g., `windows/amd64,linux/arm64`) |
+| GitHub Upload | Native HTTP API upload with retry (no `gh` CLI needed) |
 
 ## Code Style Rules
 
