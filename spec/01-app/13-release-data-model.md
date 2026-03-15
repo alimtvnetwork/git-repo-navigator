@@ -149,6 +149,12 @@ The release data model is implemented in `release/metadata.go`:
 | `WriteReleaseMeta`| Write `.release/vX.Y.Z.json`                      |
 | `ReleaseExists`   | Check if `.release/vX.Y.Z.json` already exists    |
 
+Cleanup lives in `cmd/clearreleasejson.go`:
+
+| Function              | Responsibility                                    |
+|-----------------------|---------------------------------------------------|
+| `runClearReleaseJSON` | Remove a `.release/vX.Y.Z.json` file by version   |
+
 Version parsing lives in `release/semver.go`:
 
 | Function      | Responsibility                                  |
