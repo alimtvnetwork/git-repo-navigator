@@ -87,7 +87,7 @@ func statusLabel(dirty, unreachable bool) string {
 }
 
 func (m dashboardModel) Init() tea.Cmd {
-	return tea.Batch(refreshStatuses(m.repos), scheduleTick())
+	return tea.Batch(refreshStatuses(m.repos), m.scheduleTick())
 }
 
 func (m dashboardModel) Update(msg tea.Msg) (dashboardModel, tea.Cmd) {
