@@ -26,6 +26,9 @@ type refreshMsg struct {
 	entries []statusEntry
 }
 
+// tickMsg triggers a periodic auto-refresh.
+type tickMsg struct{}
+
 type dashboardModel struct {
 	repos      []model.ScanRecord
 	entries    []statusEntry
