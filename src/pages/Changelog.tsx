@@ -63,7 +63,11 @@ const ChangelogPage = () => {
         </div>
       </div>
 
-      <div className="relative">
+      <div className="mb-8">
+        <TerminalDemo title="gitmap — version history" lines={terminalLines} autoPlay />
+      </div>
+
+
         {/* Timeline line */}
         <div className="absolute left-[15px] top-0 bottom-0 w-px bg-border" />
 
