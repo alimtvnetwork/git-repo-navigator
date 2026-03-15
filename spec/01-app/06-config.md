@@ -28,13 +28,24 @@ Override: `--config <path>` flag.
 
 ## Fields
 
-| Field         | Type     | Default            | Description                    |
-|---------------|----------|--------------------|--------------------------------|
-| defaultMode   | string   | "https"            | "https" or "ssh"               |
-| defaultOutput | string   | "terminal"         | "terminal", "csv", or "json"   |
-| outputDir     | string   | "./gitmap-output"  | Where output files are written |
-| excludeDirs   | []string | []                 | Directory names to skip        |
-| notes         | string   | ""                 | Default note for all records   |
+| Field         | Type          | Default            | Description                              |
+|---------------|---------------|--------------------|------------------------------------------|
+| defaultMode   | string        | "https"            | "https" or "ssh"                         |
+| defaultOutput | string        | "terminal"         | "terminal", "csv", or "json"             |
+| outputDir     | string        | "./gitmap-output"  | Where output files are written           |
+| excludeDirs   | []string      | []                 | Directory names to skip                  |
+| notes         | string        | ""                 | Default note for all records             |
+| release       | ReleaseConfig | {}                 | Release-specific settings (see below)    |
+
+### Release Config
+
+| Field     | Type           | Default          | Description                                    |
+|-----------|----------------|------------------|------------------------------------------------|
+| targets   | []ReleaseTarget| [] (all 6)       | Override cross-compile OS/arch matrix           |
+| checksums | bool           | false            | Generate SHA256 checksums.txt for assets        |
+| compress  | bool           | false            | Wrap assets in .zip (Windows) or .tar.gz        |
+
+Each `ReleaseTarget` has `goos` (string) and `goarch` (string) fields.
 
 ## Merge Rules
 
