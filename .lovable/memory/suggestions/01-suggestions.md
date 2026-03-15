@@ -35,8 +35,12 @@
 - ✅ Config-driven `release.checksums` and `release.compress` booleans
 - ✅ `--list-targets` flag: prints resolved target matrix with source label
 
-## Pending Suggestions
+## Completed (Recent)
 
 - ✅ **Build documentation site**: Replace placeholder React frontend with actual gitmap docs (commands, examples, architecture)
-- ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary for CI
+- ✅ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary, GitHub Actions CI/CD
 - ✅ **Add progress bar for clone**: Real-time `[current/total]` counter with repo name, duration, and success/failure summary
+
+## Pending Suggestions
+
+- ⬜ **Add interactive mode**: TUI-based repo browser with fuzzy search and batch actions
