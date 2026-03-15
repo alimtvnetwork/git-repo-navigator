@@ -24,13 +24,18 @@ func runRelease(args []string) {
 
 // executeRelease builds options and runs the release workflow.
 func executeRelease(version, assets, commit, branch, bump, targets string, draft, dryRun, verbose, compress, checksums, noAssets bool) {
+	cfg, _ := config.LoadFromFile(constants.DefaultConfigPath)
+
 	opts := release.Options{
 		Version: version, Assets: assets,
 		Commit: commit, Branch: branch,
 		Bump: bump, Targets: targets,
-		Draft: draft, DryRun: dryRun,
-		Verbose: verbose, Compress: compress,
-		Checksums: checksums, NoAssets: noAssets,
+		ConfigTargets: cfg.Release.Targets,
+		Draft:         draft, DryRun: dryRun,
+		Verbose:       verbose,
+		Compress:      compress || cfg.Release.Compress,
+		Checksums:     checksums || cfg.Release.Checksums,
+		NoAssets:      noAssets,
 	}
 	err := release.Execute(opts)
 	if err != nil {
