@@ -31,6 +31,8 @@
 - ✅ Shell completion for all release flags (bash/zsh/powershell)
 - ✅ Enhanced `list` output with labeled fields and inline cd hints
 - ✅ Spec 41: Go Release Assets specification document
+- ✅ Config-driven release targets: `release.targets` in `config.json` overrides default matrix
+- ✅ Config-driven `release.checksums` and `release.compress` booleans
 
 ## Pending Suggestions
 
@@ -38,4 +40,3 @@
 - ⬜ **Add Linux/macOS support**: Shell scripts alongside PowerShell, cross-compile binary for CI
 - ⬜ **Add `--list-targets` flag**: Print the default and configured target matrix for inspection
 - ⬜ **Add progress bar for clone**: Show progress during multi-repo clone operations
-- ⬜ **Config-driven release targets**: Read `release.targets` from `config.json` as default matrix override
