@@ -11,18 +11,19 @@ import (
 
 // Options holds all parameters for a release operation.
 type Options struct {
-	Version    string
-	Assets     string
-	Commit     string
-	Branch     string
-	Bump       string
-	Targets    string
-	Draft      bool
-	DryRun     bool
-	Verbose    bool
-	Compress   bool
-	Checksums  bool
-	NoAssets   bool
+	Version       string
+	Assets        string
+	Commit        string
+	Branch        string
+	Bump          string
+	Targets       string
+	ConfigTargets []model.ReleaseTarget
+	Draft         bool
+	DryRun        bool
+	Verbose       bool
+	Compress      bool
+	Checksums     bool
+	NoAssets      bool
 }
 
 // Result holds the outcome of a release operation.

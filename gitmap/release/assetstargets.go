@@ -4,6 +4,8 @@ package release
 import (
 	"fmt"
 	"strings"
+
+	"github.com/user/gitmap/model"
 )
 
 // DefaultTargets returns the standard 6-target cross-compilation matrix.
@@ -16,6 +18,31 @@ func DefaultTargets() []BuildTarget {
 		{GOOS: "darwin", GOARCH: "amd64"},
 		{GOOS: "darwin", GOARCH: "arm64"},
 	}
+}
+
+// ResolveTargets determines the final target list using three-layer config:
+// CLI flag (highest) → config.json release.targets (middle) → defaults (lowest).
+func ResolveTargets(flagTargets string, configTargets []model.ReleaseTarget) ([]BuildTarget, error) {
+	if len(flagTargets) > 0 {
+		return ParseTargets(flagTargets)
+	}
+
+	if len(configTargets) > 0 {
+		return convertConfigTargets(configTargets), nil
+	}
+
+	return DefaultTargets(), nil
+}
+
+// convertConfigTargets converts model.ReleaseTarget slice to BuildTarget slice.
+func convertConfigTargets(targets []model.ReleaseTarget) []BuildTarget {
+	result := make([]BuildTarget, len(targets))
+
+	for i, t := range targets {
+		result[i] = BuildTarget{GOOS: t.GOOS, GOARCH: t.GOARCH}
+	}
+
+	return result
 }
 
 // ParseTargets parses a comma-separated "os/arch" string into BuildTargets.
