@@ -390,6 +390,7 @@ All aliases are single-letter or short abbreviations for faster usage:
 | `release`        | `r`   |
 | `release-branch` | `rb`  |
 | `release-pending`| `rp`  |
+| `clear-release-json` | `crj` |
 | `changelog`      | `cl`  |
 | `latest-branch`  | `lb`  |
 | `list`           | `ls`  |
