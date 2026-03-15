@@ -1,4 +1,4 @@
-.PHONY: build run test update clean help
+.PHONY: build run test update no-pull no-deploy clean help
 
 SHELL := /bin/bash
 
@@ -15,13 +15,13 @@ test: ## Run tests with report
 	@bash ../run.sh -t
 
 update: ## Pull, build, deploy, and sync PATH binary
-	@bash ../run.sh -u
+	@bash ../run.sh --update
 
 no-pull: ## Build without git pull
-	@bash ../run.sh -n
+	@bash ../run.sh --no-pull
 
 no-deploy: ## Build without deploying
-	@bash ../run.sh -d
+	@bash ../run.sh --no-deploy
 
 clean: ## Remove build artifacts
 	@rm -rf bin/
