@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/model"
 )
 
 
