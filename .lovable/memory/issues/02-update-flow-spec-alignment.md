@@ -1,58 +1,45 @@
-# Issue: Repeated update-flow spec mismatch (PATH sync handoff)
+# Issue: Update Flow Spec Alignment
 
-## Summary
+**Status**: ✅ Resolved
 
-The update flow expectation was repeated several times but remained inconsistently documented between general and app specs. This caused implementation drift and confusion during end-to-end deploy/update validation.
+## Problem
 
-## Observed Symptoms
-
-- `run.ps1` deploy succeeded, but active PATH sync stayed locked for many retries.
-- Spec language did not clearly enforce a same-location handoff copy and explicit update mode sequencing.
-- Version/changelog confirmation responsibilities were not explicit enough.
-- Implementation oscillated between `cmd.Run()` (sync) and `cmd.Start()` (async) because specs did not explicitly forbid synchronous wait.
+Repeated mismatch between general specs (`spec/02-general/`) and app-specific specs (`spec/01-app/`) for the update flow, causing implementation drift — lock/retry loops, async/foreground oscillation, missing version checks.
 
 ## Root Cause
 
-1. The spec described safe-update behavior at a high level but left key sequencing details implicit.
-2. General and app-specific specs diverged in terminology (`temp script` vs `handoff copy` lifecycle, `update --from-copy` vs `update-runner`).
-3. Post-update validation requirements (before/after version comparison and changelog source) were not strict acceptance criteria.
-4. **Specs did not explicitly state that `cmd.Run()` is forbidden in `runUpdate()`** — this allowed repeated reintroduction of the synchronous-wait bug.
-5. **Specs did not mandate rename-first for PATH sync** — only mentioned rename as a "fallback", leading to copy-first implementations that always fail under lock.
+1. General and app-specific specs described different update sequences with divergent terminology (`temp script` vs `handoff copy`, `update --from-copy` vs `update-runner`)
+2. Missing explicit prohibitions (e.g., never use `cmd.Start()` in `runUpdate()`)
+3. Post-update validation requirements were not strict acceptance criteria
+4. Specs did not mandate rename-first for PATH sync — only mentioned rename as a "fallback"
 
-## Final Solution
+## Solution
 
-Document and enforce one canonical two-phase process:
+### Canonical Two-Phase Flow
 
-### Phase 1: Handoff and foreground execution
-
-1. `gitmap update` creates a handoff copy in the active binary directory (`gitmap-update-<pid>.exe`, fallback to `%TEMP%`).
-2. Launch handoff copy with hidden `update-runner` command using `cmd.Run()` (foreground/blocking).
+**Phase 1 — Handoff and foreground execution:**
+1. `gitmap update` creates handoff copy in active binary directory (`gitmap-update-<pid>.exe`, fallback `%TEMP%`)
+2. Launch handoff copy with hidden `update-runner` command using `cmd.Run()` (foreground/blocking)
 3. Parent waits for worker to complete. Terminal stays attached. **Never async detach.**
 
-### Phase 2: Update pipeline and validation
-
-1. Handoff copy resolves repo path.
-2. Run `run.ps1 -Update` (full pipeline: pull, build, deploy).
-3. PATH sync uses **rename-first** in update mode, then copy-retry as fallback.
-4. Print executable-derived version comparison (`before` and `after`).
-5. Run `gitmap changelog --latest` from the updated binary.
-6. Run `gitmap update-cleanup` to remove handoff and `.old` artifacts.
+**Phase 2 — Update pipeline and validation:**
+1. Handoff copy resolves repo path
+2. Run `run.ps1 -Update` (full pipeline: pull, build, deploy)
+3. PATH sync uses **rename-first** in update mode, then copy-retry as fallback
+4. Print executable-derived version comparison (before and after)
+5. Run `gitmap changelog --latest` from the updated binary
+6. Run `gitmap update-cleanup` to remove handoff and `.old` artifacts
 
 ## Acceptance Criteria
 
-- Active PATH binary equals deployed binary version after update.
-- If versions differ, update exits with clear failure output.
-- Changelog output is executed via updated `gitmap` binary.
-- Cleanup runs after successful update completion.
-- Zero lock-retry loops during normal update (rename-first should succeed immediately).
+- Active PATH binary equals deployed binary version after update
+- If versions differ, update exits with clear failure output
+- Changelog output executed via updated binary
+- Cleanup runs after successful update
+- Zero lock-retry loops during normal update
 
-## Prevention
+## Prevention — Do Not Repeat
 
-- Any update-flow change must update ALL of:
-  - `spec/02-general/02-powershell-build-deploy.md`
-  - `spec/02-general/03-self-update-mechanism.md`
-  - `spec/01-app/09-build-deploy.md`
-  - `spec/01-app/02-cli-interface.md`
-  - `.lovable/memory/issues/` (if new failure mode)
-- Keep one source-of-truth sequence and mirror it verbatim across specs.
-- **Explicit prohibitions** must be documented (e.g., "never use `cmd.Run()`", "never add `Read-Host`").
+- Any update-flow change must update ALL of: `spec/02-general/02-powershell-build-deploy.md`, `spec/02-general/03-self-update-mechanism.md`, `spec/01-app/09-build-deploy.md`, `spec/01-app/02-cli-interface.md`, and `.lovable/memory/issues/`
+- Keep one source-of-truth sequence and mirror verbatim across specs
+- Explicit prohibitions must be documented (e.g., "never use `cmd.Run()`", "never add `Read-Host`")

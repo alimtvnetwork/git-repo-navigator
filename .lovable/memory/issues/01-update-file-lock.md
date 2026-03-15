@@ -1,56 +1,47 @@
-# Issue: `gitmap update` fails with "file is being used by another process"
+# Issue: Update File Lock (Windows)
+
+**Status**: ✅ Resolved
+
+## Problem
+
+`gitmap update` fails with "file is being used by another process" because the active `gitmap.exe` process holds file handles when the deployment step attempts to overwrite it via `Copy-Item`.
 
 ## Root Cause
 
-When `gitmap update` runs from `E:\bin-run\gitmap\gitmap.exe`, the process holds a file lock on the binary. The update triggers `run.ps1` which tries to `Copy-Item` over the same binary during the deploy step — but the original process hasn't exited yet, so Windows blocks the overwrite.
+Windows locks the running executable. The original flow tried to copy the new binary directly over the running one, which is impossible while the process is active.
 
-## Solution (Final)
-
-Five-layer fix:
+## Solution (5 layers)
 
 1. **Copy-and-handoff** (`gitmap/cmd/update.go`):
-   - Parent copies itself to same directory as `gitmap-update-<pid>.exe` (fallback to `%TEMP%`)
+   - Parent copies itself to `gitmap-update-<pid>.exe` (fallback to `%TEMP%`)
    - Launches the copy with hidden `update-runner` command using `cmd.Run()` (foreground/blocking)
    - The handoff copy is a different file so the parent's lock does NOT conflict
 
 2. **Rename-first PATH sync** (`run.ps1` in `-Update` mode):
    - Renames the active binary to `.old` (Windows allows renaming a running exe)
    - Copies deployed binary to the active path
-   - Falls back to copy-retry loop (20 x 500ms) only if rename fails
+   - Falls back to copy-retry loop (20 × 500ms) only if rename fails
 
 3. **Deploy with rollback** (`run.ps1`):
    - Backs up existing binary as `.old` before overwriting
    - `Copy-Item` wrapped in a retry loop (20 attempts, 500ms delay)
-   - On failure after retries → restores `.old` backup
-   - On success → leaves `.old` in place for cleanup command
+   - On failure → restores `.old` backup; on success → leaves `.old` for cleanup
 
 4. **Auto-cleanup** (generated PowerShell script):
    - After successful update, runs `gitmap update-cleanup`
-   - Removes `%TEMP%\gitmap-update-*.exe` temp copies
-   - Removes `*.old` backup files from deploy directory
-   - Also available as manual command for ad-hoc use
+   - Removes `%TEMP%\gitmap-update-*.exe` temp copies and `*.old` backup files
 
 5. **Version comparison** (generated PowerShell script):
    - Compares old vs new version after rebuild
    - Warns if version unchanged (constant not bumped)
 
-## Key Learnings
+## Learnings — Do Not Repeat
 
-- **Windows file locks are held until the process fully terminates** — `cmd.Start()` + `os.Exit(0)` isn't always instant
-- **Always add retry logic** for file operations on deployed binaries
-- **A delay before rebuild** gives the parent process time to fully release handles
-- **Don't assume `os.Exit(0)` releases locks immediately** — the OS may keep the handle briefly
-- **Keep `.old` backups until explicitly cleaned** — serves as manual rollback if new version has issues
-- **Auto-cleanup at end of update** — best of both worlds: cleanup happens but user can still roll back before it runs
-- **Skip unnecessary rebuilds** — check `git pull` output before building
-- **Use rename-first, not copy-first** — Windows blocks overwrite of running exe but allows rename
-- **Never add `Read-Host` to generated scripts** — they run in non-interactive PowerShell
-
-## What NOT to Repeat
-
-- Don't use `cmd.Start()` + `os.Exit(0)` (async) — it breaks the terminal session
-- Don't use copy-overwrite as the primary PATH sync strategy — use rename-first
-- Don't add `Read-Host` or interactive prompts to generated scripts
+- Always use **rename-first** strategy for overwriting locked binaries on Windows
+- Never use `Read-Host` in non-interactive sessions
+- Never auto-delete `.old` backups — let `update-cleanup` handle it
+- Always bump version so comparison can detect stale updates
+- Use `cmd.Run()` (foreground) for handoff, never `cmd.Start()` + `os.Exit(0)`
+- Add delay before rebuild to ensure file handles are released
+- Don't use copy-overwrite as the primary PATH sync strategy
 - Don't skip the deploy retry — even with rename-first, a fallback is needed
-- Don't auto-delete backups on startup — use an explicit cleanup command
-- Always bump the version so the user can confirm the update actually applied
