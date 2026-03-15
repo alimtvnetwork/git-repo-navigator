@@ -45,11 +45,12 @@ type Config struct {
 func DefaultConfig() Config {
 
 	return Config{
-		DefaultMode:   constants.ModeHTTPS,
-		DefaultOutput: constants.OutputTerminal,
-		OutputDir:     constants.DefaultOutputDir,
-		ExcludeDirs:   []string{},
-		Notes:         "",
+		DefaultMode:      constants.ModeHTTPS,
+		DefaultOutput:    constants.OutputTerminal,
+		OutputDir:        constants.DefaultOutputDir,
+		ExcludeDirs:      []string{},
+		Notes:            "",
+		DashboardRefresh: constants.DefaultDashboardRefresh,
 		Release: ReleaseConfig{
 			Targets:   []ReleaseTarget{},
 			Checksums: false,
