@@ -41,6 +41,14 @@ func newDashboardModel(repos []model.ScanRecord) dashboardModel {
 }
 
 // refreshStatuses collects live git status for all repos.
+const autoRefreshInterval = 30 * time.Second
+
+func scheduleTick() tea.Cmd {
+	return tea.Tick(autoRefreshInterval, func(_ time.Time) tea.Msg {
+		return tickMsg{}
+	})
+}
+
 func refreshStatuses(repos []model.ScanRecord) tea.Cmd {
 	return func() tea.Msg {
 		entries := make([]statusEntry, 0, len(repos))
