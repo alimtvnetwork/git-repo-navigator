@@ -92,7 +92,13 @@ func loadListRecords(db *store.DB, group string) ([]model.ScanRecord, error) {
 
 // printListOutput renders the list table to stdout.
 func printListOutput(records []model.ScanRecord, verbose bool) {
+	if verbose {
+		fmt.Printf(constants.MsgListDBPath, store.DefaultDBPath())
+	}
 	if len(records) == 0 {
+		if !verbose {
+			fmt.Printf(constants.MsgListDBPath, store.DefaultDBPath())
+		}
 		fmt.Println(constants.MsgListEmpty)
 
 		return

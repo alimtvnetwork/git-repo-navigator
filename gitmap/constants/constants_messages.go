@@ -105,6 +105,7 @@ const (
 	MsgListRowFmt       = "%-20s %s\n"
 	MsgListVerboseFmt   = "%-20s %-20s %s\n"
 	MsgListEmpty        = "No repos tracked. Run 'gitmap scan' first."
+	MsgListDBPath       = "  → Database: %s\n"
 	MsgGroupCreated     = "Group created: %s\n"
 	MsgGroupDeleted     = "Group deleted: %s\n"
 	MsgGroupAdded       = "Added %s to group %s\n"
