@@ -26,6 +26,9 @@ type refreshMsg struct {
 	entries []statusEntry
 }
 
+// tickMsg triggers a periodic auto-refresh.
+type tickMsg struct{}
+
 type dashboardModel struct {
 	repos      []model.ScanRecord
 	entries    []statusEntry
@@ -38,6 +41,14 @@ func newDashboardModel(repos []model.ScanRecord) dashboardModel {
 }
 
 // refreshStatuses collects live git status for all repos.
+const autoRefreshInterval = 30 * time.Second
+
+func scheduleTick() tea.Cmd {
+	return tea.Tick(autoRefreshInterval, func(_ time.Time) tea.Msg {
+		return tickMsg{}
+	})
+}
+
 func refreshStatuses(repos []model.ScanRecord) tea.Cmd {
 	return func() tea.Msg {
 		entries := make([]statusEntry, 0, len(repos))
@@ -70,7 +81,7 @@ func statusLabel(dirty, unreachable bool) string {
 }
 
 func (m dashboardModel) Init() tea.Cmd {
-	return refreshStatuses(m.repos)
+	return tea.Batch(refreshStatuses(m.repos), scheduleTick())
 }
 
 func (m dashboardModel) Update(msg tea.Msg) (dashboardModel, tea.Cmd) {
@@ -79,7 +90,11 @@ func (m dashboardModel) Update(msg tea.Msg) (dashboardModel, tea.Cmd) {
 		m.entries = msg.entries
 		m.loading = false
 
-		return m, nil
+		return m, scheduleTick()
+	case tickMsg:
+		m.loading = true
+
+		return m, refreshStatuses(m.repos)
 	case tea.KeyMsg:
 		return m.handleKey(msg)
 	}
