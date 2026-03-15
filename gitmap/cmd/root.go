@@ -107,6 +107,11 @@ func dispatchRelease(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdClearReleaseJSON || command == constants.CmdClearReleaseJSONAlias {
+		runClearReleaseJSON(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }

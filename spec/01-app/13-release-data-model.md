@@ -104,9 +104,10 @@ Updated after each stable release.
 
 ### Git Tracking
 
-The `.release/` directory **should** be committed to the repository.
-It provides a local audit trail of all releases independent of GitHub.
-Add it to `.gitignore` only if release history is not needed in the repo.
+The `.release/` directory should **NOT** be committed to the repository.
+Release metadata JSON files are local build artifacts, not source code.
+Add `.release/` to `.gitignore`. Use `gitmap clear-release-json <version>`
+to remove individual release files when needed.
 
 ---
 
