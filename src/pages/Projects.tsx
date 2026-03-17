@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FolderGit2, Search, Filter } from "lucide-react";
+import { FolderGit2, Search, Filter, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import DocsLayout from "@/components/docs/DocsLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
