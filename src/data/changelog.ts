@@ -12,6 +12,7 @@ export const changelog: ChangelogEntry[] = [
       "Rebuilt Project Detection docs page with pipeline visualization, metadata deep-dive, DB schema, and package layout.",
       "Added detection docs link from Projects dashboard page.",
       "Added unit tests for `store/location.go` covering symlink resolution, fallback, and double-nesting prevention.",
+      "Added unit tests for `remoteorigin.go` covering HTTPS, SSH, and invalid URL parsing.",
     ],
   },
   {
