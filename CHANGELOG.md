@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.21.0
+- Bumped compiled version constant to v2.21.0.
+
 ## v2.20.0
 - **Fixed**: `OpenDefault()` double-nesting bug where profile config resolved to `<binary>/data/data/profiles.json`.
 - Added `DefaultDBPath()` diagnostic helper to `store/location.go`.

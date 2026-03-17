@@ -5,6 +5,12 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.21.0",
+    items: [
+      "Bumped compiled version constant to v2.21.0.",
+    ],
+  },
+  {
     version: "v2.20.0",
     items: [
       "**Fixed**: `OpenDefault()` double-nesting bug where profile config resolved to `<binary>/data/data/profiles.json`.",
