@@ -30,6 +30,12 @@ func getRemoteURL() string {
 }
 
 // parseGitURL extracts owner/repo from HTTPS or SSH git URLs.
+// ParseGitURLExported is the exported alias for testing.
+func ParseGitURLExported(url string) (string, string, error) {
+	return parseGitURL(url)
+}
+
+// parseGitURL extracts owner/repo from HTTPS or SSH git URLs.
 func parseGitURL(url string) (string, string, error) {
 	// HTTPS: https://github.com/owner/repo.git
 	if strings.HasPrefix(url, "https://") {
