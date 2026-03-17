@@ -99,6 +99,12 @@ const ProjectsPage = () => {
           <p className="text-muted-foreground mt-2 text-sm sm:text-base">
             Projects discovered inside Git repositories during scan. Click any project to see full details.
           </p>
+          <Link
+            to="/project-detection"
+            className="inline-flex items-center gap-1.5 mt-3 text-xs font-mono text-primary hover:underline"
+          >
+            How detection works <ArrowRight className="h-3 w-3" />
+          </Link>
         </motion.div>
 
         <motion.div
