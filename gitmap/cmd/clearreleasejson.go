@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,16 +10,34 @@ import (
 	"github.com/user/gitmap/release"
 )
 
+// parseClearReleaseJSONFlags parses flags for the clear-release-json command.
+func parseClearReleaseJSONFlags(args []string) (string, bool) {
+	fs := flag.NewFlagSet("clear-release-json", flag.ExitOnError)
+
+	var dryRun bool
+
+	fs.BoolVar(&dryRun, "dry-run", false, "Preview which file would be removed without deleting it")
+	fs.Parse(args)
+
+	var version string
+	if fs.NArg() > 0 {
+		version = fs.Arg(0)
+	}
+
+	return version, dryRun
+}
+
 // runClearReleaseJSON handles the "clear-release-json" subcommand.
 func runClearReleaseJSON(args []string) {
 	checkHelp("clear-release-json", args)
 
-	if len(args) == 0 {
+	version, dryRun := parseClearReleaseJSONFlags(args)
+
+	if version == "" {
 		fmt.Fprintln(os.Stderr, constants.ErrClearReleaseUsage)
 		os.Exit(1)
 	}
 
-	version := args[0]
 	v, err := release.Parse(version)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrReleaseInvalidVersion, version)
@@ -31,6 +50,11 @@ func runClearReleaseJSON(args []string) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		fmt.Fprintf(os.Stderr, constants.ErrClearReleaseNotFound, v.String())
 		os.Exit(1)
+	}
+
+	if dryRun {
+		fmt.Printf(constants.MsgClearReleaseDryRun, path)
+		return
 	}
 
 	err = os.Remove(path)

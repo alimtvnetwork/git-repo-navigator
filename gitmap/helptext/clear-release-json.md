@@ -12,7 +12,9 @@ crj
 
 ## Flags
 
-None
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Preview which file would be removed without deleting it |
 
 ## Prerequisites
 
