@@ -3,7 +3,11 @@
 package release
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
