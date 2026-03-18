@@ -636,7 +636,8 @@ export const commands: CommandDef[] = [
       { command: "gitmap bk delete ssh-scan", description: "Remove a bookmark" },
     ],
     seeAlso: [
-      { name: "history", description: "View command execution history" },
+      { name: "Spec: bookmarks", description: "Full bookmarks documentation", url: "/bookmarks" },
+      { name: "history", description: "View command execution history", url: "/history" },
       { name: "scan", description: "Scan directories (common bookmark target)" },
       { name: "pull", description: "Pull repos (common bookmark target)" },
     ],
