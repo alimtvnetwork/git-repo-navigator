@@ -219,6 +219,7 @@ export const commands: CommandDef[] = [
       { flag: "--verbose", description: "Write detailed debug log" },
     ],
     seeAlso: [
+      { name: "Spec: release", description: "Full release workflow documentation", url: "/release" },
       { name: "release-branch", description: "Create branch without tagging" },
       { name: "release-pending", description: "Show unreleased commits" },
       { name: "changelog", description: "View release notes" },
