@@ -138,7 +138,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap status --all", description: "Status for all tracked repos" },
     ],
     seeAlso: [
-      { name: "watch", description: "Live-refresh status dashboard" },
+      { name: "watch", description: "Live-refresh status dashboard", url: "/watch" },
       { name: "scan", description: "Scan directories to populate data" },
       { name: "exec", description: "Run git commands across repos" },
       { name: "group", description: "Filter status by group" },
