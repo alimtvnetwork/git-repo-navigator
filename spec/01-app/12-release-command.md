@@ -163,13 +163,43 @@ an error instructing the user to create an initial release first.
 
 Before creating a release, the tool checks:
 
-1. **`.release/vX.Y.Z.json`** — if the metadata file exists, abort.
+1. **`.release/vX.Y.Z.json`** — if the metadata file exists:
+   - Check if the Git tag exists (locally or remote).
+   - Check if the release branch exists.
+   - If **both** are missing → orphaned metadata (see below).
+   - If **either** exists → abort with "already released" error.
 2. **Git tags** — if the tag already exists locally or remotely, abort.
 
 Error message:
 ```
 Version v1.2.3 is already released. See .release/v1.2.3.json for details.
 ```
+
+### Orphaned Metadata Recovery
+
+If a `.release/vX.Y.Z.json` file exists but neither the Git tag nor
+the release branch is found, the metadata is considered **orphaned**
+(e.g. from a previously failed or manually cleaned-up release).
+
+Instead of aborting, the tool prompts the user:
+
+```
+  ⚠ Release metadata exists for v2.3.10 but no tag or branch was found.
+  → Do you want to remove the release JSON and proceed? (y/N):
+```
+
+| User Response | Behavior |
+|---------------|----------|
+| `y` or `yes`  | Deletes the stale `.release/vX.Y.Z.json` file and proceeds with the normal release workflow (step 5 onward). |
+| `n`, `no`, or Enter | Aborts the release with "release aborted by user". |
+| EOF / no input | Aborts with the standard "already released" error. |
+
+Detection logic:
+
+1. Release JSON exists for the target version.
+2. Git tag does not exist locally **and** does not exist on remote.
+3. Release branch (`release/vX.Y.Z`) does not exist.
+4. → Prompt user to remove stale JSON and proceed.
 
 ---
 
