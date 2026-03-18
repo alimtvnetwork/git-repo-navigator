@@ -27,6 +27,7 @@ import BookmarksPage from "./pages/Bookmarks";
 import ExportPage from "./pages/Export";
 import ImportPage from "./pages/Import";
 import ProfilePage from "./pages/Profile";
+import DiffProfilesPage from "./pages/DiffProfiles";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
           <Route path="/export" element={<ExportPage />} />
           <Route path="/import" element={<ImportPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/diff-profiles" element={<DiffProfilesPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
