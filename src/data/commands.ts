@@ -669,6 +669,7 @@ export const commands: CommandDef[] = [
       { name: "release", description: "Create a release" },
       { name: "list-releases", description: "Show stored releases" },
       { name: "db-reset", description: "Reset entire database" },
+      { name: "Spec: clear-release-json", description: "Full specification with edge cases and constants", url: "/clear-release-json" },
     ],
   },
 
