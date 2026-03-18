@@ -502,7 +502,7 @@ export const commands: CommandDef[] = [
     ],
     seeAlso: [
       { name: "amend-list", description: "List previous amendments" },
-      { name: "history", description: "View command history" },
+      { name: "history", description: "View command history", url: "/history" },
     ],
   },
   {
