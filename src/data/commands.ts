@@ -300,7 +300,7 @@ export const commands: CommandDef[] = [
     seeAlso: [
       { name: "list-releases", description: "List stored release metadata" },
       { name: "changelog", description: "View release notes" },
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "revert", description: "Revert to a specific version" },
     ],
   },
