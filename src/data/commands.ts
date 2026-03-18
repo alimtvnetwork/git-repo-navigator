@@ -445,9 +445,10 @@ export const commands: CommandDef[] = [
       { flag: "--json", description: "Output as structured JSON" },
     ],
     seeAlso: [
+      { name: "Spec: history", description: "Full history documentation", url: "/history" },
       { name: "history-reset", description: "Clear command history" },
-      { name: "stats", description: "View aggregated usage metrics" },
-      { name: "bookmark", description: "Save commands for re-execution" },
+      { name: "stats", description: "View aggregated usage metrics", url: "/stats" },
+      { name: "bookmark", description: "Save commands for re-execution", url: "/bookmarks" },
     ],
   },
   {
