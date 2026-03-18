@@ -785,7 +785,7 @@ export const commands: CommandDef[] = [
     ],
     seeAlso: [
       { name: "scan", description: "Scan directories" },
-      { name: "history", description: "View command history" },
+      { name: "history", description: "View command history", url: "/history" },
     ],
   },
   {
