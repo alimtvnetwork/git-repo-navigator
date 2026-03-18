@@ -195,7 +195,7 @@ export const commands: CommandDef[] = [
     ],
     seeAlso: [
       { name: "status", description: "View repo statuses" },
-      { name: "watch", description: "Live-refresh dashboard" },
+      { name: "watch", description: "Live-refresh dashboard", url: "/watch" },
       { name: "release-branch", description: "Create a release branch" },
     ],
   },
