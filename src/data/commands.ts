@@ -138,7 +138,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap status --all", description: "Status for all tracked repos" },
     ],
     seeAlso: [
-      { name: "watch", description: "Live-refresh status dashboard" },
+      { name: "watch", description: "Live-refresh status dashboard", url: "/watch" },
       { name: "scan", description: "Scan directories to populate data" },
       { name: "exec", description: "Run git commands across repos" },
       { name: "group", description: "Filter status by group" },
@@ -195,7 +195,7 @@ export const commands: CommandDef[] = [
     ],
     seeAlso: [
       { name: "status", description: "View repo statuses" },
-      { name: "watch", description: "Live-refresh dashboard" },
+      { name: "watch", description: "Live-refresh dashboard", url: "/watch" },
       { name: "release-branch", description: "Create a release branch" },
     ],
   },
@@ -241,7 +241,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap rb release/v1.2.0", description: "Alias shorthand" },
     ],
     seeAlso: [
-      { name: "release", description: "Full release with tag and push" },
+      { name: "release", description: "Full release with tag and push", url: "/release" },
       { name: "release-pending", description: "Show unreleased commits" },
       { name: "latest-branch", description: "Find most recent branch" },
     ],
@@ -261,7 +261,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap rp --dry-run", description: "Preview what would be released" },
     ],
     seeAlso: [
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "release-branch", description: "Complete from existing branch" },
       { name: "clear-release-json", description: "Remove a release metadata file" },
       { name: "changelog", description: "View release notes" },
@@ -284,7 +284,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap cl --source release", description: "Only entries from gitmap release" },
     ],
     seeAlso: [
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "list-versions", description: "List available tags" },
       { name: "list-releases", description: "List stored release metadata" },
     ],
@@ -300,7 +300,7 @@ export const commands: CommandDef[] = [
     seeAlso: [
       { name: "list-releases", description: "List stored release metadata" },
       { name: "changelog", description: "View release notes" },
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "revert", description: "Revert to a specific version" },
     ],
   },
@@ -314,7 +314,7 @@ export const commands: CommandDef[] = [
     ],
     seeAlso: [
       { name: "list-versions", description: "List Git tags" },
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "changelog", description: "View release notes" },
     ],
   },
@@ -531,7 +531,7 @@ export const commands: CommandDef[] = [
       { name: "node-repos", description: "List Node.js projects" },
       { name: "react-repos", description: "List React projects" },
       { name: "scan", description: "Scan directories first" },
-      { name: "gomod", description: "Rename Go module paths" },
+      { name: "gomod", description: "Rename Go module paths", url: "/gomod" },
     ],
   },
   {
@@ -668,7 +668,7 @@ export const commands: CommandDef[] = [
       { command: "gitmap crj v1.0.0", description: "Remove using alias" },
     ],
     seeAlso: [
-      { name: "release", description: "Create a release" },
+      { name: "release", description: "Create a release", url: "/release" },
       { name: "list-releases", description: "Show stored releases" },
       { name: "db-reset", description: "Reset entire database" },
       { name: "Spec: clear-release-json", description: "Full specification with edge cases and constants", url: "/clear-release-json" },
