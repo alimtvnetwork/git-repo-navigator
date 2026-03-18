@@ -155,6 +155,7 @@ export const commands: CommandDef[] = [
       { flag: "--json", description: "Output single snapshot as JSON" },
     ],
     seeAlso: [
+      { name: "Spec: watch", description: "Live monitor documentation", url: "/watch" },
       { name: "status", description: "One-time status snapshot" },
       { name: "exec", description: "Run git commands across repos" },
       { name: "group", description: "Filter by group" },
