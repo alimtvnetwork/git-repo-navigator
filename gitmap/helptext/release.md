@@ -25,6 +25,9 @@ r
 | --no-assets | false | Skip Go binary cross-compilation |
 | --targets \<list\> | all 6 | Cross-compile targets: windows/amd64,linux/arm64 |
 | --list-targets | false | Print resolved target matrix and exit |
+| --zip-group \<name\> | — | Include a persistent zip group as a release asset |
+| -Z \<path\> | — | Add ad-hoc file or folder to zip as a release asset |
+| --bundle \<name.zip\> | — | Bundle all -Z items into a single named archive |
 
 ## Prerequisites
 
