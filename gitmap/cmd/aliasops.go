@@ -61,6 +61,7 @@ func executeAliasSet(alias, slug string) {
 	}
 
 	fmt.Printf(constants.MsgAliasCreated, alias, slug)
+	printHints(aliasSetHints())
 }
 
 // runAliasRemove handles "alias remove <alias>".

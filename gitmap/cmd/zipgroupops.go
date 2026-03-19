@@ -208,6 +208,8 @@ func printZipGroupShow(group model.ZipGroup, items []model.ZipGroupItem) {
 	if len(group.ArchiveName) > 0 {
 		fmt.Printf(constants.MsgZGShowArchive, group.ArchiveName)
 	}
+
+	printHints(zipGroupShowHints())
 }
 
 // runZipGroupDelete handles "zip-group delete <name>".
