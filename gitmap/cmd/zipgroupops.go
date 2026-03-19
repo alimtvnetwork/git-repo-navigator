@@ -4,9 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
