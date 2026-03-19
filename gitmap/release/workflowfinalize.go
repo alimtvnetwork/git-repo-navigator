@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/store"
 )
 
 // LastMeta holds the most recent release metadata after Execute completes.
@@ -25,6 +26,14 @@ func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options
 	// Cross-compile Go binaries if applicable.
 	goAssets := buildGoAssetsIfApplicable(v, opts)
 	assets = append(assets, goAssets...)
+
+	// Build zip group archives (persistent groups from DB).
+	zipGroupAssets := buildZipGroupAssets(opts)
+	assets = append(assets, zipGroupAssets...)
+
+	// Build ad-hoc zip archives (-Z / --bundle).
+	adHocAssets := buildAdHocZipAssets(opts)
+	assets = append(assets, adHocAssets...)
 
 	if opts.Compress && len(assets) > 0 {
 		compressed, compErr := CompressAssets(assets)
@@ -215,6 +224,7 @@ func updateLatestIfStable(v Version) error {
 func printDryRun(v Version, branchName, tag, sourceName string, opts Options) error {
 	printDryRunSteps(branchName, tag, sourceName)
 	printDryRunGoAssets(v, opts)
+	printDryRunZipGroups(opts)
 	printDryRunAssets(opts.Assets, opts.Compress, opts.Checksums)
 	printDryRunMeta(v)
 	fmt.Printf(constants.MsgReleaseComplete, v.String())
@@ -309,4 +319,54 @@ func returnToBranch(branch string) error {
 	fmt.Printf(constants.MsgReleaseSwitchedBack, branch)
 
 	return nil
+}
+
+// buildZipGroupAssets creates archives from persistent zip groups.
+func buildZipGroupAssets(opts Options) []string {
+	if len(opts.ZipGroups) == 0 {
+		return nil
+	}
+
+	db, err := store.OpenDefault()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "  ✗ Cannot open DB for zip groups: %v\n", err)
+
+		return nil
+	}
+	defer db.Close()
+
+	stagingDir, err := EnsureStagingDir()
+	if err != nil {
+		return nil
+	}
+
+	return BuildZipGroupArchives(db, opts.ZipGroups, stagingDir)
+}
+
+// buildAdHocZipAssets creates archives from ad-hoc -Z paths.
+func buildAdHocZipAssets(opts Options) []string {
+	if len(opts.ZipItems) == 0 {
+		return nil
+	}
+
+	stagingDir, err := EnsureStagingDir()
+	if err != nil {
+		return nil
+	}
+
+	return BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+}
+
+// printDryRunZipGroups shows zip group plan in dry-run mode.
+func printDryRunZipGroups(opts Options) {
+	if len(opts.ZipGroups) > 0 {
+		db, err := store.OpenDefault()
+		if err == nil {
+			defer db.Close()
+
+			DryRunZipGroups(db, opts.ZipGroups)
+		}
+	}
+
+	DryRunAdHoc(opts.ZipItems, opts.BundleName)
 }
