@@ -116,7 +116,7 @@ func runScan(args []string) {
 | Rule | Detail |
 |------|--------|
 | Examples per command | 2–3, each with sample output |
-| Sample output | Max 3 lines, realistic but anonymized |
+| Sample output | 3–8 lines per example, realistic but anonymized |
 | Prerequisites | Explicitly list commands that must run first |
 | Cross-references | Link to related command's help file |
 | Flags table | Include default values and type hints |
