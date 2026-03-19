@@ -232,6 +232,11 @@ For full details, each entry links to `gitmap/helptext/<command>.md`.
 | version.md | version | v |
 | seo-write.md | seo-write | sw |
 | gomod.md | gomod | gm |
+| zip-group.md | zip-group | z |
+| alias.md | alias | a |
+| completion.md | completion | cmp |
+| interactive.md | interactive | i |
+| multi-group.md | multi-group | mg |
 
 ---
 
