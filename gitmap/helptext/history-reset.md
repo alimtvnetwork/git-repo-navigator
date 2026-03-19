@@ -22,16 +22,18 @@ hr
 
 ## Examples
 
-### Example 1: Reset with confirmation
+### Example 1: Reset with interactive confirmation
 
     gitmap history-reset
 
 **Output:**
 
-    This will delete all command history. Continue? [y/N]: y
+    Current history: 42 entries
+    This will permanently delete all command history.
+    Continue? [y/N]: y
     ✓ History cleared (42 entries removed)
 
-### Example 2: Reset without prompt
+### Example 2: Reset without prompt (scripting)
 
     gitmap hr --confirm
 
@@ -39,8 +41,16 @@ hr
 
     ✓ History cleared (42 entries removed)
 
+### Example 3: Empty history
+
+    gitmap history-reset
+
+**Output:**
+
+    No history to clear (0 entries).
+
 ## See Also
 
 - [history](history.md) — View command history
 - [db-reset](db-reset.md) — Reset the entire database
-- [stats](stats.md) — View usage metrics
+- [stats](stats.md) — View usage metrics (also cleared)

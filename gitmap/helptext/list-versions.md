@@ -29,17 +29,38 @@ lv
 
 **Output:**
 
-    v2.8.0  2025-03-10
-    v2.5.0  2025-03-01
-    4 versions found
+    VERSION     DATE          COMMITS  LATEST
+    v2.22.0     2025-03-10    5        ✓
+    v2.21.0     2025-03-08    3
+    v2.20.0     2025-02-28    4
+    v2.19.0     2025-02-20    6
+    v2.18.0     2025-02-15    2
+    ...
+    12 versions found
 
-### Example 2: Top 3 as JSON
+### Example 2: Show top 3 versions
+
+    gitmap lv --limit 3
+
+**Output:**
+
+    VERSION     DATE          COMMITS  LATEST
+    v2.22.0     2025-03-10    5        ✓
+    v2.21.0     2025-03-08    3
+    v2.20.0     2025-02-28    4
+    3 versions shown (12 total)
+
+### Example 3: JSON output for scripting
 
     gitmap lv --json --limit 3
 
 **Output:**
 
-    [{"version":"v2.8.0","date":"2025-03-10"},...]
+    [
+      {"version":"v2.22.0","date":"2025-03-10","commits":5,"latest":true},
+      {"version":"v2.21.0","date":"2025-03-08","commits":3,"latest":false},
+      {"version":"v2.20.0","date":"2025-02-28","commits":4,"latest":false}
+    ]
 
 ## See Also
 
