@@ -13,7 +13,7 @@ import (
 // runReleaseBranch handles the 'release-branch' command.
 func runReleaseBranch(args []string) {
 	checkHelp("release-branch", args)
-	branch, assets, draft, dryRun, verbose := parseReleaseBranchFlags(args)
+	branch, assets, draft, dryRun, verbose, noCommit := parseReleaseBranchFlags(args)
 	_ = verbose
 
 	if len(branch) == 0 {
@@ -21,7 +21,7 @@ func runReleaseBranch(args []string) {
 		os.Exit(1)
 	}
 
-	err := release.ExecuteFromBranch(branch, assets, draft, dryRun)
+	err := release.ExecuteFromBranch(branch, assets, draft, dryRun, noCommit)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
 		os.Exit(1)
@@ -29,12 +29,13 @@ func runReleaseBranch(args []string) {
 }
 
 // parseReleaseBranchFlags parses flags for the release-branch command.
-func parseReleaseBranchFlags(args []string) (branch, assets string, draft, dryRun, verbose bool) {
+func parseReleaseBranchFlags(args []string) (branch, assets string, draft, dryRun, verbose, noCommit bool) {
 	fs := flag.NewFlagSet(constants.CmdReleaseBranch, flag.ExitOnError)
 	assetsFlag := fs.String("assets", "", constants.FlagDescAssets)
 	draftFlag := fs.Bool("draft", false, constants.FlagDescDraft)
 	dryRunFlag := fs.Bool("dry-run", false, constants.FlagDescDryRun)
 	verboseFlag := fs.Bool("verbose", false, constants.FlagDescVerbose)
+	noCommitFlag := fs.Bool("no-commit", false, constants.FlagDescNoCommit)
 	fs.Parse(args)
 
 	branch = ""
@@ -42,5 +43,5 @@ func parseReleaseBranchFlags(args []string) (branch, assets string, draft, dryRu
 		branch = fs.Arg(0)
 	}
 
-	return branch, *assetsFlag, *draftFlag, *dryRunFlag, *verboseFlag
+	return branch, *assetsFlag, *draftFlag, *dryRunFlag, *verboseFlag, *noCommitFlag
 }
