@@ -68,8 +68,28 @@ func validateReleaseFlags(version, bump, commit, branch string) {
 	}
 }
 
+// zipGroupFlag collects multiple --zip-group values.
+type zipGroupFlag []string
+
+func (z *zipGroupFlag) String() string { return fmt.Sprintf("%v", *z) }
+func (z *zipGroupFlag) Set(val string) error {
+	*z = append(*z, val)
+
+	return nil
+}
+
+// zipItemFlag collects multiple -Z values.
+type zipItemFlag []string
+
+func (z *zipItemFlag) String() string { return fmt.Sprintf("%v", *z) }
+func (z *zipItemFlag) Set(val string) error {
+	*z = append(*z, val)
+
+	return nil
+}
+
 // parseReleaseFlags parses flags for the release command.
-func parseReleaseFlags(args []string) (version, assets, commit, branch, bump, targets string, draft, dryRun, verbose, compress, checksums, noAssets, listTargets bool) {
+func parseReleaseFlags(args []string) (version, assets, commit, branch, bump, targets string, zipGroups, zipItems []string, bundleName string, draft, dryRun, verbose, compress, checksums, noAssets, listTargets bool) {
 	fs := flag.NewFlagSet(constants.CmdRelease, flag.ExitOnError)
 	assetsFlag := fs.String("assets", "", constants.FlagDescAssets)
 	commitFlag := fs.String("commit", "", constants.FlagDescCommit)
@@ -83,6 +103,13 @@ func parseReleaseFlags(args []string) (version, assets, commit, branch, bump, ta
 	checksumsFlag := fs.Bool("checksums", false, constants.FlagDescChecksums)
 	noAssetsFlag := fs.Bool("no-assets", false, constants.FlagDescNoAssets)
 	listTargetsFlag := fs.Bool("list-targets", false, constants.FlagDescListTargets)
+	bundleFlag := fs.String("bundle", "", constants.FlagDescZGBundle)
+
+	var zgGroups zipGroupFlag
+	var zgItems zipItemFlag
+
+	fs.Var(&zgGroups, "zip-group", constants.FlagDescZGZipGroup)
+	fs.Var(&zgItems, "Z", constants.FlagDescZGZipItem)
 	fs.Parse(args)
 
 	version = ""
@@ -90,7 +117,7 @@ func parseReleaseFlags(args []string) (version, assets, commit, branch, bump, ta
 		version = fs.Arg(0)
 	}
 
-	return version, *assetsFlag, *commitFlag, *branchFlag, *bumpFlag, *targetsFlag, *draftFlag, *dryRunFlag, *verboseFlag, *compressFlag, *checksumsFlag, *noAssetsFlag, *listTargetsFlag
+	return version, *assetsFlag, *commitFlag, *branchFlag, *bumpFlag, *targetsFlag, []string(zgGroups), []string(zgItems), *bundleFlag, *draftFlag, *dryRunFlag, *verboseFlag, *compressFlag, *checksumsFlag, *noAssetsFlag, *listTargetsFlag
 }
 
 // printListTargets resolves and prints the target matrix, then returns.
