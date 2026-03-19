@@ -67,6 +67,7 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateCSharpProjectFiles,
 		constants.SQLCreateCSharpKeyFiles,
 		constants.SQLCreateSettings,
+		constants.SQLCreateAliases,
 	}
 
 	for _, stmt := range statements {
