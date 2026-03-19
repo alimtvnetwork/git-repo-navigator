@@ -192,7 +192,18 @@ func performRelease(v Version, sourceRef, sourceName string, opts Options) error
 		return err
 	}
 
-	return returnToBranch(originalBranch)
+	err = returnToBranch(originalBranch)
+	if err != nil {
+		return err
+	}
+
+	if !opts.NoCommit {
+		AutoCommit(v.String(), false)
+	} else {
+		fmt.Print(constants.MsgAutoCommitSkipped)
+	}
+
+	return nil
 }
 
 // executeSteps runs each release step in sequence.

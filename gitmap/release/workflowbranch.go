@@ -75,7 +75,14 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool)
 		return err
 	}
 
-	return returnToBranch(originalBranch)
+	err = returnToBranch(originalBranch)
+	if err != nil {
+		return err
+	}
+
+	AutoCommit(v.String(), false)
+
+	return nil
 }
 
 // ExecutePending finds all release branches without tags and releases them.
