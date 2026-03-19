@@ -242,7 +242,7 @@ For full details, each entry links to `gitmap/helptext/<command>.md`.
 | Prerequisites | Explicitly list commands that must run first |
 | Cross-references | Link to prerequisite command's help file |
 | Flags table | Include default values and type hints |
-| File size | Each help file ≤ 80 lines |
+| File size | Each help file ≤ 120 lines |
 | No duplication | Help files are the source of truth; README excerpts from them |
 
 ---
