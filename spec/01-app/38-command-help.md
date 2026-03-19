@@ -69,7 +69,7 @@ Every help file follows this structure:
 
 **Output:**
 
-    <sample terminal output, 3-8 lines>
+    <sample terminal output, 3-8 lines per example>
 
 ### Example 2: <title>
 
@@ -77,7 +77,7 @@ Every help file follows this structure:
 
 **Output:**
 
-    <sample terminal output, max 3 lines>
+    <sample terminal output, 3-8 lines per example>
 
 ## See Also
 
@@ -238,11 +238,11 @@ For full details, each entry links to `gitmap/helptext/<command>.md`.
 | Rule | Detail |
 |------|--------|
 | Examples per command | 2–3, each with sample output |
-| Sample output | Max 3 lines, realistic but anonymized |
+| Sample output | 3–8 lines per example, realistic but anonymized |
 | Prerequisites | Explicitly list commands that must run first |
 | Cross-references | Link to prerequisite command's help file |
 | Flags table | Include default values and type hints |
-| File size | Each help file ≤ 80 lines |
+| File size | Each help file ≤ 120 lines |
 | No duplication | Help files are the source of truth; README excerpts from them |
 
 ---

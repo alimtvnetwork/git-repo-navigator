@@ -46,7 +46,7 @@ toolname/helptext/<command-name>.md
 
 **Output:**
 
-    <sample terminal output, max 3 lines>
+    <sample terminal output, 3-8 lines per example>
 
 ### Example 2: <title>
 
@@ -54,7 +54,7 @@ toolname/helptext/<command-name>.md
 
 **Output:**
 
-    <sample terminal output, max 3 lines>
+    <sample terminal output, 3-8 lines per example>
 
 ## See Also
 
@@ -116,11 +116,11 @@ func runScan(args []string) {
 | Rule | Detail |
 |------|--------|
 | Examples per command | 2–3, each with sample output |
-| Sample output | Max 3 lines, realistic but anonymized |
+| Sample output | 3–8 lines per example, realistic but anonymized |
 | Prerequisites | Explicitly list commands that must run first |
 | Cross-references | Link to related command's help file |
 | Flags table | Include default values and type hints |
-| File size | Each help file ≤ 80 lines |
+| File size | Each help file ≤ 120 lines |
 | See Also section | 2–5 related commands with one-line descriptions |
 
 ## Root Help Output
