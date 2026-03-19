@@ -20,26 +20,61 @@ The TUI has four views, accessible via **Tab**:
 
 ### Repos (default)
 Browse all tracked repositories with fuzzy search:
+
+    ┌─ Repos ─────────────────────────────────────────┐
+    │ Search: api_                                     │
+    │                                                  │
+    │ > my-api           main     clean    0/0         │
+    │   api-gateway      main     dirty    1/0         │
+    │   payments-api     develop  clean    0/2         │
+    │                                                  │
+    │ 3 matches (42 total) │ Space: select │ /: search │
+    └──────────────────────────────────────────────────┘
+
 - Type `/` to search, `j`/`k` or arrow keys to navigate
 - `Space` to select repos, `a` to select all
 - `Enter` to view detail
 
 ### Actions
 Perform batch operations on selected repos:
-- `p` — Pull selected repos
-- `x` — Execute a git command across selected
-- `s` — Show status for selected
-- `g` — Add selected to a group
+
+    ┌─ Actions ───────────────────────────────────────┐
+    │ 3 repos selected                                 │
+    │                                                  │
+    │   [p] Pull selected repos                        │
+    │   [x] Execute git command across selected        │
+    │   [s] Show status for selected                   │
+    │   [g] Add selected to a group                    │
+    │                                                  │
+    │ Press a key to perform action                    │
+    └──────────────────────────────────────────────────┘
 
 ### Groups
 Manage repository groups:
-- Browse existing groups with member counts
-- `c` — Create a new group
-- `d` — Delete a group
+
+    ┌─ Groups ────────────────────────────────────────┐
+    │ GROUP           REPOS   DESCRIPTION              │
+    │ > backend       5       All backend services     │
+    │   frontend      3       React frontend apps      │
+    │   infra         2       Infrastructure           │
+    │                                                  │
+    │ c: create │ d: delete │ Enter: show members      │
+    └──────────────────────────────────────────────────┘
 
 ### Status
-Live dashboard showing dirty/clean status, branch, ahead/behind
-counts for all repos. Press `r` to refresh.
+Live dashboard showing dirty/clean status, branch, ahead/behind:
+
+    ┌─ Status ────────────────────────────────────────┐
+    │ 42 repos │ Refreshing in 25s │ r: refresh now    │
+    │                                                  │
+    │ REPO             BRANCH     STATUS  AHEAD/BEHIND │
+    │ my-api           main       clean   0/0          │
+    │ web-app          develop    dirty   2/1          │
+    │ billing-svc      main       clean   0/0          │
+    │ auth-gateway     feature/x  dirty   5/0          │
+    │                                                  │
+    │ 2 dirty │ 40 clean                               │
+    └──────────────────────────────────────────────────┘
 
 ## Key Bindings
 

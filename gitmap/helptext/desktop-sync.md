@@ -21,7 +21,7 @@ None.
 
 ## Examples
 
-### Example 1: Sync repos to GitHub Desktop
+### Example 1: Sync all repos to GitHub Desktop
 
     gitmap desktop-sync
 
@@ -29,16 +29,30 @@ None.
 
     Syncing 42 repos to GitHub Desktop...
     [1/42] my-api... added
-    ✓ 42 repos synced (15 new, 27 existing)
+    [2/42] web-app... added
+    [3/42] billing-svc... already registered
+    [4/42] auth-gateway... added
+    ...
+    ✓ 42 repos synced to GitHub Desktop
+      15 newly added
+      27 already registered
 
-### Example 2: Using alias
+### Example 2: Sync after a rescan (picks up new repos)
 
+    gitmap rescan
     gitmap ds
 
 **Output:**
 
-    Syncing 42 repos...
-    ✓ 42 repos synced
+    Re-scanning D:\wp-work...
+    Found 44 repositories (+2 new)
+    ✓ Database updated
+
+    Syncing 44 repos to GitHub Desktop...
+    [1/44] new-service... added
+    [2/44] analytics-api... added
+    ...
+    ✓ 44 repos synced (2 new, 42 existing)
 
 ## See Also
 

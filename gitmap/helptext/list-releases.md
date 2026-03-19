@@ -23,23 +23,41 @@ lr
 
 ## Examples
 
-### Example 1: List all releases
+### Example 1: List all stored releases
 
     gitmap list-releases
 
 **Output:**
 
-    v2.8.0  2025-03-10  manual  12 commits
-    v2.5.0  2025-03-01  scan     8 commits
-    3 releases found
+    VERSION   DATE          SOURCE   COMMITS  BRANCH            DRAFT
+    v2.22.0   2025-03-10    manual   5        release/v2.22.0   no
+    v2.21.0   2025-03-08    manual   3        release/v2.21.0   no
+    v2.20.0   2025-02-28    manual   4        release/v2.20.0   no
+    v2.19.0   2025-02-20    scan     6        release/v2.19.0   no
+    v2.18.0   2025-02-15    scan     2        release/v2.18.0   no
+    5 releases found
 
-### Example 2: Filter by source
+### Example 2: Filter by source (scan-imported only)
 
-    gitmap lr --source scan --json
+    gitmap lr --source scan
 
 **Output:**
 
-    [{"version":"v2.5.0","date":"2025-03-01","source":"scan"}]
+    VERSION   DATE          SOURCE   COMMITS
+    v2.19.0   2025-02-20    scan     6
+    v2.18.0   2025-02-15    scan     2
+    2 releases found (filtered: source=scan)
+
+### Example 3: JSON output
+
+    gitmap lr --json
+
+**Output:**
+
+    [
+      {"version":"v2.22.0","date":"2025-03-10","source":"manual","commits":5,"draft":false},
+      {"version":"v2.21.0","date":"2025-03-08","source":"manual","commits":3,"draft":false}
+    ]
 
 ## See Also
 

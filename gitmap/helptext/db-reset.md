@@ -22,14 +22,23 @@ None
 
 ## Examples
 
-### Example 1: Reset with confirmation
+### Example 1: Reset with interactive confirmation
 
     gitmap db-reset
 
 **Output:**
 
-    This will delete all data in the current profile. Continue? [y/N]: y
-    ✓ Database reset (42 repos, 3 groups removed)
+    Current profile: default
+    Data to be removed:
+      42 repositories
+       3 groups (backend, frontend, infra)
+       5 aliases
+      12 release records
+      65 history entries
+
+    This will permanently delete all data. Continue? [y/N]: y
+    ✓ Database reset complete
+    → Run 'gitmap scan' to rebuild
 
 ### Example 2: Reset without prompt
 
@@ -37,7 +46,16 @@ None
 
 **Output:**
 
-    ✓ Database reset (42 repos, 3 groups removed)
+    ✓ Database reset (42 repos, 3 groups, 5 aliases removed)
+    → Run 'gitmap scan' to rebuild
+
+### Example 3: Reset an empty database
+
+    gitmap db-reset
+
+**Output:**
+
+    Database is already empty. Nothing to reset.
 
 ## See Also
 
