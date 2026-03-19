@@ -53,6 +53,7 @@ project root. Created after a successful release.
 | commit       | string   | yes      | —       | Full commit SHA                    |
 | tag          | string   | yes      | —       | Git tag name with `v` prefix       |
 | assets       | []string | no       | `[]`    | Paths that were attached           |
+| zipGroups    | []string | no       | `[]`    | Zip group names included in release |
 | draft        | bool     | no       | `false` | Whether this is a draft release    |
 | preRelease   | bool     | no       | `false` | Whether this is a pre-release      |
 | createdAt    | string   | yes      | —       | ISO 8601 timestamp                 |
