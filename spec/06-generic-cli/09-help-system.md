@@ -120,7 +120,7 @@ func runScan(args []string) {
 | Prerequisites | Explicitly list commands that must run first |
 | Cross-references | Link to related command's help file |
 | Flags table | Include default values and type hints |
-| File size | Each help file ≤ 80 lines |
+| File size | Each help file ≤ 120 lines |
 | See Also section | 2–5 related commands with one-line descriptions |
 
 ## Root Help Output
