@@ -42,18 +42,25 @@ func hasListFlag(args []string) bool {
 // handleCompletionList routes to the appropriate list printer.
 func handleCompletionList(args []string) {
 	for _, a := range args {
-		if a == constants.CompListRepos {
+		switch a {
+		case constants.CompListRepos:
 			printCompletionRepos()
 
 			return
-		}
-		if a == constants.CompListGroups {
+		case constants.CompListGroups:
 			printCompletionGroups()
 
 			return
-		}
-		if a == constants.CompListCommands {
+		case constants.CompListCommands:
 			printCompletionCommands()
+
+			return
+		case constants.CompListAliases:
+			printCompletionAliases()
+
+			return
+		case constants.CompListZipGroups:
+			printCompletionZipGroups()
 
 			return
 		}
