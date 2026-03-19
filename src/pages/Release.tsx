@@ -136,10 +136,11 @@ const ReleasePage = () => {
               "6. Create git tag vX.Y.Z",
               "7. Push branch + tag to origin",
               "7a. Cross-compile Go binaries (if go.mod detected)",
+              "7a′. Resolve and compress zip groups / ad-hoc -Z items",
               "7b. Compress assets (.zip/.tar.gz) if --compress",
               "7c. Generate checksums.txt if --checksums",
               "7d. Upload assets to GitHub Releases API",
-              "8. Write .release/vX.Y.Z.json",
+              "8. Write .release/vX.Y.Z.json (includes zipGroups metadata)",
               "9. Update .release/latest.json (if highest stable)",
             ].map((step) => (
               <p key={step} className="text-foreground/80 pl-2">{step}</p>
