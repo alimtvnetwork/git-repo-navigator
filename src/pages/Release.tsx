@@ -26,6 +26,9 @@ const releaseFlags = [
   { flag: "--no-assets", description: "Skip Go binary cross-compilation" },
   { flag: "--targets <list>", description: "Cross-compile targets (e.g. windows/amd64,linux/arm64)" },
   { flag: "--list-targets", description: "Print resolved target matrix and exit" },
+  { flag: "--zip-group <name>", description: "Include a persistent zip group as a release asset (repeatable)" },
+  { flag: "-Z <path>", description: "Add ad-hoc file or folder to zip as a release asset (repeatable)" },
+  { flag: "--bundle <name.zip>", description: "Bundle all -Z items into a single named archive" },
   { flag: "--verbose", description: "Write detailed debug log" },
 ];
 
