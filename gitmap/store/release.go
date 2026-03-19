@@ -85,7 +85,7 @@ func scanOneReleaseRow(row interface{ Scan(dest ...any) error }) (model.ReleaseR
 	var draft, preRelease, isLatest int
 
 	err := row.Scan(&r.ID, &r.Version, &r.Tag, &r.Branch, &r.SourceBranch,
-		&r.CommitSha, &r.Changelog, &draft, &preRelease, &isLatest, &r.Source, &r.CreatedAt)
+		&r.CommitSha, &r.Changelog, &r.Notes, &draft, &preRelease, &isLatest, &r.Source, &r.CreatedAt)
 	if err != nil {
 		return model.ReleaseRecord{}, err
 	}

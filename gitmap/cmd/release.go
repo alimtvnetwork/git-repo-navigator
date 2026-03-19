@@ -186,6 +186,7 @@ func metaToRecord(m release.ReleaseMeta) model.ReleaseRecord {
 		SourceBranch: m.SourceBranch,
 		CommitSha:    m.Commit,
 		Changelog:    store.JoinChangelog(m.Changelog),
+		Notes:        m.Notes,
 		Draft:        m.Draft,
 		PreRelease:   m.PreRelease,
 		IsLatest:     m.IsLatest,
