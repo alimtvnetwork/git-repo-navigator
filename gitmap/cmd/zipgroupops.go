@@ -140,6 +140,7 @@ func runZipGroupList() {
 	}
 
 	printZipGroupList(groups)
+	printHints(zipGroupListHints())
 }
 
 // printZipGroupList renders the zip group table to stdout.
