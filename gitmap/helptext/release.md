@@ -25,6 +25,9 @@ r
 | --no-assets | false | Skip Go binary cross-compilation |
 | --targets \<list\> | all 6 | Cross-compile targets: windows/amd64,linux/arm64 |
 | --list-targets | false | Print resolved target matrix and exit |
+| --zip-group \<name\> | — | Include a persistent zip group as a release asset |
+| -Z \<path\> | — | Add ad-hoc file or folder to zip as a release asset |
+| --bundle \<name.zip\> | — | Bundle all -Z items into a single named archive |
 
 ## Prerequisites
 
@@ -74,6 +77,26 @@ Answering `n` (or pressing Enter) aborts the release.
     Attaching assets... done
     ✓ Released v3.0.0
 
+### Example 4: Release with a persistent zip group
+
+    gitmap release v3.0.0 --zip-group docs-bundle
+
+**Output:**
+
+    Creating tag v3.0.0... done
+    ✓ Compressed docs-bundle → docs-bundle_v3.0.0.zip
+    ✓ Released v3.0.0
+
+### Example 5: Ad-hoc zip with bundle
+
+    gitmap release v3.0.0 -Z ./dist/report.pdf -Z ./dist/manual.pdf --bundle docs.zip
+
+**Output:**
+
+    Creating tag v3.0.0... done
+    ✓ Compressed 2 items → docs.zip
+    ✓ Released v3.0.0
+
 ## See Also
 
 - [release-branch](release-branch.md) — Create a release branch without tagging
@@ -82,3 +105,4 @@ Answering `n` (or pressing Enter) aborts the release.
 - [list-versions](list-versions.md) — List release tags
 - [list-releases](list-releases.md) — List stored release metadata
 - [revert](revert.md) — Revert to a previous release
+- [zip-group](zip-group.md) — Manage zip group definitions
