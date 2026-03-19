@@ -27,6 +27,14 @@ func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options
 	goAssets := buildGoAssetsIfApplicable(v, opts)
 	assets = append(assets, goAssets...)
 
+	// Build zip group archives (persistent groups from DB).
+	zipGroupAssets := buildZipGroupAssets(opts)
+	assets = append(assets, zipGroupAssets...)
+
+	// Build ad-hoc zip archives (-Z / --bundle).
+	adHocAssets := buildAdHocZipAssets(opts)
+	assets = append(assets, adHocAssets...)
+
 	if opts.Compress && len(assets) > 0 {
 		compressed, compErr := CompressAssets(assets)
 		if compErr == nil && len(compressed) > 0 {

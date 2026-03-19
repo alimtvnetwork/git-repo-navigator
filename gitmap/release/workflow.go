@@ -23,6 +23,9 @@ type Options struct {
 	Bump          string
 	Targets       string
 	ConfigTargets []model.ReleaseTarget
+	ZipGroups     []string
+	ZipItems      []string
+	BundleName    string
 	Draft         bool
 	DryRun        bool
 	Verbose       bool
