@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	"github.com/user/gitmap/constants"
 )
 
 // GitHubRelease represents the response from creating a GitHub release.
