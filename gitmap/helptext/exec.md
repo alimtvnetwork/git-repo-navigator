@@ -12,7 +12,11 @@ x
 
 ## Flags
 
-None (all arguments are passed directly to git).
+| Flag | Default | Description |
+|------|---------|-------------|
+| -A, --alias \<name\> | — | Target a repo by its alias |
+
+All other arguments are passed directly to git.
 
 ## Prerequisites
 
