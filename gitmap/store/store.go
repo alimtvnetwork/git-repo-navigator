@@ -68,6 +68,8 @@ func (db *DB) Migrate() error {
 		constants.SQLCreateCSharpKeyFiles,
 		constants.SQLCreateSettings,
 		constants.SQLCreateAliases,
+		constants.SQLCreateZipGroups,
+		constants.SQLCreateZipGroupItems,
 	}
 
 	for _, stmt := range statements {
@@ -105,6 +107,8 @@ func (db *DB) Reset() error {
 		constants.SQLDropCommandHistory,
 		constants.SQLDropBookmarks,
 		constants.SQLDropAliases,
+		constants.SQLDropZipGroupItems,
+		constants.SQLDropZipGroups,
 		constants.SQLDropRepos,
 	}
 
