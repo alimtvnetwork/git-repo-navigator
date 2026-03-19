@@ -21,6 +21,7 @@ type Options struct {
 	Commit        string
 	Branch        string
 	Bump          string
+	Notes         string
 	Targets       string
 	ConfigTargets []model.ReleaseTarget
 	ZipGroups     []string

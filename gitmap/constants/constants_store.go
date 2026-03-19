@@ -120,20 +120,22 @@ const (
 
 // SQL: release operations.
 const (
-	SQLUpsertRelease = `INSERT INTO Releases (Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Draft, PreRelease, IsLatest, Source, CreatedAt)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	SQLUpsertRelease = `INSERT INTO Releases (Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Notes, Draft, PreRelease, IsLatest, Source, CreatedAt)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON CONFLICT(Tag) DO UPDATE SET
 			Version=excluded.Version, Branch=excluded.Branch, SourceBranch=excluded.SourceBranch,
-			CommitSha=excluded.CommitSha, Changelog=excluded.Changelog, Draft=excluded.Draft,
+			CommitSha=excluded.CommitSha, Changelog=excluded.Changelog, Notes=excluded.Notes, Draft=excluded.Draft,
 			PreRelease=excluded.PreRelease, IsLatest=excluded.IsLatest, Source=excluded.Source`
 
-	SQLSelectAllReleases = `SELECT Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Draft, PreRelease, IsLatest, Source, CreatedAt
+	SQLSelectAllReleases = `SELECT Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Notes, Draft, PreRelease, IsLatest, Source, CreatedAt
 		FROM Releases ORDER BY CreatedAt DESC`
 
-	SQLSelectReleaseByTag = `SELECT Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Draft, PreRelease, IsLatest, Source, CreatedAt
+	SQLSelectReleaseByTag = `SELECT Id, Version, Tag, Branch, SourceBranch, CommitSha, Changelog, Notes, Draft, PreRelease, IsLatest, Source, CreatedAt
 		FROM Releases WHERE Tag = ?`
 
 	SQLClearLatestRelease = "UPDATE Releases SET IsLatest = 0 WHERE IsLatest = 1"
+
+	SQLAddNotesColumn = "ALTER TABLE Releases ADD COLUMN Notes TEXT DEFAULT ''"
 )
 
 // SQL: reset operations.

@@ -177,6 +177,7 @@ func buildReleaseMeta(v Version, branchName, tag, sourceName, commit string, ass
 		Tag:          tag,
 		Assets:       assetPaths,
 		Changelog:    loadChangelogNotes(v.String()),
+		Notes:        opts.Notes,
 		ZipGroups:    zipGroups,
 		Draft:        opts.Draft,
 		PreRelease:   v.IsPreRelease(),
