@@ -36,15 +36,76 @@ z
     gitmap z create docs-bundle
     gitmap z add docs-bundle ./README.md ./CHANGELOG.md ./docs/
 
+**Output:**
+
+    ✓ Zip group 'docs-bundle' created
+
+    Adding items to 'docs-bundle'...
+    ✓ Added ./README.md
+    ✓ Added ./CHANGELOG.md
+    ✓ Added ./docs/ (directory)
+    3 items in group 'docs-bundle'
+
 ### Example 2: Create with custom archive name
 
     gitmap z create extras --archive extra-files.zip
     gitmap z add extras ./config/ ./scripts/deploy.sh
 
-### Example 3: Use during release
+**Output:**
+
+    ✓ Zip group 'extras' created (archive: extra-files.zip)
+
+    ✓ Added ./config/ (directory)
+    ✓ Added ./scripts/deploy.sh
+    2 items in group 'extras'
+
+### Example 3: List all zip groups
+
+    gitmap z list
+
+**Output:**
+
+    GROUP           ITEMS   ARCHIVE NAME
+    docs-bundle     3       docs-bundle.zip
+    extras          2       extra-files.zip
+    2 zip groups defined
+
+### Example 4: Show items in a group
+
+    gitmap z show docs-bundle
+
+**Output:**
+
+    Zip group: docs-bundle
+    Archive:   docs-bundle.zip
+    Items (3):
+      ./README.md
+      ./CHANGELOG.md
+      ./docs/ (directory)
+
+### Example 5: Use during release
 
     gitmap release v3.0.0 --zip-group docs-bundle
-    gitmap release v3.0.0 -Z ./dist/report.pdf --bundle reports.zip
+
+**Output:**
+
+    Creating tag v3.0.0... done
+    ✓ Compressed docs-bundle → docs-bundle_v3.0.0.zip (3 items)
+    Uploading to GitHub... done
+    ✓ Released v3.0.0
+
+### Example 6: Ad-hoc zip with bundle
+
+    gitmap release v3.0.0 -Z ./dist/report.pdf -Z ./dist/manual.pdf --bundle reports.zip
+
+**Output:**
+
+    Creating tag v3.0.0... done
+    ✓ Compressed 2 items → reports.zip
+      ./dist/report.pdf
+      ./dist/manual.pdf
+    Uploading to GitHub... done
+    ✓ Released v3.0.0
 
 ## See Also
 

@@ -27,21 +27,31 @@ cmp
 
 ## Examples
 
-### Example 1: Print PowerShell completion script
+### Example 1: Generate PowerShell completion script
 
     gitmap completion powershell
 
 **Output:**
 
-    Register-ArgumentCompleter -CommandName gitmap ...
+    Register-ArgumentCompleter -CommandName gitmap -ScriptBlock {
+        param($commandName, $wordToComplete, $cursorPosition)
+        $commands = @('scan','clone','pull','status','exec','release',
+                      'group','list','cd','watch','alias','bookmark',...)
+        $commands | Where-Object { $_ -like "$wordToComplete*" } |
+            ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
+    }
 
-### Example 2: Print Bash completion script
+### Example 2: Generate Bash completion script
 
     gitmap completion bash
 
 **Output:**
 
-    _gitmap_completions() { ... }
+    _gitmap_completions() {
+        local cur="${COMP_WORDS[COMP_CWORD]}"
+        local commands="scan clone pull status exec release group list cd watch"
+        COMPREPLY=( $(compgen -W "$commands" -- "$cur") )
+    }
     complete -F _gitmap_completions gitmap
 
 ### Example 3: List repo slugs for scripting
@@ -52,7 +62,27 @@ cmp
 
     my-api
     web-app
+    billing-svc
+    auth-gateway
     shared-lib
+    notification-svc
+
+### Example 4: List all available commands
+
+    gitmap completion --list-commands
+
+**Output:**
+
+    scan
+    clone
+    pull
+    rescan
+    status
+    exec
+    release
+    release-branch
+    release-pending
+    ...
 
 ## See Also
 
