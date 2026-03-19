@@ -63,6 +63,10 @@ func Execute(opts Options) error {
 		return err
 	}
 
+	if len(opts.Notes) > 0 {
+		fmt.Printf(constants.MsgReleaseNotes, opts.Notes)
+	}
+
 	return performRelease(version, sourceRef, sourceName, opts)
 }
 
