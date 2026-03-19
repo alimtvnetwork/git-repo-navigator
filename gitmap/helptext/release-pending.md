@@ -20,6 +20,7 @@ rp
 | --draft | false | Mark releases as drafts |
 | --dry-run | false | Preview without executing |
 | --verbose | false | Detailed output |
+| --no-commit | false | Skip post-release auto-commit and push |
 
 ## Prerequisites
 
