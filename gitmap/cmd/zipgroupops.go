@@ -49,6 +49,7 @@ func executeZipGroupCreate(name, archiveName string) {
 	}
 
 	fmt.Printf(constants.MsgZGCreated, name)
+	printHints(zipGroupCreateHints())
 }
 
 // runZipGroupAdd handles "zip-group add <group> <path...>".
