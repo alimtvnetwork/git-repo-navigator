@@ -11,9 +11,11 @@ const (
 
 // Completion list flags.
 const (
-	CompListRepos    = "--list-repos"
-	CompListGroups   = "--list-groups"
-	CompListCommands = "--list-commands"
+	CompListRepos     = "--list-repos"
+	CompListGroups    = "--list-groups"
+	CompListCommands  = "--list-commands"
+	CompListAliases   = "--list-aliases"
+	CompListZipGroups = "--list-zip-groups"
 )
 
 // Completion file names.
