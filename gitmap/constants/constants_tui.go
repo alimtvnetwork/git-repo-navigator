@@ -28,6 +28,8 @@ const (
 	TUIViewActions   = "Actions"
 	TUIViewGroups    = "Groups"
 	TUIViewDashboard = "Status"
+	TUIViewZipGroups = "Zip Groups"
+	TUIViewAliases   = "Aliases"
 )
 
 // TUI status messages.
