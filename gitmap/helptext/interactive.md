@@ -3,6 +3,10 @@
 Launch a full-screen interactive terminal UI for browsing, searching,
 and managing repositories.
 
+## Alias
+
+i
+
 ## Usage
 
     gitmap interactive [--refresh <seconds>]
@@ -87,7 +91,14 @@ Live dashboard showing dirty/clean status, branch, ahead/behind:
     /            Focus search
     Enter        Show detail / confirm
 
-## Requirements
+## Prerequisites
 
-Requires a terminal with alternate screen support. Falls back
-to an error message if not available.
+- Run `gitmap scan` at least once to populate the database (see scan.md)
+- Terminal must support alternate screen mode
+
+## See Also
+
+- [list](list.md) — List tracked repositories
+- [group](group.md) — Manage repo groups
+- [status](status.md) — View repo statuses
+- [watch](watch.md) — Live-refresh status dashboard
