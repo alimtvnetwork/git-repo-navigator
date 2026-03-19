@@ -573,6 +573,7 @@ const ReleasePage = () => {
                   { file: "release/assetsupload.go", desc: "GitHub API upload with retry" },
                   { file: "release/compress.go", desc: ".zip/.tar.gz archive creation" },
                   { file: "release/checksums.go", desc: "SHA256 checksum generation" },
+                  { file: "release/ziparchive.go", desc: "Zip group archive creation (max compression)" },
                 ].map((row) => (
                   <tr key={row.file} className="border-b border-border/50">
                     <td className="py-2 px-3 font-mono text-primary">{row.file}</td>
