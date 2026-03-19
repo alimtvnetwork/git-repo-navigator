@@ -49,3 +49,4 @@ All other arguments are passed directly to git.
 - [scan](scan.md) — Scan directories to populate the database
 - [pull](pull.md) — Pull repos (built-in alternative to exec fetch)
 - [status](status.md) — View repo statuses
+- [alias](alias.md) — Manage repo aliases

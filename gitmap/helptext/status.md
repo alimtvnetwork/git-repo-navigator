@@ -50,3 +50,4 @@ st
 - [scan](scan.md) — Scan directories to populate the database
 - [group](group.md) — Manage repo groups
 - [pull](pull.md) — Pull repos to sync changes
+- [alias](alias.md) — Manage repo aliases

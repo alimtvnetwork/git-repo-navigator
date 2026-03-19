@@ -60,3 +60,4 @@ p
 - [clone](clone.md) — Clone repos from output files
 - [status](status.md) — Check repo statuses before pulling
 - [group](group.md) — Manage groups for targeted pulls
+- [alias](alias.md) — Manage repo aliases

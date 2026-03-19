@@ -59,3 +59,4 @@ go
 - [list](list.md) — View all tracked repos and paths
 - [group](group.md) — Manage repo groups for filtered navigation
 - [scan](scan.md) — Scan directories to populate the database
+- [alias](alias.md) — Manage repo aliases
