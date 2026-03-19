@@ -14,6 +14,7 @@ p
 
 | Flag | Default | Description |
 |------|---------|-------------|
+| -A, --alias \<name\> | — | Target a repo by its alias |
 | --group \<name\> | — | Pull all repos in a group |
 | --all | false | Pull all tracked repos |
 | --verbose | false | Enable verbose logging |
