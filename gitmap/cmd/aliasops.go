@@ -49,6 +49,7 @@ func executeAliasSet(alias, slug string) {
 		}
 
 		fmt.Printf(constants.MsgAliasUpdated, alias, slug)
+		printHints(aliasSetHints())
 
 		return
 	}
