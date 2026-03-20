@@ -95,7 +95,7 @@
 ## Pending Work
 
 ### TUI Enhancements
-- ⬜ **Wire real git status** into TUI dashboard (dirty/clean, ahead/behind via gitutil)
+- ✅ **Wire real git status** into TUI dashboard — unreachable detection, file counts, dashformat.go refactor
 - ⬜ **TUI release view**: trigger releases, view release history, and inspect metadata from within the TUI
 - ⬜ **TUI log viewer**: show recent command history and output within the interactive interface
 
