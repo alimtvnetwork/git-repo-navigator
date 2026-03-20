@@ -6,8 +6,19 @@ Navigate to a tracked repository directory using its slug or an interactive pick
 
 go
 
+## Setup
+
+Run `gitmap setup` to auto-install the `gcd` shell function. After that,
+use `gcd <repo-name>` to change directory directly.
+
+If you prefer to install it manually, add this to your shell profile:
+
+**PowerShell:** `function gcd { Set-Location (gitmap cd @args) }`
+**Bash/Zsh:** `gcd() { cd "$(gitmap cd "$@")" ; }`
+
 ## Usage
 
+    gcd <repo-name>
     gitmap cd <repo-name|repos> [flags]
 
 ## Flags
