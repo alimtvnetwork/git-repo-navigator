@@ -50,6 +50,24 @@ func installShellCompletion(dryRun bool) {
 	fmt.Fprintf(os.Stderr, constants.MsgCompInstalled, shell)
 }
 
+// installCDFunction detects the shell and installs the gcd wrapper.
+func installCDFunction(dryRun bool) {
+	shell := completion.DetectShell()
+	fmt.Printf("\n  %s%s %s%s\n", constants.ColorYellow, "cd function:", shell, constants.ColorReset)
+
+	if dryRun {
+		fmt.Printf("  %s[dry-run]%s would install gcd function for %s\n",
+			constants.ColorDim, constants.ColorReset, shell)
+
+		return
+	}
+
+	err := completion.InstallCDFunction(shell)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "  %s%s%s\n", constants.ColorYellow, err, constants.ColorReset)
+	}
+}
+
 // parseSetupFlags parses flags for the setup command.
 func parseSetupFlags(args []string) (configPath string, dryRun bool) {
 	fs := flag.NewFlagSet(constants.CmdSetup, flag.ExitOnError)
