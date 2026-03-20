@@ -5,7 +5,25 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
-    version: "v2.21.0",
+    version: "v2.23.0",
+    items: [
+      "Bumped compiled version constant to v2.23.0.",
+      "Added `--notes` / `-N` flag to `release-branch` and `release-pending` commands.",
+      "Updated docs site Release page with metadata-first workflow and release notes documentation.",
+    ],
+  },
+  {
+    version: "v2.22.0",
+    items: [
+      "Bumped compiled version constant to v2.22.0.",
+      "Persisted zip group metadata in `.release/vX.Y.Z.json` via new `zipGroups` field.",
+      "Documented `-A`/`--alias` flag in help text for `pull`, `exec`, `status`, and `cd`.",
+      "Added shell completion support for `alias` and `zip-group` subcommands.",
+      "Added `--list-aliases` and `--list-zip-groups` completion list flags.",
+      "Added unit tests for `collectZipGroupNames`.",
+    ],
+  },
+  {
     items: [
       "Bumped compiled version constant to v2.21.0.",
       "Refactored `assetsupload.go` into three focused files: `githubapi.go`, `assetsupload.go`, `remoteorigin.go`.",
