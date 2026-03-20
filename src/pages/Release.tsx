@@ -12,6 +12,7 @@ const features = [
   { icon: Package, title: "Go Cross-Compile", desc: "Auto-detect go.mod and build binaries for 6 OS/arch targets." },
   { icon: Archive, title: "Compress & Checksum", desc: "Wrap assets in .zip/.tar.gz and generate SHA256 checksums." },
   { icon: Target, title: "Custom Targets", desc: "Override default matrix via --targets flag or config.json." },
+  { icon: FileText, title: "Release Notes", desc: "Use --notes / -N to set a title and annotation for the release." },
 ];
 
 const releaseFlags = [
