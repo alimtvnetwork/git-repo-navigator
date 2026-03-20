@@ -24,11 +24,11 @@ func ExecuteFromBranch(branchName, assetsPath, notes string, draft bool, dryRun 
 
 	if dryRun {
 		return printDryRun(version, branchName, version.String(), branchName, Options{
-			Assets: assetsPath, Draft: draft, DryRun: true,
+			Assets: assetsPath, Notes: notes, Draft: draft, DryRun: true,
 		})
 	}
 
-	return completeBranchRelease(version, branchName, assetsPath, draft, noCommit)
+	return completeBranchRelease(version, branchName, assetsPath, notes, draft, noCommit)
 }
 
 // extractVersionFromBranch parses the version from a release branch name.
