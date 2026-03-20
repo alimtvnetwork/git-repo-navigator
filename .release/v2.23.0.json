@@ -2,7 +2,7 @@
   "version": "2.23.0",
   "branch": "release/v2.23.0",
   "sourceBranch": "main",
-  "commit": "",
+  "commit": "90d8c6c35c24aa40a3730b69700f52a04c6be705",
   "tag": "v2.23.0",
   "assets": [],
   "changelog": [
@@ -12,6 +12,6 @@
   ],
   "draft": false,
   "preRelease": false,
-  "createdAt": "2026-03-20T00:00:00Z",
-  "isLatest": true
+  "createdAt": "2026-03-20T00:31:13Z",
+  "isLatest": false
 }
