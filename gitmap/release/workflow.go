@@ -34,7 +34,7 @@ type Options struct {
 	Checksums     bool
 	NoAssets      bool
 	NoCommit      bool
-}
+	SkipMeta      bool
 
 // Result holds the outcome of a release operation.
 type Result struct {

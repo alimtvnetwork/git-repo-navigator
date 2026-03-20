@@ -59,8 +59,10 @@ for the full metadata-based discovery spec.
 | Flag               | Description                         | Default |
 |--------------------|-------------------------------------|---------|
 | `--assets <path>`  | Directory or file to record         | (none)  |
+| `--notes <text>` / `-N` | Release notes or title         | (none)  |
 | `--draft`          | Mark release metadata as draft      | `false` |
 | `--dry-run`        | Preview steps without executing     | `false` |
+| `--no-commit`      | Skip post-release auto-commit       | `false` |
 | `--verbose`        | Write detailed debug log            | `false` |
 
 ### Release-Pending Flags
@@ -68,8 +70,10 @@ for the full metadata-based discovery spec.
 | Flag               | Description                              | Default |
 |--------------------|------------------------------------------|---------|
 | `--assets <path>`  | Directory or file to record              | (none)  |
+| `--notes <text>` / `-N` | Release notes or title              | (none)  |
 | `--draft`          | Mark release metadata as draft           | `false` |
 | `--dry-run`        | Preview steps without executing          | `false` |
+| `--no-commit`      | Skip post-release auto-commit            | `false` |
 | `--verbose`        | Write detailed debug log                 | `false` |
 
 ---
@@ -245,12 +249,13 @@ failed step so the user knows exactly what to clean up.
  3. Check .release/ and git tags for duplicates
  3a. If orphaned metadata detected → prompt to remove and continue
  4. Resolve source commit (--commit / --branch / HEAD)
- 5. Create branch release/vX.Y.Z from source
- 6. Create git tag vX.Y.Z
- 7. Push branch + tag to origin
- 8. Collect --assets contents
- 9. Write .release/vX.Y.Z.json
-10. Update .release/latest.json if highest stable version
+ 5. Write .release/vX.Y.Z.json metadata on the current branch
+ 6. Create branch release/vX.Y.Z, commit metadata files
+ 7. Create git tag vX.Y.Z (annotated with --notes if provided)
+ 8. Push branch + tag to origin
+ 9. Collect --assets contents, cross-compile, upload
+10. Return to original branch, auto-commit release metadata
+11. Update .release/latest.json if highest stable version
 ```
 
 ## Workflow: Release from Existing Branch
@@ -260,8 +265,13 @@ failed step so the user knows exactly what to clean up.
 2. Extract version from branch name, pad to semver
 3. Check if tag already exists → abort if so
 4. Checkout the release branch
-5. Create tag, push (steps 6–10 above)
+5. Create tag, push, upload assets
+6. Return to original branch
 ```
+
+**Note:** `release-branch` and `release-pending` skip `.release/` metadata
+writing and committing. These commands process branches/metadata that
+already exist — they only create the tag, push, and upload assets.
 
 ---
 
