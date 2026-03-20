@@ -13,10 +13,10 @@ import (
 // runReleasePending handles the 'release-pending' command.
 func runReleasePending(args []string) {
 	checkHelp("release-pending", args)
-	assets, draft, dryRun, verbose, noCommit := parseReleasePendingFlags(args)
+	assets, notes, draft, dryRun, verbose, noCommit := parseReleasePendingFlags(args)
 	_ = verbose
 
-	err := release.ExecutePending(assets, draft, dryRun, noCommit)
+	err := release.ExecutePending(assets, notes, draft, dryRun, noCommit)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
 		os.Exit(1)
@@ -24,14 +24,19 @@ func runReleasePending(args []string) {
 }
 
 // parseReleasePendingFlags parses flags for the release-pending command.
-func parseReleasePendingFlags(args []string) (assets string, draft, dryRun, verbose, noCommit bool) {
+func parseReleasePendingFlags(args []string) (assets, notes string, draft, dryRun, verbose, noCommit bool) {
 	fs := flag.NewFlagSet(constants.CmdReleasePending, flag.ExitOnError)
 	assetsFlag := fs.String("assets", "", constants.FlagDescAssets)
+	notesFlag := fs.String("notes", "", constants.FlagDescNotes)
 	draftFlag := fs.Bool("draft", false, constants.FlagDescDraft)
 	dryRunFlag := fs.Bool("dry-run", false, constants.FlagDescDryRun)
 	verboseFlag := fs.Bool("verbose", false, constants.FlagDescVerbose)
 	noCommitFlag := fs.Bool("no-commit", false, constants.FlagDescNoCommit)
+
+	// Register -N as shorthand for --notes.
+	fs.StringVar(notesFlag, "N", "", constants.FlagDescNotes)
+
 	fs.Parse(args)
 
-	return *assetsFlag, *draftFlag, *dryRunFlag, *verboseFlag, *noCommitFlag
+	return *assetsFlag, *notesFlag, *draftFlag, *dryRunFlag, *verboseFlag, *noCommitFlag
 }
