@@ -1,6 +1,6 @@
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
-import { GitBranch, Tag, Upload, Clock, Shield, Eye, Package, Target, FileCheck, Archive } from "lucide-react";
+import { GitBranch, Tag, Upload, Clock, Shield, Eye, Package, Target, FileCheck, Archive, FileText } from "lucide-react";
 
 const features = [
   { icon: GitBranch, title: "Branch + Tag", desc: "Creates release/vX.Y.Z branch and vX.Y.Z tag in one step." },
