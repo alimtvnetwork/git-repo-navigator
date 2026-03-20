@@ -223,7 +223,7 @@ func releaseFromMetadata(meta ReleaseMeta, assetsPath, notes string, draft bool,
 	}
 	fmt.Printf(constants.MsgReleaseTag, tag)
 
-	opts := Options{Assets: assetsPath, Notes: notes, Draft: draft}
+	opts := Options{Assets: assetsPath, Notes: notes, Draft: draft, SkipMeta: true}
 
 	return pushAndFinalize(v, branchName, tag, "metadata:"+meta.Commit, opts)
 }

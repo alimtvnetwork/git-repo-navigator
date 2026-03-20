@@ -61,6 +61,12 @@ func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options
 	// Upload to GitHub if token is available.
 	uploadToGitHub(v, assets, opts)
 
+	if opts.SkipMeta {
+		fmt.Printf(constants.MsgReleaseComplete, v.String())
+
+		return nil
+	}
+
 	return writeMetadata(v, branchName, tag, sourceName, assets, opts)
 }
 
