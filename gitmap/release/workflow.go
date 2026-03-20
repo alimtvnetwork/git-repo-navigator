@@ -193,23 +193,27 @@ func performRelease(v Version, sourceRef, sourceName string, opts Options) error
 		return err
 	}
 
-	// Step 1: Write metadata JSON on the current branch before branching.
-	err := writeMetadata(v, branchName, tag, sourceName, nil, opts)
+	// Step 1: Create the release branch, tag, push, and finalize assets.
+	err := executeSteps(v, branchName, tag, sourceRef, sourceName, opts)
 	if err != nil {
 		return err
 	}
 
-	// Step 2: Create the release branch, commit metadata, tag, push.
-	err = executeSteps(v, branchName, tag, sourceRef, sourceName, opts)
-	if err != nil {
-		return err
-	}
-
+	// Step 2: Return to the original branch.
 	err = returnToBranch(originalBranch)
 	if err != nil {
 		return err
 	}
 
+	// Step 3: Write metadata JSON on the original branch (picked up by auto-commit).
+	if !opts.SkipMeta {
+		err = writeMetadata(v, branchName, tag, sourceName, nil, opts)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Step 4: Auto-commit the .release/ metadata files.
 	if !opts.NoCommit {
 		AutoCommit(v.String(), false)
 	} else {
