@@ -363,6 +363,10 @@ const ReleasePage = () => {
               <CodeBlock code="gitmap release v3.0.0 --zip-group docs-bundle -Z ./extras/notes.txt" />
             </div>
             <div>
+              <p className="text-sm text-muted-foreground mb-2">Release with notes (title and tag annotation)</p>
+              <CodeBlock code={`gitmap release --bump patch -N 'Hotfix for auth timeout'`} />
+            </div>
+            <div>
               <p className="text-sm text-muted-foreground mb-2">Draft and dry-run</p>
               <CodeBlock code={`gitmap release v3.0.0-rc.1 --draft\ngitmap release v1.0.0 --dry-run`} />
             </div>
