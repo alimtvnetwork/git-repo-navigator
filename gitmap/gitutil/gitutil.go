@@ -46,9 +46,22 @@ func CurrentBranch(repoPath string) (string, error) {
 }
 
 // Status returns the full live status of a repository.
+// If the path does not exist or is not a git repo, Unreachable is set.
 func Status(repoPath string) RepoStatus {
 	rs := RepoStatus{}
-	rs.Branch, _ = CurrentBranch(repoPath)
+
+	if _, err := os.Stat(repoPath); err != nil {
+		rs.Unreachable = true
+		return rs
+	}
+
+	branch, err := CurrentBranch(repoPath)
+	if err != nil {
+		rs.Unreachable = true
+		return rs
+	}
+
+	rs.Branch = branch
 	rs.Dirty, rs.Untracked, rs.Modified, rs.Staged = parsePortcelainStatus(repoPath)
 	rs.Ahead, rs.Behind = parseAheadBehind(repoPath)
 	rs.StashCount = countStashes(repoPath)
