@@ -69,14 +69,14 @@ const GettingStartedPage = () => {
         <div>
           <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">4. Set up shell navigation</h2>
           <p className="text-muted-foreground mb-3">
-            Add a wrapper function to quickly cd into tracked repos:
+            Run <code className="font-mono text-primary">gitmap setup</code> to auto-install the <code className="font-mono text-primary">gcd</code> wrapper function. After restarting your terminal:
           </p>
           <CodeBlock
-            code={`# PowerShell ($PROFILE)\nfunction gcd { Set-Location (gitmap cd $args) }\n\n# Bash/Zsh (~/.bashrc or ~/.zshrc)\ngcd() { cd "$(gitmap cd "$@")" ; }`}
-            title="Shell Profile"
+            code={`gcd myrepo          # jumps to repo directory\ngcd repos           # interactive picker\ngcd repos --group backend`}
+            title="Usage"
           />
           <p className="text-sm text-muted-foreground mt-2">
-            Then use <code className="font-mono text-primary">gcd myrepo</code> to jump to any tracked repo.
+            The <code className="font-mono text-primary">gcd</code> function is added to your shell profile automatically. You can also install it manually — see the <a href="/cd" className="text-primary hover:underline">cd docs</a>.
           </p>
         </div>
 
