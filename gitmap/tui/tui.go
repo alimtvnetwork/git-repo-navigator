@@ -197,6 +197,8 @@ func (m rootModel) renderContent() string {
 		return m.groupsMgr.View()
 	case viewDashboard:
 		return m.dashboard.View()
+	case viewReleases:
+		return m.releases.View()
 	case viewZipGroups:
 		return m.zipGroups.View()
 	case viewAliases:
