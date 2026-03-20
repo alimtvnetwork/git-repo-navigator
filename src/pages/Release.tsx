@@ -20,6 +20,7 @@ const releaseFlags = [
   { flag: "--commit <sha>", description: "Create release from a specific commit" },
   { flag: "--branch <name>", description: "Create release from latest commit of a branch" },
   { flag: "--bump major|minor|patch", description: "Auto-increment from the latest released version" },
+  { flag: "--notes <text> / -N", description: "Release notes or title for the release (used as tag annotation and GitHub title)" },
   { flag: "--draft", description: "Mark release metadata as draft" },
   { flag: "--dry-run", description: "Preview release steps without executing" },
   { flag: "--compress", description: "Wrap assets in .zip (Windows) or .tar.gz (Linux/macOS)" },
