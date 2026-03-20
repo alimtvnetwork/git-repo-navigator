@@ -163,6 +163,20 @@ export const commands: CommandDef[] = [
   },
   {
     category: "monitoring",
+    name: "has-any-updates", alias: "hau / hac", description: "Check if remote has new commits you haven't pulled",
+    usage: "gitmap has-any-updates\ngitmap hau\ngitmap hac",
+    examples: [
+      { command: "gitmap hau", description: "Check for remote updates" },
+      { command: "gitmap hac", description: "Same check (alias)" },
+    ],
+    seeAlso: [
+      { name: "status", description: "Show repo status dashboard" },
+      { name: "pull", description: "Pull a specific repo" },
+      { name: "watch", description: "Live-refresh dashboard", url: "/watch" },
+    ],
+  },
+  {
+    category: "monitoring",
     name: "exec", alias: "x", description: "Run git command across all repos",
     usage: "gitmap exec <git-args...>",
     examples: [{ command: "gitmap exec fetch --prune" }],
