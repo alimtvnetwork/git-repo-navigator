@@ -85,6 +85,18 @@ const (
 	TUIColStash   = "Stash"
 	TUIColGroup   = "Group"
 	TUIColMembers = "Members"
+	TUIColVersion = "Version"
+	TUIColTag     = "Tag"
+	TUIColDraft   = "Draft"
+	TUIColLatest  = "Latest"
+	TUIColSource  = "Source"
+	TUIColDate    = "Date"
+)
+
+// TUI release messages.
+const (
+	TUIRelEmpty    = "No releases found. Use 'gitmap release' to create one."
+	TUIRelHint     = "enter: detail  r: refresh"
 )
 
 // TUI errors.
