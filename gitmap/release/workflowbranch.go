@@ -113,12 +113,12 @@ func ExecutePending(assetsPath, notes string, draft bool, dryRun bool, noCommit 
 		fmt.Printf(constants.MsgPendingMetaFound, len(metaPending))
 	}
 
-	err = releasePendingBranches(pending, assetsPath, draft, dryRun, noCommit)
+	err = releasePendingBranches(pending, assetsPath, notes, draft, dryRun, noCommit)
 	if err != nil {
 		return err
 	}
 
-	return releasePendingFromMetadata(metaPending, assetsPath, draft, dryRun)
+	return releasePendingFromMetadata(metaPending, assetsPath, notes, draft, dryRun)
 }
 
 // discoverMetadataPending finds .release/v*.json files where neither
