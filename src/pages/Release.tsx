@@ -1,6 +1,6 @@
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
-import { GitBranch, Tag, Upload, Clock, Shield, Eye, Package, Target, FileCheck, Archive } from "lucide-react";
+import { GitBranch, Tag, Upload, Clock, Shield, Eye, Package, Target, FileCheck, Archive, FileText } from "lucide-react";
 
 const features = [
   { icon: GitBranch, title: "Branch + Tag", desc: "Creates release/vX.Y.Z branch and vX.Y.Z tag in one step." },
@@ -12,6 +12,7 @@ const features = [
   { icon: Package, title: "Go Cross-Compile", desc: "Auto-detect go.mod and build binaries for 6 OS/arch targets." },
   { icon: Archive, title: "Compress & Checksum", desc: "Wrap assets in .zip/.tar.gz and generate SHA256 checksums." },
   { icon: Target, title: "Custom Targets", desc: "Override default matrix via --targets flag or config.json." },
+  { icon: FileText, title: "Release Notes", desc: "Use --notes / -N to set a title and annotation for the release." },
 ];
 
 const releaseFlags = [
@@ -19,6 +20,7 @@ const releaseFlags = [
   { flag: "--commit <sha>", description: "Create release from a specific commit" },
   { flag: "--branch <name>", description: "Create release from latest commit of a branch" },
   { flag: "--bump major|minor|patch", description: "Auto-increment from the latest released version" },
+  { flag: "--notes <text> / -N", description: "Release notes or title for the release (used as tag annotation and GitHub title)" },
   { flag: "--draft", description: "Mark release metadata as draft" },
   { flag: "--dry-run", description: "Preview release steps without executing" },
   { flag: "--compress", description: "Wrap assets in .zip (Windows) or .tar.gz (Linux/macOS)" },
@@ -34,12 +36,10 @@ const releaseFlags = [
 
 const branchFlags = [
   { flag: "--assets <path>", description: "Directory or file to record" },
+  { flag: "--notes <text> / -N", description: "Release notes or title for the release" },
   { flag: "--draft", description: "Mark release metadata as draft" },
   { flag: "--dry-run", description: "Preview steps without executing" },
-  { flag: "--compress", description: "Wrap assets in .zip/.tar.gz" },
-  { flag: "--checksums", description: "Generate SHA256 checksums.txt" },
-  { flag: "--no-assets", description: "Skip Go binary compilation" },
-  { flag: "--targets <list>", description: "Custom cross-compile targets" },
+  { flag: "--no-commit", description: "Skip post-release auto-commit and push" },
   { flag: "--verbose", description: "Write detailed debug log" },
 ];
 
@@ -132,16 +132,17 @@ const ReleasePage = () => {
               "2. Pad partial version to full semver",
               "3. Check .release/ and git tags for duplicates",
               "4. Resolve source commit (--commit / --branch / HEAD)",
-              "5. Create branch release/vX.Y.Z from source",
-              "6. Create git tag vX.Y.Z",
-              "7. Push branch + tag to origin",
-              "7a. Cross-compile Go binaries (if go.mod detected)",
-              "7a′. Resolve and compress zip groups / ad-hoc -Z items",
-              "7b. Compress assets (.zip/.tar.gz) if --compress",
-              "7c. Generate checksums.txt if --checksums",
-              "7d. Upload assets to GitHub Releases API",
-              "8. Write .release/vX.Y.Z.json (includes zipGroups metadata)",
-              "9. Update .release/latest.json (if highest stable)",
+              "5. Write .release/vX.Y.Z.json metadata on the current branch",
+              "6. Create/switch to branch release/vX.Y.Z, commit metadata",
+              "7. Create git tag vX.Y.Z (annotated with --notes if provided)",
+              "8. Push branch + tag to origin",
+              "8a. Cross-compile Go binaries (if go.mod detected)",
+              "8a′. Resolve and compress zip groups / ad-hoc -Z items",
+              "8b. Compress assets (.zip/.tar.gz) if --compress",
+              "8c. Generate checksums.txt if --checksums",
+              "8d. Upload assets to GitHub Releases API",
+              "9. Return to original branch, auto-commit release metadata",
+              "10. Update .release/latest.json (if highest stable)",
             ].map((step) => (
               <p key={step} className="text-foreground/80 pl-2">{step}</p>
             ))}
@@ -362,6 +363,10 @@ const ReleasePage = () => {
               <CodeBlock code="gitmap release v3.0.0 --zip-group docs-bundle -Z ./extras/notes.txt" />
             </div>
             <div>
+              <p className="text-sm text-muted-foreground mb-2">Release with notes (title and tag annotation)</p>
+              <CodeBlock code={`gitmap release --bump patch -N 'Hotfix for auth timeout'`} />
+            </div>
+            <div>
               <p className="text-sm text-muted-foreground mb-2">Draft and dry-run</p>
               <CodeBlock code={`gitmap release v3.0.0-rc.1 --draft\ngitmap release v1.0.0 --dry-run`} />
             </div>
@@ -566,8 +571,8 @@ const ReleasePage = () => {
                   { file: "release/metadata.go", desc: "Read/write .release/*.json, latest.json, version.json" },
                   { file: "release/gitops.go", desc: "Branch, tag, push, checkout Git operations" },
                   { file: "release/github.go", desc: "Asset collection, changelog/readme detection" },
-                  { file: "release/workflow.go", desc: "Orchestration: Execute(), version resolution" },
-                  { file: "release/workflowfinalize.go", desc: "Push, asset build, upload, metadata" },
+                  { file: "release/workflow.go", desc: "Orchestration: Execute(), metadata-first sequencing" },
+                  { file: "release/workflowbranch.go", desc: "release-branch and release-pending workflows" },
                   { file: "release/assets.go", desc: "Go cross-compilation orchestration" },
                   { file: "release/assetstargets.go", desc: "Target matrix, config parsing, resolution" },
                   { file: "release/assetsupload.go", desc: "GitHub API upload with retry" },
