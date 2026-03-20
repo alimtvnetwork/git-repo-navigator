@@ -64,6 +64,8 @@ func completeBranchRelease(v Version, branchName, assetsPath, notes string, draf
 	tag := v.String()
 	err = CreateTag(tag, constants.ReleaseTagPrefix+tag)
 	if err != nil {
+		Rollback("", tag, originalBranch)
+
 		return fmt.Errorf("create tag: %w", err)
 	}
 	fmt.Printf(constants.MsgReleaseTag, tag)
@@ -72,6 +74,8 @@ func completeBranchRelease(v Version, branchName, assetsPath, notes string, draf
 
 	err = pushAndFinalize(v, branchName, tag, branchName, opts)
 	if err != nil {
+		Rollback("", tag, originalBranch)
+
 		return err
 	}
 
