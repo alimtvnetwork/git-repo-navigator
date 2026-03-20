@@ -125,8 +125,9 @@ const ReleasePage = () => {
         {/* Workflow Diagram */}
         <div>
           <h2 className="text-xl font-mono font-bold text-foreground mb-4">Release Workflow</h2>
-          <div className="p-5 rounded-lg border border-border bg-card font-mono text-sm space-y-1">
-            <p className="text-muted-foreground mb-3">Steps executed by <span className="text-primary">gitmap release [version]</span>:</p>
+
+          <h3 className="text-base font-mono font-semibold text-foreground mb-3">gitmap release [version]</h3>
+          <div className="p-5 rounded-lg border border-border bg-card font-mono text-sm space-y-1 mb-6">
             {[
               "1. Resolve version (CLI → --bump → version.json → error)",
               "2. Pad partial version to full semver",
@@ -146,6 +147,27 @@ const ReleasePage = () => {
             ].map((step) => (
               <p key={step} className="text-foreground/80 pl-2">{step}</p>
             ))}
+          </div>
+
+          <h3 className="text-base font-mono font-semibold text-foreground mb-3">gitmap release-branch / release-pending</h3>
+          <div className="p-5 rounded-lg border border-border bg-card font-mono text-sm space-y-1">
+            {[
+              "1. Validate branch exists / discover pending branches + metadata",
+              "2. Extract version from branch name, pad to semver",
+              "3. Check if tag already exists → abort if so",
+              "4. Checkout the release branch",
+              "5. Create tag (annotated with --notes if provided)",
+              "6. Push branch + tag to origin, upload assets",
+              "7. Return to original branch",
+            ].map((step) => (
+              <p key={step} className="text-foreground/80 pl-2">{step}</p>
+            ))}
+            <div className="mt-3 pt-3 border-t border-border/50">
+              <p className="text-muted-foreground text-xs">
+                <span className="text-primary font-semibold">Note:</span> Steps 5–6 from the release command (metadata write + commit) are skipped.
+                These commands process existing branches/metadata — they only tag, push, and upload.
+              </p>
+            </div>
           </div>
         </div>
 
