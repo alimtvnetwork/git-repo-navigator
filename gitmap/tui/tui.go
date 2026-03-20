@@ -10,7 +10,7 @@ import (
 	"github.com/user/gitmap/store"
 )
 
-const viewCount = 6
+const viewCount = 7
 
 // view indices.
 const (
@@ -18,8 +18,9 @@ const (
 	viewActions   = 1
 	viewGroups    = 2
 	viewDashboard = 3
-	viewZipGroups = 4
-	viewAliases   = 5
+	viewReleases  = 4
+	viewZipGroups = 5
+	viewAliases   = 6
 )
 
 // rootModel is the top-level Bubble Tea model.
@@ -34,6 +35,7 @@ type rootModel struct {
 	actions   actionsModel
 	groupsMgr groupsModel
 	dashboard dashboardModel
+	releases  releasesModel
 	zipGroups zipGroupsModel
 	aliases   aliasesModel
 	quitting  bool
@@ -65,6 +67,7 @@ func newRootModel(db *store.DB, repos []model.ScanRecord, groups []model.Group, 
 		actions:   newActionsModel(),
 		groupsMgr: newGroupsModel(groups),
 		dashboard: newDashboardModel(repos, cfg.DashboardRefresh),
+		releases:  newReleasesModel(db),
 		zipGroups: newZipGroupsModel(db),
 		aliases:   newAliasesModel(db),
 	}
@@ -124,6 +127,11 @@ func (m rootModel) updateActiveView(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.dashboard = dm
 
 		return m, cmd
+	case viewReleases:
+		rm, cmd := m.releases.Update(msg)
+		m.releases = rm
+
+		return m, cmd
 	case viewZipGroups:
 		zm, cmd := m.zipGroups.Update(msg)
 		m.zipGroups = zm
@@ -162,6 +170,7 @@ func (m rootModel) renderTabs() string {
 		constants.TUIViewActions,
 		constants.TUIViewGroups,
 		constants.TUIViewDashboard,
+		constants.TUIViewReleases,
 		constants.TUIViewZipGroups,
 		constants.TUIViewAliases,
 	}
@@ -188,6 +197,8 @@ func (m rootModel) renderContent() string {
 		return m.groupsMgr.View()
 	case viewDashboard:
 		return m.dashboard.View()
+	case viewReleases:
+		return m.releases.View()
 	case viewZipGroups:
 		return m.zipGroups.View()
 	case viewAliases:
@@ -209,6 +220,8 @@ func (m rootModel) renderStatusBar() string {
 		hints = append(hints, constants.TUIGroupHint)
 	case viewDashboard:
 		hints = append(hints, constants.TUIDashHint)
+	case viewReleases:
+		hints = append(hints, constants.TUIRelHint)
 	case viewZipGroups:
 		hints = append(hints, constants.TUIZGHint)
 	case viewAliases:

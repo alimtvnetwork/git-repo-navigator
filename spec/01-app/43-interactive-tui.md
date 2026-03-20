@@ -62,6 +62,14 @@ Live-refreshing view showing:
   `config.json` (seconds, default 30)
 - Manual refresh via `r` key
 
+### 5. Releases
+
+Browse release history from the database:
+- Version, tag, branch, source, date columns
+- Enter to toggle detail view (commit SHA, changelog, notes)
+- Draft / pre-release / latest indicators
+- `r` to refresh from database
+
 ---
 
 ## Package Structure
