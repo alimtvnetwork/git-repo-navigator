@@ -1,21 +1,17 @@
 package tui
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/user/gitmap/model"
+)
 
 // formatRelRow renders a single release list row.
-func formatRelRow(r interface {
-	GetVersion() string
-	GetTag() string
-	GetBranch() string
-	IsDraft() bool
-	IsLatestRelease() bool
-	GetSource() string
-	GetDate() string
-}) string {
+func formatRelRow(r model.ReleaseRecord) string {
 	return fmt.Sprintf("%-12s %-14s %-20s %-8s %-8s %-8s %s",
-		r.GetVersion(), r.GetTag(), truncateStr(r.GetBranch(), 20),
-		boolLabel(r.IsDraft()), boolLabel(r.IsLatestRelease()),
-		r.GetSource(), r.GetDate())
+		r.Version, r.Tag, truncateStr(r.Branch, 20),
+		boolLabel(r.Draft), boolLabel(r.IsLatest),
+		r.Source, r.CreatedAt)
 }
 
 // writeField writes a labeled field to the builder.
