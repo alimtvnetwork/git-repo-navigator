@@ -196,6 +196,8 @@ func performRelease(v Version, sourceRef, sourceName string, opts Options) error
 	// Step 1: Create the release branch, tag, push, and finalize assets.
 	err := executeSteps(v, branchName, tag, sourceRef, sourceName, opts)
 	if err != nil {
+		Rollback(branchName, tag, originalBranch)
+
 		return err
 	}
 

@@ -48,3 +48,12 @@ const (
 	ErrReleaseOrphanedRemove  = "failed to remove release metadata: %w"
 	ErrReleaseAborted         = "release aborted by user"
 )
+
+// Release rollback messages.
+const (
+	MsgRollbackStart  = "\n  ⚠ Push failed — rolling back local branch and tag...\n"
+	MsgRollbackBranch = "  ✓ Deleted local branch %s\n"
+	MsgRollbackTag    = "  ✓ Deleted local tag %s\n"
+	MsgRollbackDone   = "  ✓ Rollback complete. No changes remain.\n"
+	MsgRollbackWarn   = "  ⚠ Rollback warning (%s): %v\n"
+)
