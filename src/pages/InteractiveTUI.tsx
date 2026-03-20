@@ -18,6 +18,8 @@ const KEY_BINDINGS = [
   { key: "c", context: "Groups", action: "Create new group" },
   { key: "d", context: "Groups", action: "Delete group (with confirm)" },
   { key: "r", context: "Status", action: "Force refresh dashboard" },
+  { key: "Enter", context: "Releases", action: "Toggle release detail view" },
+  { key: "r", context: "Releases", action: "Refresh release list" },
 ];
 
 const VIEWS = [
