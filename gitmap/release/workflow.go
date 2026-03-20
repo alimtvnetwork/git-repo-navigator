@@ -231,13 +231,6 @@ func executeSteps(v Version, branchName, tag, sourceRef, sourceName string, opts
 	}
 	fmt.Printf(constants.MsgReleaseBranch, branchName)
 
-	// Commit the release metadata JSON on the release branch.
-	err = commitReleaseMeta(v)
-	if err != nil {
-		return fmt.Errorf("commit release metadata: %w", err)
-	}
-	fmt.Printf(constants.MsgReleaseMetaCommitted, branchName)
-
 	err = CreateTag(tag, resolveTagMessage(tag, opts))
 	if err != nil {
 		return fmt.Errorf("create tag: %w", err)
