@@ -94,4 +94,26 @@
 
 ## Pending Work
 
+### TUI Enhancements
 - ⬜ **Wire real git status** into TUI dashboard (dirty/clean, ahead/behind via gitutil)
+- ⬜ **TUI release view**: trigger releases, view release history, and inspect metadata from within the TUI
+- ⬜ **TUI log viewer**: show recent command history and output within the interactive interface
+
+### CLI Robustness
+- ⬜ **Partial failure rollback**: auto-cleanup branch/tag on push failure in the release workflow
+- ⬜ **Retry logic for GitHub uploads**: exponential backoff on transient API errors during asset upload
+- ⬜ **Graceful offline mode**: detect no-network and skip remote operations (push, upload) with clear warnings
+- ⬜ **Lock file for concurrent runs**: prevent two `gitmap release` processes from conflicting
+
+### New Commands & Features
+- ⬜ **`docs` command**: open the documentation website in the default browser from the CLI
+- ⬜ **`prune` command**: detect and clean up stale release branches with no matching tags
+- ⬜ **`changelog generate`**: auto-generate changelog entries from commit messages between tags
+- ⬜ **Config validation**: `doctor` check that warns on invalid or deprecated `config.json` fields
+
+### Testing Coverage
+- ⬜ **SkipMeta integration test**: verify metadata writing is suppressed when the flag is true
+- ⬜ **Alias suggest tests**: cover auto-suggestion and conflict detection during scan
+- ⬜ **TUI interaction tests**: automated key-press simulation using a TUI testing framework
+- ⬜ **Release rollback test**: simulate push failure and verify branch/tag cleanup
+- ⬜ **End-to-end release test**: full cycle from bump through metadata commit on a temp repo
