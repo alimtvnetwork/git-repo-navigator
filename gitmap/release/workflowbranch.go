@@ -9,7 +9,7 @@ import (
 )
 
 // ExecuteFromBranch runs the release workflow from an existing release branch.
-func ExecuteFromBranch(branchName, assetsPath string, draft bool, dryRun bool, noCommit bool) error {
+func ExecuteFromBranch(branchName, assetsPath, notes string, draft bool, dryRun bool, noCommit bool) error {
 	version, err := extractVersionFromBranch(branchName)
 	if err != nil {
 		return err
@@ -24,11 +24,11 @@ func ExecuteFromBranch(branchName, assetsPath string, draft bool, dryRun bool, n
 
 	if dryRun {
 		return printDryRun(version, branchName, version.String(), branchName, Options{
-			Assets: assetsPath, Draft: draft, DryRun: true,
+			Assets: assetsPath, Notes: notes, Draft: draft, DryRun: true,
 		})
 	}
 
-	return completeBranchRelease(version, branchName, assetsPath, draft, noCommit)
+	return completeBranchRelease(version, branchName, assetsPath, notes, draft, noCommit)
 }
 
 // extractVersionFromBranch parses the version from a release branch name.
@@ -53,7 +53,7 @@ func validateExistingBranch(branchName string, v Version) error {
 }
 
 // completeBranchRelease checks out the branch and runs tag/push/release.
-func completeBranchRelease(v Version, branchName, assetsPath string, draft bool, noCommit bool) error {
+func completeBranchRelease(v Version, branchName, assetsPath, notes string, draft bool, noCommit bool) error {
 	originalBranch, _ := CurrentBranchName()
 
 	err := CheckoutBranch(branchName)
@@ -68,7 +68,7 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool,
 	}
 	fmt.Printf(constants.MsgReleaseTag, tag)
 
-	opts := Options{Assets: assetsPath, Draft: draft}
+	opts := Options{Assets: assetsPath, Notes: notes, Draft: draft}
 
 	err = pushAndFinalize(v, branchName, tag, branchName, opts)
 	if err != nil {
@@ -91,7 +91,7 @@ func completeBranchRelease(v Version, branchName, assetsPath string, draft bool,
 
 // ExecutePending finds all release branches without tags and releases them.
 // Also discovers unreleased versions from .release/v*.json metadata files.
-func ExecutePending(assetsPath string, draft bool, dryRun bool, noCommit bool) error {
+func ExecutePending(assetsPath, notes string, draft bool, dryRun bool, noCommit bool) error {
 	branches, err := listReleaseBranches()
 	if err != nil {
 		return fmt.Errorf("could not list release branches: %w", err)
@@ -113,12 +113,12 @@ func ExecutePending(assetsPath string, draft bool, dryRun bool, noCommit bool) e
 		fmt.Printf(constants.MsgPendingMetaFound, len(metaPending))
 	}
 
-	err = releasePendingBranches(pending, assetsPath, draft, dryRun, noCommit)
+	err = releasePendingBranches(pending, assetsPath, notes, draft, dryRun, noCommit)
 	if err != nil {
 		return err
 	}
 
-	return releasePendingFromMetadata(metaPending, assetsPath, draft, dryRun)
+	return releasePendingFromMetadata(metaPending, assetsPath, notes, draft, dryRun)
 }
 
 // discoverMetadataPending finds .release/v*.json files where neither
@@ -167,9 +167,9 @@ func isMetaPending(meta ReleaseMeta, branchSet map[string]bool) bool {
 }
 
 // releasePendingFromMetadata creates branch+tag from stored commit SHA.
-func releasePendingFromMetadata(pending []ReleaseMeta, assetsPath string, draft bool, dryRun bool) error {
+func releasePendingFromMetadata(pending []ReleaseMeta, assetsPath, notes string, draft bool, dryRun bool) error {
 	for _, meta := range pending {
-		err := releaseFromMetadata(meta, assetsPath, draft, dryRun)
+		err := releaseFromMetadata(meta, assetsPath, notes, draft, dryRun)
 		if err != nil {
 			fmt.Printf(constants.MsgReleasePendingFailed, meta.Tag, err)
 			continue
@@ -180,7 +180,7 @@ func releasePendingFromMetadata(pending []ReleaseMeta, assetsPath string, draft 
 }
 
 // releaseFromMetadata creates a release branch+tag from a metadata file's commit SHA.
-func releaseFromMetadata(meta ReleaseMeta, assetsPath string, draft bool, dryRun bool) error {
+func releaseFromMetadata(meta ReleaseMeta, assetsPath, notes string, draft bool, dryRun bool) error {
 	v, err := Parse(meta.Tag)
 	if err != nil {
 		return fmt.Errorf("invalid version in metadata: %s", meta.Tag)
@@ -223,15 +223,15 @@ func releaseFromMetadata(meta ReleaseMeta, assetsPath string, draft bool, dryRun
 	}
 	fmt.Printf(constants.MsgReleaseTag, tag)
 
-	opts := Options{Assets: assetsPath, Draft: draft}
+	opts := Options{Assets: assetsPath, Notes: notes, Draft: draft}
 
 	return pushAndFinalize(v, branchName, tag, "metadata:"+meta.Commit, opts)
 }
 
 // releasePendingBranches iterates and releases each pending branch.
-func releasePendingBranches(pending []string, assetsPath string, draft bool, dryRun bool, noCommit bool) error {
+func releasePendingBranches(pending []string, assetsPath, notes string, draft bool, dryRun bool, noCommit bool) error {
 	for _, branchName := range pending {
-		err := ExecuteFromBranch(branchName, assetsPath, draft, dryRun, noCommit)
+		err := ExecuteFromBranch(branchName, assetsPath, notes, draft, dryRun, noCommit)
 		if err != nil {
 			fmt.Printf(constants.MsgReleasePendingFailed, branchName, err)
 			continue
