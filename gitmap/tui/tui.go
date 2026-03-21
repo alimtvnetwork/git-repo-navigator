@@ -237,6 +237,8 @@ func (m rootModel) renderStatusBar() string {
 		hints = append(hints, constants.TUIZGHint)
 	case viewAliases:
 		hints = append(hints, constants.TUIAliasHint)
+	case viewLogs:
+		hints = append(hints, constants.TUILogHint)
 	}
 
 	return styleStatusBar.Render(strings.Join(hints, "  │  "))
