@@ -39,6 +39,7 @@ type rootModel struct {
 	releases  releasesModel
 	zipGroups zipGroupsModel
 	aliases   aliasesModel
+	logs      logsModel
 	quitting  bool
 }
 
