@@ -145,6 +145,11 @@ func (m rootModel) updateActiveView(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.aliases = am
 
 		return m, cmd
+	case viewLogs:
+		lm, cmd := m.logs.Update(msg)
+		m.logs = lm
+
+		return m, cmd
 	}
 
 	return m, nil
