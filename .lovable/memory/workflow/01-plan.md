@@ -75,7 +75,7 @@
 - ✅ `gomod` command for Go module rename/replace operations
 - ✅ `diff-profiles` command for comparing scan profiles
 - ✅ `watch` command for live repository monitoring
-- ✅ `zip-group` command with Level 9 Deflate compression
+- ✅ `zip-group` command with Level 9 Deflate compression, path resolution, .gitmap/zip-groups.json dual persistence
 - ✅ `alias` command with global `-A` flag resolution across pull, exec, status, cd
 - ✅ Enriched CLI help with terminal simulations, standardized headers, 3-example limits
 - ✅ Documentation site expansion with dedicated spec pages and reciprocal See Also navigation
