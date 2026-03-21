@@ -11,7 +11,16 @@ type ZipGroup struct {
 
 // ZipGroupItem links a file or folder path to a zip group.
 type ZipGroupItem struct {
-	GroupID  string `json:"groupId"`
-	Path     string `json:"path"`
-	IsFolder bool   `json:"isFolder"`
+	GroupID      string `json:"groupId"`
+	RepoPath     string `json:"repoPath"`
+	RelativePath string `json:"relativePath"`
+	FullPath     string `json:"fullPath"`
+	IsFolder     bool   `json:"isFolder"`
+	// Path returns FullPath for backward compatibility with zip archive logic.
+	Path string `json:"-"`
+}
+
+// ResolvePath sets the Path field from FullPath for archive operations.
+func (z *ZipGroupItem) ResolvePath() {
+	z.Path = z.FullPath
 }
