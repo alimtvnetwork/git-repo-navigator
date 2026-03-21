@@ -147,6 +147,7 @@ func pathsToItems(paths []string) []model.ZipGroupItem {
 		}
 
 		items = append(items, model.ZipGroupItem{
+			FullPath: p,
 			Path:     p,
 			IsFolder: info.IsDir(),
 		})
