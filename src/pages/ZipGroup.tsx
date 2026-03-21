@@ -1,11 +1,11 @@
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
-import { Archive, FolderPlus, Trash2, List, Eye, Database, Tag } from "lucide-react";
+import { Archive, FolderPlus, Trash2, List, Eye, Database, Tag, HardDrive, FileJson } from "lucide-react";
 
 const MOCK_GROUPS = [
   { name: "docs-bundle", items: 3, archive: "docs-bundle_v3.0.0.zip" },
+  { name: "chrome extension", items: 1, archive: "chrome extension.zip" },
   { name: "extras", items: 2, archive: "extra-files.zip" },
-  { name: "configs", items: 4, archive: "" },
 ];
 
 const TerminalPreview = () => (
@@ -20,7 +20,7 @@ const TerminalPreview = () => (
     </div>
     <div className="bg-terminal p-4 font-mono text-sm leading-relaxed overflow-x-auto">
       <div className="text-primary font-bold text-xs mb-1">
-        {"  "}Zip Groups (3):
+        {"  "}Zip Groups ({MOCK_GROUPS.length}):
       </div>
       {MOCK_GROUPS.map((g) => (
         <div key={g.name} className="text-terminal-foreground text-xs">
@@ -42,21 +42,33 @@ const ShowPreview = () => (
         <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
         <span className="w-3 h-3 rounded-full bg-green-500/80" />
       </div>
-      <span className="text-xs font-mono text-muted-foreground ml-2">gitmap z show docs-bundle</span>
+      <span className="text-xs font-mono text-muted-foreground ml-2">gitmap z show "chrome extension"</span>
     </div>
     <div className="bg-terminal p-4 font-mono text-sm leading-relaxed overflow-x-auto">
-      <div className="text-primary font-bold text-xs mb-1">{"  "}docs-bundle (3 item(s)):</div>
-      <div className="text-xs text-terminal-foreground">{"    "}📄 README.md</div>
-      <div className="text-xs text-terminal-foreground">{"    "}📄 CHANGELOG.md</div>
-      <div className="text-xs text-terminal-foreground">{"    "}📁 docs/</div>
-      <div className="text-xs text-muted-foreground mt-2">{"  "}Archive: docs-bundle_v3.0.0.zip</div>
+      <div className="text-primary font-bold text-xs mb-1">{"  "}chrome extension (1 item(s)):</div>
+      <div className="text-xs text-terminal-foreground">{"    "}📁 chrome-extension/dist</div>
+      <div className="text-xs text-muted-foreground/70 ml-6">
+        repo:     D:\wp-work\riseup-asia\macro-ahk
+      </div>
+      <div className="text-xs text-muted-foreground/70 ml-6">
+        relative: chrome-extension/dist
+      </div>
+      <div className="text-xs text-muted-foreground/70 ml-6">
+        full:     D:\wp-work\riseup-asia\macro-ahk\chrome-extension\dist
+      </div>
+      <div className="text-xs text-muted-foreground mt-1 ml-6">Contents (3 files):</div>
+      <div className="text-xs text-terminal-foreground ml-8">manifest.json</div>
+      <div className="text-xs text-terminal-foreground ml-8">background.js</div>
+      <div className="text-xs text-terminal-foreground ml-8">popup.html</div>
     </div>
   </div>
 );
 
 const features = [
-  { icon: Archive, title: "Max Compression", desc: "All archives use ZIP format with Deflate level 9 for maximum compression." },
-  { icon: FolderPlus, title: "Persistent Groups", desc: "Save named file/folder collections in SQLite for reuse across releases." },
+  { icon: Archive, title: "Max Compression", desc: "All archives use ZIP format with Deflate level 9 for smallest possible size." },
+  { icon: FolderPlus, title: "Folder References", desc: "Folders are stored by reference — files are expanded only at archive time." },
+  { icon: HardDrive, title: "Path Resolution", desc: "CWD + relative path → full path. Detects file vs folder automatically." },
+  { icon: FileJson, title: "Dual Persistence", desc: "Stored in SQLite and .gitmap/zip-groups.json for version control." },
   { icon: Tag, title: "Release Integration", desc: "Use --zip-group to include groups as release assets, or -Z for ad-hoc items." },
   { icon: Database, title: "Metadata Tracking", desc: "Zip group definitions are recorded in .release/vX.Y.Z.json under zipGroups." },
 ];
@@ -70,7 +82,9 @@ const schema = [
 
 const itemSchema = [
   ["GroupId", "TEXT", "FK → ZipGroups(Id) CASCADE", "Parent group"],
-  ["Path", "TEXT", "NOT NULL", "File or folder path"],
+  ["RepoPath", "TEXT", "NOT NULL", "Working directory at time of add"],
+  ["RelativePath", "TEXT", "NOT NULL", "Path as provided by user"],
+  ["FullPath", "TEXT", "NOT NULL", "Resolved absolute path"],
   ["IsFolder", "INTEGER", "DEFAULT 0", "1 = folder, 0 = file"],
 ];
 
@@ -85,7 +99,8 @@ const ZipGroupPage = () => (
     <h1 className="text-3xl font-mono font-bold mb-2">Zip Groups</h1>
     <p className="text-muted-foreground mb-6">
       Define named collections of files and folders that are automatically compressed
-      into ZIP archives during a release.
+      into ZIP archives during a release. Supports one-step creation with paths and
+      automatic file/folder detection.
     </p>
 
     <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
@@ -93,7 +108,7 @@ const ZipGroupPage = () => (
     <ShowPreview />
 
     <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
-    <div className="grid md:grid-cols-2 gap-4 mb-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
           <f.icon className="h-5 w-5 text-primary mb-2" />
@@ -103,11 +118,33 @@ const ZipGroupPage = () => (
       ))}
     </div>
 
+    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Path Resolution</h2>
+    <div className="rounded-lg border border-border bg-card p-4 mb-8">
+      <p className="text-sm text-muted-foreground mb-3">
+        When you provide a path, gitmap resolves it into three components:
+      </p>
+      <div className="grid md:grid-cols-3 gap-3">
+        <div className="rounded border border-border p-3">
+          <h4 className="font-mono text-xs font-semibold text-primary mb-1">Repo Path</h4>
+          <p className="text-xs text-muted-foreground">Current working directory (CWD)</p>
+        </div>
+        <div className="rounded border border-border p-3">
+          <h4 className="font-mono text-xs font-semibold text-primary mb-1">Relative Path</h4>
+          <p className="text-xs text-muted-foreground">The path you provided as-is</p>
+        </div>
+        <div className="rounded border border-border p-3">
+          <h4 className="font-mono text-xs font-semibold text-primary mb-1">Full Path</h4>
+          <p className="text-xs text-muted-foreground">CWD + relative path, resolved</p>
+        </div>
+      </div>
+    </div>
+
     <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Subcommands</h2>
-    <CodeBlock code="gitmap z create docs-bundle" title="Create a zip group" />
+    <CodeBlock code={`gitmap z create "chrome extension" chrome-extension/dist`} title="Create group with path (one step)" />
+    <CodeBlock code="gitmap z create docs-bundle" title="Create empty group" />
     <CodeBlock code="gitmap z add docs-bundle ./README.md ./CHANGELOG.md ./docs/" title="Add items to a group" />
     <CodeBlock code="gitmap z create extras --archive extra-files.zip" title="Create with custom archive name" />
-    <CodeBlock code="gitmap z show docs-bundle" title="Show group contents" />
+    <CodeBlock code={`gitmap z show "chrome extension"`} title="Show group contents (folders expanded)" />
     <CodeBlock code="gitmap z list" title="List all zip groups" />
     <CodeBlock code="gitmap z rename docs-bundle --archive release-docs.zip" title="Set custom archive name" />
     <CodeBlock code="gitmap z remove docs-bundle ./CHANGELOG.md" title="Remove an item from a group" />
@@ -142,15 +179,15 @@ const ZipGroupPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Ad-Hoc Bundling</h2>
+    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Storage</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       <div className="rounded-lg border border-border bg-card p-4">
-        <h3 className="font-mono font-semibold text-sm mb-1 text-primary">Without --bundle</h3>
-        <p className="text-xs text-muted-foreground">Each <code className="text-primary">-Z</code> item is zipped individually into its own archive.</p>
+        <h3 className="font-mono font-semibold text-sm mb-1 text-primary">SQLite Database</h3>
+        <p className="text-xs text-muted-foreground">Primary storage with full metadata, path resolution, and item tracking.</p>
       </div>
       <div className="rounded-lg border border-border bg-card p-4">
-        <h3 className="font-mono font-semibold text-sm mb-1 text-primary">With --bundle name.zip</h3>
-        <p className="text-xs text-muted-foreground">All <code className="text-primary">-Z</code> items are bundled into a single named archive.</p>
+        <h3 className="font-mono font-semibold text-sm mb-1 text-primary">.gitmap/zip-groups.json</h3>
+        <p className="text-xs text-muted-foreground">JSON mirror synced on every mutation for version control.</p>
       </div>
     </div>
 
@@ -166,10 +203,10 @@ const ZipGroupPage = () => (
           </tr>
         </thead>
         <tbody>
-          {schema.map(([col, type, constraints, notes]) => (
+          {schema.map(([col, type_, constraints, notes]) => (
             <tr key={col} className="border-t border-border">
               <td className="px-4 py-2 font-mono text-primary">{col}</td>
-              <td className="px-4 py-2 font-mono text-muted-foreground">{type}</td>
+              <td className="px-4 py-2 font-mono text-muted-foreground">{type_}</td>
               <td className="px-4 py-2 text-muted-foreground">{constraints}</td>
               <td className="px-4 py-2 text-muted-foreground">{notes}</td>
             </tr>
@@ -190,10 +227,10 @@ const ZipGroupPage = () => (
           </tr>
         </thead>
         <tbody>
-          {itemSchema.map(([col, type, constraints, notes]) => (
+          {itemSchema.map(([col, type_, constraints, notes]) => (
             <tr key={col} className="border-t border-border">
               <td className="px-4 py-2 font-mono text-primary">{col}</td>
-              <td className="px-4 py-2 font-mono text-muted-foreground">{type}</td>
+              <td className="px-4 py-2 font-mono text-muted-foreground">{type_}</td>
               <td className="px-4 py-2 text-muted-foreground">{constraints}</td>
               <td className="px-4 py-2 text-muted-foreground">{notes}</td>
             </tr>
@@ -214,9 +251,11 @@ const ZipGroupPage = () => (
         <tbody>
           {[
             ["cmd/zipgroup.go", "Subcommand dispatch"],
-            ["cmd/zipgroupops.go", "Subcommand implementation"],
+            ["cmd/zipgroupcreate.go", "Create command with path resolution"],
+            ["cmd/zipgroupops.go", "List, show, delete, remove, rename"],
             ["release/ziparchive.go", "ZIP creation with max compression"],
             ["store/zipgroup.go", "Database CRUD for ZipGroups/ZipGroupItems"],
+            ["store/zipgroupjson.go", "JSON persistence to .gitmap/zip-groups.json"],
             ["model/zipgroup.go", "Data structs"],
             ["constants/constants_zipgroup.go", "Messages, SQL, flag descriptions"],
             ["helptext/zip-group.md", "Command help"],

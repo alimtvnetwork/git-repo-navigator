@@ -147,6 +147,7 @@ func pathsToItems(paths []string) []model.ZipGroupItem {
 		}
 
 		items = append(items, model.ZipGroupItem{
+			FullPath: p,
 			Path:     p,
 			IsFolder: info.IsDir(),
 		})
@@ -172,10 +173,15 @@ func createMaxCompressZip(archivePath string, items []model.ZipGroupItem) error 
 	})
 
 	for _, item := range items {
+		itemPath := item.FullPath
+		if len(itemPath) == 0 {
+			itemPath = item.Path
+		}
+
 		if item.IsFolder {
-			err = addFolderToZip(w, item.Path)
+			err = addFolderToZip(w, itemPath)
 		} else {
-			err = addSingleFileToZip(w, item.Path, filepath.Base(item.Path))
+			err = addSingleFileToZip(w, itemPath, filepath.Base(itemPath))
 		}
 
 		if err != nil {
@@ -253,7 +259,10 @@ func DryRunZipGroups(db *store.DB, groupNames []string) {
 
 		paths := make([]string, len(items))
 		for i, item := range items {
-			paths[i] = item.Path
+			paths[i] = item.FullPath
+			if len(paths[i]) == 0 {
+				paths[i] = item.Path
+			}
 		}
 
 		group, _ := db.FindZipGroupByName(name)

@@ -27,13 +27,24 @@ const SQLCreateZipGroups = `CREATE TABLE IF NOT EXISTS ZipGroups (
 	CreatedAt   TEXT DEFAULT CURRENT_TIMESTAMP
 )`
 
-// SQL: create ZipGroupItems table.
+// SQL: create ZipGroupItems table (v2 with path fields).
 const SQLCreateZipGroupItems = `CREATE TABLE IF NOT EXISTS ZipGroupItems (
-	GroupId  TEXT NOT NULL REFERENCES ZipGroups(Id) ON DELETE CASCADE,
-	Path     TEXT NOT NULL,
-	IsFolder INTEGER DEFAULT 0,
-	PRIMARY KEY (GroupId, Path)
+	GroupId      TEXT NOT NULL REFERENCES ZipGroups(Id) ON DELETE CASCADE,
+	RepoPath     TEXT NOT NULL DEFAULT '',
+	RelativePath TEXT NOT NULL DEFAULT '',
+	FullPath     TEXT NOT NULL DEFAULT '',
+	IsFolder     INTEGER DEFAULT 0,
+	PRIMARY KEY (GroupId, FullPath)
 )`
+
+// SQL: migrate ZipGroupItems from v1 (Path column) to v2 (path fields).
+const (
+	SQLMigrateZGIRepoPath     = `ALTER TABLE ZipGroupItems ADD COLUMN RepoPath TEXT NOT NULL DEFAULT ''`
+	SQLMigrateZGIRelativePath = `ALTER TABLE ZipGroupItems ADD COLUMN RelativePath TEXT NOT NULL DEFAULT ''`
+	SQLMigrateZGIFullPath     = `ALTER TABLE ZipGroupItems ADD COLUMN FullPath TEXT NOT NULL DEFAULT ''`
+	SQLMigrateZGICopyPath     = `UPDATE ZipGroupItems SET FullPath = Path WHERE FullPath = '' AND Path IS NOT NULL AND Path != ''`
+	SQLMigrateZGIDropPath     = `ALTER TABLE ZipGroupItems DROP COLUMN Path`
+)
 
 // SQL: zip group operations.
 const (
@@ -50,11 +61,11 @@ const (
 
 // SQL: zip group item operations.
 const (
-	SQLInsertZipGroupItem = `INSERT OR IGNORE INTO ZipGroupItems (GroupId, Path, IsFolder) VALUES (?, ?, ?)`
+	SQLInsertZipGroupItem = `INSERT OR IGNORE INTO ZipGroupItems (GroupId, RepoPath, RelativePath, FullPath, IsFolder) VALUES (?, ?, ?, ?, ?)`
 
-	SQLDeleteZipGroupItem = `DELETE FROM ZipGroupItems WHERE GroupId = ? AND Path = ?`
+	SQLDeleteZipGroupItem = `DELETE FROM ZipGroupItems WHERE GroupId = ? AND FullPath = ?`
 
-	SQLSelectZipGroupItems = `SELECT GroupId, Path, IsFolder FROM ZipGroupItems WHERE GroupId = ? ORDER BY Path`
+	SQLSelectZipGroupItems = `SELECT GroupId, RepoPath, RelativePath, FullPath, IsFolder FROM ZipGroupItems WHERE GroupId = ? ORDER BY FullPath`
 
 	SQLCountZipGroupItems = `SELECT COUNT(*) FROM ZipGroupItems WHERE GroupId = ?`
 
@@ -77,11 +88,18 @@ const (
 	FlagDescZGBundle   = "Bundle all -Z items into a single named archive"
 )
 
+// Zip group JSON persistence directory/file.
+const (
+	ZGJSONDir  = ".gitmap"
+	ZGJSONFile = "zip-groups.json"
+)
+
 // Zip group messages.
 const (
 	MsgZGCreated      = "  ✓ Created zip group %q\n"
+	MsgZGCreatedPath  = "  ✓ Created zip group %q with %s %s\n"
 	MsgZGDeleted      = "  ✓ Deleted zip group %q\n"
-	MsgZGItemAdded    = "  ✓ Added %s to %q\n"
+	MsgZGItemAdded    = "  ✓ Added %s to %q (%s)\n"
 	MsgZGItemRemoved  = "  ✓ Removed %s from %q\n"
 	MsgZGArchiveSet   = "  ✓ Archive name set to %q for group %q\n"
 	MsgZGListHeader   = "\n  Zip Groups (%d):\n\n"
@@ -90,11 +108,17 @@ const (
 	MsgZGShowFile     = "    📄 %s\n"
 	MsgZGShowFolder   = "    📁 %s\n"
 	MsgZGShowArchive  = "  Archive: %s\n"
+	MsgZGShowPaths    = "    repo:     %s\n    relative: %s\n    full:     %s\n"
 	MsgZGCompressed   = "  ✓ Compressed %s → %s\n"
 	MsgZGDryRunHeader = "  [dry-run] Would create %d zip archive(s):\n"
 	MsgZGDryRunEntry  = "    → %s (%d items: %s)\n"
 	MsgZGSkipEmpty    = "  ⚠ Skipping empty group %q\n"
 	MsgZGSkipMissing  = "  ⚠ Skipping missing item: %s\n"
+	MsgZGTypeFolder   = "folder"
+	MsgZGTypeFile     = "file"
+	MsgZGJSONWritten  = "  ✓ Saved %s\n"
+	MsgZGShowExpanded = "    Contents (%d files):\n"
+	MsgZGShowExpFile  = "      %s\n"
 )
 
 // Zip group error messages.
@@ -108,4 +132,6 @@ const (
 	ErrZGRemoveItem  = "failed to remove item from zip group: %v"
 	ErrZGCompress    = "  ✗ Failed to create archive for %s: %v\n"
 	ErrZGGroupNotDB  = "zip group %q not found in database"
+	ErrZGPathResolve = "cannot resolve path %q: %v"
+	ErrZGJSONWrite   = "failed to write zip-groups.json: %v"
 )
