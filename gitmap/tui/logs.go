@@ -152,7 +152,7 @@ func (m logsModel) viewList() string {
 	var b strings.Builder
 
 	if m.searching {
-		b.WriteString(styleSearchInput.Render(constants.TUISearchPrompt + m.query + "█"))
+		b.WriteString(styleSearch.Render(constants.TUISearchPrompt + m.query + "█"))
 		b.WriteString("\n")
 	} else if len(m.query) > 0 {
 		b.WriteString(styleHint.Render(fmt.Sprintf(constants.TUILogFilterActive, m.query, len(m.filtered))))
