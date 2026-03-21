@@ -31,6 +31,7 @@ const (
 	TUIViewReleases  = "Releases"
 	TUIViewZipGroups = "Zip Groups"
 	TUIViewAliases   = "Aliases"
+	TUIViewLogs      = "Logs"
 )
 
 // TUI status messages.
