@@ -7,6 +7,7 @@ import {
   Monitor,
   Hammer,
   GitBranch,
+  GitCommit,
   Tag,
   Sun,
   Moon,
