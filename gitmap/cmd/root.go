@@ -336,6 +336,11 @@ func dispatchMisc(command string) bool {
 
 		return true
 	}
+	if command == constants.CmdPrune || command == constants.CmdPruneAlias {
+		runPrune(os.Args[2:])
+
+		return true
+	}
 
 	return false
 }
