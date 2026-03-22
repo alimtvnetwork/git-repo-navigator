@@ -1,0 +1,55 @@
+package cmd
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/user/gitmap/constants"
+)
+
+// runSSHDelete removes an SSH key record and optionally its files.
+func runSSHDelete(args []string) {
+	name := flagValue(args, constants.FlagSSHName, constants.FlagSSHNameS, "")
+	if len(name) == 0 && len(args) > 0 && !strings.HasPrefix(args[0], "-") {
+		name = args[0]
+	}
+	if len(name) == 0 {
+		fmt.Fprintln(os.Stderr, constants.ErrSSHNameEmpty)
+		os.Exit(1)
+	}
+
+	deleteFiles := hasAnyFlag(args, constants.FlagSSHFiles)
+
+	db := openDB()
+	defer db.Close()
+
+	key, err := db.FindSSHKeyByName(name)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHNotFound, name)
+		os.Exit(1)
+	}
+
+	fmt.Fprintf(os.Stdout, constants.MsgSSHDeleteConfirm, name)
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+
+	if strings.TrimSpace(strings.ToLower(input)) != "y" {
+		return
+	}
+
+	if err := db.DeleteSSHKey(name); err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHDelete, err)
+		os.Exit(1)
+	}
+
+	fmt.Fprintf(os.Stdout, constants.MsgSSHDeleted, name)
+
+	if deleteFiles {
+		removeKeyFiles(key.PrivatePath)
+		fmt.Fprint(os.Stdout, constants.MsgSSHDeletedFiles)
+	}
+
+	updateSSHConfig(db)
+}
