@@ -55,17 +55,26 @@ const (
 
 // SSH key generation flags.
 const (
-	FlagSSHName  = "--name"
-	FlagSSHNameS = "-n"
-	FlagSSHPath  = "--path"
-	FlagSSHPathS = "-p"
-	FlagSSHEmail = "--email"
-	FlagSSHEmailS = "-e"
-	FlagSSHForce = "--force"
-	FlagSSHForceS = "-f"
-	FlagSSHFiles = "--files"
-	FlagSSHKey   = "--ssh-key"
-	FlagSSHKeyS  = "-K"
+	FlagSSHName    = "--name"
+	FlagSSHNameS   = "-n"
+	FlagSSHPath    = "--path"
+	FlagSSHPathS   = "-p"
+	FlagSSHEmail   = "--email"
+	FlagSSHEmailS  = "-e"
+	FlagSSHForce   = "--force"
+	FlagSSHForceS  = "-f"
+	FlagSSHFiles   = "--files"
+	FlagSSHKey     = "--ssh-key"
+	FlagSSHKeyS    = "-K"
+	FlagSSHHost    = "--host"
+	FlagSSHHostS   = "-H"
+	FlagSSHJSON    = "--json"
+	FlagSSHConfirm = "--confirm"
+)
+
+// SSH defaults.
+const (
+	DefaultSSHHost = "github.com"
 )
 
 // SSH config markers.
