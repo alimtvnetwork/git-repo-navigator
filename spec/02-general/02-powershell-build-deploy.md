@@ -301,7 +301,7 @@ The parenthetical suffix indicates which source resolved the version:
 **`run.ps1`** — called after the final "All done!" message:
 
 ```powershell
-$lastReleaseScript = Join-Path $RepoRoot "scripts" "Get-LastRelease.ps1"
+$lastReleaseScript = Join-Path (Join-Path $RepoRoot "scripts") "Get-LastRelease.ps1"
 if (Test-Path $lastReleaseScript) {
     & $lastReleaseScript -BinaryPath $binaryPath -RepoRoot $RepoRoot
 }
