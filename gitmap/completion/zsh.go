@@ -80,6 +80,15 @@ _gitmap() {
                 _describe 'subcommand' subs
             fi
             ;;
+        ssh)
+            if [[ "${words[CURRENT-1]}" == "--name" || "${words[CURRENT-1]}" == "-n" ]]; then
+                local -a sshkeys=($(gitmap completion --list-ssh-keys))
+                _describe 'ssh-key' sshkeys
+            else
+                local -a subs=(cat list ls delete rm config --name --path --email --force)
+                _describe 'subcommand' subs
+            fi
+            ;;
         *)
             if [[ "${words[CURRENT-1]}" == "-A" || "${words[CURRENT-1]}" == "--alias" ]]; then
                 local -a aliases=($(gitmap completion --list-aliases))
@@ -87,6 +96,9 @@ _gitmap() {
             elif [[ "${words[CURRENT-1]}" == "--zip-group" ]]; then
                 local -a zgroups=($(gitmap completion --list-zip-groups))
                 _describe 'zip-group' zgroups
+            elif [[ "${words[CURRENT-1]}" == "--ssh-key" || "${words[CURRENT-1]}" == "-K" ]]; then
+                local -a sshkeys=($(gitmap completion --list-ssh-keys))
+                _describe 'ssh-key' sshkeys
             fi
             ;;
     esac

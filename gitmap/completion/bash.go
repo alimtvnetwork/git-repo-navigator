@@ -59,11 +59,20 @@ func generateBash() string {
                 COMPREPLY=($(compgen -W "create add remove list show delete rename $(gitmap completion --list-zip-groups)" -- "$cur"))
             fi
             ;;
+        ssh)
+            if [[ "$prev" == "--name" || "$prev" == "-n" ]]; then
+                COMPREPLY=($(compgen -W "$(gitmap completion --list-ssh-keys)" -- "$cur"))
+            else
+                COMPREPLY=($(compgen -W "cat list ls delete rm config --name --path --email --force" -- "$cur"))
+            fi
+            ;;
         *)
             if [[ "$prev" == "-A" || "$prev" == "--alias" ]]; then
                 COMPREPLY=($(compgen -W "$(gitmap completion --list-aliases)" -- "$cur"))
             elif [[ "$prev" == "--zip-group" ]]; then
                 COMPREPLY=($(compgen -W "$(gitmap completion --list-zip-groups)" -- "$cur"))
+            elif [[ "$prev" == "--ssh-key" || "$prev" == "-K" ]]; then
+                COMPREPLY=($(compgen -W "$(gitmap completion --list-ssh-keys)" -- "$cur"))
             fi
             ;;
     esac

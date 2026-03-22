@@ -31,7 +31,7 @@ func hasListFlag(args []string) bool {
 	for _, a := range args {
 		if a == constants.CompListRepos || a == constants.CompListGroups ||
 			a == constants.CompListCommands || a == constants.CompListAliases ||
-			a == constants.CompListZipGroups {
+			a == constants.CompListZipGroups || a == constants.CompListSSHKeys {
 			return true
 		}
 	}
@@ -61,6 +61,10 @@ func handleCompletionList(args []string) {
 			return
 		case constants.CompListZipGroups:
 			printCompletionZipGroups()
+
+			return
+		case constants.CompListSSHKeys:
+			printCompletionSSHKeys()
 
 			return
 		}
@@ -143,6 +147,24 @@ func printCompletionZipGroups() {
 
 	for _, g := range groups {
 		fmt.Println(g.Name)
+	}
+}
+
+// printCompletionSSHKeys prints all SSH key names, one per line.
+func printCompletionSSHKeys() {
+	db, err := openDB()
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	names, err := db.SSHKeyNames()
+	if err != nil {
+		return
+	}
+
+	for _, n := range names {
+		fmt.Println(n)
 	}
 }
 
