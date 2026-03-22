@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/user/gitmap/gitutil"
 	"github.com/user/gitmap/helptext"
 )
 
@@ -14,4 +15,14 @@ func checkHelp(command string, args []string) {
 			os.Exit(0)
 		}
 	}
+}
+
+// requireOnline checks network connectivity and exits if offline.
+func requireOnline() {
+	if gitutil.IsOnline() {
+		return
+	}
+
+	gitutil.PrintOfflineWarning()
+	os.Exit(1)
 }
