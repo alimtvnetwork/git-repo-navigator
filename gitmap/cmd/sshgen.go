@@ -15,7 +15,7 @@ import (
 
 // runSSHGenerate generates a new SSH key pair.
 func runSSHGenerate(args []string) {
-	name, keyPath, email, force := parseSSHGenFlags(args)
+	name, keyPath, email, force, host, confirm := parseSSHGenFlags(args)
 
 	if err := validateSSHKeygen(); err != nil {
 		fmt.Fprint(os.Stderr, constants.ErrSSHKeygenMissing)
@@ -32,6 +32,17 @@ func runSSHGenerate(args []string) {
 
 	keyPath = expandHome(keyPath)
 
+	if confirm {
+		fmt.Fprintf(os.Stdout, constants.MsgSSHConfirmPrompt, name, keyPath)
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+		if strings.TrimSpace(strings.ToLower(input)) != "y" {
+			fmt.Fprint(os.Stdout, constants.MsgSSHCancelled)
+
+			return
+		}
+	}
+
 	db, err := openDB()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHCreate, err)
@@ -45,7 +56,7 @@ func runSSHGenerate(args []string) {
 		}
 	}
 
-	generateAndStore(db, name, keyPath, email)
+	generateAndStore(db, name, keyPath, email, host)
 }
 
 // parseSSHGenFlags parses flags for SSH key generation.
