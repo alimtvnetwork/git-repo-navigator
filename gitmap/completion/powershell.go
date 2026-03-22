@@ -99,6 +99,20 @@ func generatePowerShell() string {
         return
     }
 
+    if ($cmd -eq "ssh") {
+        if ($sub -eq "cat" -or $sub -eq "delete" -or $sub -eq "rm") {
+            if ($prev -eq "--name" -or $prev -eq "-n") {
+                gitmap completion --list-ssh-keys | Where-Object { $_ -like "$wordToComplete*" } |
+                    ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
+                return
+            }
+        }
+        $subs = @("cat", "list", "ls", "delete", "rm", "config", "--name", "--path", "--email", "--force")
+        $subs | Where-Object { $_ -like "$wordToComplete*" } |
+            ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
+        return
+    }
+
     if ($prev -eq "-A" -or $prev -eq "--alias") {
         gitmap completion --list-aliases | Where-Object { $_ -like "$wordToComplete*" } |
             ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
@@ -107,6 +121,12 @@ func generatePowerShell() string {
 
     if ($prev -eq "--zip-group") {
         gitmap completion --list-zip-groups | Where-Object { $_ -like "$wordToComplete*" } |
+            ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
+        return
+    }
+
+    if ($prev -eq "--ssh-key" -or $prev -eq "-K") {
+        gitmap completion --list-ssh-keys | Where-Object { $_ -like "$wordToComplete*" } |
             ForEach-Object { [System.Management.Automation.CompletionResult]::new($_) }
         return
     }
