@@ -35,6 +35,10 @@ func runDoctorChecks() int {
 	issues += checkGit()
 	issues += checkGo()
 	issues += checkChangelogFile()
+	issues += checkConfigFile()
+	issues += checkDatabase()
+	issues += checkLockFile()
+	issues += checkNetwork()
 
 	return issues
 }
