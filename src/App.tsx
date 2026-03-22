@@ -32,6 +32,7 @@ import DiffProfilesPage from "./pages/DiffProfiles";
 import NotFound from "./pages/NotFound";
 import ZipGroupPage from "./pages/ZipGroup";
 import AliasPage from "./pages/Alias";
+import SSHPage from "./pages/SSH";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const App = () => (
           <Route path="/diff-profiles" element={<DiffProfilesPage />} />
           <Route path="/zip-group" element={<ZipGroupPage />} />
           <Route path="/alias" element={<AliasPage />} />
+          <Route path="/ssh" element={<SSHPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
