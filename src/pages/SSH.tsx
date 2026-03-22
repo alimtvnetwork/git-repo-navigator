@@ -1,6 +1,6 @@
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
-import { Key, Terminal, Shield, FolderGit2, Settings } from "lucide-react";
+import { KeyRound, Terminal, Shield, FolderGit2, Settings } from "lucide-react";
 
 const MOCK_KEYS = [
   { name: "default", path: "~/.ssh/id_rsa", fingerprint: "SHA256:abc123...", created: "2026-03-22" },
