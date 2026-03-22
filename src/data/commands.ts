@@ -904,7 +904,7 @@ export const commands: CommandDef[] = [
   },
   {
     category: "release",
-    name: "prune", aliases: ["pr"], description: "Delete stale release branches that have been tagged",
+    name: "prune", alias: "pr", description: "Delete stale release branches that have been tagged",
     usage: "gitmap prune [flags]",
     flags: [
       { flag: "--dry-run", description: "List stale branches without deleting" },
