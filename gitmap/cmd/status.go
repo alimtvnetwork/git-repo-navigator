@@ -148,6 +148,20 @@ func printStatusTable(records []model.ScanRecord) statusSummary {
 	return s
 }
 
+// printStatusTableTracked prints each repo's status with batch progress tracking.
+func printStatusTableTracked(records []model.ScanRecord, prog *cloner.BatchProgress) statusSummary {
+	s := statusSummary{Total: len(records)}
+	printStatusHeader()
+
+	for _, rec := range records {
+		prog.BeginItem(rec.RepoName)
+		printOneStatus(rec, &s)
+		prog.Succeed()
+	}
+
+	return s
+}
+
 // printStatusHeader prints the table column header row.
 func printStatusHeader() {
 	fmt.Printf(constants.StatusHeaderFmt,
