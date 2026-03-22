@@ -60,7 +60,7 @@ func runSSHGenerate(args []string) {
 }
 
 // parseSSHGenFlags parses flags for SSH key generation.
-func parseSSHGenFlags(args []string) (name, keyPath, email string, force bool) {
+func parseSSHGenFlags(args []string) (name, keyPath, email string, force bool, host string, confirm bool) {
 	fs := flag.NewFlagSet(constants.CmdSSH, flag.ExitOnError)
 	nameFlag := fs.String("name", constants.DefaultSSHKeyName, "Key label")
 	fs.StringVar(nameFlag, "n", constants.DefaultSSHKeyName, "Key label (short)")
@@ -70,6 +70,9 @@ func parseSSHGenFlags(args []string) (name, keyPath, email string, force bool) {
 	fs.StringVar(emailFlag, "e", "", "Email comment (short)")
 	forceFlag := fs.Bool("force", false, "Skip prompt if key exists")
 	fs.BoolVar(forceFlag, "f", false, "Skip prompt (short)")
+	hostFlag := fs.String("host", constants.DefaultSSHHost, "Git provider hostname")
+	fs.StringVar(hostFlag, "H", constants.DefaultSSHHost, "Git provider hostname (short)")
+	confirmFlag := fs.Bool("confirm", false, "Require explicit confirmation")
 	fs.Parse(args)
 
 	path := *pathFlag
@@ -77,7 +80,7 @@ func parseSSHGenFlags(args []string) (name, keyPath, email string, force bool) {
 		path = defaultSSHKeyPath(*nameFlag)
 	}
 
-	return *nameFlag, path, *emailFlag, *forceFlag
+	return *nameFlag, path, *emailFlag, *forceFlag, *hostFlag, *confirmFlag
 }
 
 // handleExistingKey prompts the user when a key already exists.
