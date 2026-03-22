@@ -72,6 +72,10 @@ func (m releasesModel) handleKey(msg tea.KeyMsg) releasesModel {
 }
 
 func (m releasesModel) View() string {
+	if m.trigger.active {
+		return m.trigger.View()
+	}
+
 	if len(m.releases) == 0 {
 		return styleHint.Render(constants.TUIRelEmpty)
 	}
