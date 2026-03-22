@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/user/gitmap/cloner"
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
@@ -19,7 +20,8 @@ func runStatus(args []string) {
 	records := loadStatusByScope(groupName, all)
 
 	printStatusBanner(len(records))
-	summary := printStatusTable(records)
+	prog := cloner.NewBatchProgress(len(records), "Status", true)
+	summary := printStatusTableTracked(records, prog)
 	printStatusSummary(summary)
 }
 

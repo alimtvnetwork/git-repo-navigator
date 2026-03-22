@@ -169,6 +169,22 @@ func pullOneRepo(rec model.ScanRecord) {
 	}
 }
 
+// pullOneRepoTracked runs safe-pull with progress tracking.
+func pullOneRepoTracked(rec model.ScanRecord, prog *cloner.BatchProgress) {
+	if cloner.IsMissingRepo(rec.AbsolutePath) {
+		prog.Skip()
+
+		return
+	}
+
+	result := cloner.SafePullOne(rec, rec.AbsolutePath)
+	if result.Success {
+		prog.Succeed()
+	} else {
+		prog.Fail()
+	}
+}
+
 // listAvailableRepos prints all available repo names for the user.
 func listAvailableRepos(records []model.ScanRecord) {
 	fmt.Fprintln(os.Stderr, constants.MsgPullAvailable)
