@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -11,22 +12,27 @@ import (
 
 // runSSHDelete removes an SSH key record and optionally its files.
 func runSSHDelete(args []string) {
-	name := flagValue(args, constants.FlagSSHName, constants.FlagSSHNameS, "")
-	if len(name) == 0 && len(args) > 0 && !strings.HasPrefix(args[0], "-") {
-		name = args[0]
+	fs := flag.NewFlagSet("ssh-delete", flag.ExitOnError)
+	nameFlag := fs.String("name", "", "Key name")
+	fs.StringVar(nameFlag, "n", "", "Key name (short)")
+	filesFlag := fs.Bool("files", false, "Also delete key files from disk")
+	fs.Parse(args)
+
+	name := *nameFlag
+	if len(name) == 0 && fs.NArg() > 0 {
+		name = fs.Arg(0)
 	}
 	if len(name) == 0 {
 		fmt.Fprintln(os.Stderr, constants.ErrSSHNameEmpty)
 		os.Exit(1)
 	}
 
-	deleteFiles := hasAnyFlag(args, constants.FlagSSHFiles)
-
 	db, err := openDB()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHQuery, err)
 		os.Exit(1)
 	}
+	defer db.Close()
 
 	key, err := db.FindSSHKeyByName(name)
 	if err != nil {
@@ -49,7 +55,7 @@ func runSSHDelete(args []string) {
 
 	fmt.Fprintf(os.Stdout, constants.MsgSSHDeleted, name)
 
-	if deleteFiles {
+	if *filesFlag {
 		removeKeyFiles(key.PrivatePath)
 		fmt.Fprint(os.Stdout, constants.MsgSSHDeletedFiles)
 	}

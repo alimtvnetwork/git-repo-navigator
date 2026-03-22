@@ -17,6 +17,7 @@ func runSSHConfig() {
 
 		return
 	}
+	defer db.Close()
 
 	updateSSHConfig(db)
 
@@ -39,7 +40,7 @@ func updateSSHConfig(db *store.DB) {
 	block := buildManagedBlock(db)
 	updated := replaceManagedBlock(existing, block)
 
-	if err := ensureDir(sshDir()); err != nil {
+	if err := ensureSSHDir(sshDir()); err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHConfig, err)
 
 		return

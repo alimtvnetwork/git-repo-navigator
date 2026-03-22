@@ -14,6 +14,7 @@ func runSSHList() {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHQuery, err)
 		os.Exit(1)
 	}
+	defer db.Close()
 
 	keys, err := db.ListSSHKeys()
 	if err != nil {

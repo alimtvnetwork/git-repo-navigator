@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -14,10 +15,7 @@ import (
 
 // runSSHGenerate generates a new SSH key pair.
 func runSSHGenerate(args []string) {
-	name := flagValue(args, constants.FlagSSHName, constants.FlagSSHNameS, constants.DefaultSSHKeyName)
-	keyPath := flagValue(args, constants.FlagSSHPath, constants.FlagSSHPathS, defaultSSHKeyPath(name))
-	email := flagValue(args, constants.FlagSSHEmail, constants.FlagSSHEmailS, "")
-	force := hasAnyFlag(args, constants.FlagSSHForce, constants.FlagSSHForceS)
+	name, keyPath, email, force := parseSSHGenFlags(args)
 
 	if err := validateSSHKeygen(); err != nil {
 		fmt.Fprint(os.Stderr, constants.ErrSSHKeygenMissing)
@@ -39,6 +37,7 @@ func runSSHGenerate(args []string) {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHCreate, err)
 		os.Exit(1)
 	}
+	defer db.Close()
 
 	if db.SSHKeyExists(name) && !force {
 		if !handleExistingKey(db, name, &keyPath) {
@@ -49,9 +48,29 @@ func runSSHGenerate(args []string) {
 	generateAndStore(db, name, keyPath, email)
 }
 
+// parseSSHGenFlags parses flags for SSH key generation.
+func parseSSHGenFlags(args []string) (name, keyPath, email string, force bool) {
+	fs := flag.NewFlagSet(constants.CmdSSH, flag.ExitOnError)
+	nameFlag := fs.String("name", constants.DefaultSSHKeyName, "Key label")
+	fs.StringVar(nameFlag, "n", constants.DefaultSSHKeyName, "Key label (short)")
+	pathFlag := fs.String("path", "", "Key file path")
+	fs.StringVar(pathFlag, "p", "", "Key file path (short)")
+	emailFlag := fs.String("email", "", "Email comment")
+	fs.StringVar(emailFlag, "e", "", "Email comment (short)")
+	forceFlag := fs.Bool("force", false, "Skip prompt if key exists")
+	fs.BoolVar(forceFlag, "f", false, "Skip prompt (short)")
+	fs.Parse(args)
+
+	path := *pathFlag
+	if len(path) == 0 {
+		path = defaultSSHKeyPath(*nameFlag)
+	}
+
+	return *nameFlag, path, *emailFlag, *forceFlag
+}
+
 // handleExistingKey prompts the user when a key already exists.
 // Returns true if generation should proceed, false to cancel.
-// May update keyPath if user chooses a new path.
 func handleExistingKey(db *store.DB, name string, keyPath *string) bool {
 	existing, _ := db.FindSSHKeyByName(name)
 	fmt.Fprintf(os.Stdout, constants.MsgSSHExists, name, existing.PrivatePath)
@@ -81,7 +100,7 @@ func handleExistingKey(db *store.DB, name string, keyPath *string) bool {
 
 // generateAndStore runs ssh-keygen and stores the result in the database.
 func generateAndStore(db *store.DB, name, keyPath, email string) {
-	if err := ensureDir(filepath.Dir(keyPath)); err != nil {
+	if err := ensureSSHDir(filepath.Dir(keyPath)); err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrSSHKeygen, err)
 		os.Exit(1)
 	}
@@ -182,20 +201,7 @@ func expandHome(path string) string {
 	return path
 }
 
-// ensureDir creates a directory if it doesn't exist.
-func ensureDir(dir string) error {
+// ensureSSHDir creates a directory with 0700 permissions if it doesn't exist.
+func ensureSSHDir(dir string) error {
 	return os.MkdirAll(dir, 0700)
-}
-
-// hasAnyFlag checks if any of the given flag names appear in args.
-func hasAnyFlag(args []string, flags ...string) bool {
-	for _, arg := range args {
-		for _, f := range flags {
-			if arg == f {
-				return true
-			}
-		}
-	}
-
-	return false
 }
