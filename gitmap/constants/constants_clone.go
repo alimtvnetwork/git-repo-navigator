@@ -8,3 +8,13 @@ const (
 	ProgressSummaryFmt = "\nClone complete: %d/%d repos in %s\n"
 	ProgressDetailFmt  = "  Cloned: %d | Pulled: %d | Failed: %d\n"
 )
+
+// Batch progress format strings (generic operations).
+const (
+	BatchProgressBeginFmt   = "[%3d/%d]  %s ..."
+	BatchProgressDoneFmt    = " done (%s)\n"
+	BatchProgressFailFmt    = " FAILED\n"
+	BatchProgressSkipFmt    = " skipped\n"
+	BatchProgressSummaryFmt = "\n%s complete: %d/%d in %s\n"
+	BatchProgressDetailFmt  = "  Succeeded: %d | Failed: %d | Skipped: %d\n"
+)

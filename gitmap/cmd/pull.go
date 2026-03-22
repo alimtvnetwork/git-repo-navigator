@@ -24,9 +24,12 @@ func runPull(args []string) {
 	}
 	records := resolvePullTargets(slug, groupName, all)
 
+	prog := cloner.NewBatchProgress(len(records), "Pull", false)
 	for _, rec := range records {
-		pullOneRepo(rec)
+		prog.BeginItem(rec.RepoName)
+		pullOneRepoTracked(rec, prog)
 	}
+	prog.PrintSummary()
 }
 
 // parsePullFlags parses flags for the pull command.
@@ -163,6 +166,22 @@ func pullOneRepo(rec model.ScanRecord) {
 		fmt.Printf(constants.MsgPullSuccess, rec.RepoName)
 	} else {
 		fmt.Fprintf(os.Stderr, constants.MsgPullFailed, rec.RepoName, result.Error)
+	}
+}
+
+// pullOneRepoTracked runs safe-pull with progress tracking.
+func pullOneRepoTracked(rec model.ScanRecord, prog *cloner.BatchProgress) {
+	if cloner.IsMissingRepo(rec.AbsolutePath) {
+		prog.Skip()
+
+		return
+	}
+
+	result := cloner.SafePullOne(rec, rec.AbsolutePath)
+	if result.Success {
+		prog.Succeed()
+	} else {
+		prog.Fail()
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/user/gitmap/cloner"
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
@@ -24,8 +25,45 @@ func runExec(args []string) {
 
 	records := loadExecByScope(groupName, all)
 	printExecBanner(gitArgs, len(records))
-	succeeded, failed, missing := execAllRepos(records, gitArgs)
+
+	prog := cloner.NewBatchProgress(len(records), "Exec", false)
+	succeeded, failed, missing := execAllReposTracked(records, gitArgs, prog)
+	prog.PrintSummary()
 	printExecSummary(succeeded, failed, missing, len(records))
+}
+
+// execAllReposTracked runs a git command across all repos with progress.
+func execAllReposTracked(records []model.ScanRecord, gitArgs []string, prog *cloner.BatchProgress) (int, int, int) {
+	var succeeded, failed, missing int
+	for _, rec := range records {
+		prog.BeginItem(rec.RepoName)
+		s, f, m := execOneRepoTracked(rec, gitArgs, prog)
+		succeeded += s
+		failed += f
+		missing += m
+	}
+
+	return succeeded, failed, missing
+}
+
+// execOneRepoTracked runs a git command in one repo with progress tracking.
+func execOneRepoTracked(rec model.ScanRecord, gitArgs []string, prog *cloner.BatchProgress) (int, int, int) {
+	_, err := os.Stat(rec.AbsolutePath)
+	if err != nil {
+		prog.Skip()
+
+		return 0, 0, 1
+	}
+
+	if execInRepo(rec, gitArgs) {
+		prog.Succeed()
+
+		return 1, 0, 0
+	}
+
+	prog.Fail()
+
+	return 0, 1, 0
 }
 
 // execAllRepos runs a git command across all repos and returns totals.

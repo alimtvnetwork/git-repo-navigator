@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/user/gitmap/cloner"
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 )
@@ -19,7 +20,8 @@ func runStatus(args []string) {
 	records := loadStatusByScope(groupName, all)
 
 	printStatusBanner(len(records))
-	summary := printStatusTable(records)
+	prog := cloner.NewBatchProgress(len(records), "Status", true)
+	summary := printStatusTableTracked(records, prog)
 	printStatusSummary(summary)
 }
 
@@ -141,6 +143,20 @@ func printStatusTable(records []model.ScanRecord) statusSummary {
 
 	for _, rec := range records {
 		printOneStatus(rec, &s)
+	}
+
+	return s
+}
+
+// printStatusTableTracked prints each repo's status with batch progress tracking.
+func printStatusTableTracked(records []model.ScanRecord, prog *cloner.BatchProgress) statusSummary {
+	s := statusSummary{Total: len(records)}
+	printStatusHeader()
+
+	for _, rec := range records {
+		prog.BeginItem(rec.RepoName)
+		printOneStatus(rec, &s)
+		prog.Succeed()
 	}
 
 	return s
