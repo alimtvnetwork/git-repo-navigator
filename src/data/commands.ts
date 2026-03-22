@@ -902,4 +902,24 @@ export const commands: CommandDef[] = [
       { name: "setup", description: "Configure Git global settings" },
     ],
   },
+  {
+    category: "release",
+    name: "prune", alias: "pr", description: "Delete stale release branches that have been tagged",
+    usage: "gitmap prune [flags]",
+    flags: [
+      { flag: "--dry-run", description: "List stale branches without deleting" },
+      { flag: "--confirm", description: "Skip interactive confirmation prompt" },
+      { flag: "--remote", description: "Also delete remote release branches" },
+    ],
+    examples: [
+      { command: "gitmap prune --dry-run", description: "Preview which branches would be deleted" },
+      { command: "gitmap prune --confirm", description: "Delete stale branches without prompting" },
+      { command: "gitmap prune --confirm --remote", description: "Delete stale branches locally and remotely" },
+    ],
+    seeAlso: [
+      { name: "release", description: "Create release branches and tags" },
+      { name: "clear-release-json", description: "Remove release metadata files" },
+      { name: "list-releases", description: "Show stored releases from database" },
+    ],
+  },
 ];

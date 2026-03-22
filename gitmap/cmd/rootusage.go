@@ -80,6 +80,7 @@ func printUsageCommands() {
 	fmt.Println(constants.HelpClearReleaseJSON)
 	fmt.Println(constants.HelpHasAnyUpdates)
 	fmt.Println(constants.HelpDocs)
+	fmt.Println(constants.HelpPrune)
 	fmt.Println(constants.HelpHelp)
 }
 

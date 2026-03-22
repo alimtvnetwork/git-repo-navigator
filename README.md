@@ -236,6 +236,7 @@ gitmap bookmark run daily
 | `seo-write` | `sw` | Auto-commit SEO messages |
 | `gomod` | `gm` | Rename Go module path across repo |
 | `ssh` | — | Generate and manage SSH keys for Git authentication |
+| `prune` | `pr` | Delete stale release branches that have been tagged |
 
 ```bash
 # Run diagnostics
@@ -251,7 +252,7 @@ gitmap gomod "github.com/neworg/project" --dry-run
 gitmap seo-write --csv data.csv --max-commits 5
 ```
 
-→ Full details: [setup](gitmap/helptext/setup.md) · [doctor](gitmap/helptext/doctor.md) · [update](gitmap/helptext/update.md) · [version](gitmap/helptext/version.md) · [seo-write](gitmap/helptext/seo-write.md) · [gomod](gitmap/helptext/gomod.md) · [ssh](gitmap/helptext/ssh.md)
+→ Full details: [setup](gitmap/helptext/setup.md) · [doctor](gitmap/helptext/doctor.md) · [update](gitmap/helptext/update.md) · [version](gitmap/helptext/version.md) · [seo-write](gitmap/helptext/seo-write.md) · [gomod](gitmap/helptext/gomod.md) · [ssh](gitmap/helptext/ssh.md) · [prune](gitmap/helptext/prune.md)
 
 ---
 

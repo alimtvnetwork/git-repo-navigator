@@ -72,6 +72,7 @@ func AllCommands() []string {
 		"alias", "a",
 		"zip-group", "z",
 		"ssh",
+		"prune", "pr",
 		"help",
 	}
 }
