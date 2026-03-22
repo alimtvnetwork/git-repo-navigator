@@ -311,7 +311,7 @@ if (Test-Path $lastReleaseScript) {
 version lines and the active/deployed match check:
 
 ```powershell
-$lastReleaseScript = Join-Path "<repoPath>" "scripts" "Get-LastRelease.ps1"
+$lastReleaseScript = Join-Path (Join-Path "<repoPath>" "scripts") "Get-LastRelease.ps1"
 if (Test-Path $lastReleaseScript) {
     & $lastReleaseScript -BinaryPath $activeBinary -RepoRoot "<repoPath>"
 }

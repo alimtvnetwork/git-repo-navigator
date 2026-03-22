@@ -274,7 +274,7 @@ if (Test-Path $lastReleaseScript) {
 active/deployed match check:
 
 ```powershell
-$lastReleaseScript = Join-Path "<repoPath>" "gitmap" "scripts" "Get-LastRelease.ps1"
+$lastReleaseScript = Join-Path (Join-Path (Join-Path "<repoPath>" "gitmap") "scripts") "Get-LastRelease.ps1"
 if (Test-Path $lastReleaseScript) {
     & $lastReleaseScript -BinaryPath $activeBinary -RepoRoot "<repoPath>"
 }
