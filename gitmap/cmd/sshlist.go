@@ -9,8 +9,11 @@ import (
 
 // runSSHList displays all stored SSH keys as an aligned table.
 func runSSHList() {
-	db := openDB()
-	defer db.Close()
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHQuery, err)
+		os.Exit(1)
+	}
 
 	keys, err := db.ListSSHKeys()
 	if err != nil {

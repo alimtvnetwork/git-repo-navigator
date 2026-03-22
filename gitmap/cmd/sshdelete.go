@@ -22,8 +22,11 @@ func runSSHDelete(args []string) {
 
 	deleteFiles := hasAnyFlag(args, constants.FlagSSHFiles)
 
-	db := openDB()
-	defer db.Close()
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHQuery, err)
+		os.Exit(1)
+	}
 
 	key, err := db.FindSSHKeyByName(name)
 	if err != nil {

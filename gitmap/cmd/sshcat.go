@@ -12,8 +12,11 @@ import (
 func runSSHCat(args []string) {
 	name := flagValue(args, constants.FlagSSHName, constants.FlagSSHNameS, constants.DefaultSSHKeyName)
 
-	db := openDB()
-	defer db.Close()
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHQuery, err)
+		os.Exit(1)
+	}
 
 	key, err := db.FindSSHKeyByName(name)
 	if err != nil {

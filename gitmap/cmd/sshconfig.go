@@ -11,8 +11,12 @@ import (
 
 // runSSHConfig regenerates and displays the managed SSH config block.
 func runSSHConfig() {
-	db := openDB()
-	defer db.Close()
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHConfig, err)
+
+		return
+	}
 
 	updateSSHConfig(db)
 

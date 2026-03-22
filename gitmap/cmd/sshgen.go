@@ -34,8 +34,11 @@ func runSSHGenerate(args []string) {
 
 	keyPath = expandHome(keyPath)
 
-	db := openDB()
-	defer db.Close()
+	db, err := openDB()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrSSHCreate, err)
+		os.Exit(1)
+	}
 
 	if db.SSHKeyExists(name) && !force {
 		if !handleExistingKey(db, name, &keyPath) {
