@@ -236,6 +236,7 @@ gitmap bookmark run daily
 | `seo-write` | `sw` | Auto-commit SEO messages |
 | `gomod` | `gm` | Rename Go module path across repo |
 | `ssh` | — | Generate and manage SSH keys for Git authentication |
+| `prune` | `pr` | Delete stale release branches that have been tagged |
 
 ```bash
 # Run diagnostics
