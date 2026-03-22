@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/gitutil"
 	"github.com/user/gitmap/verbose"
 )
 
