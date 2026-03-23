@@ -10,7 +10,7 @@ import (
 
 // runSSHList displays all stored SSH keys as an aligned table or JSON.
 func runSSHList(args ...string) {
-	jsonOut := hasFlag(args, constants.FlagSSHJSON)
+	jsonOut := hasFlagInArgs(args, constants.FlagSSHJSON)
 
 	db, err := openDB()
 	if err != nil {
