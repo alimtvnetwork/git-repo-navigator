@@ -65,8 +65,8 @@ func printSSHListJSON(keys interface{}) {
 	fmt.Println(string(data))
 }
 
-// hasFlag checks if a flag is present in the args.
-func hasFlag(args []string, flag string) bool {
+// hasFlagInArgs checks if a flag is present in the given args slice.
+func hasFlagInArgs(args []string, flag string) bool {
 	for _, a := range args {
 		if a == flag {
 			return true
