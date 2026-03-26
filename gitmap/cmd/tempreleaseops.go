@@ -222,8 +222,8 @@ func printTRList(releases []model.TempRelease) {
 	}
 }
 
-// hasListFlag checks if a flag is present in the args.
-func hasListFlag(args []string, flag string) bool {
+// hasTRListFlag checks if a flag is present in the args.
+func hasTRListFlag(args []string, flag string) bool {
 	for _, a := range args {
 		if a == flag {
 			return true
