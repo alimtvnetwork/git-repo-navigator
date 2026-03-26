@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // BuildTarget represents a single GOOS/GOARCH pair for cross-compilation.
