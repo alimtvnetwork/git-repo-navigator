@@ -30,10 +30,32 @@ func CompressAssets(assets []string) ([]string, error) {
 			continue
 		}
 
+		if verbose.IsEnabled() {
+			logCompressedArchive(archive)
+		}
+
 		archives = append(archives, archive)
 	}
 
 	return archives, nil
+}
+
+// logCompressedArchive logs the size and SHA-1 of a compressed archive.
+func logCompressedArchive(archivePath string) {
+	info, err := os.Stat(archivePath)
+	if err != nil {
+		verbose.Get().Log("compress: %s (stat error: %v)", filepath.Base(archivePath), err)
+
+		return
+	}
+
+	hash, err := sha1File(archivePath)
+	if err != nil {
+		hash = "error"
+	}
+
+	verbose.Get().Log("compress: %s — %d bytes, sha1:%s",
+		filepath.Base(archivePath), info.Size(), hash)
 }
 
 // compressSingle compresses a single file and removes the original.
