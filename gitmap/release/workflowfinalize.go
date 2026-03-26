@@ -398,7 +398,30 @@ func buildAdHocZipAssets(opts Options) []string {
 		return nil
 	}
 
-	return BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+	archives := BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+	collectZipChecksums(archives)
+
+	return archives
+}
+
+// collectZipChecksums computes SHA-1 for each archive and stores in lastZipChecksums.
+func collectZipChecksums(archives []string) {
+	if len(archives) == 0 {
+		return
+	}
+
+	if lastZipChecksums == nil {
+		lastZipChecksums = make(map[string]string)
+	}
+
+	for _, archivePath := range archives {
+		hash, err := sha1File(archivePath)
+		if err != nil {
+			continue
+		}
+
+		lastZipChecksums[filepath.Base(archivePath)] = hash
+	}
 }
 
 // printDryRunZipGroups shows zip group plan in dry-run mode.
