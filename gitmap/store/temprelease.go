@@ -34,7 +34,7 @@ func (db *DB) ListTempReleases() ([]model.TempRelease, error) {
 	for rows.Next() {
 		var r model.TempRelease
 
-		err := rows.Scan(&r.ID, &r.Branch, &r.VersionPrefix, &r.SequenceNumber, &r.Commit, &r.CommitMessage, &r.CreatedAt)
+		err := rows.Scan(&r.ID, &r.Branch, &r.VersionPrefix, &r.SequenceNumber, &r.CommitSha, &r.CommitMessage, &r.CreatedAt)
 		if err != nil {
 			continue
 		}

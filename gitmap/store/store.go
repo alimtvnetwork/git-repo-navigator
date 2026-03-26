@@ -99,6 +99,7 @@ func (db *DB) Migrate() error {
 	db.migrateSourceColumn()
 	db.migrateNotesColumn()
 	db.migrateZipGroupItemPaths()
+	db.migrateTRCommitSha()
 
 	return db.SeedProjectTypes()
 }
@@ -120,6 +121,11 @@ func (db *DB) migrateZipGroupItemPaths() {
 	_, _ = db.conn.Exec(constants.SQLMigrateZGIRelativePath)
 	_, _ = db.conn.Exec(constants.SQLMigrateZGIFullPath)
 	_, _ = db.conn.Exec(constants.SQLMigrateZGICopyPath)
+}
+
+// migrateTRCommitSha renames the Commit column to CommitSha in TempReleases.
+func (db *DB) migrateTRCommitSha() {
+	_, _ = db.conn.Exec(constants.SQLMigrateTRCommitSha)
 }
 
 // Reset drops all tables and recreates them for a fresh start.
