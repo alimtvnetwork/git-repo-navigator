@@ -94,23 +94,21 @@
 
 ## Pending Work
 
-### TUI Enhancements
-- ✅ **Wire real git status** into TUI dashboard — unreachable detection, file counts, dashformat.go refactor
-- ✅ **TUI release view**: trigger releases, view release history, and inspect metadata from within the TUI
-- ✅ **TUI log viewer**: browse recent command history with detail view, duration formatting, and refresh
-- ✅ **TUI log filtering**: filter logs by command name, alias, args, or exit code within the TUI
+### Next Up: Temp Release Command
+- ⬜ **`temp-release` (`tr`) command**: create lightweight branches from recent commits without tags
+  - `tr <count> <pattern> [-s N]` — batch-create temp-release branches from last N commits
+  - `tr list [--json]` — list all temp-release branches with SHA, message, date
+  - `tr remove <version>` / `tr remove <v1> to <v2>` / `tr remove all` — cleanup with confirmation
+  - `$$` placeholder for zero-padded sequence (digit count matches dollar count)
+  - Auto-increment from DB/remote when `-s` not provided
+  - No checkout, no tags, no metadata — branches created via `git branch <name> <sha>`
+  - Batch push to origin
+  - `TempReleases` SQLite table for tracking
+  - Spec: `spec/01-app/55-temp-release.md`
 
 ### CLI Robustness
 - ⬜ **Partial failure rollback**: auto-cleanup branch/tag on push failure in the release workflow
-- ⬜ **Retry logic for GitHub uploads**: exponential backoff on transient API errors during asset upload
-- ⬜ **Graceful offline mode**: detect no-network and skip remote operations (push, upload) with clear warnings
-- ⬜ **Lock file for concurrent runs**: prevent two `gitmap release` processes from conflicting
-
-### New Commands & Features
-- ⬜ **`docs` command**: open the documentation website in the default browser from the CLI
-- ⬜ **`prune` command**: detect and clean up stale release branches with no matching tags
-- ✅ **`changelog generate`**: auto-generate changelog entries from commit messages between tags
-- ⬜ **Config validation**: `doctor` check that warns on invalid or deprecated `config.json` fields
+- ⬜ **Graceful offline mode**: detect no-network and skip remote operations with clear warnings
 
 ### Testing Coverage
 - ⬜ **SkipMeta integration test**: verify metadata writing is suppressed when the flag is true
