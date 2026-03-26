@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.33.0
+- Bumped compiled version constant to v2.33.0.
+- Fixed auto-commit push rejection when remote branch advances during release: added `pull --rebase` recovery with single retry.
+- Added 16-stage summary table with anchor links to verbose logging spec.
+
+## v2.32.0
+- Bumped compiled version constant to v2.32.0.
+- Documented autocommit verbose logging as pipeline stage 16 in the verbose logging spec.
+
 ## v2.31.0
 - Bumped compiled version constant to v2.31.0.
 - Added verbose logging to auto-commit step: logs version, file counts, staging, commit message, and push target.
