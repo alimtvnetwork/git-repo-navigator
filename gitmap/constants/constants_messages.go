@@ -221,7 +221,7 @@ const (
 
 // Clear release JSON messages.
 const (
-	MsgClearReleaseDone      = "  ✓ Removed .release/%s.json\n"
+	MsgClearReleaseDone      = "  ✓ Removed .gitmap/release/%s.json\n"
 	MsgClearReleaseDryRun    = "  [dry-run] Would remove %s\n"
 	ErrClearReleaseUsage     = "Usage: gitmap clear-release-json <version> [--dry-run]\nExample: gitmap clear-release-json v2.20.0"
 	ErrClearReleaseNotFound  = "Error: no release file found for %s\n"

@@ -113,7 +113,7 @@ const (
 	HelpConfig        = "  --config <path>     Config file (default: ./data/config.json)"
 	HelpMode          = "  --mode ssh|https    Clone URL style (default: https)"
 	HelpOutput        = "  --output csv|json|terminal  Output format (default: terminal)"
-	HelpOutputPath    = "  --output-path <dir> Output directory (default: ./gitmap-output)"
+	HelpOutputPath    = "  --output-path <dir> Output directory (default: .gitmap/output)"
 	HelpOutFile       = "  --out-file <path>   Exact output file path"
 	HelpGitHubDesktop = "  --github-desktop    Add repos to GitHub Desktop"
 	HelpOpen          = "  --open              Open output folder after scan"

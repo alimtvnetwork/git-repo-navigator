@@ -128,7 +128,7 @@ const (
 	TermCloneCmd3t     = "     gitmap clone text --target-dir ./projects"
 	TermCloneCmd3tAlt  = "     gitmap c text               # alias"
 	TermCloneStep3b    = "  5. Or specify a file path directly:"
-	TermCloneCmd3b     = "     gitmap clone ./gitmap-output/gitmap.json --target-dir ./projects"
+	TermCloneCmd3b     = "     gitmap clone .gitmap/output/gitmap.json --target-dir ./projects"
 	TermCloneStep4     = "  6. Or run the PowerShell script directly:"
 	TermCloneCmd4HTTPS = "     .\\direct-clone.ps1       # HTTPS clone commands"
 	TermCloneCmd4SSH   = "     .\\direct-clone-ssh.ps1   # SSH clone commands"
