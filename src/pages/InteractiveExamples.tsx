@@ -18,7 +18,7 @@ const demos = [
       { text: "  docs-site       main    https://github.com/user/docs-site.git", delay: 80 },
       { text: "  cli-tools       main    https://github.com/user/cli-tools.git", delay: 80 },
       { text: "", delay: 100 },
-      { text: "Output: gitmap-output/", type: "accent" as const, delay: 200 },
+      { text: "Output: .gitmap/output/", type: "accent" as const, delay: 200 },
       { text: "  gitmap.csv      (12 repos)", delay: 80 },
       { text: "  gitmap.json     (12 repos)", delay: 80 },
       { text: "  clone.ps1       (ready)", delay: 80 },
@@ -64,7 +64,7 @@ const demos = [
     lines: [
       { text: "gitmap clone json --target ~/new-machine", type: "input" as const, delay: 800 },
       { text: "", delay: 300 },
-      { text: "Cloning from: gitmap-output/gitmap.json", type: "header" as const, delay: 200 },
+      { text: "Cloning from: .gitmap/output/gitmap.json", type: "header" as const, delay: 200 },
       { text: "Target: /home/user/new-machine", delay: 150 },
       { text: "", delay: 200 },
       { text: "  [1/5]  myapp           ████████████████████  done", type: "accent" as const, delay: 400 },

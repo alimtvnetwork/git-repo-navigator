@@ -8,7 +8,7 @@ export const changelog: ChangelogEntry[] = [
     version: "v2.34.0",
     items: [
       "Bumped compiled version constant to v2.34.0.",
-      "Fixed list-releases to read .release/v*.json from the current repo first, falling back to the database only when no local files exist.",
+      "Fixed list-releases to read .gitmap/release/v*.json from the current repo first, falling back to the database only when no local files exist.",
       "Added SourceRepo constant to release model for repo-sourced release records.",
     ],
   },
@@ -80,7 +80,7 @@ export const changelog: ChangelogEntry[] = [
     items: [
       "Bumped compiled version constant to v2.24.0.",
       "Moved release metadata writing from the release branch to the original branch.",
-      "Auto-commit now handles `.release/` files after returning to the original branch.",
+      "Auto-commit now handles `.gitmap/release/` files after returning to the original branch.",
       "Removed `commitReleaseMeta` step from the release branch workflow.",
       "Simplified `pushAndFinalize` to complete without metadata writes.",
     ],
@@ -97,7 +97,7 @@ export const changelog: ChangelogEntry[] = [
     version: "v2.22.0",
     items: [
       "Bumped compiled version constant to v2.22.0.",
-      "Persisted zip group metadata in `.release/vX.Y.Z.json` via new `zipGroups` field.",
+      "Persisted zip group metadata in `.gitmap/release/vX.Y.Z.json` via new `zipGroups` field.",
       "Documented `-A`/`--alias` flag in help text for `pull`, `exec`, `status`, and `cd`.",
       "Added shell completion support for `alias` and `zip-group` subcommands.",
       "Added `--list-aliases` and `--list-zip-groups` completion list flags.",
@@ -160,7 +160,7 @@ export const changelog: ChangelogEntry[] = [
   {
     version: "v2.15.1",
     items: [
-      "**Fixed**: Database now resolves to `<binary-location>/data/gitmap.db` instead of CWD-relative `gitmap-output/data/`.",
+      "**Fixed**: Database now resolves to `<binary-location>/data/gitmap.db` instead of CWD-relative `.gitmap/output/data/`.",
       "Added `store.OpenDefault()` and `store.OpenDefaultProfile()` for binary-relative database access.",
       "Added `store/location.go` with `BinaryDataDir()` using `os.Executable()` + `filepath.EvalSymlinks()`.",
       "Updated all 13 database callers across the codebase to use binary-relative paths.",
@@ -283,7 +283,7 @@ export const changelog: ChangelogEntry[] = [
     version: "v2.3.12",
     items: [
       "Added `gitmap list-releases` (`lr`) command.",
-      "Enhanced `gitmap scan` to import `.release/v*.json` metadata files.",
+      "Enhanced `gitmap scan` to import `.gitmap/release/v*.json` metadata files.",
       "Added `Source` column to the `Releases` table.",
       "Added `Releases` table to SQLite database.",
       "Converted all DB table/column names from snake_case to PascalCase.",

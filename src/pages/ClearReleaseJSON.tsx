@@ -3,7 +3,7 @@ import CodeBlock from "@/components/docs/CodeBlock";
 import { Trash2, Eye, AlertTriangle, Terminal, FileJson } from "lucide-react";
 
 const features = [
-  { icon: Trash2, title: "Targeted Removal", desc: "Delete a specific .release/vX.Y.Z.json metadata file." },
+  { icon: Trash2, title: "Targeted Removal", desc: "Delete a specific .gitmap/release/vX.Y.Z.json metadata file." },
   { icon: Eye, title: "Dry Run", desc: "Preview which file would be removed without deleting it." },
   { icon: FileJson, title: "Semver Normalisation", desc: "Partial versions auto-pad: v2 → v2.0.0, v2.1 → v2.1.0." },
   { icon: AlertTriangle, title: "Existence Check", desc: "Validates the file exists before attempting removal." },
@@ -20,7 +20,7 @@ const edgeCases = [
   { scenario: "File is read-only", behaviour: "os.Remove fails; print removal error and exit 1" },
   { scenario: "--dry-run with missing file", behaviour: "Same missing-file error — dry-run still validates existence" },
   { scenario: "--dry-run with valid file", behaviour: "Print preview message and exit 0; file untouched" },
-  { scenario: "Partial version v2", behaviour: "Normalised to v2.0.0; targets .release/v2.0.0.json" },
+  { scenario: "Partial version v2", behaviour: "Normalised to v2.0.0; targets .gitmap/release/v2.0.0.json" },
 ];
 
 const exitCodes = [
@@ -29,7 +29,7 @@ const exitCodes = [
 ];
 
 const constants = [
-  { constant: "MsgClearReleaseDone", format: "✓ Removed .release/%s.json" },
+  { constant: "MsgClearReleaseDone", format: "✓ Removed .gitmap/release/%s.json" },
   { constant: "MsgClearReleaseDryRun", format: "[dry-run] Would remove %s" },
   { constant: "ErrClearReleaseUsage", format: "Usage: gitmap clear-release-json <version> [--dry-run]" },
   { constant: "ErrClearReleaseNotFound", format: "Error: no release file found for %s" },
@@ -43,7 +43,7 @@ const ClearReleaseJSONPage = () => {
         <div>
           <h1 className="text-3xl font-mono font-bold mb-2">Clear Release JSON</h1>
           <p className="text-muted-foreground text-lg">
-            Remove a specific release metadata JSON file from the <code className="text-primary font-mono text-base">.release/</code> directory.
+            Remove a specific release metadata JSON file from the <code className="text-primary font-mono text-base">.gitmap/release/</code> directory.
           </p>
         </div>
 
@@ -115,12 +115,12 @@ const ClearReleaseJSONPage = () => {
           <h3 className="text-lg font-mono font-medium mb-2 mt-4">Normal Mode</h3>
           <CodeBlock code={`# Remove release metadata for v2.20.0
 gitmap clear-release-json v2.20.0
-# ✓ Removed .release/v2.20.0.json`} title="Normal removal" />
+# ✓ Removed .gitmap/release/v2.20.0.json`} title="Normal removal" />
 
           <h3 className="text-lg font-mono font-medium mb-2 mt-4">Dry-Run Mode</h3>
           <CodeBlock code={`# Preview without deleting
 gitmap clear-release-json v2.20.0 --dry-run
-# [dry-run] Would remove .release/v2.20.0.json`} title="Dry-run preview" />
+# [dry-run] Would remove .gitmap/release/v2.20.0.json`} title="Dry-run preview" />
         </section>
 
         {/* Edge Cases */}
