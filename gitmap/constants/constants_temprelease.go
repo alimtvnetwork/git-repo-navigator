@@ -26,7 +26,7 @@ const SQLCreateTempReleases = `CREATE TABLE IF NOT EXISTS TempReleases (
 	Branch         TEXT NOT NULL UNIQUE,
 	VersionPrefix  TEXT NOT NULL DEFAULT '',
 	SequenceNumber INTEGER NOT NULL DEFAULT 0,
-	"Commit"       TEXT NOT NULL DEFAULT '',
+	CommitSha      TEXT NOT NULL DEFAULT '',
 	CommitMessage  TEXT NOT NULL DEFAULT '',
 	CreatedAt      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`
