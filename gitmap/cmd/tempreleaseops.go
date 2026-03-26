@@ -380,6 +380,3 @@ func confirmAction() bool {
 
 	return input == "y" || input == "yes"
 }
-
-// ShaDisplayLength is re-exported from constants for use in formatting.
-const shaDisplayLen = 7
