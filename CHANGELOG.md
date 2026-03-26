@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.30.0
+- Bumped compiled version constant to v2.30.0.
+- Renamed TempReleases `Commit` column to `CommitSha` to avoid SQLite reserved keyword conflict.
+- Added automatic database migration (`ALTER TABLE RENAME COLUMN`) for existing TempReleases tables.
+- Added JSON struct tags to `model.TempRelease` for backward-compatible serialization.
+
 ## v2.29.0
 - Bumped compiled version constant to v2.29.0.
 - Fixed TempReleases SQL syntax error: quoted reserved keyword `Commit` in CREATE TABLE, INSERT, and SELECT statements.
