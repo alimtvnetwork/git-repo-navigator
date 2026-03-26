@@ -258,6 +258,9 @@ func loadChangelogNotes(version string) []string {
 // updateLatestIfStable marks the release as latest if stable.
 func updateLatestIfStable(v Version) error {
 	if v.IsPreRelease() {
+		if verbose.IsEnabled() {
+			verbose.Get().Log("metadata: skipping latest.json (pre-release %s)", v.String())
+		}
 		fmt.Printf(constants.MsgReleaseComplete, v.String())
 
 		return nil
@@ -265,6 +268,10 @@ func updateLatestIfStable(v Version) error {
 
 	if LastMeta != nil {
 		LastMeta.IsLatest = true
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("metadata: updating latest.json to %s", v.String())
 	}
 
 	err := WriteLatest(v)
