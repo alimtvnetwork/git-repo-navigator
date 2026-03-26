@@ -11,7 +11,7 @@ import (
 )
 
 // detectGo creates a Go project entry with metadata from go.mod.
-func detectGo(dir, repoPath, repoID, repoName string, results *[]DetectionResult) {
+func detectGo(dir, repoPath string, repoID int64, repoName string, results *[]DetectionResult) {
 	if isDuplicate(dir, constants.ProjectKeyGo, results) {
 		return
 	}
@@ -24,11 +24,6 @@ func detectGo(dir, repoPath, repoID, repoName string, results *[]DetectionResult
 
 	result := buildBaseResult(dir, repoPath, repoID, repoName,
 		constants.ProjectTypeGoID, constants.ProjectKeyGo, projName, constants.IndicatorGoMod)
-	meta.ID = goMetadataID(result.Project.ID)
-	meta.DetectedProjectID = result.Project.ID
-	for i := range meta.Runnables {
-		meta.Runnables[i].ID = goRunnableID(meta.ID, meta.Runnables[i].RelativePath)
-	}
 	result.GoMeta = meta
 	*results = append(*results, result)
 }
@@ -139,4 +134,3 @@ func fileExists(path string) bool {
 
 	return info.Mode().IsRegular()
 }
-

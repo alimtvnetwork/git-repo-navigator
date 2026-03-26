@@ -36,7 +36,7 @@ func (db *DB) ImportAll(data model.DatabaseExport) error {
 func (db *DB) importRepos(repos []model.ScanRecord) error {
 	for _, r := range repos {
 		_, err := db.conn.Exec(constants.SQLUpsertRepo,
-			r.ID, r.Slug, r.RepoName, r.HTTPSUrl, r.SSHUrl,
+			r.Slug, r.RepoName, r.HTTPSUrl, r.SSHUrl,
 			r.Branch, r.RelativePath, r.AbsolutePath,
 			r.CloneInstruction, r.Notes)
 		if err != nil {
@@ -61,17 +61,21 @@ func (db *DB) importGroups(groups []model.GroupExport) error {
 // importOneGroup creates a group and links its member repos.
 func (db *DB) importOneGroup(ge model.GroupExport) error {
 	_, err := db.conn.Exec(
-		"INSERT OR IGNORE INTO Groups (Id, Name, Description, Color) VALUES (?, ?, ?, ?)",
-		ge.ID, ge.Name, ge.Description, ge.Color)
+		"INSERT OR IGNORE INTO Groups (Name, Description, Color) VALUES (?, ?, ?)",
+		ge.Name, ge.Description, ge.Color)
+	if err != nil {
+		return err
+	}
+	group, err := db.findGroupByName(ge.Name)
 	if err != nil {
 		return err
 	}
 
-	return db.linkGroupRepos(ge.ID, ge.RepoSlugs)
+	return db.linkGroupRepos(group.ID, ge.RepoSlugs)
 }
 
 // linkGroupRepos links repos to a group by resolving slugs.
-func (db *DB) linkGroupRepos(groupID string, slugs []string) error {
+func (db *DB) linkGroupRepos(groupID int64, slugs []string) error {
 	for _, slug := range slugs {
 		repos, err := db.FindBySlug(slug)
 		if err != nil || len(repos) == 0 {
@@ -102,8 +106,8 @@ func (db *DB) importReleases(releases []model.ReleaseRecord) error {
 func (db *DB) importHistory(records []model.CommandHistoryRecord) error {
 	for _, r := range records {
 		_, err := db.conn.Exec(
-			"INSERT OR IGNORE INTO CommandHistory (Id, Command, Alias, Args, Flags, StartedAt, FinishedAt, DurationMs, ExitCode, Summary, RepoCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			r.ID, r.Command, r.Alias, r.Args, r.Flags,
+			"INSERT OR IGNORE INTO CommandHistory (Command, Alias, Args, Flags, StartedAt, FinishedAt, DurationMs, ExitCode, Summary, RepoCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			r.Command, r.Alias, r.Args, r.Flags,
 			r.StartedAt, r.FinishedAt, r.DurationMs, r.ExitCode, r.Summary, r.RepoCount)
 		if err != nil {
 			return err
@@ -117,8 +121,8 @@ func (db *DB) importHistory(records []model.CommandHistoryRecord) error {
 func (db *DB) importBookmarks(bookmarks []model.BookmarkRecord) error {
 	for _, b := range bookmarks {
 		_, err := db.conn.Exec(
-			"INSERT OR IGNORE INTO Bookmarks (Id, Name, Command, Args, Flags) VALUES (?, ?, ?, ?, ?)",
-			b.ID, b.Name, b.Command, b.Args, b.Flags)
+			"INSERT OR IGNORE INTO Bookmarks (Name, Command, Args, Flags) VALUES (?, ?, ?, ?)",
+			b.Name, b.Command, b.Args, b.Flags)
 		if err != nil {
 			return err
 		}

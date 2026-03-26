@@ -10,7 +10,7 @@ import (
 )
 
 // detectCpp checks if a file indicates a C++ project.
-func detectCpp(name, dir, repoPath, repoID, repoName string, results *[]DetectionResult) {
+func detectCpp(name, dir, repoPath string, repoID int64, repoName string, results *[]DetectionResult) {
 	indicator := ""
 	if name == constants.IndicatorCMakeLists {
 		indicator = constants.IndicatorCMakeLists
@@ -32,7 +32,7 @@ func detectCpp(name, dir, repoPath, repoID, repoName string, results *[]Detectio
 }
 
 // detectCSharpFile handles .sln and standalone .csproj detection.
-func detectCSharpFile(name, dir, repoPath, repoID, repoName string, slnDirs map[string]bool, results *[]DetectionResult) {
+func detectCSharpFile(name, dir, repoPath string, repoID int64, repoName string, slnDirs map[string]bool, results *[]DetectionResult) {
 	if strings.HasSuffix(name, constants.ExtSln) {
 		detectCSharpSln(name, dir, repoPath, repoID, repoName, results)
 
@@ -44,20 +44,20 @@ func detectCSharpFile(name, dir, repoPath, repoID, repoName string, slnDirs map[
 }
 
 // detectCSharpSln creates a project entry for a .sln file.
-func detectCSharpSln(name, dir, repoPath, repoID, repoName string, results *[]DetectionResult) {
+func detectCSharpSln(name, dir, repoPath string, repoID int64, repoName string, results *[]DetectionResult) {
 	if isDuplicate(dir, constants.ProjectKeyCSharp, results) {
 		return
 	}
 	projName := strings.TrimSuffix(name, constants.ExtSln)
 	result := buildBaseResult(dir, repoPath, repoID, repoName,
 		constants.ProjectTypeCSharpID, constants.ProjectKeyCSharp, projName, name)
-	meta := parseCSharpProject(dir, repoPath, result.Project.ID)
+	meta := parseCSharpProject(dir, repoPath)
 	result.CSharp = meta
 	*results = append(*results, result)
 }
 
 // detectCSharpStandalone creates an entry for .csproj without parent .sln.
-func detectCSharpStandalone(name, dir, repoPath, repoID, repoName string, slnDirs map[string]bool, results *[]DetectionResult) {
+func detectCSharpStandalone(name, dir, repoPath string, repoID int64, repoName string, slnDirs map[string]bool, results *[]DetectionResult) {
 	if isUnderSlnDir(dir, slnDirs) {
 		return
 	}
@@ -92,19 +92,17 @@ func isDuplicate(dir, typeKey string, results *[]DetectionResult) bool {
 }
 
 // addResult creates and appends a basic DetectionResult.
-func addResult(dir, repoPath, repoID, repoName, typeID, typeKey, projName, indicator string, results *[]DetectionResult) {
+func addResult(dir, repoPath string, repoID int64, repoName string, typeID int64, typeKey, projName, indicator string, results *[]DetectionResult) {
 	result := buildBaseResult(dir, repoPath, repoID, repoName, typeID, typeKey, projName, indicator)
 	*results = append(*results, result)
 }
 
 // buildBaseResult creates a DetectionResult with the project fields populated.
-func buildBaseResult(dir, repoPath, repoID, repoName, typeID, typeKey, projName, indicator string) DetectionResult {
+func buildBaseResult(dir, repoPath string, repoID int64, repoName string, typeID int64, typeKey, projName, indicator string) DetectionResult {
 	relPath := buildRelativePath(dir, repoPath)
-	id := projectID(repoID, typeID, relPath)
 
 	return DetectionResult{
 		Project: model.DetectedProject{
-			ID:               id,
 			RepoID:           repoID,
 			RepoName:         repoName,
 			ProjectTypeID:    typeID,

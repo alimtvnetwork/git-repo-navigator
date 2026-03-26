@@ -223,7 +223,7 @@ func promptAliasSuggestion(reader *bufio.Reader, slug, suggestion string) bool {
 }
 
 // createSuggestedAlias creates an alias and prints confirmation.
-func createSuggestedAlias(db *store.DB, alias, repoID string) {
+func createSuggestedAlias(db *store.DB, alias string, repoID int64) {
 	_, err := db.CreateAlias(alias, repoID)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
@@ -231,5 +231,5 @@ func createSuggestedAlias(db *store.DB, alias, repoID string) {
 		return
 	}
 
-	fmt.Printf(constants.MsgAliasCreated, alias, repoID)
+	fmt.Printf(constants.MsgAliasCreated, alias, fmt.Sprintf("%d", repoID))
 }
