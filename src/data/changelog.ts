@@ -5,6 +5,15 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.30.0",
+    items: [
+      "Bumped compiled version constant to v2.30.0.",
+      "Renamed TempReleases Commit column to CommitSha to avoid SQLite reserved keyword conflict.",
+      "Added automatic database migration for existing TempReleases tables.",
+      "Added JSON struct tags to model.TempRelease for backward-compatible serialization.",
+    ],
+  },
+  {
     version: "v2.29.0",
     items: [
       "Bumped compiled version constant to v2.29.0.",
