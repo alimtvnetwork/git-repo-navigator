@@ -114,8 +114,9 @@ const (
 // Clone and Desktop scripts are now generated from Go templates
 // embedded in formatter/templates/. See clone.ps1.tmpl and desktop.ps1.tmpl.
 
-// Directory permissions.
+// File and directory permissions.
 const DirPermission = 0o755
+const FilePermission = 0o644
 
 // Safe-pull defaults.
 const (

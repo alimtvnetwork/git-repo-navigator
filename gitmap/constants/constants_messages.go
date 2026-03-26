@@ -254,7 +254,7 @@ const (
 // Legacy directory migration messages.
 const (
 	MsgMigrated          = "Migrated %s/ -> %s/\n"
-	WarnMigrationSkipped = "Skipped migration of %s/ -- %s/ already exists\n"
+	MsgMergedAndRemoved  = "Merged %s/ into %s/ (%d files copied, %d skipped) and removed legacy folder\n"
 	ErrMigrationFailed   = "failed to migrate %s/: %v\n"
 )
 
