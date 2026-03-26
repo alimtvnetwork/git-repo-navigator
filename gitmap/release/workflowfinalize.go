@@ -8,6 +8,7 @@ import (
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/store"
+	"github.com/user/gitmap/verbose"
 )
 
 // LastMeta holds the most recent release metadata after Execute completes.
@@ -141,6 +142,10 @@ func uploadToGitHub(v Version, assets []string, opts Options) {
 		return
 	}
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("github: creating release %s on %s/%s (%d asset(s))", v.String(), owner, repo, len(assets))
+	}
+
 	name := constants.ReleaseTagPrefix + v.String()
 	if len(opts.Notes) > 0 {
 		name = opts.Notes
@@ -152,6 +157,10 @@ func uploadToGitHub(v Version, assets []string, opts Options) {
 		fmt.Fprintf(os.Stderr, "  ✗ GitHub release creation failed: %v\n", err)
 
 		return
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("github: release created, id=%d", ghRelease.ID)
 	}
 
 	if len(assets) > 0 {

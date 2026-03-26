@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // UploadAsset uploads a single file to a GitHub release.
@@ -36,6 +37,10 @@ func UploadAsset(owner, repo string, releaseID int, filePath, token string) erro
 		return fmt.Errorf("upload asset: %w", err)
 	}
 	defer resp.Body.Close()
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("upload: %s → HTTP %d", filename, resp.StatusCode)
+	}
 
 	if resp.StatusCode >= 300 {
 		respBody, _ := io.ReadAll(resp.Body)
@@ -70,6 +75,13 @@ func UploadAllAssets(owner, repo string, releaseID int, assets []string, token s
 // uploadSingleAsset uploads one asset with retry logic.
 func uploadSingleAsset(owner, repo string, releaseID int, asset, token string) {
 	filename := filepath.Base(asset)
+
+	if verbose.IsEnabled() {
+		info, statErr := os.Stat(asset)
+		if statErr == nil {
+			verbose.Get().Log("upload-start: %s (%d bytes)", filename, info.Size())
+		}
+	}
 
 	err := withRetry(filename, constants.RetryMaxAttempts, func() error {
 		return UploadAsset(owner, repo, releaseID, asset, token)
