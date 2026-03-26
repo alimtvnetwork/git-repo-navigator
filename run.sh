@@ -142,7 +142,11 @@ invoke_git_pull() {
 
     if [[ $pull_exit -ne 0 ]]; then
         if echo "$output" | grep -qiE "Your local changes|overwritten by merge|not possible because you have unmerged|Please commit your changes or stash them"; then
-            resolve_pull_conflict
+            if [[ "$FORCE_PULL" == "true" ]]; then
+                force_pull_clean
+            else
+                resolve_pull_conflict
+            fi
         else
             write_fail "Git pull failed (exit code $pull_exit)"
             exit 1
