@@ -224,13 +224,13 @@ Logged after each zip group archive is created:
 zip-summary: chrome-extension.zip — 12 files, 238471 bytes, sha1:7b2a1f...
 ```
 
-### GitHub Upload (`assetsupload.go`, `workflowfinalize.go`)
+### GitHub Upload (`workflowfinalize.go`, `assetsupload.go`)
 
 Logged at release creation and per-asset upload:
 
 ```
-upload: creating release v2.5.0 on owner/repo with 6 assets
-upload: github release created — id: 12345
+github: creating release v2.5.0 on owner/repo (6 asset(s))
+github: release created, id=12345
 upload-start: gitmap_v2.5.0_linux_amd64.tar.gz (4821504 bytes)
 upload: gitmap_v2.5.0_linux_amd64.tar.gz → HTTP 201
 ```
