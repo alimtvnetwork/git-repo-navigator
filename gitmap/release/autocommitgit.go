@@ -5,9 +5,55 @@ import (
 	"os/exec"
 	"strings"
 
+	"os"
+
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/verbose"
 )
+
+// commitAll stages everything and commits.
+func commitAll(msg string) AutoCommitResult {
+	err := stageAll()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrAutoCommitFailed, err)
+
+		return AutoCommitResult{}
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: staged all files")
+	}
+
+	err = commitStaged(msg)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrAutoCommitFailed, err)
+
+		return AutoCommitResult{}
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: committed all: %s", msg)
+	}
+
+	fmt.Printf(constants.MsgAutoCommitAll, msg)
+
+	err = pushCurrentBranch()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, constants.ErrAutoCommitPush, err)
+
+		return AutoCommitResult{Committed: true, AllFiles: true, Message: msg}
+	}
+
+	branch, _ := CurrentBranchName()
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: pushed all to %s", branch)
+	}
+
+	fmt.Printf(constants.MsgAutoCommitPushed, branch)
+
+	return AutoCommitResult{Committed: true, AllFiles: true, Message: msg}
+}
 
 // stageFiles runs git add on specific files.
 func stageFiles(files []string) error {
