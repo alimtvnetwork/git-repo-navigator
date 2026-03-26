@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.36.3
+- Bumped compiled version constant to v2.36.3.
+- Refactored legacy directory migration into shared `localdirs` package for reuse across CLI startup and release workflow.
+- Release workflow now re-runs migration after returning to the original branch, preventing `.release/` from persisting when older branches restore tracked legacy files.
+- Auto-commit `classifyFiles` now treats legacy `.release/` paths as release files for silent commit handling.
+- Simplified doctor legacy directory check to always pass (migration handles cleanup automatically).
+- Removed unused legacy directory warning/fix constants from `constants_doctor.go`.
+
 ## v2.36.2
 - Bumped compiled version constant to v2.36.2.
 - Fixed legacy directory migration to merge files when target already exists instead of skipping.
