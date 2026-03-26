@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // retryable determines if an HTTP status code should trigger a retry.
