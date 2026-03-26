@@ -16,7 +16,7 @@ const TableSSHKeys = "SSHKeys"
 
 // SQL: create SSHKeys table.
 const SQLCreateSSHKeys = `CREATE TABLE IF NOT EXISTS SSHKeys (
-	Id          TEXT PRIMARY KEY,
+	Id          INTEGER PRIMARY KEY AUTOINCREMENT,
 	Name        TEXT NOT NULL UNIQUE,
 	PrivatePath TEXT NOT NULL,
 	PublicKey   TEXT NOT NULL,
