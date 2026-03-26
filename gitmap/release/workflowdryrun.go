@@ -105,3 +105,19 @@ func printDryRunZipGroups(opts Options) {
 
 	DryRunAdHoc(opts.ZipItems, opts.BundleName)
 }
+
+// returnToBranch switches back to the original branch after a release.
+func returnToBranch(branch string) error {
+	if len(branch) == 0 {
+		return nil
+	}
+
+	err := CheckoutBranch(branch)
+	if err != nil {
+		return fmt.Errorf("switch back to %s: %w", branch, err)
+	}
+
+	fmt.Printf(constants.MsgReleaseSwitchedBack, branch)
+
+	return nil
+}
