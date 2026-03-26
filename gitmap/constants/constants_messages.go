@@ -86,7 +86,7 @@ const (
 	MsgDesktopSyncAdded   = "  ✓ Added to GitHub Desktop: %s\n"
 	MsgDesktopSyncFailed  = "  ✗ Failed: %s — %v\n"
 	MsgDesktopSyncDone    = "\n  GitHub Desktop sync: %d added, %d skipped, %d failed\n"
-	MsgNoOutputDir        = "Error: gitmap-output/ not found in current directory.\nRun 'gitmap scan' first to generate output files."
+	MsgNoOutputDir        = "Error: .gitmap/output/ not found in current directory.\nRun 'gitmap scan' first to generate output files."
 	MsgNoJSONFile         = "Error: %s not found.\nRun 'gitmap scan' first to generate the JSON output."
 	MsgFailedClones       = "\nFailed clones:"
 	MsgFailedEntry        = "  - %s (%s): %s\n"
