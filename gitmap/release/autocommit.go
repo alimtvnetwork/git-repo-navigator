@@ -24,6 +24,10 @@ type AutoCommitResult struct {
 func AutoCommit(version string, dryRun bool) AutoCommitResult {
 	fmt.Print(constants.MsgAutoCommitScanning)
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: starting for %s (dry-run=%v)", version, dryRun)
+	}
+
 	if dryRun {
 		fmt.Print(constants.MsgAutoCommitDryRun)
 
@@ -34,10 +38,18 @@ func AutoCommit(version string, dryRun bool) AutoCommitResult {
 	if len(changed) == 0 {
 		fmt.Print(constants.MsgAutoCommitNone)
 
+		if verbose.IsEnabled() {
+			verbose.Get().Log("autocommit: no changed files detected")
+		}
+
 		return AutoCommitResult{}
 	}
 
 	releaseFiles, otherFiles := classifyFiles(changed)
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: %d release file(s), %d other file(s)", len(releaseFiles), len(otherFiles))
+	}
 
 	commitMsg := fmt.Sprintf(constants.AutoCommitMsgFmt, version)
 
