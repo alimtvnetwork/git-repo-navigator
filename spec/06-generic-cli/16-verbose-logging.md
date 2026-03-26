@@ -200,6 +200,19 @@ func initVerboseLog() {
 The release workflow emits verbose log entries at each stage.
 All entries follow the `prefix: detail` convention.
 
+### Version Resolution (`workflow.go`)
+
+Logged when the release version is determined from CLI, bump, or file:
+
+```
+version: resolved from CLI argument: v2.5.0
+version: current baseline: v2.4.0
+version: baseline from latest.json: v2.4.0
+version: latest.json unavailable, falling back to git tags
+version: resolved via --bump minor: v2.5.0
+version: resolved from version.json: v2.5.0
+```
+
 ### Asset Collection (`github.go`)
 
 Logged when user-provided assets are resolved from `--assets`:
