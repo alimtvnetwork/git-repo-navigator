@@ -121,8 +121,8 @@ func (db *DB) importHistory(records []model.CommandHistoryRecord) error {
 func (db *DB) importBookmarks(bookmarks []model.BookmarkRecord) error {
 	for _, b := range bookmarks {
 		_, err := db.conn.Exec(
-			"INSERT OR IGNORE INTO Bookmarks (Id, Name, Command, Args, Flags) VALUES (?, ?, ?, ?, ?)",
-			b.ID, b.Name, b.Command, b.Args, b.Flags)
+			"INSERT OR IGNORE INTO Bookmarks (Name, Command, Args, Flags) VALUES (?, ?, ?, ?)",
+			b.Name, b.Command, b.Args, b.Flags)
 		if err != nil {
 			return err
 		}
