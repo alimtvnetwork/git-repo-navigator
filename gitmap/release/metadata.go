@@ -103,7 +103,7 @@ func latestIsHigher(candidate Version) bool {
 	return true
 }
 
-// ReadLatest reads .release/latest.json.
+// ReadLatest reads .gitmap/release/latest.json.
 func ReadLatest() (LatestMeta, error) {
 	data, err := os.ReadFile(latestFilePath())
 	if err != nil {
