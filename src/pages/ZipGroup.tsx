@@ -70,7 +70,7 @@ const features = [
   { icon: HardDrive, title: "Path Resolution", desc: "CWD + relative path → full path. Detects file vs folder automatically." },
   { icon: FileJson, title: "Dual Persistence", desc: "Stored in SQLite and .gitmap/zip-groups.json for version control." },
   { icon: Tag, title: "Release Integration", desc: "Use --zip-group to include groups as release assets, or -Z for ad-hoc items." },
-  { icon: Database, title: "Metadata Tracking", desc: "Zip group definitions are recorded in .release/vX.Y.Z.json under zipGroups." },
+  { icon: Database, title: "Metadata Tracking", desc: "Zip group definitions are recorded in .gitmap/release/vX.Y.Z.json under zipGroups." },
 ];
 
 const schema = [

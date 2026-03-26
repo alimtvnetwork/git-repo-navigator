@@ -43,7 +43,7 @@ const ConfigPage = () => {
             code={`{
   "defaultMode": "https",
   "defaultOutput": "terminal",
-  "outputDir": "gitmap-output",
+  "outputDir": ".gitmap/output",
   "excludeDirs": ["node_modules", ".git", "vendor", ".venv"],
   "notes": "",
   "release": {
@@ -75,7 +75,7 @@ const ConfigPage = () => {
                 {[
                   ["defaultMode", "string", '"https"', 'Clone URL style: "https" or "ssh"'],
                   ["defaultOutput", "string", '"terminal"', 'Output format: "terminal", "csv", or "json"'],
-                  ["outputDir", "string", '"gitmap-output"', "Directory for all generated output files"],
+                  ["outputDir", "string", '".gitmap/output"', "Directory for all generated output files"],
                   ["excludeDirs", "[]string", "[]", "Directory names to skip during recursive scan"],
                   ["notes", "string", '""', "Default note for all records"],
                   ["release", "object", "{}", "Release-specific settings (see below)"],
@@ -162,7 +162,7 @@ const ConfigPage = () => {
           <p className="text-sm text-muted-foreground mt-2">
             Each profile has its own SQLite database file. The <code className="font-mono text-primary">default</code> profile
             always exists and cannot be deleted. Profile config is stored in{" "}
-            <code className="font-mono text-primary">gitmap-output/data/profiles.json</code>.
+            <code className="font-mono text-primary">.gitmap/output/data/profiles.json</code>.
           </p>
         </div>
 

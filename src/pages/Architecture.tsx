@@ -73,7 +73,7 @@ const ArchitecturePage = () => {
         <div>
           <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">Database Schema</h2>
           <p className="text-muted-foreground mb-3">
-            SQLite database at <code className="font-mono text-primary">gitmap-output/data/gitmap.db</code> with
+            SQLite database at <code className="font-mono text-primary">.gitmap/output/data/gitmap.db</code> with
             PascalCase naming convention:
           </p>
           <CodeBlock
@@ -93,7 +93,7 @@ Releases       — Id, Version, Tag, Branch, SourceBranch,
         <div>
           <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">Output Artifacts</h2>
           <p className="text-muted-foreground mb-3">
-            A scan generates the following in <code className="font-mono text-primary">gitmap-output/</code>:
+            A scan generates the following in <code className="font-mono text-primary">.gitmap/output/</code>:
           </p>
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <table className="w-full text-sm">

@@ -131,7 +131,7 @@ const ReleasePage = () => {
             {[
               "1. Resolve version (CLI → --bump → version.json → error)",
               "2. Pad partial version to full semver",
-              "3. Check .release/ and git tags for duplicates",
+              "3. Check .gitmap/release/ and git tags for duplicates",
               "4. Resolve source commit (--commit / --branch / HEAD)",
               "5. Create/switch to branch release/vX.Y.Z",
               "6. Create git tag vX.Y.Z (annotated with --notes if provided)",
@@ -142,8 +142,8 @@ const ReleasePage = () => {
               "7c. Generate checksums.txt if --checksums",
               "7d. Upload assets to GitHub Releases API",
               "8. Return to original branch",
-              "9. Write .release/vX.Y.Z.json + update latest.json on original branch",
-              "10. Auto-commit .release/ metadata files",
+              "9. Write .gitmap/release/vX.Y.Z.json + update latest.json on original branch",
+              "10. Auto-commit .gitmap/release/ metadata files",
             ].map((step) => (
               <p key={step} className="text-foreground/80 pl-2">{step}</p>
             ))}
@@ -321,7 +321,7 @@ const ReleasePage = () => {
         <div>
           <h2 className="text-xl font-mono font-bold text-foreground mb-4">Auto-Increment (--bump)</h2>
           <p className="text-sm text-muted-foreground mb-3">
-            Reads the latest version from <span className="font-mono text-foreground">.release/latest.json</span> and increments.
+            Reads the latest version from <span className="font-mono text-foreground">.gitmap/release/latest.json</span> and increments.
             Falls back to scanning local Git tags.
           </p>
           <div className="overflow-x-auto">
@@ -413,7 +413,7 @@ const ReleasePage = () => {
             <p className="text-foreground/60">&nbsp;&nbsp;&nbsp;&nbsp;→ gitmap_v1.2.3_darwin_arm64</p>
             <p className="text-foreground/60">&nbsp;&nbsp;&nbsp;&nbsp;...</p>
             <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Would upload 6 assets</p>
-            <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Write metadata to .release/v1.2.3.json</p>
+            <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Write metadata to .gitmap/release/v1.2.3.json</p>
             <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Mark v1.2.3 as latest</p>
           </div>
         </div>
@@ -422,7 +422,7 @@ const ReleasePage = () => {
         <div>
           <h2 className="text-xl font-mono font-bold text-foreground mb-4">Orphaned Metadata Recovery</h2>
           <p className="text-sm text-muted-foreground mb-4 max-w-2xl">
-            If a <code className="font-mono text-primary">.release/vX.Y.Z.json</code> file exists but neither the
+            If a <code className="font-mono text-primary">.gitmap/release/vX.Y.Z.json</code> file exists but neither the
             Git tag nor the release branch is found, the release command detects orphaned metadata and prompts
             for recovery instead of failing with a duplicate error.
           </p>
@@ -524,7 +524,7 @@ const ReleasePage = () => {
 
           <h3 className="text-base font-mono font-semibold text-foreground mb-3">Metadata (zipGroups)</h3>
           <p className="text-sm text-muted-foreground mb-3">
-            Release metadata in <code className="font-mono text-primary">.release/vX.Y.Z.json</code> includes a
+            Release metadata in <code className="font-mono text-primary">.gitmap/release/vX.Y.Z.json</code> includes a
             <code className="font-mono text-primary"> zipGroups</code> array recording each group and its archive:
           </p>
           <CodeBlock code={`{
@@ -590,7 +590,7 @@ const ReleasePage = () => {
               <tbody>
                 {[
                   { file: "release/semver.go", desc: "Version parsing, padding, comparison, bumping" },
-                  { file: "release/metadata.go", desc: "Read/write .release/*.json, latest.json, version.json" },
+                  { file: "release/metadata.go", desc: "Read/write .gitmap/release/*.json, latest.json, version.json" },
                   { file: "release/gitops.go", desc: "Branch, tag, push, checkout Git operations" },
                   { file: "release/github.go", desc: "Asset collection, changelog/readme detection" },
                   { file: "release/workflow.go", desc: "Orchestration: Execute(), metadata-first sequencing" },

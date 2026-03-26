@@ -45,7 +45,7 @@ const GettingStartedPage = () => {
           </p>
           <CodeBlock code={`gitmap scan ~/projects`} title="Terminal" />
           <p className="text-sm text-muted-foreground mt-2">
-            This generates <code className="font-mono text-primary">gitmap-output/</code> containing CSV, JSON,
+            This generates <code className="font-mono text-primary">.gitmap/output/</code> containing CSV, JSON,
             folder structure, and clone scripts.
           </p>
         </div>

@@ -391,7 +391,7 @@ const ProjectDetectionPage = () => (
         Records are sorted by <code className="text-primary">repoName</code> then <code className="text-primary">relativePath</code>.
       </p>
       <div className="rounded-lg border border-border bg-muted/20 p-4 mb-8 font-mono text-xs leading-relaxed">
-        <p className="text-muted-foreground mb-2">gitmap-output/</p>
+        <p className="text-muted-foreground mb-2">.gitmap/output/</p>
         <p className="text-foreground ml-4">├── go-projects.json</p>
         <p className="text-foreground ml-4">├── node-projects.json</p>
         <p className="text-foreground ml-4">├── react-projects.json</p>
