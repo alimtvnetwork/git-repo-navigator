@@ -8,6 +8,7 @@ import (
 	"os/exec"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // CreateBranch creates a release branch from the given source ref.
@@ -65,6 +66,9 @@ func ResolveSourceRef(commit, branch string) (string, string, error) {
 // resolveFromCommit validates and returns the commit ref.
 func resolveFromCommit(commit string) (string, string, error) {
 	if CommitExists(commit) {
+		if verbose.IsEnabled() {
+			verbose.Get().Log("source: using commit %s", commit)
+		}
 		return commit, constants.GitCommitPrefix + commit, nil
 	}
 
@@ -78,6 +82,10 @@ func resolveFromBranch(branch string) (string, string, error) {
 		return "", "", fmt.Errorf("branch %s not found: %w", branch, err)
 	}
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("source: using branch %s (origin/%s)", branch, branch)
+	}
+
 	return constants.GitOriginPrefix + branch, branch, nil
 }
 
@@ -85,7 +93,14 @@ func resolveFromBranch(branch string) (string, string, error) {
 func resolveFromHead() (string, string, error) {
 	branchName, err := CurrentBranchName()
 	if err != nil {
+		if verbose.IsEnabled() {
+			verbose.Get().Log("source: using detached HEAD")
+		}
 		return constants.GitHEAD, constants.GitHEAD, nil
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("source: using HEAD on branch %s", branchName)
 	}
 
 	return constants.GitHEAD, branchName, nil
