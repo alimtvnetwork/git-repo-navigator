@@ -13,8 +13,15 @@ import (
 // LastMeta holds the most recent release metadata after Execute completes.
 var LastMeta *ReleaseMeta
 
+// lastZipChecksums stores SHA-1 hashes of zip group archives built during the
+// current release, keyed by archive filename. Populated by buildZipGroupAssets
+// and buildAdHocZipAssets, consumed by buildReleaseMeta.
+var lastZipChecksums map[string]string
+
 // pushAndFinalize pushes to remote and writes metadata.
 func pushAndFinalize(v Version, branchName, tag, sourceName string, opts Options) error {
+	lastZipChecksums = nil
+
 	err := PushBranchAndTag(branchName, tag)
 	if err != nil {
 		return fmt.Errorf(constants.ErrReleasePushFailed, err)
@@ -176,20 +183,29 @@ func buildReleaseMeta(v Version, branchName, tag, sourceName, commit string, ass
 
 	zipGroups := collectZipGroupNames(opts)
 
+	var checksums map[string]string
+	if len(lastZipChecksums) > 0 {
+		checksums = make(map[string]string, len(lastZipChecksums))
+		for k, v := range lastZipChecksums {
+			checksums[k] = v
+		}
+	}
+
 	return ReleaseMeta{
-		Version:      v.CoreString(),
-		Branch:       branchName,
-		SourceBranch: sourceName,
-		Commit:       commit,
-		Tag:          tag,
-		Assets:       assetPaths,
-		Changelog:    loadChangelogNotes(v.String()),
-		Notes:        opts.Notes,
-		ZipGroups:    zipGroups,
-		Draft:        opts.Draft,
-		PreRelease:   v.IsPreRelease(),
-		CreatedAt:    time.Now().UTC().Format(time.RFC3339),
-		IsLatest:     false,
+		Version:           v.CoreString(),
+		Branch:            branchName,
+		SourceBranch:      sourceName,
+		Commit:            commit,
+		Tag:               tag,
+		Assets:            assetPaths,
+		Changelog:         loadChangelogNotes(v.String()),
+		Notes:             opts.Notes,
+		ZipGroups:         zipGroups,
+		ZipGroupChecksums: checksums,
+		Draft:             opts.Draft,
+		PreRelease:        v.IsPreRelease(),
+		CreatedAt:         time.Now().UTC().Format(time.RFC3339),
+		IsLatest:          false,
 	}
 }
 
@@ -377,6 +393,8 @@ func buildZipGroupAssets(opts Options) []string {
 		fmt.Printf(constants.MsgZGNoArchives, len(opts.ZipGroups))
 	}
 
+	collectZipChecksums(archives)
+
 	return archives
 }
 
@@ -391,7 +409,30 @@ func buildAdHocZipAssets(opts Options) []string {
 		return nil
 	}
 
-	return BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+	archives := BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+	collectZipChecksums(archives)
+
+	return archives
+}
+
+// collectZipChecksums computes SHA-1 for each archive and stores in lastZipChecksums.
+func collectZipChecksums(archives []string) {
+	if len(archives) == 0 {
+		return
+	}
+
+	if lastZipChecksums == nil {
+		lastZipChecksums = make(map[string]string)
+	}
+
+	for _, archivePath := range archives {
+		hash, err := sha1File(archivePath)
+		if err != nil {
+			continue
+		}
+
+		lastZipChecksums[filepath.Base(archivePath)] = hash
+	}
 }
 
 // printDryRunZipGroups shows zip group plan in dry-run mode.
