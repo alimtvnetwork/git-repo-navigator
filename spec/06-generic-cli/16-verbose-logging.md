@@ -200,6 +200,15 @@ func initVerboseLog() {
 The release workflow emits verbose log entries at each stage.
 All entries follow the `prefix: detail` convention.
 
+### Staging Directory (`assets.go`)
+
+Logged when the release-assets staging directory is created or removed:
+
+```
+staging: created directory assets/staging
+staging: removing directory assets/staging
+```
+
 ### Cross-Compilation (`assets.go`)
 
 Logged before and after each GOOS/GOARCH build:
@@ -224,6 +233,15 @@ Logged as each file's SHA-256 hash is computed for `checksums.txt`:
 
 ```
 checksum: gitmap_v2.5.0_linux_amd64.tar.gz  sha256:e3b0c44298fc...
+```
+
+### Zip Group Processing (`workflowfinalize.go`)
+
+Logged when persistent zip groups are resolved and built:
+
+```
+zip-group: processing group "chrome-extension-v2"
+zip-group: 2 group(s) produced 2 archive(s)
 ```
 
 ### Zip Group Archives (`ziparchive.go`)
