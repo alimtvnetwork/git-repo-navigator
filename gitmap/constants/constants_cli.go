@@ -103,7 +103,7 @@ const (
 	HelpMultiGroup    = "  multi-group (mg)    Select multiple groups for batch operations"
 	HelpDBReset       = "  db-reset --confirm  Clear all tracked repos and groups from the database"
 	HelpCompletion        = "  completion (cmp)    Generate shell tab-completion scripts"
-	HelpClearReleaseJSON  = "  clear-release-json (crj)  Remove a .release/vX.Y.Z.json file"
+	HelpClearReleaseJSON  = "  clear-release-json (crj)  Remove a .gitmap/release/vX.Y.Z.json file"
 	HelpDocs              = "  docs (d)            Open documentation website in browser"
 	HelpHelp              = "  help                Show this help message"
 	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first (--limit N, --json, --source)"
