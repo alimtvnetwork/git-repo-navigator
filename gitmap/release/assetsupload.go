@@ -38,6 +38,10 @@ func UploadAsset(owner, repo string, releaseID int, filePath, token string) erro
 	}
 	defer resp.Body.Close()
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("upload: %s → HTTP %d", filename, resp.StatusCode)
+	}
+
 	if resp.StatusCode >= 300 {
 		respBody, _ := io.ReadAll(resp.Body)
 
