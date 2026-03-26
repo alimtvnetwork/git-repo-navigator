@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // CompressAssets wraps each file in assets into an archive.
