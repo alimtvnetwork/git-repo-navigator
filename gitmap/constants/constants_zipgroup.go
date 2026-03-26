@@ -29,7 +29,7 @@ const SQLCreateZipGroups = `CREATE TABLE IF NOT EXISTS ZipGroups (
 
 // SQL: create ZipGroupItems table (v2 with path fields).
 const SQLCreateZipGroupItems = `CREATE TABLE IF NOT EXISTS ZipGroupItems (
-	GroupId      TEXT NOT NULL REFERENCES ZipGroups(Id) ON DELETE CASCADE,
+	GroupId      INTEGER NOT NULL REFERENCES ZipGroups(Id) ON DELETE CASCADE,
 	RepoPath     TEXT NOT NULL DEFAULT '',
 	RelativePath TEXT NOT NULL DEFAULT '',
 	FullPath     TEXT NOT NULL DEFAULT '',
