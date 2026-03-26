@@ -86,7 +86,7 @@ const (
 	ExecBannerTitle   = "║           gitmap exec                ║"
 	ExecBannerBottom  = "╚══════════════════════════════════════╝"
 	ExecCommandFmt    = "Command: git %s"
-	ExecRepoCountFmt  = "%d repos from gitmap-output/gitmap.json"
+	ExecRepoCountFmt  = "%d repos from .gitmap/output/gitmap.json"
 	ExecSuccessFmt    = "  %s✓ %-22s%s\n"
 	ExecFailFmt       = "  %s✗ %-22s%s\n"
 	ExecMissingFmt    = "  %s⊘ %-22s %snot found%s\n"
