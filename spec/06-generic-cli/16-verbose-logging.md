@@ -224,6 +224,17 @@ source: using HEAD on branch main
 source: using detached HEAD
 ```
 
+### Git Operations (`gitops.go`)
+
+Logged when branches, tags are created and pushed:
+
+```
+git: creating branch release/v2.5.0 from HEAD
+git: creating tag v2.5.0
+git: pushing branch release/v2.5.0 to origin
+git: pushing tag v2.5.0 to origin
+```
+
 ### Asset Collection (`github.go`)
 
 Logged when user-provided assets are resolved from `--assets`:
