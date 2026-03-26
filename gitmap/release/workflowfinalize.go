@@ -423,12 +423,28 @@ func buildAdHocZipAssets(opts Options) []string {
 		return nil
 	}
 
+	if verbose.IsEnabled() {
+		bundleLabel := opts.BundleName
+		if bundleLabel == "" {
+			bundleLabel = "(individual)"
+		}
+		verbose.Get().Log("ad-hoc-zip: %d item(s), bundle=%s", len(opts.ZipItems), bundleLabel)
+		for _, item := range opts.ZipItems {
+			verbose.Get().Log("ad-hoc-zip: item %s", item)
+		}
+	}
+
 	stagingDir, err := EnsureStagingDir()
 	if err != nil {
 		return nil
 	}
 
 	archives := BuildAdHocArchive(opts.ZipItems, opts.BundleName, stagingDir)
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("ad-hoc-zip: produced %d archive(s)", len(archives))
+	}
+
 	collectZipChecksums(archives)
 
 	return archives
