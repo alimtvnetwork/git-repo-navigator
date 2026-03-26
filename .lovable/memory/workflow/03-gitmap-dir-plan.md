@@ -40,12 +40,13 @@ Add warning in `doctor` if `.release/` or `gitmap-output/` exist at repo root.
 
 ### Step 9 — Bump version and changelog
 
+### Step 10 — Automatic legacy directory migration
+Add `cmd/migrate.go` with `migrateLegacyDirs()` called in root `PersistentPreRun`.
+Moves `gitmap-output/` → `.gitmap/output/`, `.release/` → `.gitmap/release/`,
+`.deployed/` → `.gitmap/deployed/` automatically when detected.
+Skips if target already exists (prints warning). DB is not affected.
+
 ## Status
 
-Step 1 complete — constants, display strings, comments, and test updated.
-Steps 4–5 complete — all helptext and spec markdown files updated to .gitmap/ paths.
-Step 8 complete — doctor check for legacy .release/ and gitmap-output/ directories.
-Step 6 complete — docs site src/data/ and src/pages/ references updated.
-Step 7 complete — .lovable/memory/ references updated.
-Step 9 complete — bumped to v2.35.0 with changelog.
-Steps all complete.
+Steps 1–9 complete.
+Step 10 pending — implement automatic migration.
