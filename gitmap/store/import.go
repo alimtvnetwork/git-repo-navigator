@@ -61,13 +61,17 @@ func (db *DB) importGroups(groups []model.GroupExport) error {
 // importOneGroup creates a group and links its member repos.
 func (db *DB) importOneGroup(ge model.GroupExport) error {
 	_, err := db.conn.Exec(
-		"INSERT OR IGNORE INTO Groups (Id, Name, Description, Color) VALUES (?, ?, ?, ?)",
-		ge.ID, ge.Name, ge.Description, ge.Color)
+		"INSERT OR IGNORE INTO Groups (Name, Description, Color) VALUES (?, ?, ?)",
+		ge.Name, ge.Description, ge.Color)
+	if err != nil {
+		return err
+	}
+	group, err := db.findGroupByName(ge.Name)
 	if err != nil {
 		return err
 	}
 
-	return db.linkGroupRepos(ge.ID, ge.RepoSlugs)
+	return db.linkGroupRepos(group.ID, ge.RepoSlugs)
 }
 
 // linkGroupRepos links repos to a group by resolving slugs.
