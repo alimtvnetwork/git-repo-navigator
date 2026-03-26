@@ -1,12 +1,12 @@
 package constants
 
-// Project type stable UUIDs.
+// Project type IDs matching seed order in SQLSeedProjectTypes.
 const (
-	ProjectTypeGoID     = "b3f1a2c4-5d6e-4f7a-8b9c-0d1e2f3a4b5c"
-	ProjectTypeNodeID   = "c4d2b3e5-6f7a-4e8b-9c0d-1e2f3a4b5c6d"
-	ProjectTypeReactID  = "d5e3c4f6-7a8b-4f9c-0d1e-2f3a4b5c6d7e"
-	ProjectTypeCppID    = "e6f4d5a7-8b9c-4a0d-1e2f-3a4b5c6d7e8f"
-	ProjectTypeCSharpID = "f7a5e6b8-9c0d-4b1e-2f3a-4b5c6d7e8f9a"
+	ProjectTypeGoID     int64 = 1
+	ProjectTypeNodeID   int64 = 2
+	ProjectTypeReactID  int64 = 3
+	ProjectTypeCppID    int64 = 4
+	ProjectTypeCSharpID int64 = 5
 )
 
 // Project type keys.
