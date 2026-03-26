@@ -73,6 +73,8 @@ func (db *DB) dropGroupRepos() {
 // rebuildReposTable recreates Repos with INTEGER PRIMARY KEY AUTOINCREMENT,
 // preserving all data except the old UUID IDs.
 func (db *DB) rebuildReposTable() {
+	_, _ = db.conn.Exec("PRAGMA foreign_keys = OFF")
+
 	_, _ = db.conn.Exec("ALTER TABLE Repos RENAME TO Repos_legacy")
 
 	_, _ = db.conn.Exec(constants.SQLCreateRepos)
@@ -83,4 +85,5 @@ func (db *DB) rebuildReposTable() {
 		FROM Repos_legacy`)
 
 	_, _ = db.conn.Exec("DROP TABLE IF EXISTS Repos_legacy")
+	_, _ = db.conn.Exec("PRAGMA foreign_keys = ON")
 }
