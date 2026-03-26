@@ -200,6 +200,19 @@ func initVerboseLog() {
 The release workflow emits verbose log entries at each stage.
 All entries follow the `prefix: detail` convention.
 
+### Asset Collection (`github.go`)
+
+Logged when user-provided assets are resolved from `--assets`:
+
+```
+assets: collected 3 file(s) from directory dist/
+assets: gitmap_v2.5.0_linux_amd64
+assets: gitmap_v2.5.0_darwin_arm64
+assets: gitmap_v2.5.0_windows_amd64.exe
+assets: single file build/output.tar.gz
+assets: path not found: missing/dir
+```
+
 ### Staging Directory (`assets.go`)
 
 Logged when the release-assets staging directory is created or removed:
@@ -242,6 +255,18 @@ Logged when persistent zip groups are resolved and built:
 ```
 zip-group: processing group "chrome-extension-v2"
 zip-group: 2 group(s) produced 2 archive(s)
+```
+
+### Ad-Hoc Zip Archives (`workflowfinalize.go`)
+
+Logged when ad-hoc `-Z` items are bundled:
+
+```
+ad-hoc-zip: 3 item(s), bundle=my-bundle
+ad-hoc-zip: item src/config.json
+ad-hoc-zip: item assets/logo.png
+ad-hoc-zip: item docs/
+ad-hoc-zip: produced 1 archive(s)
 ```
 
 ### Zip Group Archives (`ziparchive.go`)
