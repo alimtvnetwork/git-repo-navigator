@@ -1,7 +1,7 @@
+// Package cmd implements CLI command handlers for gitmap.
 package cmd
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/release"
 	"github.com/user/gitmap/store"
 )
@@ -34,7 +35,11 @@ func runTempReleaseCreate(args []string) {
 	}
 
 	validateSequenceRange(start, count, digitCount)
+	executeTRCreate(db, count, prefix, digitCount, start, dryRun)
+}
 
+// executeTRCreate fetches commits and creates branches or prints dry-run.
+func executeTRCreate(db *store.DB, count int, prefix string, digitCount, start int, dryRun bool) {
 	commits, err := release.ListRecentCommits(count)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrBareFmt, err)
@@ -189,6 +194,11 @@ func runTempReleaseList(args []string) {
 		return
 	}
 
+	printTRList(releases)
+}
+
+// printTRList prints temp-release records in terminal format.
+func printTRList(releases []model.TempRelease) {
 	if len(releases) == 0 {
 		fmt.Print(constants.MsgTRListEmpty)
 
@@ -221,162 +231,4 @@ func hasListFlag(args []string, flag string) bool {
 	}
 
 	return false
-}
-
-// runTempReleaseRemove handles "tr remove <version>|<v1> to <v2>|all".
-func runTempReleaseRemove(args []string) {
-	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, constants.ErrTRRemoveUsage)
-		os.Exit(1)
-	}
-
-	if args[0] == "all" {
-		removeTempReleaseAll()
-
-		return
-	}
-
-	if len(args) >= 3 && args[1] == "to" {
-		removeTempReleaseRange(args[0], args[2])
-
-		return
-	}
-
-	removeTempReleaseSingle(args[0])
-}
-
-// removeTempReleaseSingle removes one temp-release branch.
-func removeTempReleaseSingle(version string) {
-	branchName := resolveTRBranch(version)
-
-	fmt.Printf(constants.MsgTRRemovePrompt, branchName)
-	if !confirmAction() {
-		return
-	}
-
-	removeBranches([]string{branchName})
-	fmt.Printf(constants.MsgTRRemovedOne, branchName)
-}
-
-// removeTempReleaseRange removes branches from v1 to v2.
-func removeTempReleaseRange(from, to string) {
-	db, err := openDB()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, constants.ErrListDBFailed, err)
-		os.Exit(1)
-	}
-	defer db.Close()
-	db.Migrate()
-
-	releases, _ := db.ListTempReleases()
-	fromBranch := resolveTRBranch(from)
-	toBranch := resolveTRBranch(to)
-
-	var targets []string
-
-	inRange := false
-	for _, r := range releases {
-		if r.Branch == fromBranch {
-			inRange = true
-		}
-		if inRange {
-			targets = append(targets, r.Branch)
-		}
-		if r.Branch == toBranch {
-			break
-		}
-	}
-
-	if len(targets) == 0 {
-		fmt.Print(constants.MsgTRNoneToRemove)
-
-		return
-	}
-
-	fmt.Printf(constants.MsgTRRemoveRange, len(targets))
-	for _, b := range targets {
-		fmt.Printf(constants.MsgTRRemoveBranch, b)
-	}
-
-	fmt.Print(constants.MsgTRRemoveConfirm)
-	if !confirmAction() {
-		return
-	}
-
-	removeBranches(targets)
-	cleanupTRFromDB(db, targets)
-	fmt.Printf(constants.MsgTRRemoved, len(targets))
-}
-
-// removeTempReleaseAll removes all temp-release branches.
-func removeTempReleaseAll() {
-	db, err := openDB()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, constants.ErrListDBFailed, err)
-		os.Exit(1)
-	}
-	defer db.Close()
-	db.Migrate()
-
-	releases, _ := db.ListTempReleases()
-	if len(releases) == 0 {
-		fmt.Print(constants.MsgTRNoneToRemove)
-
-		return
-	}
-
-	var branches []string
-	for _, r := range releases {
-		branches = append(branches, r.Branch)
-	}
-
-	fmt.Printf(constants.MsgTRRemoveAll, len(branches))
-	for _, b := range branches {
-		fmt.Printf(constants.MsgTRRemoveBranch, b)
-	}
-
-	fmt.Print(constants.MsgTRRemoveConfirm)
-	if !confirmAction() {
-		return
-	}
-
-	removeBranches(branches)
-	_ = db.DeleteAllTempReleases()
-	fmt.Printf(constants.MsgTRRemoved, len(branches))
-}
-
-// resolveTRBranch adds the temp-release/ prefix if not present.
-func resolveTRBranch(version string) string {
-	if strings.HasPrefix(version, constants.TempReleaseBranchPrefix) {
-		return version
-	}
-
-	return constants.TempReleaseBranchPrefix + version
-}
-
-// removeBranches deletes branches locally and from remote.
-func removeBranches(branches []string) {
-	for _, b := range branches {
-		_ = release.DeleteLocalBranch(b)
-	}
-
-	if len(branches) > 0 {
-		_ = release.DeleteRemoteBranches(branches)
-	}
-}
-
-// cleanupTRFromDB removes temp-release records from the database.
-func cleanupTRFromDB(db *store.DB, branches []string) {
-	for _, b := range branches {
-		_ = db.DeleteTempRelease(b)
-	}
-}
-
-// confirmAction reads a y/N prompt from stdin.
-func confirmAction() bool {
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	input = strings.TrimSpace(strings.ToLower(input))
-
-	return input == "y" || input == "yes"
 }
