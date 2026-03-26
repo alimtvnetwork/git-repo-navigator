@@ -117,7 +117,7 @@ const (
 // Terminal clone help text.
 const (
 	TermCloneStep1     = "  1. Copy the output files to the target machine:"
-	TermCloneCmd1      = "     gitmap-output/gitmap.json  (or .csv / .txt)"
+	TermCloneCmd1      = "     .gitmap/output/gitmap.json  (or .csv / .txt)"
 	TermCloneStep2     = "  2. Clone via JSON (shorthand):"
 	TermCloneCmd2      = "     gitmap clone json --target-dir ./projects"
 	TermCloneCmd2Alt   = "     gitmap c json               # alias"
