@@ -37,6 +37,10 @@ func GenerateChecksums(assets []string) (string, error) {
 			continue
 		}
 
+		if verbose.IsEnabled() {
+			verbose.Get().Log("checksum: %s  sha256:%s", filepath.Base(asset), hash)
+		}
+
 		fmt.Fprintf(file, "%s  %s\n", hash, filepath.Base(asset))
 	}
 
