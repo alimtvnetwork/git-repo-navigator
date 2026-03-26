@@ -60,6 +60,21 @@ func buildOneZipGroup(db *store.DB, name, stagingDir string) (string, error) {
 		return "", fmt.Errorf("empty group")
 	}
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("zip-group %q: %d item(s)", name, len(items))
+		for _, item := range items {
+			p := item.FullPath
+			if len(p) == 0 {
+				p = item.Path
+			}
+			kind := "file"
+			if item.IsFolder {
+				kind = "folder"
+			}
+			verbose.Get().Log("  → %s (%s)", p, kind)
+		}
+	}
+
 	archiveName := resolveArchiveName(group)
 	archivePath := filepath.Join(stagingDir, archiveName)
 
