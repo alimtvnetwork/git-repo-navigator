@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.34.0
+- Bumped compiled version constant to v2.34.0.
+- Fixed `list-releases` to read `.release/v*.json` from the current repo first, falling back to the database only when no local files exist.
+- Added `SourceRepo` constant to release model for repo-sourced release records.
+
 ## v2.33.0
 - Bumped compiled version constant to v2.33.0.
 - Fixed auto-commit push rejection when remote branch advances during release: added `pull --rebase` recovery with single retry.
