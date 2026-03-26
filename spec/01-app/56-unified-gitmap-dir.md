@@ -162,9 +162,16 @@ localdirs.MigrateLegacyDirs()
 
 ### Doctor Check
 
-The existing doctor check (step 12) still warns if legacy directories exist,
-but after migration runs automatically, this check acts as a safety net for
-edge cases where migration was skipped (e.g., target already existed).
+Legacy directory warnings have been removed from the doctor command since
+migration now handles cleanup automatically. No manual intervention is needed.
+
+### Scan Output Path
+
+The `scan` command always writes output to `.gitmap/output/` relative to the
+scanned directory root. The `resolveOutputDir` function enforces this by
+joining `scanDir + .gitmap + output`, ignoring the config `outputDir` value
+unless it is an absolute path. This means users never see output in a
+top-level `output/` or `gitmap-output/` folder.
 
 ## Not In Scope
 

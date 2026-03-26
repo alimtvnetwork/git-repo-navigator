@@ -35,10 +35,10 @@ Update `src/data/` and `src/pages/` references.
 ### Step 7 — Update memory files
 Update `.lovable/memory/` references.
 
-### Step 8 — Add doctor check for old directories
-Add warning in `doctor` if `.release/` or `gitmap-output/` exist at repo root.
+### Step 8 — Doctor check simplified
+Legacy directory warnings removed from doctor; migration handles cleanup automatically.
 
-### Step 9 — Bump version and changelog
+### Step 9 — Bump version and changelog (v2.36.3)
 
 ### Step 10 — Automatic legacy directory migration
 Add shared migration logic and call it at CLI startup plus after `release`
