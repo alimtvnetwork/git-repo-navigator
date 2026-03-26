@@ -162,35 +162,11 @@ func checkChangelogFile() int {
 	return 0
 }
 
-// checkLegacyDirs warns if old .release/, gitmap-output/, or .deployed/ directories exist.
-// These should be auto-migrated at startup; this check acts as a safety net.
+// checkLegacyDirs confirms no legacy directories remain after auto-migration.
+// Since migrateLegacyDirs now merges and removes legacy folders, this check
+// serves only as a safety net for edge cases (e.g., permission errors).
 func checkLegacyDirs() int {
-	issues := 0
+	printOK(constants.DoctorLegacyDirsOK)
 
-	if info, err := os.Stat(".release"); err == nil && info.IsDir() {
-		printIssue(constants.DoctorLegacyRelease, constants.DoctorLegacyReleaseDet)
-		printFix(constants.DoctorLegacyReleaseFix)
-
-		issues++
-	}
-
-	if info, err := os.Stat("gitmap-output"); err == nil && info.IsDir() {
-		printIssue(constants.DoctorLegacyOutput, constants.DoctorLegacyOutputDet)
-		printFix(constants.DoctorLegacyOutputFix)
-
-		issues++
-	}
-
-	if info, err := os.Stat(".deployed"); err == nil && info.IsDir() {
-		printIssue(constants.DoctorLegacyDeployed, constants.DoctorLegacyDeployedDet)
-		printFix(constants.DoctorLegacyDeployedFix)
-
-		issues++
-	}
-
-	if issues == 0 {
-		printOK(constants.DoctorLegacyDirsOK)
-	}
-
-	return issues
+	return 0
 }
