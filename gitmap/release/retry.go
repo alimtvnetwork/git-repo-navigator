@@ -32,6 +32,10 @@ func withRetry(label string, maxAttempts int, fn func() error) error {
 			return nil
 		}
 
+		if verbose.IsEnabled() {
+			verbose.Get().Log("retry: %s attempt %d/%d failed: %v", label, attempt, maxAttempts, lastErr)
+		}
+
 		if attempt < maxAttempts {
 			waitAndLog(label, attempt, maxAttempts)
 		}
