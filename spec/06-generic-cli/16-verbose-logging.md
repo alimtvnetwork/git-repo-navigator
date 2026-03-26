@@ -200,6 +200,19 @@ func initVerboseLog() {
 The release workflow emits verbose log entries at each stage.
 All entries follow the `prefix: detail` convention.
 
+### Asset Collection (`github.go`)
+
+Logged when user-provided assets are resolved from `--assets`:
+
+```
+assets: collected 3 file(s) from directory dist/
+assets: gitmap_v2.5.0_linux_amd64
+assets: gitmap_v2.5.0_darwin_arm64
+assets: gitmap_v2.5.0_windows_amd64.exe
+assets: single file build/output.tar.gz
+assets: path not found: missing/dir
+```
+
 ### Staging Directory (`assets.go`)
 
 Logged when the release-assets staging directory is created or removed:
