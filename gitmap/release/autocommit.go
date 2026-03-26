@@ -90,7 +90,7 @@ func parsePorcelainOutput(output string) []string {
 	return files
 }
 
-// classifyFiles separates .release/ files from everything else.
+// classifyFiles separates .gitmap/release/ files from everything else.
 func classifyFiles(files []string) (releaseFiles, otherFiles []string) {
 	for _, f := range files {
 		if strings.HasPrefix(f, constants.DefaultReleaseDir+"/") || f == constants.DefaultReleaseDir {
