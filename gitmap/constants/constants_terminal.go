@@ -16,7 +16,7 @@ const (
 	StatusBannerTop    = "╔══════════════════════════════════════╗"
 	StatusBannerTitle  = "║         gitmap status                ║"
 	StatusBannerBottom = "╚══════════════════════════════════════╝"
-	StatusRepoCountFmt = "%d repos from gitmap-output/gitmap.json"
+	StatusRepoCountFmt = "%d repos from .gitmap/output/gitmap.json"
 )
 
 // Status indicator strings.
