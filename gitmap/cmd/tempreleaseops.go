@@ -208,7 +208,7 @@ func printTRList(releases []model.TempRelease) {
 	fmt.Printf(constants.MsgTRListHeader, len(releases))
 
 	for _, r := range releases {
-		short := r.Commit
+		short := r.CommitSha
 		if len(short) > constants.ShaDisplayLength {
 			short = short[:constants.ShaDisplayLength]
 		}
