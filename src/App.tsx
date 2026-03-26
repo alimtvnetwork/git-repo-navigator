@@ -35,6 +35,7 @@ import AliasPage from "./pages/Alias";
 import SSHPage from "./pages/SSH";
 import PrunePage from "./pages/Prune";
 import DoctorPage from "./pages/Doctor";
+import TempReleasePage from "./pages/TempRelease";
 
 const queryClient = new QueryClient();
 
