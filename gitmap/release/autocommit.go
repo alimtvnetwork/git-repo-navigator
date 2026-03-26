@@ -112,11 +112,19 @@ func commitReleaseOnly(files []string, msg string) AutoCommitResult {
 		return AutoCommitResult{}
 	}
 
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: staged %d release file(s)", len(files))
+	}
+
 	err = commitStaged(msg)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, constants.ErrAutoCommitFailed, err)
 
 		return AutoCommitResult{}
+	}
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: committed release-only: %s", msg)
 	}
 
 	fmt.Printf(constants.MsgAutoCommitReleaseOnly, msg)
@@ -129,6 +137,11 @@ func commitReleaseOnly(files []string, msg string) AutoCommitResult {
 	}
 
 	branch, _ := CurrentBranchName()
+
+	if verbose.IsEnabled() {
+		verbose.Get().Log("autocommit: pushed to %s", branch)
+	}
+
 	fmt.Printf(constants.MsgAutoCommitPushed, branch)
 
 	return AutoCommitResult{Committed: true, Message: msg}
