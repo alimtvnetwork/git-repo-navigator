@@ -21,7 +21,7 @@ const (
 
 // SQL: create ZipGroups table.
 const SQLCreateZipGroups = `CREATE TABLE IF NOT EXISTS ZipGroups (
-	Id          TEXT PRIMARY KEY,
+	Id          INTEGER PRIMARY KEY AUTOINCREMENT,
 	Name        TEXT NOT NULL UNIQUE,
 	ArchiveName TEXT DEFAULT '',
 	CreatedAt   TEXT DEFAULT CURRENT_TIMESTAMP
