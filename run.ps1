@@ -22,6 +22,8 @@
     -R accepts ALL gitmap CLI arguments after it (scan, clone, help, flags, paths).
     If -R is used with no arguments, it defaults to: scan <parent folder>
     -t runs all Go unit tests and writes reports to gitmap/data/unit-test-reports/.
+    -ForcePull automatically discards local changes and removes untracked files
+    before pulling. Useful for CI or unattended builds.
 #>
 
 [CmdletBinding(PositionalBinding=$false)]
