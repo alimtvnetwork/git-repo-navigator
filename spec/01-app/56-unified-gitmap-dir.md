@@ -111,11 +111,54 @@ Projects using gitmap should add `.gitmap/output/` to their `.gitignore`.
 The `.gitmap/release/` directory should remain tracked (release metadata is
 committed). The `.gitmap/` root itself should NOT be gitignored.
 
-## Backward Compatibility
+## Automatic Migration
 
-No automatic migration of existing `.release/` or `gitmap-output/` folders.
-The `doctor` command should gain a check that warns if old directories exist
-and suggests moving them.
+When any gitmap command runs and detects a legacy directory in the current
+working directory, it automatically moves the contents to `.gitmap/`:
+
+| Legacy Directory   | Target                | Trigger                        |
+|--------------------|-----------------------|--------------------------------|
+| `gitmap-output/`   | `.gitmap/output/`     | Any command that writes output |
+| `.release/`        | `.gitmap/release/`    | Any command that reads/writes release metadata |
+| `.deployed/`       | `.gitmap/deployed/`   | Any command that reads/writes deploy state |
+
+### Migration Rules
+
+1. **Detection**: Check if the legacy directory exists at the working directory root.
+2. **Create parent**: Ensure `.gitmap/` exists (create if missing).
+3. **Move**: Rename the legacy directory to its new location under `.gitmap/`.
+4. **Skip if target exists**: If the target directory already exists, do NOT
+   overwrite — print a warning and leave both directories in place.
+5. **Log**: Print a single-line message per migration:
+   `Migrated <old>/ → .gitmap/<new>/`
+6. **No database changes**: The SQLite database remains binary-relative in
+   `data/` and is completely unaffected.
+
+### Implementation
+
+A single `migrateIfNeeded()` function in a new `cmd/migrate.go` file,
+called early in the root command's `PersistentPreRun`. It checks all three
+legacy directories and migrates each independently.
+
+```go
+// migrateLegacyDirs moves old directories into .gitmap/ if found.
+func migrateLegacyDirs() {
+    migrations := []struct{ old, sub string }{
+        {"gitmap-output", "output"},
+        {".release", "release"},
+        {".deployed", "deployed"},
+    }
+    for _, m := range migrations {
+        migrateSingleDir(m.old, m.sub)
+    }
+}
+```
+
+### Doctor Check
+
+The existing doctor check (step 12) still warns if legacy directories exist,
+but after migration runs automatically, this check acts as a safety net for
+edge cases where migration was skipped (e.g., target already existed).
 
 ## Not In Scope
 
