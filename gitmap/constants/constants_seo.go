@@ -133,7 +133,7 @@ const TableCommitTemplates = "CommitTemplates"
 
 // CommitTemplates SQL.
 const SQLCreateCommitTemplates = `CREATE TABLE IF NOT EXISTS CommitTemplates (
-	Id        TEXT PRIMARY KEY,
+	Id        INTEGER PRIMARY KEY AUTOINCREMENT,
 	Kind      TEXT NOT NULL,
 	Template  TEXT NOT NULL,
 	CreatedAt TEXT NOT NULL DEFAULT (datetime('now'))
