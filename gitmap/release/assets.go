@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // BuildTarget represents a single GOOS/GOARCH pair for cross-compilation.
@@ -104,12 +105,28 @@ func CrossCompile(version string, targets []BuildTarget, packages []string, stag
 		}
 
 		for _, t := range targets {
+			if verbose.IsEnabled() {
+				verbose.Get().Log("build: %s/%s → %s", t.GOOS, t.GOARCH,
+					filepath.Join(stagingDir, formatOutputName(binName+pkgSuffix, version, t)))
+			}
+
 			result := buildSingleTarget(binName+pkgSuffix, version, t, pkg, stagingDir)
 			results = append(results, result)
 
 			if result.Success {
+				if verbose.IsEnabled() {
+					info, statErr := os.Stat(result.Output)
+					if statErr == nil {
+						verbose.Get().Log("build: %s/%s complete (%d bytes)", t.GOOS, t.GOARCH, info.Size())
+					}
+				}
+
 				fmt.Printf(constants.MsgAssetBuilt, filepath.Base(result.Output), t.GOOS, t.GOARCH)
 			} else {
+				if verbose.IsEnabled() {
+					verbose.Get().Log("build: %s/%s failed: %s", t.GOOS, t.GOARCH, result.Error)
+				}
+
 				fmt.Fprintf(os.Stderr, constants.ErrAssetBuildFailed, t.GOOS, t.GOARCH, result.Error)
 			}
 		}

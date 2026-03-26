@@ -200,6 +200,16 @@ func initVerboseLog() {
 The release workflow emits verbose log entries at each stage.
 All entries follow the `prefix: detail` convention.
 
+### Cross-Compilation (`assets.go`)
+
+Logged before and after each GOOS/GOARCH build:
+
+```
+build: linux/amd64 → assets/staging/gitmap_v2.5.0_linux_amd64
+build: linux/amd64 complete (4821504 bytes)
+build: windows/arm64 failed: unsupported GOARCH
+```
+
 ### Compression (`compress.go`)
 
 Logged after each asset is compressed into `.zip` or `.tar.gz`:
