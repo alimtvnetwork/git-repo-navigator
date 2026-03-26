@@ -71,7 +71,7 @@ func WriteReleaseMeta(meta ReleaseMeta) error {
 	return writeJSON(metaFilePath(v), meta)
 }
 
-// WriteLatest updates .release/latest.json if the version is the highest stable.
+// WriteLatest updates .gitmap/release/latest.json if the version is the highest stable.
 func WriteLatest(v Version) error {
 	if latestIsHigher(v) {
 		return nil
