@@ -24,6 +24,7 @@ import {
   Link2,
   KeyRound,
   Stethoscope,
+  Layers,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -73,6 +74,7 @@ const navItems = [
   { title: "Aliases", url: "/alias", icon: Link2 },
   { title: "SSH Keys", url: "/ssh", icon: KeyRound },
   { title: "Prune", url: "/prune", icon: Archive },
+  { title: "Temp Release", url: "/temp-release", icon: Layers },
   { title: "Doctor", url: "/doctor", icon: Stethoscope },
 ];
 
