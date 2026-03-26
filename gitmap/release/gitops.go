@@ -8,6 +8,7 @@ import (
 	"os/exec"
 
 	"github.com/user/gitmap/constants"
+	"github.com/user/gitmap/verbose"
 )
 
 // CreateBranch creates a release branch from the given source ref.
