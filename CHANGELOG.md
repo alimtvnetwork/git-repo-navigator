@@ -6,6 +6,7 @@
 - Added release rollback integration test (`rollback_test.go`): 5 test cases verifying branch/tag cleanup on simulated push failure.
 - Added end-to-end release test (`e2e_test.go`): full cycle from version bump through metadata commit on a temp repo with bare remote.
 - E2E edge-case coverage: dry-run (no side effects), no-commit (staged only), skip-meta (no JSON), and duplicate version blocking.
+- Added edge-case test suite (`edgecase_test.go`): pre-release parsing/comparison, bump resolution (all levels, from-zero, from-prerelease), parse validation, version ordering, multi-release sequences, out-of-order metadata, and rc-to-stable promotion.
 
 ## v2.36.6 — Wave 2 Refactoring (14 Files)
 - Split `assets.go` → `assets.go` + `assetsbuild.go` (build helpers: `buildSingleTarget`, `buildEnv`).
