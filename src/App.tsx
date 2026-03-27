@@ -36,6 +36,7 @@ import SSHPage from "./pages/SSH";
 import PrunePage from "./pages/Prune";
 import DoctorPage from "./pages/Doctor";
 import TempReleasePage from "./pages/TempRelease";
+import DashboardPage from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,7 @@ const App = () => (
           <Route path="/prune" element={<PrunePage />} />
           <Route path="/doctor" element={<DoctorPage />} />
           <Route path="/temp-release" element={<TempReleasePage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -944,4 +944,28 @@ export const commands: CommandDef[] = [
       { name: "temp-release", description: "Dedicated docs page", url: "/temp-release" },
     ],
   },
+
+  // --- Visualization ---
+  {
+    category: "history",
+    name: "dashboard", alias: "db", description: "Generate an interactive HTML dashboard for a repo",
+    usage: "gitmap dashboard [flags]",
+    flags: [
+      { flag: "--limit <n>", description: "Maximum number of commits to include" },
+      { flag: "--since <date>", description: "Only include commits after this date (YYYY-MM-DD)" },
+      { flag: "--no-merges", description: "Exclude merge commits from the output" },
+      { flag: "--out-dir <path>", description: "Output directory for dashboard files" },
+      { flag: "--open", description: "Open the generated dashboard in the default browser" },
+    ],
+    examples: [
+      { command: "gitmap dashboard", description: "Generate full dashboard" },
+      { command: "gitmap db --limit 100 --open", description: "Last 100 commits, open in browser" },
+      { command: "gitmap dashboard --since 2025-01-01 --no-merges", description: "Filtered output" },
+    ],
+    seeAlso: [
+      { name: "stats", description: "Aggregated command usage statistics" },
+      { name: "history", description: "Command execution history" },
+      { name: "dashboard", description: "Dedicated docs page", url: "/dashboard" },
+    ],
+  },
 ];
