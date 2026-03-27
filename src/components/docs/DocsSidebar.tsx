@@ -76,6 +76,7 @@ const navItems = [
   { title: "Prune", url: "/prune", icon: Archive },
   { title: "Temp Release", url: "/temp-release", icon: Layers },
   { title: "Doctor", url: "/doctor", icon: Stethoscope },
+  { title: "Dashboard", url: "/dashboard", icon: BarChart3 },
 ];
 
 export function DocsSidebar() {

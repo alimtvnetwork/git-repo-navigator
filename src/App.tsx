@@ -79,6 +79,7 @@ const App = () => (
           <Route path="/prune" element={<PrunePage />} />
           <Route path="/doctor" element={<DoctorPage />} />
           <Route path="/temp-release" element={<TempReleasePage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
