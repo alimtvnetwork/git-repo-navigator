@@ -18,18 +18,27 @@ import (
 func runPull(args []string) {
 	checkHelp("pull", args)
 	requireOnline()
-	slug, groupName, all, verboseMode := parsePullFlags(args)
+	slug, groupName, all, verboseMode, stopOnFail := parsePullFlags(args)
 	if verboseMode {
 		initVerboseLog()
 	}
 	records := resolvePullTargets(slug, groupName, all)
 
 	prog := cloner.NewBatchProgress(len(records), "Pull", false)
+	prog.SetStopOnFail(stopOnFail)
 	for _, rec := range records {
+		if prog.Stopped() {
+			break
+		}
 		prog.BeginItem(rec.RepoName)
 		pullOneRepoTracked(rec, prog)
 	}
 	prog.PrintSummary()
+	prog.PrintFailureReport()
+
+	if code := prog.ExitCodeForBatch(); code != 0 {
+		os.Exit(code)
+	}
 }
 
 // parsePullFlags parses flags for the pull command.
