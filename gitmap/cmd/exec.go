@@ -69,7 +69,7 @@ func execOneRepoTracked(rec model.ScanRecord, gitArgs []string, prog *cloner.Bat
 		return 1, 0, 0
 	}
 
-	prog.Fail()
+	prog.FailWithError(rec.RepoName, "command exited with non-zero status")
 
 	return 0, 1, 0
 }
