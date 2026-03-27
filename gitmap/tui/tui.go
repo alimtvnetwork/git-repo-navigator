@@ -27,21 +27,22 @@ const (
 
 // rootModel is the top-level Bubble Tea model.
 type rootModel struct {
-	db        *store.DB
-	repos     []model.ScanRecord
-	groups    []model.Group
-	activeTab int
-	width     int
-	height    int
-	browser   browserModel
-	actions   actionsModel
-	groupsMgr groupsModel
-	dashboard dashboardModel
-	releases  releasesModel
-	zipGroups zipGroupsModel
-	aliases   aliasesModel
-	logs      logsModel
-	quitting  bool
+	db           *store.DB
+	repos        []model.ScanRecord
+	groups       []model.Group
+	activeTab    int
+	width        int
+	height       int
+	browser      browserModel
+	actions      actionsModel
+	groupsMgr    groupsModel
+	dashboard    dashboardModel
+	releases     releasesModel
+	tempReleases tempReleasesModel
+	zipGroups    zipGroupsModel
+	aliases      aliasesModel
+	logs         logsModel
+	quitting     bool
 }
 
 // Run launches the interactive TUI.
