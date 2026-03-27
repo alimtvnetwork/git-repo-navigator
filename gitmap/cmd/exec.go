@@ -104,15 +104,16 @@ func execOneRepo(rec model.ScanRecord, gitArgs []string) (int, int, int) {
 	return 0, 0, 1
 }
 
-// parseExecFlags parses --group and --all flags, returning remaining args as git args.
-func parseExecFlags(args []string) (groupName string, all bool, gitArgs []string) {
+// parseExecFlags parses --group, --all, and --stop-on-fail flags, returning remaining args as git args.
+func parseExecFlags(args []string) (groupName string, all, stopOnFail bool, gitArgs []string) {
 	fs := flag.NewFlagSet(constants.CmdExec, flag.ExitOnError)
 	gFlag := fs.String("group", "", constants.FlagDescGroup)
 	fs.StringVar(gFlag, "g", "", constants.FlagDescGroup)
 	aFlag := fs.Bool("all", false, constants.FlagDescAll)
+	sFlag := fs.Bool(constants.FlagStopOnFail, false, constants.FlagDescStopOnFail)
 	fs.Parse(args)
 
-	return *gFlag, *aFlag, fs.Args()
+	return *gFlag, *aFlag, *sFlag, fs.Args()
 }
 
 // loadExecByScope returns records filtered by alias, group, all DB repos, or JSON fallback.
