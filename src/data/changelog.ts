@@ -5,6 +5,15 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.36.7",
+    items: [
+      "Added SkipMeta integration test: 6 test cases verifying SkipMeta prevents metadata and latest.json creation.",
+      "Added release rollback integration test: 5 test cases verifying branch/tag cleanup on simulated push failure.",
+      "Added end-to-end release test: full cycle from version bump through metadata commit on a temp repo.",
+      "E2E edge-case coverage: dry-run, no-commit, skip-meta, and duplicate version blocking.",
+    ],
+  },
+  {
     version: "v2.36.6",
     items: [
       "Split assets.go into assets.go + assetsbuild.go (build helpers).",

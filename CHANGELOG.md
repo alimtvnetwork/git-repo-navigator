@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.36.7 — Integration Tests
+
+- Added SkipMeta integration test (`skipmeta_test.go`): 6 test cases verifying `SkipMeta: true` prevents metadata and `latest.json` creation.
+- Added release rollback integration test (`rollback_test.go`): 5 test cases verifying branch/tag cleanup on simulated push failure.
+- Added end-to-end release test (`e2e_test.go`): full cycle from version bump through metadata commit on a temp repo with bare remote.
+- E2E edge-case coverage: dry-run (no side effects), no-commit (staged only), skip-meta (no JSON), and duplicate version blocking.
+
 ## v2.36.6 — Wave 2 Refactoring (14 Files)
 - Split `assets.go` → `assets.go` + `assetsbuild.go` (build helpers: `buildSingleTarget`, `buildEnv`).
 - Split `zipgroupops.go` → `zipgroupops.go` + `zipgroupshow.go` (display: `runZipGroupList`, `expandFolder`).
