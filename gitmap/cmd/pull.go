@@ -191,7 +191,7 @@ func pullOneRepoTracked(rec model.ScanRecord, prog *cloner.BatchProgress) {
 	if result.Success {
 		prog.Succeed()
 	} else {
-		prog.Fail()
+		prog.FailWithError(rec.RepoName, result.Error)
 	}
 }
 
