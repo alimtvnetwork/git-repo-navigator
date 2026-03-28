@@ -16,8 +16,17 @@ interface SpecSectionCardProps {
   onToggle: () => void;
 }
 
-const SpecSectionCard = ({ section, isCollapsed, onToggle }: SpecSectionCardProps) => (
-  <div className="border border-border rounded-lg overflow-hidden">
+const SpecSectionCard = ({ section, isCollapsed, onToggle }: SpecSectionCardProps) => {
+  const anchorId = section.folder;
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}${window.location.pathname}#${anchorId}`;
+    navigator.clipboard.writeText(url);
+  };
+
+  return (
+  <div id={anchorId} className="border border-border rounded-lg overflow-hidden scroll-mt-20">
     <button
       onClick={onToggle}
       className="w-full bg-muted/30 px-5 py-4 border-b border-border text-left hover:bg-muted/40 transition-colors"
