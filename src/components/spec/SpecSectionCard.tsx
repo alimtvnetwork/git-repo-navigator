@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, AlertTriangle, Compass, Terminal, ChevronDown } from "lucide-react";
+import { FileText, AlertTriangle, Compass, Terminal, ChevronDown, Link as LinkIcon } from "lucide-react";
 import type { SpecSection } from "./specData";
 import SpecEntryRow from "./SpecEntryRow";
 
