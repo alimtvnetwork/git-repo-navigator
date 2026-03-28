@@ -1,5 +1,5 @@
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import DocsLayout from "@/components/docs/DocsLayout";
 import { motion } from "framer-motion";
 import { FileText, AlertTriangle, Compass, Terminal, ChevronRight } from "lucide-react";
 
