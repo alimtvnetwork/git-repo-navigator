@@ -211,8 +211,14 @@ const SpecIndexPage = () => {
         </p>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-        {sections.map((section) => (
+      <motion.div variants={container} initial="hidden" animate="show" className="space-y-8" key={query}>
+        {filtered.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            <Search className="h-8 w-8 mx-auto mb-3 opacity-40" />
+            <p className="text-sm font-mono">No specs matching "{query}"</p>
+          </div>
+        )}
+        {filtered.map((section) => (
           <motion.div key={section.folder} variants={item}>
             <div className="border border-border rounded-lg overflow-hidden">
               {/* Section header */}
