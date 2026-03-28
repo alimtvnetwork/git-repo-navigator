@@ -314,7 +314,8 @@ const SpecIndexPage = () => {
               </AnimatePresence>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </motion.div>
 
       {/* See Also */}
