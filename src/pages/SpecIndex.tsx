@@ -82,6 +82,27 @@ const SpecIndexPage = () => {
 
         <SpecSearchBar ref={inputRef} query={query} onChange={setQuery} />
 
+        {!query && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {sections.map((s) => (
+              <a
+                key={s.folder}
+                href={`#${s.folder}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCollapsed((prev) => ({ ...prev, [s.folder]: false }));
+                  requestAnimationFrame(() => {
+                    document.getElementById(s.folder)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  });
+                }}
+                className="text-xs font-mono px-2.5 py-1 rounded border border-border bg-muted/30 text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
+              >
+                {s.title}
+              </a>
+            ))}
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-6">
           <p className="text-xs text-muted-foreground/60 font-mono">
             {query
