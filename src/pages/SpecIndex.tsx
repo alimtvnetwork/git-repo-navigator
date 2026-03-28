@@ -238,9 +238,19 @@ const SpecIndexPage = () => {
           )}
         </div>
 
-        <p className="text-xs text-muted-foreground/60 font-mono mb-6">
-          {query ? `${totalResults} result${totalResults !== 1 ? "s" : ""} matching "${query}"` : `${totalResults} documents across ${sections.length} sections`}
-        </p>
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-xs text-muted-foreground/60 font-mono">
+            {query ? `${totalResults} result${totalResults !== 1 ? "s" : ""} matching "${query}"` : `${totalResults} documents across ${sections.length} sections`}
+          </p>
+          {!query && (
+            <button
+              onClick={toggleAll}
+              className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {allCollapsed ? "Expand all" : "Collapse all"}
+            </button>
+          )}
+        </div>
       </motion.div>
 
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-8" key={query}>
