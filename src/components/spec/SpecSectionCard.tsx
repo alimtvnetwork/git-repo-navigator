@@ -39,8 +39,15 @@ const SpecSectionCard = ({ section, isCollapsed, onToggle }: SpecSectionCardProp
         <h2 className="text-lg font-mono font-semibold text-foreground">
           <span className="text-muted-foreground">{section.folder}/</span> {section.title}
         </h2>
-        <span className="ml-auto text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
-          {section.entries.length} docs
+        <span
+          className="ml-auto flex items-center gap-2"
+          onClick={handleCopyLink}
+          title="Copy link to section"
+        >
+          <LinkIcon className="h-3 w-3 text-muted-foreground opacity-0 group-hover/header:opacity-100 hover:text-primary transition-all" />
+          <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
+            {section.entries.length} docs
+          </span>
         </span>
       </div>
       <p className="text-sm text-muted-foreground ml-9">{section.description}</p>
@@ -64,6 +71,7 @@ const SpecSectionCard = ({ section, isCollapsed, onToggle }: SpecSectionCardProp
       )}
     </AnimatePresence>
   </div>
-);
+  );
+};
 
 export default SpecSectionCard;
