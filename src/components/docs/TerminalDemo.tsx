@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Play, RotateCcw } from "lucide-react";
+import { TerminalLineType, TERMINAL_INPUT_DELAY, TERMINAL_OUTPUT_DELAY } from "@/constants";
 
 interface TerminalLine {
   text: string;
-  type?: "input" | "output" | "header" | "accent";
+  type?: TerminalLineType;
   delay?: number;
 }
 
