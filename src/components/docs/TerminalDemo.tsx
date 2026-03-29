@@ -50,13 +50,12 @@ const TerminalDemo = ({ title, lines, autoPlay = false }: TerminalDemoProps) => 
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
   }, [isPlaying, visibleLines, lines]);
 
-  const colorFor = (type?: string) => {
-    switch (type) {
-      case "input": return "text-[hsl(var(--terminal-foreground))]";
-      case "header": return "text-primary font-bold";
-      case "accent": return "text-primary";
-      default: return "text-[hsl(var(--foreground))]/70";
-    }
+  const colorFor = (type?: TerminalLineType) => {
+    if (type === TerminalLineType.Input) return "text-[hsl(var(--terminal-foreground))]";
+    if (type === TerminalLineType.Header) return "text-primary font-bold";
+    if (type === TerminalLineType.Accent) return "text-primary";
+
+    return "text-[hsl(var(--foreground))]/70";
   };
 
   return (
