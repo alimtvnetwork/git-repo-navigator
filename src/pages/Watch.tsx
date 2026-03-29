@@ -45,9 +45,9 @@ const TerminalPreview = () => {
   const now = new Date();
   const timeStr = now.toLocaleTimeString();
 
-  const dirty = MOCK_REPOS.filter((r) => r.status === "dirty").length;
-  const behind = MOCK_REPOS.filter((r) => r.behind > 0).length;
-  const stash = MOCK_REPOS.reduce((a, r) => a + r.stash, 0);
+  const dirty = MOCK_REPOS.filter((repo) => isDirty(repo.status)).length;
+  const behind = MOCK_REPOS.filter((repo) => hasCount(repo.behind)).length;
+  const stash = MOCK_REPOS.reduce((acc, repo) => acc + repo.stash, 0);
 
   return (
     <div className="rounded-lg border border-border overflow-hidden my-6">
