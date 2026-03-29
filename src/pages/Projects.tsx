@@ -123,7 +123,7 @@ const ProjectsPage = () => {
               <div className="text-[10px] sm:text-xs text-muted-foreground">All</div>
             </CardContent>
           </Card>
-          {(Object.entries(PROJECT_TYPES) as [ProjectType, typeof PROJECT_TYPES[ProjectType]][]).map(([key, config]) => (
+          {(Object.entries(ProjectTypes) as [ProjectType, typeof ProjectTypes[ProjectType]][]).map(([key, config]) => (
             <Card
               key={key}
               className={`cursor-pointer transition-all ${activeFilter === key ? "ring-2 ring-primary shadow-sm" : "hover:border-primary/40"}`}
