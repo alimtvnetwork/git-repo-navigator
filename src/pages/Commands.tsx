@@ -3,7 +3,7 @@ import DocsLayout from "@/components/docs/DocsLayout";
 import CommandCard from "@/components/docs/CommandCard";
 import CommandCategoryGroup from "@/components/docs/CommandCategoryGroup";
 import SearchBar from "@/components/docs/SearchBar";
-import { commands, categories } from "@/data/commands";
+import { commands, Categories } from "@/data/commands";
 
 const CommandsPage = () => {
   const [search, setSearch] = useState("");
