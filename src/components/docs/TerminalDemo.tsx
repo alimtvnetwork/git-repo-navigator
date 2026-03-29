@@ -41,9 +41,10 @@ const TerminalDemo = ({ title, lines, autoPlay = false }: TerminalDemoProps) => 
       return;
     }
 
-    const delay = lines[visibleLines]?.delay ?? (lines[visibleLines]?.type === "input" ? 600 : 120);
+    const isInput = lines[visibleLines]?.type === TerminalLineType.Input;
+    const delay = lines[visibleLines]?.delay ?? (isInput ? TERMINAL_INPUT_DELAY : TERMINAL_OUTPUT_DELAY);
     timeoutRef.current = setTimeout(() => {
-      setVisibleLines((v) => v + 1);
+      setVisibleLines((prev) => prev + 1);
     }, delay);
 
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
