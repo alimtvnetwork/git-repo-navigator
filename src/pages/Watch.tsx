@@ -2,21 +2,35 @@ import { useState, useEffect, useCallback } from "react";
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import { Monitor, RefreshCw, Clock, Zap } from "lucide-react";
+import { RepoStatus, STATUS_ICON_DIRTY, STATUS_ICON_CLEAN } from "@/constants";
 
-const MOCK_REPOS = [
-  { name: "api-gateway", status: "clean", branch: "main", ahead: 0, behind: 0, stash: 0 },
-  { name: "frontend-app", status: "dirty", branch: "feat/nav", ahead: 2, behind: 0, stash: 1 },
-  { name: "shared-lib", status: "clean", branch: "main", ahead: 0, behind: 3, stash: 0 },
-  { name: "docs-site", status: "dirty", branch: "update-faq", ahead: 1, behind: 1, stash: 0 },
-  { name: "infra-config", status: "clean", branch: "main", ahead: 0, behind: 0, stash: 2 },
-  { name: "mobile-app", status: "clean", branch: "develop", ahead: 0, behind: 5, stash: 0 },
+interface MockRepo {
+  name: string;
+  status: RepoStatus;
+  branch: string;
+  ahead: number;
+  behind: number;
+  stash: number;
+}
+
+const MOCK_REPOS: MockRepo[] = [
+  { name: "api-gateway", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 0, stash: 0 },
+  { name: "frontend-app", status: RepoStatus.Dirty, branch: "feat/nav", ahead: 2, behind: 0, stash: 1 },
+  { name: "shared-lib", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 3, stash: 0 },
+  { name: "docs-site", status: RepoStatus.Dirty, branch: "update-faq", ahead: 1, behind: 1, stash: 0 },
+  { name: "infra-config", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 0, stash: 2 },
+  { name: "mobile-app", status: RepoStatus.Clean, branch: "develop", ahead: 0, behind: 5, stash: 0 },
 ];
 
-const statusColor = (s: string) =>
-  s === "dirty" ? "text-yellow-400" : "text-primary";
+const isDirty = (status: RepoStatus): boolean => status === RepoStatus.Dirty;
 
-const countColor = (n: number) =>
-  n > 0 ? "text-yellow-400" : "text-muted-foreground";
+const statusColor = (status: RepoStatus) =>
+  isDirty(status) ? "text-yellow-400" : "text-primary";
+
+const hasCount = (count: number): boolean => count > 0;
+
+const countColor = (count: number) =>
+  hasCount(count) ? "text-yellow-400" : "text-muted-foreground";
 
 const TerminalPreview = () => {
   const [tick, setTick] = useState(0);
