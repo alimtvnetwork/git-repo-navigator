@@ -68,8 +68,9 @@ const ProjectsPage = () => {
   const filtered = SAMPLE_PROJECTS.filter((project) => {
     if (activeFilter !== FILTER_ALL && project.projectType !== activeFilter) return false;
     if (search.length > 0) {
-      const q = search.toLowerCase();
-      return p.projectName.toLowerCase().includes(q) || p.repoName.toLowerCase().includes(q) || p.absolutePath.toLowerCase().includes(q);
+      const searchLower = search.toLowerCase();
+
+      return project.projectName.toLowerCase().includes(searchLower) || project.repoName.toLowerCase().includes(searchLower) || project.absolutePath.toLowerCase().includes(searchLower);
     }
     return true;
   });
