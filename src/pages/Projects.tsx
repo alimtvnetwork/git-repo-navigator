@@ -65,8 +65,8 @@ const ProjectsPage = () => {
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>(FILTER_ALL);
   const [selectedProject, setSelectedProject] = useState<DetectedProject | null>(null);
 
-  const filtered = SAMPLE_PROJECTS.filter((p) => {
-    if (activeFilter !== "all" && p.projectType !== activeFilter) return false;
+  const filtered = SAMPLE_PROJECTS.filter((project) => {
+    if (activeFilter !== FILTER_ALL && project.projectType !== activeFilter) return false;
     if (search.length > 0) {
       const q = search.toLowerCase();
       return p.projectName.toLowerCase().includes(q) || p.repoName.toLowerCase().includes(q) || p.absolutePath.toLowerCase().includes(q);
