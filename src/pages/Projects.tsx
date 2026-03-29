@@ -7,8 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import ProjectDetailDialog from "@/components/projects/ProjectDetailDialog";
 import RepoGroup from "@/components/projects/RepoGroup";
-import { PROJECT_TYPES } from "@/components/projects/TypeBadge";
-import type { DetectedProject, ProjectType } from "@/components/projects/types";
+import { ProjectTypes } from "@/components/projects/TypeBadge";
+import type { DetectedProject, ProjectType, ProjectFilter } from "@/components/projects/types";
+import { FILTER_ALL } from "@/constants";
 
 const SAMPLE_PROJECTS: DetectedProject[] = [
   {
@@ -61,14 +62,15 @@ const SAMPLE_PROJECTS: DetectedProject[] = [
 
 const ProjectsPage = () => {
   const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState<ProjectType | "all">("all");
+  const [activeFilter, setActiveFilter] = useState<ProjectFilter>(FILTER_ALL);
   const [selectedProject, setSelectedProject] = useState<DetectedProject | null>(null);
 
-  const filtered = SAMPLE_PROJECTS.filter((p) => {
-    if (activeFilter !== "all" && p.projectType !== activeFilter) return false;
+  const filtered = SAMPLE_PROJECTS.filter((project) => {
+    if (activeFilter !== FILTER_ALL && project.projectType !== activeFilter) return false;
     if (search.length > 0) {
-      const q = search.toLowerCase();
-      return p.projectName.toLowerCase().includes(q) || p.repoName.toLowerCase().includes(q) || p.absolutePath.toLowerCase().includes(q);
+      const searchLower = search.toLowerCase();
+
+      return project.projectName.toLowerCase().includes(searchLower) || project.repoName.toLowerCase().includes(searchLower) || project.absolutePath.toLowerCase().includes(searchLower);
     }
     return true;
   });
@@ -114,15 +116,15 @@ const ProjectsPage = () => {
           className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3"
         >
           <Card
-            className={`cursor-pointer transition-all ${activeFilter === "all" ? "ring-2 ring-primary shadow-sm" : "hover:border-primary/40"}`}
-            onClick={() => setActiveFilter("all")}
+            className={`cursor-pointer transition-all ${activeFilter === FILTER_ALL ? "ring-2 ring-primary shadow-sm" : "hover:border-primary/40"}`}
+            onClick={() => setActiveFilter(FILTER_ALL)}
           >
             <CardContent className="p-2 sm:p-3 text-center">
               <div className="text-xl sm:text-2xl font-mono font-bold text-foreground">{SAMPLE_PROJECTS.length}</div>
               <div className="text-[10px] sm:text-xs text-muted-foreground">All</div>
             </CardContent>
           </Card>
-          {(Object.entries(PROJECT_TYPES) as [ProjectType, typeof PROJECT_TYPES[ProjectType]][]).map(([key, config]) => (
+          {(Object.entries(ProjectTypes) as [ProjectType, typeof ProjectTypes[ProjectType]][]).map(([key, config]) => (
             <Card
               key={key}
               className={`cursor-pointer transition-all ${activeFilter === key ? "ring-2 ring-primary shadow-sm" : "hover:border-primary/40"}`}

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Play, RotateCcw } from "lucide-react";
+import { TerminalLineType, TERMINAL_INPUT_DELAY, TERMINAL_OUTPUT_DELAY } from "@/constants";
 
-interface TerminalLine {
+export interface TerminalLine {
   text: string;
-  type?: "input" | "output" | "header" | "accent";
+  type?: TerminalLineType;
   delay?: number;
 }
 
@@ -40,21 +41,21 @@ const TerminalDemo = ({ title, lines, autoPlay = false }: TerminalDemoProps) => 
       return;
     }
 
-    const delay = lines[visibleLines]?.delay ?? (lines[visibleLines]?.type === "input" ? 600 : 120);
+    const isInput = lines[visibleLines]?.type === TerminalLineType.Input;
+    const delay = lines[visibleLines]?.delay ?? (isInput ? TERMINAL_INPUT_DELAY : TERMINAL_OUTPUT_DELAY);
     timeoutRef.current = setTimeout(() => {
-      setVisibleLines((v) => v + 1);
+      setVisibleLines((prev) => prev + 1);
     }, delay);
 
     return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
   }, [isPlaying, visibleLines, lines]);
 
-  const colorFor = (type?: string) => {
-    switch (type) {
-      case "input": return "text-[hsl(var(--terminal-foreground))]";
-      case "header": return "text-primary font-bold";
-      case "accent": return "text-primary";
-      default: return "text-[hsl(var(--foreground))]/70";
-    }
+  const colorFor = (type?: TerminalLineType) => {
+    if (type === TerminalLineType.Input) return "text-[hsl(var(--terminal-foreground))]";
+    if (type === TerminalLineType.Header) return "text-primary font-bold";
+    if (type === TerminalLineType.Accent) return "text-primary";
+
+    return "text-[hsl(var(--foreground))]/70";
   };
 
   return (
@@ -80,7 +81,7 @@ const TerminalDemo = ({ title, lines, autoPlay = false }: TerminalDemoProps) => 
       <div className="bg-[hsl(var(--terminal))] p-4 font-mono text-xs leading-relaxed min-h-[120px] max-h-[320px] overflow-y-auto">
         {lines.slice(0, visibleLines).map((line, i) => (
           <div key={i} className={colorFor(line.type)}>
-            {line.type === "input" && <span className="text-primary mr-1">$</span>}
+            {line.type === TerminalLineType.Input && <span className="text-primary mr-1">$</span>}
             {line.text}
           </div>
         ))}

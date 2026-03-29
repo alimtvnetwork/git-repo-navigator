@@ -2,21 +2,35 @@ import { useState, useEffect, useCallback } from "react";
 import DocsLayout from "@/components/docs/DocsLayout";
 import CodeBlock from "@/components/docs/CodeBlock";
 import { Monitor, RefreshCw, Clock, Zap } from "lucide-react";
+import { RepoStatus, STATUS_ICON_DIRTY, STATUS_ICON_CLEAN } from "@/constants";
 
-const MOCK_REPOS = [
-  { name: "api-gateway", status: "clean", branch: "main", ahead: 0, behind: 0, stash: 0 },
-  { name: "frontend-app", status: "dirty", branch: "feat/nav", ahead: 2, behind: 0, stash: 1 },
-  { name: "shared-lib", status: "clean", branch: "main", ahead: 0, behind: 3, stash: 0 },
-  { name: "docs-site", status: "dirty", branch: "update-faq", ahead: 1, behind: 1, stash: 0 },
-  { name: "infra-config", status: "clean", branch: "main", ahead: 0, behind: 0, stash: 2 },
-  { name: "mobile-app", status: "clean", branch: "develop", ahead: 0, behind: 5, stash: 0 },
+interface MockRepo {
+  name: string;
+  status: RepoStatus;
+  branch: string;
+  ahead: number;
+  behind: number;
+  stash: number;
+}
+
+const MOCK_REPOS: MockRepo[] = [
+  { name: "api-gateway", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 0, stash: 0 },
+  { name: "frontend-app", status: RepoStatus.Dirty, branch: "feat/nav", ahead: 2, behind: 0, stash: 1 },
+  { name: "shared-lib", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 3, stash: 0 },
+  { name: "docs-site", status: RepoStatus.Dirty, branch: "update-faq", ahead: 1, behind: 1, stash: 0 },
+  { name: "infra-config", status: RepoStatus.Clean, branch: "main", ahead: 0, behind: 0, stash: 2 },
+  { name: "mobile-app", status: RepoStatus.Clean, branch: "develop", ahead: 0, behind: 5, stash: 0 },
 ];
 
-const statusColor = (s: string) =>
-  s === "dirty" ? "text-yellow-400" : "text-primary";
+const isDirty = (status: RepoStatus): boolean => status === RepoStatus.Dirty;
 
-const countColor = (n: number) =>
-  n > 0 ? "text-yellow-400" : "text-muted-foreground";
+const statusColor = (status: RepoStatus) =>
+  isDirty(status) ? "text-yellow-400" : "text-primary";
+
+const hasCount = (count: number): boolean => count > 0;
+
+const countColor = (count: number) =>
+  hasCount(count) ? "text-yellow-400" : "text-muted-foreground";
 
 const TerminalPreview = () => {
   const [tick, setTick] = useState(0);
@@ -31,9 +45,9 @@ const TerminalPreview = () => {
   const now = new Date();
   const timeStr = now.toLocaleTimeString();
 
-  const dirty = MOCK_REPOS.filter((r) => r.status === "dirty").length;
-  const behind = MOCK_REPOS.filter((r) => r.behind > 0).length;
-  const stash = MOCK_REPOS.reduce((a, r) => a + r.stash, 0);
+  const dirty = MOCK_REPOS.filter((repo) => isDirty(repo.status)).length;
+  const behind = MOCK_REPOS.filter((repo) => hasCount(repo.behind)).length;
+  const stash = MOCK_REPOS.reduce((acc, repo) => acc + repo.stash, 0);
 
   return (
     <div className="rounded-lg border border-border overflow-hidden my-6">
@@ -88,24 +102,24 @@ const TerminalPreview = () => {
         </div>
 
         {/* Rows */}
-        {MOCK_REPOS.map((r) => (
-          <div key={r.name} className="text-terminal-foreground">
+        {MOCK_REPOS.map((repo) => (
+          <div key={repo.name} className="text-terminal-foreground">
             {"  "}
-            <span className="inline-block w-[170px]">{r.name}</span>
-            <span className={`inline-block w-[72px] ${statusColor(r.status)}`}>
-              {r.status === "dirty" ? "●" : "✔"} {r.status}
+            <span className="inline-block w-[170px]">{repo.name}</span>
+            <span className={`inline-block w-[72px] ${statusColor(repo.status)}`}>
+              {isDirty(repo.status) ? STATUS_ICON_DIRTY : STATUS_ICON_CLEAN} {repo.status}
             </span>
             <span className="inline-block w-[130px] text-muted-foreground">
-              {r.branch}
+              {repo.branch}
             </span>
-            <span className={`inline-block w-[48px] ${countColor(r.ahead)}`}>
-              {r.ahead}
+            <span className={`inline-block w-[48px] ${countColor(repo.ahead)}`}>
+              {repo.ahead}
             </span>
-            <span className={`inline-block w-[56px] ${countColor(r.behind)}`}>
-              {r.behind}
+            <span className={`inline-block w-[56px] ${countColor(repo.behind)}`}>
+              {repo.behind}
             </span>
-            <span className={`inline-block w-[40px] ${countColor(r.stash)}`}>
-              {r.stash}
+            <span className={`inline-block w-[40px] ${countColor(repo.stash)}`}>
+              {repo.stash}
             </span>
           </div>
         ))}

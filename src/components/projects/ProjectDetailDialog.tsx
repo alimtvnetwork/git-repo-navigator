@@ -2,8 +2,6 @@ import { format } from "date-fns";
 import {
   FolderGit2,
   Code2,
-  Braces,
-  Cpu,
   Hash,
   MapPin,
   FileText,
@@ -19,17 +17,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import type { DetectedProject, ProjectType } from "@/components/projects/types";
+import { ProjectTypes } from "@/components/projects/TypeBadge";
+import { ROOT_RELATIVE_PATH, ROOT_RELATIVE_LABEL } from "@/constants";
+import type { DetectedProject } from "@/components/projects/types";
 
-const PROJECT_TYPES: Record<ProjectType, { label: string; color: string; icon: typeof Code2 }> = {
-  go: { label: "Go", color: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border-cyan-500/30", icon: Code2 },
-  node: { label: "Node.js", color: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30", icon: Braces },
-  react: { label: "React", color: "bg-sky-500/15 text-sky-700 dark:text-sky-400 border-sky-500/30", icon: Braces },
-  cpp: { label: "C++", color: "bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30", icon: Cpu },
-  csharp: { label: "C#", color: "bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/30", icon: Hash },
-};
+interface DetailRowProps {
+  icon: typeof MapPin;
+  label: string;
+  value: string;
+}
 
-const DetailRow = ({ icon: Icon, label, value }: { icon: typeof MapPin; label: string; value: string }) => (
+const DetailRow = ({ icon: Icon, label, value }: DetailRowProps) => (
   <div className="flex items-start gap-3 py-2">
     <Icon className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
     <div className="min-w-0">
@@ -39,17 +37,18 @@ const DetailRow = ({ icon: Icon, label, value }: { icon: typeof MapPin; label: s
   </div>
 );
 
-interface Props {
+interface ProjectDetailDialogProps {
   project: DetectedProject | null;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: (isOpen: boolean) => void;
 }
 
-const ProjectDetailDialog = ({ project, open, onOpenChange }: Props) => {
+const ProjectDetailDialog = ({ project, open, onOpenChange }: ProjectDetailDialogProps) => {
   if (!project) return null;
 
-  const typeConfig = PROJECT_TYPES[project.projectType];
+  const typeConfig = ProjectTypes[project.projectType];
   const TypeIcon = typeConfig.icon;
+  const isRootPath = project.relativePath === ROOT_RELATIVE_PATH;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -71,7 +70,7 @@ const ProjectDetailDialog = ({ project, open, onOpenChange }: Props) => {
           <DetailRow
             icon={MapPin}
             label="Relative Path"
-            value={project.relativePath === "." ? "(root)" : project.relativePath}
+            value={isRootPath ? ROOT_RELATIVE_LABEL : project.relativePath}
           />
           <DetailRow icon={FileText} label="Primary Indicator" value={project.primaryIndicator} />
           <DetailRow
@@ -82,80 +81,107 @@ const ProjectDetailDialog = ({ project, open, onOpenChange }: Props) => {
         </div>
 
         {project.goMetadata && (
-          <>
-            <Separator />
-            <div className="space-y-3">
-              <h3 className="font-mono text-sm font-semibold text-foreground flex items-center gap-2">
-                <Code2 className="h-4 w-4 text-primary" />
-                Go Metadata
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-md bg-muted p-3">
-                  <span className="text-xs text-muted-foreground block">Module</span>
-                  <span className="font-mono text-sm text-foreground break-all">{project.goMetadata.moduleName}</span>
-                </div>
-                <div className="rounded-md bg-muted p-3">
-                  <span className="text-xs text-muted-foreground block">Go Version</span>
-                  <span className="font-mono text-sm text-foreground">{project.goMetadata.goVersion}</span>
-                </div>
-              </div>
-              {project.goMetadata.runnables.length > 0 && (
-                <div>
-                  <span className="text-xs text-muted-foreground block mb-2">Runnable Entry Points</span>
-                  <div className="space-y-1.5">
-                    {project.goMetadata.runnables.map((r) => (
-                      <div key={r.name} className="flex items-center gap-2 rounded-md bg-muted px-3 py-2">
-                        <FileCode className="h-3.5 w-3.5 text-primary shrink-0" />
-                        <span className="font-mono text-sm font-medium text-foreground">{r.name}</span>
-                        <span className="font-mono text-xs text-muted-foreground ml-auto truncate">{r.relativePath}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
+          <GoMetadataSection
+            moduleName={project.goMetadata.moduleName}
+            goVersion={project.goMetadata.goVersion}
+            runnables={project.goMetadata.runnables}
+          />
         )}
 
         {project.csharpMetadata && (
-          <>
-            <Separator />
-            <div className="space-y-3">
-              <h3 className="font-mono text-sm font-semibold text-foreground flex items-center gap-2">
-                <Hash className="h-4 w-4 text-primary" />
-                C# Metadata
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-md bg-muted p-3">
-                  <span className="text-xs text-muted-foreground block">Solution</span>
-                  <span className="font-mono text-sm text-foreground">{project.csharpMetadata.slnName}</span>
-                </div>
-                <div className="rounded-md bg-muted p-3">
-                  <span className="text-xs text-muted-foreground block">SDK Version</span>
-                  <span className="font-mono text-sm text-foreground">{project.csharpMetadata.sdkVersion}</span>
-                </div>
-              </div>
-              {project.csharpMetadata.projectFiles.length > 0 && (
-                <div>
-                  <span className="text-xs text-muted-foreground block mb-2">Project Files</span>
-                  <div className="space-y-1.5">
-                    {project.csharpMetadata.projectFiles.map((f) => (
-                      <div key={f.fileName} className="flex items-center gap-2 rounded-md bg-muted px-3 py-2">
-                        <FileCode className="h-3.5 w-3.5 text-primary shrink-0" />
-                        <span className="font-mono text-sm text-foreground">{f.fileName}</span>
-                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 ml-auto">{f.targetFramework}</Badge>
-                        <span className="text-xs text-muted-foreground">{f.outputType}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
+          <CSharpMetadataSection
+            slnName={project.csharpMetadata.slnName}
+            sdkVersion={project.csharpMetadata.sdkVersion}
+            projectFiles={project.csharpMetadata.projectFiles}
+          />
         )}
       </DialogContent>
     </Dialog>
   );
 };
+
+const GoMetadataSection = ({ moduleName, goVersion, runnables }: {
+  moduleName: string;
+  goVersion: string;
+  runnables: { name: string; relativePath: string }[];
+}) => {
+  const hasRunnables = runnables.length > 0;
+
+  return (
+    <>
+      <Separator />
+      <div className="space-y-3">
+        <h3 className="font-mono text-sm font-semibold text-foreground flex items-center gap-2">
+          <Code2 className="h-4 w-4 text-primary" />
+          Go Metadata
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          <MetadataCell label="Module" value={moduleName} isBreakAll />
+          <MetadataCell label="Go Version" value={goVersion} />
+        </div>
+        {hasRunnables && (
+          <div>
+            <span className="text-xs text-muted-foreground block mb-2">Runnable Entry Points</span>
+            <div className="space-y-1.5">
+              {runnables.map((runnable) => (
+                <div key={runnable.name} className="flex items-center gap-2 rounded-md bg-muted px-3 py-2">
+                  <FileCode className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <span className="font-mono text-sm font-medium text-foreground">{runnable.name}</span>
+                  <span className="font-mono text-xs text-muted-foreground ml-auto truncate">{runnable.relativePath}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+const CSharpMetadataSection = ({ slnName, sdkVersion, projectFiles }: {
+  slnName: string;
+  sdkVersion: string;
+  projectFiles: { fileName: string; targetFramework: string; outputType: string }[];
+}) => {
+  const hasProjectFiles = projectFiles.length > 0;
+
+  return (
+    <>
+      <Separator />
+      <div className="space-y-3">
+        <h3 className="font-mono text-sm font-semibold text-foreground flex items-center gap-2">
+          <Hash className="h-4 w-4 text-primary" />
+          C# Metadata
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          <MetadataCell label="Solution" value={slnName} />
+          <MetadataCell label="SDK Version" value={sdkVersion} />
+        </div>
+        {hasProjectFiles && (
+          <div>
+            <span className="text-xs text-muted-foreground block mb-2">Project Files</span>
+            <div className="space-y-1.5">
+              {projectFiles.map((file) => (
+                <div key={file.fileName} className="flex items-center gap-2 rounded-md bg-muted px-3 py-2">
+                  <FileCode className="h-3.5 w-3.5 text-primary shrink-0" />
+                  <span className="font-mono text-sm text-foreground">{file.fileName}</span>
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 ml-auto">{file.targetFramework}</Badge>
+                  <span className="text-xs text-muted-foreground">{file.outputType}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+const MetadataCell = ({ label, value, isBreakAll = false }: { label: string; value: string; isBreakAll?: boolean }) => (
+  <div className="rounded-md bg-muted p-3">
+    <span className="text-xs text-muted-foreground block">{label}</span>
+    <span className={`font-mono text-sm text-foreground ${isBreakAll ? "break-all" : ""}`}>{value}</span>
+  </div>
+);
 
 export default ProjectDetailDialog;

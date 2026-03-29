@@ -3,7 +3,7 @@ import DocsLayout from "@/components/docs/DocsLayout";
 import CommandCard from "@/components/docs/CommandCard";
 import CommandCategoryGroup from "@/components/docs/CommandCategoryGroup";
 import SearchBar from "@/components/docs/SearchBar";
-import { commands, categories } from "@/data/commands";
+import { commands, Categories } from "@/data/commands";
 
 const CommandsPage = () => {
   const [search, setSearch] = useState("");
@@ -65,7 +65,7 @@ const CommandsPage = () => {
 
       {/* Category summary banner */}
       <div className="grid grid-cols-4 md:grid-cols-8 gap-2 mb-6">
-        {categories.map((cat) => {
+        {Categories.map((cat) => {
           const count = commands.filter((c) => c.category === cat.key).length;
           return (
             <button
@@ -97,7 +97,7 @@ const CommandsPage = () => {
             )}
           </>
         ) : (
-          categories.map((cat) => {
+          Categories.map((cat) => {
             const cmds = filtered.filter((c) => c.category === cat.key);
             if (cmds.length === 0) return null;
             return (
