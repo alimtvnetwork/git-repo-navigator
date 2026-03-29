@@ -81,7 +81,7 @@ const TerminalDemo = ({ title, lines, autoPlay = false }: TerminalDemoProps) => 
       <div className="bg-[hsl(var(--terminal))] p-4 font-mono text-xs leading-relaxed min-h-[120px] max-h-[320px] overflow-y-auto">
         {lines.slice(0, visibleLines).map((line, i) => (
           <div key={i} className={colorFor(line.type)}>
-            {line.type === "input" && <span className="text-primary mr-1">$</span>}
+            {line.type === TerminalLineType.Input && <span className="text-primary mr-1">$</span>}
             {line.text}
           </div>
         ))}
