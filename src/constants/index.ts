@@ -1,8 +1,10 @@
 /** Repo status values used in watch/status displays. */
-export enum RepoStatus {
-  Clean = "clean",
-  Dirty = "dirty",
-}
+export const RepoStatus = {
+  Clean: "clean",
+  Dirty: "dirty",
+} as const;
+
+export type RepoStatus = (typeof RepoStatus)[keyof typeof RepoStatus];
 
 /** Terminal line type for animated demos. */
 export const TerminalLineType = {
