@@ -97,7 +97,7 @@ const CommandsPage = () => {
             )}
           </>
         ) : (
-          categories.map((cat) => {
+          Categories.map((cat) => {
             const cmds = filtered.filter((c) => c.category === cat.key);
             if (cmds.length === 0) return null;
             return (
