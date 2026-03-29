@@ -62,7 +62,7 @@ const SAMPLE_PROJECTS: DetectedProject[] = [
 
 const ProjectsPage = () => {
   const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState<ProjectType | "all">("all");
+  const [activeFilter, setActiveFilter] = useState<ProjectFilter>(FILTER_ALL);
   const [selectedProject, setSelectedProject] = useState<DetectedProject | null>(null);
 
   const filtered = SAMPLE_PROJECTS.filter((p) => {
