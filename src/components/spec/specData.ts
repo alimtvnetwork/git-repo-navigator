@@ -159,6 +159,7 @@ export const sections: SpecSection[] = [
       { id: "04", title: "Error Handling Patterns" },
       { id: "05", title: "File & Project Structure" },
       { id: "06", title: "Testing Patterns" },
+      { id: "07", title: "Logging & Observability" },
     ],
   },
 ];
