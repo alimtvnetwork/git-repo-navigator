@@ -169,6 +169,7 @@ export const sections: SpecSection[] = [
       { id: "14", title: "Git Workflow" },
       { id: "15", title: "Monitoring & Alerting" },
       { id: "16", title: "Concurrency Patterns" },
+      { id: "17", title: "CI/CD Patterns" },
     ],
   },
 ];
