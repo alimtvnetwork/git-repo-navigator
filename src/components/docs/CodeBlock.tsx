@@ -87,12 +87,30 @@ const DEFAULT_ACCENT = "220 10% 50%";
 const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [pinnedLines, setPinnedLines] = useState<Set<number>>(new Set());
+
+  const hasPinned = pinnedLines.size > 0;
+
+  const togglePin = useCallback((lineIndex: number) => {
+    setPinnedLines((prev) => {
+      const next = new Set(prev);
+      if (next.has(lineIndex)) next.delete(lineIndex);
+      else next.add(lineIndex);
+      return next;
+    });
+  }, []);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(code);
+    const textToCopy = hasPinned
+      ? Array.from(pinnedLines)
+          .sort((a, b) => a - b)
+          .map((i) => code.split("\n")[i])
+          .join("\n")
+      : code;
+    navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [code]);
+  }, [code, hasPinned, pinnedLines]);
 
   const handleDownload = useCallback(() => {
     const ext = LANG_EXTENSIONS[language.toLowerCase()] ?? "txt";
@@ -183,8 +201,19 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
               <span className="text-xs font-mono text-[hsl(220,10%,50%)] ml-2">— {title}</span>
             )}
             <span className="text-xs font-mono text-[hsl(220,10%,40%)] ml-2">
-              {lines.length} {lines.length === 1 ? "line" : "lines"}
+              {hasPinned
+                ? `${pinnedLines.size} selected`
+                : `${lines.length} ${lines.length === 1 ? "line" : "lines"}`}
             </span>
+            {hasPinned && (
+              <button
+                onClick={() => setPinnedLines(new Set())}
+                className="text-xs font-mono ml-2 px-1.5 py-0.5 rounded hover:bg-white/10 transition-colors"
+                style={{ color: `hsl(${accent})` }}
+              >
+                Clear
+              </button>
+            )}
           </div>
           <div className="flex items-center gap-1">
             <button
@@ -220,7 +249,14 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
                 style={{ background: "hsl(220, 14%, 9%)", color: "hsl(220, 10%, 35%)" }}
               >
                 {lines.map((_, i) => (
-                  <span key={i} className="leading-relaxed code-line-num" data-line={i}>{i + 1}</span>
+                  <span
+                    key={i}
+                    className={`leading-relaxed code-line-num cursor-pointer ${pinnedLines.has(i) ? "code-line-num-pinned" : ""}`}
+                    data-line={i}
+                    onClick={() => togglePin(i)}
+                  >
+                    {i + 1}
+                  </span>
                 ))}
               </div>
             )}
@@ -230,13 +266,19 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
                   highlightedLines.map((lineHtml, i) => (
                     <span
                       key={i}
-                      className="code-line block px-4"
+                      className={`code-line block px-4 cursor-pointer ${pinnedLines.has(i) ? "code-line-pinned" : ""}`}
+                      onClick={() => togglePin(i)}
                       dangerouslySetInnerHTML={{ __html: lineHtml || "\n" }}
                     />
                   ))
                 ) : (
                   lines.map((line, i) => (
-                    <span key={i} className="code-line block px-4" style={{ color: "hsl(220, 20%, 92%)" }}>
+                    <span
+                      key={i}
+                      className={`code-line block px-4 cursor-pointer ${pinnedLines.has(i) ? "code-line-pinned" : ""}`}
+                      onClick={() => togglePin(i)}
+                      style={{ color: "hsl(220, 20%, 92%)" }}
+                    >
                       {line || "\n"}
                     </span>
                   ))
