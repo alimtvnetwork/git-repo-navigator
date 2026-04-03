@@ -265,7 +265,7 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
                     key={i}
                     className={`leading-relaxed code-line-num cursor-pointer ${pinnedLines.has(i) ? "code-line-num-pinned" : ""}`}
                     data-line={i}
-                    onClick={() => togglePin(i)}
+                    onClick={(e) => togglePin(i, e)}
                   >
                     {i + 1}
                   </span>
