@@ -282,7 +282,7 @@ export const commands: CommandDef[] = [
   },
   {
     category: "release",
-    name: "release-self", alias: "rself", description: "Release gitmap itself from any directory",
+    name: "release-self", alias: "rs / rself", description: "Release gitmap itself from any directory",
     usage: "gitmap release-self [version] [--bump major|minor|patch] [--draft] [--dry-run]",
     flags: [
       { flag: "--assets <path>", description: "Attach files to release" },
