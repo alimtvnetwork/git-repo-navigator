@@ -195,6 +195,7 @@ const CloneNextPage = () => {
               "✓ Cloned macro-ahk-v15",
               "✓ Registered macro-ahk-v15 with GitHub Desktop",
               "✓ Removed macro-ahk-v12",
+              "→ Now in macro-ahk-v15",
             ]}
           />
 
