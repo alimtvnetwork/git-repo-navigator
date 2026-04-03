@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.48.1 — Clone-Next Auto-Navigate
+
+- `clone-next` now automatically changes into the newly cloned directory after removing the old folder.
+- Prints `→ Now in <target>` confirmation after navigating to the new clone.
+
 ## v2.48.0 — Tag Discovery & DB Caching
 
 - `list-releases` now scans git tags via `git for-each-ref` and includes tag-only releases with `source=tag`.
