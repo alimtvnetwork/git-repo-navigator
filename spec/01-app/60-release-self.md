@@ -66,7 +66,7 @@ All flags supported by `release` are accepted:
 `--dry-run`, `--compress`, `--checksums`, `--no-assets`, `--targets`,
 `--list-targets`, `--zip-group`, `-Z`, `--bundle`, `--no-commit`, `--verbose`.
 
-### 4. Output
+### 5. Output
 
 Self-release prints a preamble before the standard release output:
 
