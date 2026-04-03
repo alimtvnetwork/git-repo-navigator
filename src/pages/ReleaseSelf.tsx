@@ -98,10 +98,11 @@ const ReleaseSelfPage = () => {
           <h2 className="text-xl font-mono font-semibold text-foreground mb-3">How It Works</h2>
           <div className="space-y-3">
             {[
-              { step: "1", title: "Resolve source repo", desc: "Calls os.Executable(), resolves symlinks, and walks up the directory tree to find the nearest .git root." },
-              { step: "2", title: "Switch directory", desc: "Records the caller's working directory, then os.Chdir() into the resolved source repo root." },
-              { step: "3", title: "Execute release", desc: "Runs the full release workflow (identical to gitmap release) from the source repo." },
-              { step: "4", title: "Return to caller", desc: "os.Chdir() back to the original working directory and prints a confirmation message." },
+              { step: "1", title: "Resolve source repo", desc: "Tries os.Executable() + symlink resolution first. If that fails (e.g., binary installed outside source tree), falls back to the source_repo_path stored in the SQLite Settings table." },
+              { step: "2", title: "Check current directory", desc: "If already in the source repo, skips the directory switch and proceeds directly." },
+              { step: "3", title: "Switch directory", desc: "Records the caller's working directory, then os.Chdir() into the resolved source repo root." },
+              { step: "4", title: "Execute release", desc: "Runs the full release workflow (identical to gitmap release) from the source repo." },
+              { step: "5", title: "Return to caller", desc: "os.Chdir() back to the original working directory and prints a confirmation message." },
             ].map((s) => (
               <div key={s.step} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                 <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-mono font-bold">
