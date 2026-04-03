@@ -1,6 +1,6 @@
 # Versioning Strategy
 
-The project follows Semantic Versioning (v2.35.0 current). The `release` system resolves versions using a three-tier priority: 1) Explicit CLI version argument, 2) --bump flag applied to a resolved baseline, 3) Current project version. Baseline resolution for bumps checks `.gitmap/release/latest.json` first, falling back to scanning local Git tags (`v*`) if metadata is missing.
+The project follows Semantic Versioning (v2.46.0 current). The `release` system resolves versions using a three-tier priority: 1) Explicit CLI version argument, 2) --bump flag applied to a resolved baseline, 3) Current project version. Baseline resolution for bumps checks `.gitmap/release/latest.json` first, falling back to scanning local Git tags (`v*`) if metadata is missing.
 
 ## IMPORTANT: .gitmap/release/ Directory Policy
 
