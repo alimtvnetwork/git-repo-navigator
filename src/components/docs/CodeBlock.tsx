@@ -216,25 +216,32 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
           <div className="flex">
             {showLineNumbers && (
               <div
-                className="flex flex-col text-right select-none px-3 py-4 text-xs font-mono border-r border-[hsl(220,13%,18%)]"
+                className="flex flex-col text-right select-none px-3 py-4 text-xs font-mono border-r border-[hsl(220,13%,18%)] code-line-numbers"
                 style={{ background: "hsl(220, 14%, 9%)", color: "hsl(220, 10%, 35%)" }}
               >
                 {lines.map((_, i) => (
-                  <span key={i} className="leading-relaxed">{i + 1}</span>
+                  <span key={i} className="leading-relaxed code-line-num" data-line={i}>{i + 1}</span>
                 ))}
               </div>
             )}
-            <pre className="flex-1 p-4 overflow-x-auto text-sm leading-relaxed">
-              {highlightedHtml ? (
-                <code
-                  className="font-mono hljs"
-                  dangerouslySetInnerHTML={{ __html: highlightedHtml }}
-                />
-              ) : (
-                <code className="font-mono" style={{ color: "hsl(220, 20%, 92%)" }}>
-                  {code}
-                </code>
-              )}
+            <pre className="flex-1 overflow-x-auto text-sm leading-relaxed m-0 py-4">
+              <code className="font-mono hljs block">
+                {highlightedLines ? (
+                  highlightedLines.map((lineHtml, i) => (
+                    <span
+                      key={i}
+                      className="code-line block px-4"
+                      dangerouslySetInnerHTML={{ __html: lineHtml || "\n" }}
+                    />
+                  ))
+                ) : (
+                  lines.map((line, i) => (
+                    <span key={i} className="code-line block px-4" style={{ color: "hsl(220, 20%, 92%)" }}>
+                      {line || "\n"}
+                    </span>
+                  ))
+                )}
+              </code>
             </pre>
           </div>
         </div>
