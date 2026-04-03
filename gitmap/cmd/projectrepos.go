@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
+	
 
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/store"
@@ -80,9 +80,4 @@ func printProjectList(db *store.DB, typeKey string, jsonOut bool) {
 	}
 	printProjectsTerminal(projects)
 	printProjectsSummary(projects)
-}
-
-// isLegacyDataError checks if a query error is caused by legacy UUID-based IDs.
-func isLegacyDataError(err error) bool {
-	return err != nil && strings.Contains(err.Error(), "converting driver.Value type string")
 }
