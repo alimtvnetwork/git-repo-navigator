@@ -20,15 +20,6 @@ type authorAcc struct {
 
 // buildAuthors aggregates commits into per-author statistics.
 func buildAuthors(commits []model.CommitInfo) []model.AuthorInfo {
-	type authorAcc struct {
-		name    string
-		email   string
-		count   int
-		first   string
-		last    string
-		daySet  map[string]bool
-	}
-
 	index := make(map[string]*authorAcc)
 
 	for _, c := range commits {
