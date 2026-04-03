@@ -9,8 +9,8 @@ type AmendmentRecord struct {
 	FromCommit    string          `json:"fromCommit"`
 	ToCommit      string          `json:"toCommit"`
 	TotalCommits  int             `json:"totalCommits"`
-	PreviousAuthor AuthorInfo     `json:"previousAuthor"`
-	NewAuthor      AuthorInfo     `json:"newAuthor"`
+	PreviousAuthor AmendAuthor    `json:"previousAuthor"`
+	NewAuthor      AmendAuthor    `json:"newAuthor"`
 	Mode          string          `json:"mode"`
 	ForcePushed   bool            `json:"forcePushed"`
 	Commits       []CommitEntry   `json:"commits"`
