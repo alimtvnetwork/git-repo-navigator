@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.43.0 — Clone-Next Hardening
+
+- Auto-cd to parent directory before folder removal to prevent Windows file lock errors.
+- Added `--create-remote` flag: optionally create the target GitHub repo before clone (requires `GITHUB_TOKEN`).
+- Repo creation is now opt-in instead of mandatory; default `gitmap cn v+1` clones directly.
+
 ## v2.42.0 — Clone-Next Simplification
 
 - Removed forced GitHub repo existence check and automatic creation from `clone-next`.
