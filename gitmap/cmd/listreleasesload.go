@@ -9,6 +9,7 @@ import (
 	"github.com/user/gitmap/constants"
 	"github.com/user/gitmap/model"
 	"github.com/user/gitmap/release"
+	"github.com/user/gitmap/store"
 )
 
 // loadReleasesFromRepo reads .gitmap/release/v*.json files and converts to records.
@@ -97,4 +98,68 @@ func loadReleasesFromDB() []model.ReleaseRecord {
 	}
 
 	return releases
+}
+
+// loadReleasesFromTags scans git tags and creates minimal records for tags
+// that do not already have a matching metadata file or existing record.
+func loadReleasesFromTags(existing []model.ReleaseRecord) []model.ReleaseRecord {
+	tags := release.ListVersionTags()
+	if len(tags) == 0 {
+		return nil
+	}
+
+	seen := buildTagSet(existing)
+	var added []model.ReleaseRecord
+
+	for _, t := range tags {
+		if seen[t.Tag] {
+			continue
+		}
+		added = append(added, tagToRecord(t))
+	}
+
+	return added
+}
+
+// buildTagSet creates a set of tags from existing records.
+func buildTagSet(records []model.ReleaseRecord) map[string]bool {
+	m := make(map[string]bool, len(records))
+	for _, r := range records {
+		m[r.Tag] = true
+	}
+
+	return m
+}
+
+// tagToRecord creates a minimal ReleaseRecord from a git tag.
+func tagToRecord(t release.TagEntry) model.ReleaseRecord {
+	v, _ := release.Parse(t.Tag)
+	branchName := constants.ReleaseBranchPrefix + v.String()
+
+	return model.ReleaseRecord{
+		Version:   v.String(),
+		Tag:       t.Tag,
+		Branch:    branchName,
+		Source:    model.SourceTag,
+		CreatedAt: t.CreatedAt,
+	}
+}
+
+// cacheReleasesToDB upserts all records into the SQLite database.
+func cacheReleasesToDB(records []model.ReleaseRecord) {
+	db, err := openDB()
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	_ = db.Migrate()
+	upsertRecords(db, records)
+}
+
+// upsertRecords persists each record to the database.
+func upsertRecords(db *store.DB, records []model.ReleaseRecord) {
+	for _, r := range records {
+		_ = db.UpsertRelease(r)
+	}
 }

@@ -52,6 +52,8 @@ const (
 	GitPointsAtFmt        = "--points-at=%s"
 	GitRefsRemotesFmt     = "refs/remotes/%s"
 	GitFormatRefnameShort = "--format=%(refname:short)"
+	GitForEachRefTagFmt   = "--format=%(refname:short)|%(creatordate:iso-strict)"
+	GitRefsTagsPrefix     = "refs/tags/"
 	HeadPointer           = " -> "
 	ShaDisplayLength      = 7
 )
