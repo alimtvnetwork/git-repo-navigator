@@ -42,8 +42,8 @@ const autoFallbackDemo = {
 };
 
 const errorScenarios = [
-  { scenario: "Executable path unresolvable", behavior: "Exit 1: could not resolve executable path" },
-  { scenario: "No .git root found", behavior: "Exit 1: could not locate gitmap source repository from executable path" },
+  { scenario: "Executable path + DB fallback both fail", behavior: "Exit 1: could not locate gitmap source repository" },
+  { scenario: "DB path stale (no .git)", behavior: "Falls through to error" },
   { scenario: "Release fails", behavior: "Standard release error handling; still returns to original dir" },
   { scenario: "Return chdir fails", behavior: "Warning printed; exit 0 (release succeeded)" },
 ];
