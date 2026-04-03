@@ -76,6 +76,27 @@ const demos = [
       { text: "✓ 5/5 repos cloned successfully", type: "accent" as const },
     ],
   },
+  {
+    title: "gitmap clone-next",
+    lines: [
+      { text: "D:\\wp-work\\riseup-asia\\macro-ahk-v11>", type: "header" as const, delay: 200 },
+      { text: "gitmap cn v++", type: "input" as const, delay: 800 },
+      { text: "", delay: 300 },
+      { text: "Cloning macro-ahk-v12 into D:\\wp-work\\riseup-asia...", delay: 400 },
+      { text: "✓ Cloned macro-ahk-v12", type: "accent" as const, delay: 350 },
+      { text: "✓ Registered macro-ahk-v12 with GitHub Desktop", type: "accent" as const, delay: 200 },
+      { text: "Remove current folder macro-ahk-v11? [y/N] y", delay: 300 },
+      { text: "✓ Removed macro-ahk-v11", type: "accent" as const, delay: 200 },
+      { text: "", delay: 200 },
+      { text: "D:\\wp-work\\riseup-asia\\macro-ahk-v12>", type: "header" as const, delay: 300 },
+      { text: "gitmap cn v15 --delete", type: "input" as const, delay: 800 },
+      { text: "", delay: 300 },
+      { text: "Cloning macro-ahk-v15 into D:\\wp-work\\riseup-asia...", delay: 400 },
+      { text: "✓ Cloned macro-ahk-v15", type: "accent" as const, delay: 350 },
+      { text: "✓ Registered macro-ahk-v15 with GitHub Desktop", type: "accent" as const, delay: 200 },
+      { text: "✓ Removed macro-ahk-v12", type: "accent" as const, delay: 200 },
+    ],
+  },
 ];
 
 const InteractiveExamplesPage = () => {
