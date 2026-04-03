@@ -60,6 +60,8 @@ const (
 	CmdClearReleaseJSONAlias = "crj"
 	CmdDocs                  = "docs"
 	CmdDocsAlias             = "d"
+	CmdCloneNext             = "clone-next"
+	CmdCloneNextAlias        = "cn"
 )
 
 // Clone shorthands.
