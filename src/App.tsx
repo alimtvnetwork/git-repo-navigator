@@ -36,6 +36,7 @@ import SSHPage from "./pages/SSH";
 import PrunePage from "./pages/Prune";
 import DoctorPage from "./pages/Doctor";
 import TempReleasePage from "./pages/TempRelease";
+import ReleaseSelfPage from "./pages/ReleaseSelf";
 import DashboardPage from "./pages/Dashboard";
 import CloneNextPage from "./pages/CloneNext";
 import SpecIndexPage from "./pages/SpecIndex";
