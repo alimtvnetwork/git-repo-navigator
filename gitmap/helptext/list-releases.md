@@ -2,9 +2,9 @@
 
 List release metadata from the current git repo or stored database.
 
-When run inside a git repo with `.gitmap/release/v*.json` files, releases are read
-directly from those files. Otherwise, releases are loaded from the gitmap
-database.
+Builds a unified list from three sources: repo metadata files
+(`.gitmap/release/v*.json`), git tags, and the SQLite database. All
+discovered releases are cached to the DB on every invocation.
 
 ## Alias
 
@@ -12,7 +12,7 @@ lr
 
 ## Usage
 
-    gitmap list-releases [--json] [--limit N] [--source repo|release|import]
+    gitmap list-releases [--json] [--limit N] [--source repo|release|import|tag]
 
 ## Flags
 
@@ -20,11 +20,11 @@ lr
 |------|---------|-------------|
 | --json | false | Output as structured JSON |
 | --limit \<N\> | 0 | Show only the top N releases (0 = all) |
-| --source \<type\> | — | Filter by release source (repo, release, or import) |
+| --source \<type\> | — | Filter by release source (repo, release, import, or tag) |
 
 ## Prerequisites
 
-- Inside a git repo with `.gitmap/release/v*.json` files, **or**
+- Inside a git repo with `.gitmap/release/v*.json` files or semver tags, **or**
 - Run `gitmap scan` or `gitmap release` to populate the database
 
 ## Examples
@@ -41,37 +41,41 @@ lr
       2.33.0     v2.33.0      release/v2.33.0     no     yes     repo     2026-03-26
       2.31.0     v2.31.0      release/v2.31.0     no     no      repo     2026-03-20
       2.30.0     v2.30.0      release/v2.30.0     no     no      repo     2026-03-15
-      2.27.0     v2.27.0      release/v2.27.0     no     no      repo     2026-03-10
-      2.26.0     v2.26.0      release/v2.26.0     no     no      repo     2026-03-05
+      2.28.0     v2.28.0      release/v2.28.0     no     no      tag      2026-03-01
+      2.25.0     v2.25.0      release/v2.25.0     no     no      tag      2026-02-10
       5 releases found
 
-### Example 2: Show top 3 releases
+### Example 2: Show only tag-discovered releases
 
-    gitmap lr --limit 3
+    gitmap lr --source tag
 
 **Output:**
 
-    Releases (3 found)
+    Releases (2 found)
     ────────────────────────────────────────────────────────────────────────
       VERSION    TAG          BRANCH              DRAFT  LATEST  SOURCE   DATE
-      2.33.0     v2.33.0      release/v2.33.0     no     yes     repo     2026-03-26
-      2.31.0     v2.31.0      release/v2.31.0     no     no      repo     2026-03-20
-      2.30.0     v2.30.0      release/v2.30.0     no     no      repo     2026-03-15
+      2.28.0     v2.28.0      release/v2.28.0     no     no      tag      2026-03-01
+      2.25.0     v2.25.0      release/v2.25.0     no     no      tag      2026-02-10
 
-### Example 3: JSON output
+### Example 3: Top 3 releases as JSON
 
-    gitmap lr --json
+    gitmap lr --limit 3 --json
 
 **Output:**
 
     [
       {"version":"2.33.0","tag":"v2.33.0","branch":"release/v2.33.0","source":"repo","draft":false,"isLatest":true},
-      {"version":"2.31.0","tag":"v2.31.0","branch":"release/v2.31.0","source":"repo","draft":false,"isLatest":false}
+      {"version":"2.31.0","tag":"v2.31.0","branch":"release/v2.31.0","source":"repo","draft":false,"isLatest":false},
+      {"version":"2.30.0","tag":"v2.30.0","branch":"release/v2.30.0","source":"repo","draft":false,"isLatest":false}
     ]
 
-### Example 4: Filter by source (database releases only)
+## Notes
 
-    gitmap lr --source release
+- Git tags without a matching `.gitmap/release/` metadata file are included
+  with `source=tag`, containing version, tag, inferred branch, and tag date.
+- All discovered releases are automatically upserted into the SQLite
+  `Releases` table on every invocation, keeping the DB in sync.
+- The database is used as a fallback only when no repo files or tags are found.
 
 ## See Also
 
