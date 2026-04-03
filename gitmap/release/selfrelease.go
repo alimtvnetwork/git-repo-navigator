@@ -74,13 +74,41 @@ func resolveSourceRepo() (string, error) {
 
 	// Strategy 2: load from database.
 	if root := loadSourceRepoDB(); root != "" {
-		// Verify the path still has a .git directory.
 		if findGitRoot(root) != "" {
 			return root, nil
 		}
 	}
 
+	// Strategy 3: check if current working directory IS the gitmap source repo.
+	if root := resolveFromCWD(); root != "" {
+		saveSourceRepoDB(root)
+
+		return root, nil
+	}
+
 	return "", fmt.Errorf("%s", constants.ErrSelfReleaseNoRepo)
+}
+
+// resolveFromCWD checks if the current directory is the gitmap source repo
+// by looking for the known constants package file.
+func resolveFromCWD() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+
+	root := findGitRoot(dir)
+	if root == "" {
+		return ""
+	}
+
+	// Verify this is the gitmap source repo by checking for a known source file.
+	marker := filepath.Join(root, "constants", "constants.go")
+	if _, err := os.Stat(marker); err == nil {
+		return root
+	}
+
+	return ""
 }
 
 // resolveFromExecutable walks up from the binary location to find a .git root.
