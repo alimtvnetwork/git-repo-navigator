@@ -15,7 +15,7 @@ interface Props {
   commandRefs?: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 }
 
-const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true, forceOpen, onNavigate, commandRefs }: Props) => {
+const CommandCategoryGroup = ({ label, description, icon, commands, defaultOpen = true, forceOpen, onNavigate, commandRefs }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
 
   useEffect(() => {
