@@ -64,17 +64,20 @@ const CommandsPage = () => {
       </p>
 
       {/* Category summary banner */}
-      <div className="grid grid-cols-4 md:grid-cols-8 gap-2 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-6">
         {Categories.map((cat) => {
           const count = commands.filter((c) => c.category === cat.key).length;
           return (
             <button
               key={cat.key}
               onClick={() => scrollToCategory(cat.key)}
-              className="rounded-lg border border-border bg-card px-3 py-2 text-center hover:bg-muted/50 hover:border-primary/40 transition-colors cursor-pointer"
+              className="rounded-lg border border-border bg-card px-3 py-2.5 text-left hover:bg-muted/50 hover:border-primary/40 transition-all duration-200 cursor-pointer group"
             >
-              <div className="text-lg font-mono font-bold text-primary">{count}</div>
-              <div className="text-[10px] text-muted-foreground font-mono leading-tight truncate">{cat.label}</div>
+              <div className="flex items-center gap-2 mb-1">
+                {cat.icon && <span className="text-base">{cat.icon}</span>}
+                <span className="text-lg font-mono font-bold text-primary">{count}</span>
+              </div>
+              <div className="text-[11px] text-muted-foreground font-mono leading-tight truncate group-hover:text-foreground transition-colors">{cat.label}</div>
             </button>
           );
         })}
@@ -105,6 +108,7 @@ const CommandsPage = () => {
                 <CommandCategoryGroup
                   label={cat.label}
                   description={cat.description}
+                  icon={cat.icon}
                   commands={cmds}
                   forceOpen={forceOpen === cat.key}
                   onNavigate={handleNavigate}

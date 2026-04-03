@@ -7,6 +7,7 @@ import type { CommandDef } from "@/data/commands";
 interface Props {
   label: string;
   description: string;
+  icon?: string;
   commands: CommandDef[];
   defaultOpen?: boolean;
   forceOpen?: boolean;
@@ -14,7 +15,7 @@ interface Props {
   commandRefs?: React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 }
 
-const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true, forceOpen, onNavigate, commandRefs }: Props) => {
+const CommandCategoryGroup = ({ label, description, icon, commands, defaultOpen = true, forceOpen, onNavigate, commandRefs }: Props) => {
   const [open, setOpen] = useState(defaultOpen);
 
   useEffect(() => {
@@ -32,9 +33,10 @@ const CommandCategoryGroup = ({ label, description, commands, defaultOpen = true
         ) : (
           <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
         )}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex items-center gap-2">
+          {icon && <span className="text-base">{icon}</span>}
           <span className="font-mono font-semibold text-sm text-foreground">{label}</span>
-          <span className="text-xs text-muted-foreground ml-2">({commands.length})</span>
+          <span className="text-xs text-muted-foreground">({commands.length})</span>
         </div>
         <span className="text-xs text-muted-foreground truncate hidden sm:inline">{description}</span>
       </button>
