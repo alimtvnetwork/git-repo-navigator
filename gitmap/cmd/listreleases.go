@@ -90,15 +90,21 @@ func applyReleaseLimit(releases []model.ReleaseRecord, n int) []model.ReleaseRec
 	return releases[:n]
 }
 
-// loadReleases reads releases from .gitmap/release/ JSON files in the current repo,
-// falling back to the database when no .gitmap/release/ directory exists.
+// loadReleases builds a unified release list from repo metadata, git tags,
+// and the database. Results are cached to the DB on every invocation.
 func loadReleases() []model.ReleaseRecord {
 	records := loadReleasesFromRepo()
-	if len(records) > 0 {
-		return records
+	tagRecords := loadReleasesFromTags(records)
+	records = append(records, tagRecords...)
+
+	if len(records) == 0 {
+		records = loadReleasesFromDB()
 	}
 
-	return loadReleasesFromDB()
+	sortRecordsByDate(records)
+	cacheReleasesToDB(records)
+
+	return records
 }
 
 // printReleasesTerminal renders releases as a table to stdout.

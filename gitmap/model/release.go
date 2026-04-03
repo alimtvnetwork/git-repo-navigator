@@ -23,4 +23,5 @@ const (
 	SourceRelease = "release"
 	SourceImport  = "import"
 	SourceRepo    = "repo"
+	SourceTag     = "tag"
 )
