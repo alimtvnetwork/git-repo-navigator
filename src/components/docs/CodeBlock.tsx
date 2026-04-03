@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { Copy, Check } from "lucide-react";
+import { useState, useCallback, useMemo } from "react";
+import { Copy, Check, Download, Maximize2, Minimize2 } from "lucide-react";
 
 interface CodeBlockProps {
   code: string;
@@ -7,8 +7,43 @@ interface CodeBlockProps {
   title?: string;
 }
 
+const LANG_COLORS: Record<string, string> = {
+  typescript: "99 83% 62%",
+  ts: "99 83% 62%",
+  javascript: "53 93% 54%",
+  js: "53 93% 54%",
+  go: "194 66% 55%",
+  php: "234 45% 60%",
+  css: "264 55% 58%",
+  json: "38 92% 50%",
+  bash: "120 40% 55%",
+  shell: "120 40% 55%",
+  sh: "120 40% 55%",
+  sql: "200 70% 55%",
+  rust: "25 85% 55%",
+  html: "12 80% 55%",
+  xml: "12 80% 55%",
+  yaml: "0 75% 55%",
+  yml: "0 75% 55%",
+  markdown: "252 85% 60%",
+  md: "252 85% 60%",
+  powershell: "210 60% 55%",
+  ps1: "210 60% 55%",
+};
+
+const LANG_EXTENSIONS: Record<string, string> = {
+  typescript: "ts", ts: "ts", javascript: "js", js: "js",
+  go: "go", php: "php", css: "css", json: "json",
+  bash: "sh", shell: "sh", sh: "sh", sql: "sql",
+  rust: "rs", html: "html", xml: "xml", yaml: "yml",
+  yml: "yml", markdown: "md", md: "md", powershell: "ps1", ps1: "ps1",
+};
+
+const DEFAULT_ACCENT = "220 10% 50%";
+
 const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(code);
@@ -16,30 +51,111 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
     setTimeout(() => setCopied(false), 2000);
   }, [code]);
 
+  const handleDownload = useCallback(() => {
+    const ext = LANG_EXTENSIONS[language.toLowerCase()] ?? "txt";
+    const blob = new Blob([code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `snippet.${ext}`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [code, language]);
+
+  const lines = useMemo(() => code.split("\n"), [code]);
+  const accent = LANG_COLORS[language.toLowerCase()] ?? DEFAULT_ACCENT;
+  const label = language.toUpperCase();
+  const showLineNumbers = lines.length > 1;
+
+  const wrapperClass = fullscreen
+    ? "fixed inset-8 z-[999] rounded-xl flex flex-col"
+    : "rounded-xl overflow-hidden my-4";
+
   return (
-    <div className="rounded-lg overflow-hidden border border-border my-4">
-      {title && (
-        <div className="bg-terminal px-4 py-2 flex items-center justify-between">
-          <span className="text-xs font-mono text-muted-foreground">{title}</span>
-          <button onClick={handleCopy} className="text-muted-foreground hover:text-foreground transition-colors">
-            {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
-          </button>
-        </div>
+    <>
+      {fullscreen && (
+        <div
+          className="fixed inset-0 z-[998] bg-black/70 backdrop-blur-sm"
+          onClick={() => setFullscreen(false)}
+        />
       )}
-      <div className="bg-terminal relative group">
-        {!title && (
-          <button
-            onClick={handleCopy}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
-          >
-            {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
-          </button>
-        )}
-        <pre className="p-4 overflow-x-auto text-sm">
-          <code className="text-terminal-foreground font-mono">{code}</code>
-        </pre>
+      <div
+        className={`${wrapperClass} border border-[hsl(220,13%,22%)] group transition-all duration-300`}
+        style={{
+          ["--lang-accent" as string]: accent,
+          background: "hsl(220, 14%, 11%)",
+          boxShadow: fullscreen
+            ? `0 25px 80px hsl(${accent} / 0.25), 0 0 0 1px hsl(${accent} / 0.3)`
+            : undefined,
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-2 border-b border-[hsl(220,13%,20%)]" style={{ background: "hsl(220, 14%, 14%)" }}>
+          <div className="flex items-center gap-2">
+            <span
+              className="w-[7px] h-[7px] rounded-full"
+              style={{
+                background: `hsl(${accent})`,
+                boxShadow: `0 0 6px hsl(${accent})`,
+              }}
+            />
+            <span className="text-xs font-mono font-medium" style={{ color: `hsl(${accent})` }}>
+              {label}
+            </span>
+            {title && (
+              <span className="text-xs font-mono text-[hsl(220,10%,50%)] ml-2">— {title}</span>
+            )}
+            <span className="text-xs font-mono text-[hsl(220,10%,40%)] ml-2">
+              {lines.length} {lines.length === 1 ? "line" : "lines"}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleCopy}
+              className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
+              title="Copy"
+            >
+              {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+            </button>
+            <button
+              onClick={handleDownload}
+              className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
+              title="Download"
+            >
+              <Download className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => setFullscreen(!fullscreen)}
+              className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
+              title={fullscreen ? "Exit fullscreen" : "Fullscreen"}
+            >
+              {fullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className={`overflow-auto ${fullscreen ? "flex-1" : "max-h-[500px]"}`}>
+          <div className="flex">
+            {showLineNumbers && (
+              <div
+                className="flex flex-col text-right select-none px-3 py-4 text-xs font-mono border-r border-[hsl(220,13%,18%)]"
+                style={{ background: "hsl(220, 14%, 9%)", color: "hsl(220, 10%, 35%)" }}
+              >
+                {lines.map((_, i) => (
+                  <span key={i} className="leading-relaxed">{i + 1}</span>
+                ))}
+              </div>
+            )}
+            <pre className="flex-1 p-4 overflow-x-auto text-sm leading-relaxed">
+              <code className="font-mono" style={{ color: "hsl(220, 20%, 92%)" }}>
+                {code}
+              </code>
+            </pre>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
