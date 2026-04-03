@@ -89,7 +89,7 @@ const CloneNextPage = () => {
           <h2 className="text-xl font-mono font-semibold mb-3 flex items-center gap-2">
             Usage
           </h2>
-          <CodeBlock code="gitmap clone-next <v++|vN> [--delete] [--keep] [--no-desktop] [--verbose]" />
+          <CodeBlock code="gitmap clone-next <v++|vN> [--delete] [--keep] [--no-desktop] [--create-remote] [--verbose]" />
         </section>
 
         {/* How it works */}
@@ -162,6 +162,7 @@ const CloneNextPage = () => {
                 <FlagRow flag="--delete" description="Auto-remove current folder after clone (skip prompt)" />
                 <FlagRow flag="--keep" description="Keep current folder without prompting for removal" />
                 <FlagRow flag="--no-desktop" description="Skip GitHub Desktop registration" />
+                <FlagRow flag="--create-remote" description="Create target GitHub repo if missing (requires GITHUB_TOKEN)" />
                 <FlagRow flag="--ssh-key <name>" description="Use a named SSH key for the clone" />
                 <FlagRow flag="--verbose" description="Write detailed debug log to a timestamped file" />
               </tbody>
@@ -204,6 +205,19 @@ const CloneNextPage = () => {
               "✓ Registered macro-ahk-v2 with GitHub Desktop",
               "Remove current folder macro-ahk? [y/N] y",
               "✓ Removed macro-ahk",
+            ]}
+          />
+
+          <h3 className="font-mono text-sm font-semibold mb-2 text-muted-foreground">Create remote repo before clone</h3>
+          <TerminalPreview
+            title="gitmap cn v15 --create-remote --delete"
+            lines={[
+              "Creating GitHub repo macro-ahk-v15...",
+              "✓ Created GitHub repo macro-ahk-v15",
+              "Cloning macro-ahk-v15 into D:\\wp-work\\riseup-asia...",
+              "✓ Cloned macro-ahk-v15",
+              "✓ Registered macro-ahk-v15 with GitHub Desktop",
+              "✓ Removed macro-ahk-v12",
             ]}
           />
         </section>
@@ -251,6 +265,7 @@ const CloneNextPage = () => {
                   ["Not inside a git repo", "Print error, exit 1"],
                   ["Cannot parse remote URL", "Print error, exit 1"],
                   ["Target directory already exists", "Print error with suggestion, exit 1"],
+                  ["Repo creation fails (--create-remote)", "Print error, stop before clone, exit 1"],
                   ["Clone fails (network/auth)", "Print error, skip deletion, exit 1"],
                   ["Deletion fails", "Print warning, exit 0 (clone succeeded)"],
                 ].map(([cond, behavior], i) => (
