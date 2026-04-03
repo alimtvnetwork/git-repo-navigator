@@ -59,7 +59,7 @@ skip the directory switch entirely. Print:
 4. `os.Chdir()` back to the original working directory.
 5. Print `✓ Returned to <original-path>`.
 
-### 3. Flag Passthrough
+### 4. Flag Passthrough
 
 All flags supported by `release` are accepted:
 `--assets`, `--commit`, `--branch`, `--bump`, `--notes`, `--draft`,
