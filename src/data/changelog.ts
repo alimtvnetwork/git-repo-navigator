@@ -5,6 +5,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "v2.48.1",
+    items: [
+      "`clone-next` now automatically changes into the newly cloned directory after removing the old folder.",
+      "Prints `→ Now in <target>` confirmation after navigating to the new clone.",
+    ],
+  },
+  {
     version: "v2.48.0",
     items: [
       "`list-releases` now scans git tags via `git for-each-ref` and includes tag-only releases with `source=tag`.",
