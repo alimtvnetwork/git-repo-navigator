@@ -37,6 +37,7 @@ import PrunePage from "./pages/Prune";
 import DoctorPage from "./pages/Doctor";
 import TempReleasePage from "./pages/TempRelease";
 import DashboardPage from "./pages/Dashboard";
+import CloneNextPage from "./pages/CloneNext";
 import SpecIndexPage from "./pages/SpecIndex";
 
 const queryClient = new QueryClient();
@@ -81,6 +82,7 @@ const App = () => (
           <Route path="/doctor" element={<DoctorPage />} />
           <Route path="/temp-release" element={<TempReleasePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/clone-next" element={<CloneNextPage />} />
           <Route path="/spec" element={<SpecIndexPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
