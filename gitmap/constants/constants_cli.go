@@ -17,7 +17,7 @@ const (
 	CmdPull                = "pull"
 	CmdPullAlias           = "p"
 	CmdRescan              = "rescan"
-	CmdRescanAlias         = "rs"
+	CmdRescanAlias         = "rsc"
 	CmdSetup               = "setup"
 	CmdStatus              = "status"
 	CmdStatusAlias         = "st"
