@@ -87,12 +87,30 @@ const DEFAULT_ACCENT = "220 10% 50%";
 const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [pinnedLines, setPinnedLines] = useState<Set<number>>(new Set());
+
+  const hasPinned = pinnedLines.size > 0;
+
+  const togglePin = useCallback((lineIndex: number) => {
+    setPinnedLines((prev) => {
+      const next = new Set(prev);
+      if (next.has(lineIndex)) next.delete(lineIndex);
+      else next.add(lineIndex);
+      return next;
+    });
+  }, []);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(code);
+    const textToCopy = hasPinned
+      ? Array.from(pinnedLines)
+          .sort((a, b) => a - b)
+          .map((i) => code.split("\n")[i])
+          .join("\n")
+      : code;
+    navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [code]);
+  }, [code, hasPinned, pinnedLines]);
 
   const handleDownload = useCallback(() => {
     const ext = LANG_EXTENSIONS[language.toLowerCase()] ?? "txt";
