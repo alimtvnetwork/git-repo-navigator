@@ -7,6 +7,7 @@ import type { CommandDef } from "@/data/commands";
 interface Props {
   label: string;
   description: string;
+  icon?: string;
   commands: CommandDef[];
   defaultOpen?: boolean;
   forceOpen?: boolean;
