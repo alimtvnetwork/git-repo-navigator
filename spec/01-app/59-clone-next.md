@@ -197,6 +197,7 @@ Cloning macro-ahk-v15 into D:\wp-work\riseup-asia...
 ✓ Cloned macro-ahk-v15
 ✓ Registered macro-ahk-v15 with GitHub Desktop
 ✓ Removed macro-ahk-v12
+→ Now in macro-ahk-v15
 ```
 
 ### Example 5: Create remote repo before clone
