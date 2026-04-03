@@ -51,7 +51,7 @@ If the resolved source repo root matches the current working directory,
 skip the directory switch entirely. Print:
 `→ Self-release: already in source repo /path` and proceed directly.
 
-### 2. Directory Switch
+### 3. Directory Switch
 
 1. Record the caller's working directory via `os.Getwd()`.
 2. `os.Chdir()` into the resolved source repo root.
