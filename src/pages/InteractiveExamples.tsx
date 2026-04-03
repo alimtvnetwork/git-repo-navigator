@@ -96,6 +96,7 @@ const demos = [
       { text: "✓ Cloned macro-ahk-v15", type: "accent" as const, delay: 350 },
       { text: "✓ Registered macro-ahk-v15 with GitHub Desktop", type: "accent" as const, delay: 200 },
       { text: "✓ Removed macro-ahk-v12", type: "accent" as const, delay: 200 },
+      { text: "→ Now in macro-ahk-v15", type: "accent" as const, delay: 200 },
     ],
   },
 ];
