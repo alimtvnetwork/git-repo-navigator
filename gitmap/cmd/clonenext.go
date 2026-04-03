@@ -107,7 +107,7 @@ func runCloneNext(args []string) {
 		registerCloneNextDesktop(targetName, targetPath)
 	}
 
-	handleCloneNextRemoval(currentFolder, cwd, deleteFlag, keepFlag)
+	handleCloneNextRemoval(currentFolder, cwd, targetPath, deleteFlag, keepFlag)
 }
 
 // extractRepoName extracts the repository name from a remote URL.
