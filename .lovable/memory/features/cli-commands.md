@@ -20,3 +20,7 @@ Full-screen TUI with 9 views: Repos, Actions, Groups, Status, Releases, Temp Rel
 ## clone-next (cn)
 
 Clone the next or a specific versioned iteration of the current repo into the parent directory. Parses `-vN` suffix from folder name and remote URL, increments (`v++`) or jumps (`vN`), clones, registers with GitHub Desktop, and optionally removes the old folder. Flags: `--delete`, `--keep`, `--no-desktop`, `--ssh-key`, `--verbose`. Spec: `spec/01-app/59-clone-next.md`.
+
+## release-self (rself)
+
+Release gitmap itself from any directory. Resolves the source repo via `os.Executable()` + symlink resolution + `.git` root walk, switches to it, runs the full release workflow, and returns to the original directory with confirmation. Auto-fallback: `gitmap release` outside a Git repo triggers self-release automatically. Full flag parity with `release`. Spec: `spec/01-app/60-release-self.md`.
