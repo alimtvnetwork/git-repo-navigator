@@ -134,7 +134,7 @@ export const commands: CommandDef[] = [
   },
   {
     category: "scanning",
-    name: "rescan", alias: "rs", description: "Re-scan previously scanned directories",
+    name: "rescan", alias: "rsc", description: "Re-scan previously scanned directories",
     usage: "gitmap rescan",
     examples: [
       { command: "gitmap rescan", description: "Re-run the last scan with the same flags" },
