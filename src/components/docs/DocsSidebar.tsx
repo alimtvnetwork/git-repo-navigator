@@ -75,6 +75,7 @@ const navItems = [
   { title: "SSH Keys", url: "/ssh", icon: KeyRound },
   { title: "Prune", url: "/prune", icon: Archive },
   { title: "Temp Release", url: "/temp-release", icon: Layers },
+  { title: "Release Self", url: "/release-self", icon: Tag },
   { title: "Doctor", url: "/doctor", icon: Stethoscope },
   { title: "Dashboard", url: "/dashboard", icon: BarChart3 },
   { title: "Spec Index", url: "/spec", icon: BookOpen },
