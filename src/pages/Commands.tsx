@@ -108,6 +108,7 @@ const CommandsPage = () => {
                 <CommandCategoryGroup
                   label={cat.label}
                   description={cat.description}
+                  icon={cat.icon}
                   commands={cmds}
                   forceOpen={forceOpen === cat.key}
                   onNavigate={handleNavigate}
