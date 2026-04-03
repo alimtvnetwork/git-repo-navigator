@@ -16,3 +16,7 @@ Lightweight temporary branch creation from recent commits. Creates branches from
 ## interactive (i)
 
 Full-screen TUI with 9 views: Repos, Actions, Groups, Status, Releases, Temp Releases, Zip Groups, Aliases, Logs. See `features/interactive-tui.md` for details.
+
+## clone-next (cn)
+
+Clone the next or a specific versioned iteration of the current repo into the parent directory. Parses `-vN` suffix from folder name and remote URL, increments (`v++`) or jumps (`vN`), clones, registers with GitHub Desktop, and optionally removes the old folder. Flags: `--delete`, `--keep`, `--no-desktop`, `--ssh-key`, `--verbose`. Spec: `spec/01-app/59-clone-next.md`.
