@@ -4,7 +4,7 @@ Release gitmap itself from any directory.
 
 ## Alias
 
-rself
+rs, rself
 
 ## Usage
 

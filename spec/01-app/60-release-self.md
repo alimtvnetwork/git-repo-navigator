@@ -2,7 +2,7 @@
 
 ## Overview
 
-`gitmap release-self` (alias `rself`) provides explicit self-release capability.
+`gitmap release-self` (alias `rs`, `rself`) provides explicit self-release capability.
 It resolves the gitmap executable's own source repository and performs a full
 release workflow from that directory, regardless of the user's current working
 directory.
@@ -12,7 +12,7 @@ repository and falls back to self-release mode.
 
 ## Commands
 
-### release-self (rself)
+### release-self (rs / rself)
 
     gitmap release-self [version] [flags]
 
@@ -27,17 +27,31 @@ enters self-release mode instead of failing.
 
 ### 1. Source Repository Discovery
 
-The command resolves the source repository by:
+The command resolves the source repository using a two-tier strategy:
 
+**Strategy 1 — Executable path:**
 1. Call `os.Executable()` to get the running binary path.
 2. Resolve symlinks via `filepath.EvalSymlinks()`.
 3. Walk up the directory tree from the executable's location to find the
    nearest `.git` directory — that directory is the source repo root.
+4. On success, persist the resolved path to the `Settings` table
+   (`source_repo_path` key) for future fallback.
 
-If no `.git` root is found, the command exits with an error:
-`could not locate gitmap source repository from executable path`.
+**Strategy 2 — Database fallback:**
+1. If the executable path strategy fails (e.g., binary moved/installed
+   outside source tree), read `source_repo_path` from the `Settings` table.
+2. Verify the stored path still contains a `.git` root.
 
-### 2. Directory Switch
+If both strategies fail, the command exits with an error:
+`could not locate gitmap source repository`.
+
+### 2. Same-Directory Skip
+
+If the resolved source repo root matches the current working directory,
+skip the directory switch entirely. Print:
+`→ Self-release: already in source repo /path` and proceed directly.
+
+### 3. Directory Switch
 
 1. Record the caller's working directory via `os.Getwd()`.
 2. `os.Chdir()` into the resolved source repo root.
@@ -45,14 +59,14 @@ If no `.git` root is found, the command exits with an error:
 4. `os.Chdir()` back to the original working directory.
 5. Print `✓ Returned to <original-path>`.
 
-### 3. Flag Passthrough
+### 4. Flag Passthrough
 
 All flags supported by `release` are accepted:
 `--assets`, `--commit`, `--branch`, `--bump`, `--notes`, `--draft`,
 `--dry-run`, `--compress`, `--checksums`, `--no-assets`, `--targets`,
 `--list-targets`, `--zip-group`, `-Z`, `--bundle`, `--no-commit`, `--verbose`.
 
-### 4. Output
+### 5. Output
 
 Self-release prints a preamble before the standard release output:
 
@@ -64,8 +78,8 @@ Self-release prints a preamble before the standard release output:
 
 | Scenario | Behavior |
 |----------|----------|
-| Executable path unresolvable | Exit 1: `could not resolve executable path` |
-| No .git root found | Exit 1: `could not locate gitmap source repository from executable path` |
+| Executable path unresolvable + no DB fallback | Exit 1: `could not locate gitmap source repository` |
+| DB path stale (no .git) | Falls through to error |
 | Release fails | Standard release error handling (rollback); still returns to original dir |
 | Return chdir fails | Warning printed; exit 0 (release succeeded) |
 
@@ -96,12 +110,16 @@ If false, delegate to `runReleaseSelf(args)` and return.
 
 - `CmdReleaseSelf = "release-self"`
 - `CmdReleaseSelfAlias = "rself"`
-- Messages: `MsgSelfReleaseSwitch`, `MsgSelfReleaseReturn`
+- `CmdReleaseSelfAlias2 = "rs"`
+- `SettingSourceRepoPath = "source_repo_path"`
+- Messages: `MsgSelfReleaseSwitch`, `MsgSelfReleaseReturn`, `MsgSelfReleaseSameDir`
 
 ## Acceptance Criteria
 
-1. `gitmap release-self --bump patch` releases gitmap itself from any directory.
+1. `gitmap rs --bump patch` releases gitmap itself from any directory.
 2. `gitmap release` outside a Git repo triggers self-release automatically.
 3. `gitmap release` inside a Git repo behaves exactly as before.
 4. After self-release, the user is returned to their original directory with confirmation.
 5. All release flags work identically in self-release mode.
+6. If executable is outside source tree, DB fallback resolves the repo path.
+7. If already in the source repo directory, skip the chdir round-trip.

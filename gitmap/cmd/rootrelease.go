@@ -13,7 +13,7 @@ func dispatchRelease(command string) bool {
 
 		return true
 	}
-	if command == constants.CmdReleaseSelf || command == constants.CmdReleaseSelfAlias {
+	if command == constants.CmdReleaseSelf || command == constants.CmdReleaseSelfAlias || command == constants.CmdReleaseSelfAlias2 {
 		runReleaseSelf(os.Args[2:])
 
 		return true

@@ -17,7 +17,7 @@ const (
 	CmdPull                = "pull"
 	CmdPullAlias           = "p"
 	CmdRescan              = "rescan"
-	CmdRescanAlias         = "rs"
+	CmdRescanAlias         = "rsc"
 	CmdSetup               = "setup"
 	CmdStatus              = "status"
 	CmdStatusAlias         = "st"
@@ -64,6 +64,7 @@ const (
 	CmdCloneNextAlias        = "cn"
 	CmdReleaseSelf           = "release-self"
 	CmdReleaseSelfAlias      = "rself"
+	CmdReleaseSelfAlias2     = "rs"
 )
 
 // Clone shorthands.
@@ -92,7 +93,7 @@ const (
 	HelpVersion       = "  version (v)         Show version number"
 	HelpDesktopSync   = "  desktop-sync (ds)   Sync repos to GitHub Desktop from output"
 	HelpPull          = "  pull (p) <name>     Pull a specific repo by its name"
-	HelpRescan        = "  rescan (rs)         Re-run last scan with cached flags"
+	HelpRescan        = "  rescan (rsc)        Re-run last scan with cached flags"
 	HelpSetup         = "  setup               Configure Git diff/merge tool, aliases & core settings"
 	HelpStatus        = "  status (st)         Show dirty/clean, ahead/behind, stash for all repos"
 	HelpExec          = "  exec (x) <args...>  Run any git command across all repos"
@@ -110,7 +111,7 @@ const (
 	HelpClearReleaseJSON  = "  clear-release-json (crj)  Remove a .gitmap/release/vX.Y.Z.json file"
 	HelpDocs              = "  docs (d)            Open documentation website in browser"
 	HelpCloneNext         = "  clone-next (cn)     Clone next versioned iteration of current repo"
-	HelpReleaseSelf       = "  release-self (rself) Release gitmap itself from any directory"
+	HelpReleaseSelf       = "  release-self (rs)   Release gitmap itself from any directory"
 	HelpHelp              = "  help                Show this help message"
 	HelpListVersions  = "  list-versions (lv)  Show all release tags, highest first (--limit N, --json, --source)"
 	HelpListReleases  = "  list-releases (lr)  Show releases from .gitmap/release/ files or database (--limit N, --json, --source)"

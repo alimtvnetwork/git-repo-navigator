@@ -134,7 +134,7 @@ export const commands: CommandDef[] = [
   },
   {
     category: "scanning",
-    name: "rescan", alias: "rs", description: "Re-scan previously scanned directories",
+    name: "rescan", alias: "rsc", description: "Re-scan previously scanned directories",
     usage: "gitmap rescan",
     examples: [
       { command: "gitmap rescan", description: "Re-run the last scan with the same flags" },
@@ -282,7 +282,7 @@ export const commands: CommandDef[] = [
   },
   {
     category: "release",
-    name: "release-self", alias: "rself", description: "Release gitmap itself from any directory",
+    name: "release-self", alias: "rs / rself", description: "Release gitmap itself from any directory",
     usage: "gitmap release-self [version] [--bump major|minor|patch] [--draft] [--dry-run]",
     flags: [
       { flag: "--assets <path>", description: "Attach files to release" },
@@ -298,9 +298,9 @@ export const commands: CommandDef[] = [
       { flag: "--verbose", description: "Write detailed debug log" },
     ],
     examples: [
-      { command: "gitmap rself --bump patch", description: "Self-release with patch bump from any directory" },
+      { command: "gitmap rs --bump patch", description: "Self-release with patch bump from any directory" },
       { command: "gitmap release-self v2.46.0 --dry-run", description: "Preview self-release without executing" },
-      { command: "gitmap rself --bump minor --draft", description: "Draft self-release" },
+      { command: "gitmap rs --bump minor --draft", description: "Draft self-release" },
     ],
     seeAlso: [
       { name: "Spec: release-self", description: "Full release-self documentation", url: "/release-self" },

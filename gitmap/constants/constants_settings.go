@@ -26,6 +26,7 @@ const SQLDropSettings = "DROP TABLE IF EXISTS Settings"
 const (
 	SettingActiveGroup      = "active_group"
 	SettingActiveMultiGroup = "active_multi_group"
+	SettingSourceRepoPath   = "source_repo_path"
 )
 
 // Settings error messages.

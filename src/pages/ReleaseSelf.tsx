@@ -13,7 +13,7 @@ const features = [
 const selfReleaseDemo = {
   title: "gitmap release-self --bump patch",
   lines: [
-    { text: "$ gitmap rself --bump patch", type: "input" as const, delay: 0 },
+    { text: "$ gitmap rs --bump patch", type: "input" as const, delay: 0 },
     { text: "→ Self-release: switching to /home/user/go/src/gitmap", type: "accent" as const, delay: 600 },
     { text: "v2.45.0 → v2.45.1", type: "output" as const, delay: 400 },
     { text: "Creating release v2.45.1...", type: "header" as const, delay: 400 },
@@ -42,8 +42,8 @@ const autoFallbackDemo = {
 };
 
 const errorScenarios = [
-  { scenario: "Executable path unresolvable", behavior: "Exit 1: could not resolve executable path" },
-  { scenario: "No .git root found", behavior: "Exit 1: could not locate gitmap source repository from executable path" },
+  { scenario: "Executable path + DB fallback both fail", behavior: "Exit 1: could not locate gitmap source repository" },
+  { scenario: "DB path stale (no .git)", behavior: "Falls through to error" },
   { scenario: "Release fails", behavior: "Standard release error handling; still returns to original dir" },
   { scenario: "Return chdir fails", behavior: "Warning printed; exit 0 (release succeeded)" },
 ];
@@ -57,6 +57,7 @@ const ReleaseSelfPage = () => {
           <div className="flex items-center gap-3 mb-2">
             <Tag className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-mono font-bold text-foreground">release-self</h1>
+            <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rs</span>
             <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rself</span>
           </div>
           <p className="text-muted-foreground text-lg">
@@ -97,10 +98,11 @@ const ReleaseSelfPage = () => {
           <h2 className="text-xl font-mono font-semibold text-foreground mb-3">How It Works</h2>
           <div className="space-y-3">
             {[
-              { step: "1", title: "Resolve source repo", desc: "Calls os.Executable(), resolves symlinks, and walks up the directory tree to find the nearest .git root." },
-              { step: "2", title: "Switch directory", desc: "Records the caller's working directory, then os.Chdir() into the resolved source repo root." },
-              { step: "3", title: "Execute release", desc: "Runs the full release workflow (identical to gitmap release) from the source repo." },
-              { step: "4", title: "Return to caller", desc: "os.Chdir() back to the original working directory and prints a confirmation message." },
+              { step: "1", title: "Resolve source repo", desc: "Tries os.Executable() + symlink resolution first. If that fails (e.g., binary installed outside source tree), falls back to the source_repo_path stored in the SQLite Settings table." },
+              { step: "2", title: "Check current directory", desc: "If already in the source repo, skips the directory switch and proceeds directly." },
+              { step: "3", title: "Switch directory", desc: "Records the caller's working directory, then os.Chdir() into the resolved source repo root." },
+              { step: "4", title: "Execute release", desc: "Runs the full release workflow (identical to gitmap release) from the source repo." },
+              { step: "5", title: "Return to caller", desc: "os.Chdir() back to the original working directory and prints a confirmation message." },
             ].map((s) => (
               <div key={s.step} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-card">
                 <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-mono font-bold">
@@ -136,15 +138,15 @@ const ReleaseSelfPage = () => {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Dry-run self-release</p>
-              <CodeBlock code="gitmap rself --bump minor --dry-run" />
+              <CodeBlock code="gitmap rs --bump minor --dry-run" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground mb-1">Self-release with assets and compression</p>
-              <CodeBlock code="gitmap rself v2.46.0 --assets ./dist --compress --checksums" />
+              <CodeBlock code="gitmap rs v2.46.0 --assets ./dist --compress --checksums" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground mb-1">Draft self-release</p>
-              <CodeBlock code="gitmap rself --bump patch --draft --notes 'pre-release test'" />
+              <CodeBlock code="gitmap rs --bump patch --draft --notes 'pre-release test'" />
             </div>
           </div>
         </section>
