@@ -298,9 +298,9 @@ export const commands: CommandDef[] = [
       { flag: "--verbose", description: "Write detailed debug log" },
     ],
     examples: [
-      { command: "gitmap rself --bump patch", description: "Self-release with patch bump from any directory" },
+      { command: "gitmap rs --bump patch", description: "Self-release with patch bump from any directory" },
       { command: "gitmap release-self v2.46.0 --dry-run", description: "Preview self-release without executing" },
-      { command: "gitmap rself --bump minor --draft", description: "Draft self-release" },
+      { command: "gitmap rs --bump minor --draft", description: "Draft self-release" },
     ],
     seeAlso: [
       { name: "Spec: release-self", description: "Full release-self documentation", url: "/release-self" },
