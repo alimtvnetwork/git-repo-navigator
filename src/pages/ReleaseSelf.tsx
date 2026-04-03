@@ -138,15 +138,15 @@ const ReleaseSelfPage = () => {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Dry-run self-release</p>
-              <CodeBlock code="gitmap rself --bump minor --dry-run" />
+              <CodeBlock code="gitmap rs --bump minor --dry-run" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground mb-1">Self-release with assets and compression</p>
-              <CodeBlock code="gitmap rself v2.46.0 --assets ./dist --compress --checksums" />
+              <CodeBlock code="gitmap rs v2.46.0 --assets ./dist --compress --checksums" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground mb-1">Draft self-release</p>
-              <CodeBlock code="gitmap rself --bump patch --draft --notes 'pre-release test'" />
+              <CodeBlock code="gitmap rs --bump patch --draft --notes 'pre-release test'" />
             </div>
           </div>
         </section>
