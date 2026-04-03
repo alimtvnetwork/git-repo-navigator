@@ -5,7 +5,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -145,6 +144,18 @@ func resolveBinName() string {
 	return BinaryName(mod)
 }
 
+// CollectSuccessfulBuilds filters cross-compile results to only successful outputs.
+func CollectSuccessfulBuilds(results []CrossCompileResult) []string {
+	var paths []string
+
+	for _, r := range results {
+		if r.Success {
+			paths = append(paths, r.Output)
+		}
+	}
+
+	return paths
+}
 
 // EnsureStagingDir creates the release-assets staging directory.
 func EnsureStagingDir() (string, error) {
