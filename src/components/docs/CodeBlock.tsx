@@ -266,13 +266,19 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
                   highlightedLines.map((lineHtml, i) => (
                     <span
                       key={i}
-                      className="code-line block px-4"
+                      className={`code-line block px-4 cursor-pointer ${pinnedLines.has(i) ? "code-line-pinned" : ""}`}
+                      onClick={() => togglePin(i)}
                       dangerouslySetInnerHTML={{ __html: lineHtml || "\n" }}
                     />
                   ))
                 ) : (
                   lines.map((line, i) => (
-                    <span key={i} className="code-line block px-4" style={{ color: "hsl(220, 20%, 92%)" }}>
+                    <span
+                      key={i}
+                      className={`code-line block px-4 cursor-pointer ${pinnedLines.has(i) ? "code-line-pinned" : ""}`}
+                      onClick={() => togglePin(i)}
+                      style={{ color: "hsl(220, 20%, 92%)" }}
+                    >
                       {line || "\n"}
                     </span>
                   ))

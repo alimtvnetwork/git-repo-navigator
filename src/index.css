@@ -268,10 +268,18 @@
   background: hsl(220, 15%, 16%);
   border-left-color: hsl(var(--primary) / 0.6);
 }
+.code-line-pinned {
+  background: hsl(var(--primary) / 0.12) !important;
+  border-left-color: hsl(var(--primary) / 0.8) !important;
+}
 .code-line-num {
   transition: color 0.15s ease;
+  cursor: pointer;
 }
-.code-line:hover ~ .code-line-num,
-pre:has(.code-line:hover) + .code-line-numbers .code-line-num {
-  color: hsl(220, 10%, 35%);
+.code-line-num:hover {
+  color: hsl(var(--primary)) !important;
+}
+.code-line-num-pinned {
+  color: hsl(var(--primary)) !important;
+  font-weight: 600;
 }
