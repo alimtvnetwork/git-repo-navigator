@@ -57,6 +57,7 @@ const ReleaseSelfPage = () => {
           <div className="flex items-center gap-3 mb-2">
             <Tag className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-mono font-bold text-foreground">release-self</h1>
+            <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rs</span>
             <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rself</span>
           </div>
           <p className="text-muted-foreground text-lg">
