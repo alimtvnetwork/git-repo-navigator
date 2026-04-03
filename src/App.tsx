@@ -36,6 +36,7 @@ import SSHPage from "./pages/SSH";
 import PrunePage from "./pages/Prune";
 import DoctorPage from "./pages/Doctor";
 import TempReleasePage from "./pages/TempRelease";
+import ReleaseSelfPage from "./pages/ReleaseSelf";
 import DashboardPage from "./pages/Dashboard";
 import CloneNextPage from "./pages/CloneNext";
 import SpecIndexPage from "./pages/SpecIndex";
@@ -81,6 +82,7 @@ const App = () => (
           <Route path="/prune" element={<PrunePage />} />
           <Route path="/doctor" element={<DoctorPage />} />
           <Route path="/temp-release" element={<TempReleasePage />} />
+          <Route path="/release-self" element={<ReleaseSelfPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/clone-next" element={<CloneNextPage />} />
           <Route path="/spec" element={<SpecIndexPage />} />
