@@ -134,6 +134,8 @@ instead of guessing.
     - remove the current folder automatically with `--delete`
     - keep it automatically with `--keep`
     - otherwise prompt the user interactively
+12. If the current folder was removed, change into the newly cloned directory
+    and print a confirmation (`→ Now in <target>`).
 
 ## Flags
 
@@ -183,6 +185,7 @@ Cloning macro-ahk-v2 into D:\wp-work\riseup-asia...
 ✓ Registered macro-ahk-v2 with GitHub Desktop
 Remove current folder macro-ahk? [y/N] y
 ✓ Removed macro-ahk
+→ Now in macro-ahk-v2
 ```
 
 ### Example 4: Jump to an exact version with auto-delete
@@ -194,6 +197,7 @@ Cloning macro-ahk-v15 into D:\wp-work\riseup-asia...
 ✓ Cloned macro-ahk-v15
 ✓ Registered macro-ahk-v15 with GitHub Desktop
 ✓ Removed macro-ahk-v12
+→ Now in macro-ahk-v15
 ```
 
 ### Example 5: Create remote repo before clone
@@ -207,6 +211,7 @@ Cloning macro-ahk-v15 into D:\wp-work\riseup-asia...
 ✓ Cloned macro-ahk-v15
 ✓ Registered macro-ahk-v15 with GitHub Desktop
 ✓ Removed macro-ahk-v12
+→ Now in macro-ahk-v15
 ```
 
 ## Error Handling
