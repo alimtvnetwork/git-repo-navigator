@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.41.0 — Clone-Next Phase 3
+
+- GitHub repo existence check and automatic creation before clone via GitHub API.
+- Requires `GITHUB_TOKEN` for repo creation; creates under org with user fallback.
+- Added `ParseOwnerRepo` utility for HTTPS and SSH remote URL parsing.
+
 ## v2.40.0 — Clone-Next Command
 
 - Added `clone-next` (alias `cn`) command: clone the next versioned iteration of a repo into its parent directory.
