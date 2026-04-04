@@ -41,6 +41,7 @@ import DashboardPage from "./pages/Dashboard";
 import CloneNextPage from "./pages/CloneNext";
 import SpecIndexPage from "./pages/SpecIndex";
 import CdPage from "./pages/Cd";
+import SetupPage from "./pages/Setup";
 
 const queryClient = new QueryClient();
 
