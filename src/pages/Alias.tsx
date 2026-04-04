@@ -100,22 +100,22 @@ const commandInteraction = [
 
 const AliasPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Repo Aliases</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Repo Aliases</h1>
     <p className="text-muted-foreground mb-6">
       Assign short, memorable names to repositories for quick access from anywhere.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2">Live Preview</h2>
     <TerminalPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Auto-Suggestion</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2">Auto-Suggestion</h2>
     <p className="text-sm text-muted-foreground mb-2">
       During scan or via <code className="text-primary font-mono">gitmap alias suggest</code>,
       aliases are proposed based on repo names.
     </p>
     <SuggestPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-4">Features</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -126,7 +126,7 @@ const AliasPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Subcommands</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Subcommands</h2>
     <CodeBlock code="gitmap alias set api github/user/api-gateway" title="Create an alias" />
     <CodeBlock code="gitmap a set web github/user/web-frontend" title="Using short alias 'a'" />
     <CodeBlock code="gitmap alias list" title="List all aliases" />
@@ -135,7 +135,7 @@ const AliasPage = () => (
     <CodeBlock code="gitmap alias suggest" title="Auto-suggest aliases for unaliased repos" />
     <CodeBlock code="gitmap alias suggest --apply" title="Auto-accept all suggestions" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Global -A Flag</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Global -A Flag</h2>
     <p className="text-sm text-muted-foreground mb-4">
       Any repo-targeting command accepts <code className="text-primary font-mono">-A &lt;alias&gt;</code> to
       resolve the target by alias instead of requiring <code className="text-primary font-mono">cd</code>.
@@ -145,7 +145,7 @@ const AliasPage = () => (
     <CodeBlock code="gitmap cd -A infra" title="Navigate to aliased repo" />
     <CodeBlock code="gitmap status -A api" title="Check status via alias" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Command Interaction</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Command Interaction</h2>
     <div className="rounded-lg border border-border overflow-hidden mb-8">
       <table className="w-full text-sm">
         <thead>
@@ -165,7 +165,7 @@ const AliasPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Conflict Handling</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Conflict Handling</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       <div className="rounded-lg border border-border bg-card p-4">
         <h3 className="font-mono font-semibold text-sm mb-1 text-primary">Manual Set</h3>
@@ -181,7 +181,7 @@ const AliasPage = () => (
       </div>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Table Schema</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Table Schema</h2>
     <div className="rounded-lg border border-border overflow-hidden mb-8">
       <table className="w-full text-sm">
         <thead>
@@ -205,7 +205,7 @@ const AliasPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>

@@ -56,13 +56,13 @@ const demoFilterLines = [
 
 const DashboardPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Dashboard Command</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Dashboard Command</h1>
     <p className="text-muted-foreground mb-6">
       Generate an interactive, self-contained HTML dashboard for repository analytics.
       <span className="ml-2 text-xs font-mono bg-muted px-2 py-0.5 rounded">alias: db</span>
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-4">Features</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -73,7 +73,7 @@ const DashboardPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Interactive Examples</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Interactive Examples</h2>
 
     <div className="space-y-6 mb-8">
       <TerminalDemo title="Full dashboard generation" lines={demoLines} autoPlay />
@@ -81,12 +81,12 @@ const DashboardPage = () => (
       <TerminalDemo title="Filtered: since date, no merges, custom output" lines={demoFilterLines} />
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Usage</h2>
     <CodeBlock code="gitmap dashboard [flags]" title="Basic usage" />
     <CodeBlock code="gitmap db --limit 100 --open" title="Alias with flags" />
     <CodeBlock code="gitmap dashboard --since 2025-01-01 --no-merges --out-dir ./report" title="Filtered output" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Flags</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Flags</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
@@ -108,7 +108,7 @@ const DashboardPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>

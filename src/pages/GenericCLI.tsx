@@ -31,7 +31,7 @@ const P = ({ children }: { children: React.ReactNode }) => (
 );
 
 const H3 = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="text-base font-mono font-semibold text-foreground">{children}</h3>
+  <h3 className="text-base font-heading font-semibold text-foreground">{children}</h3>
 );
 
 const Table = ({ headers, rows }: { headers: string[]; rows: string[][] }) => (
@@ -94,7 +94,7 @@ const GenericCLIPage = () => {
 
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2">Generic CLI Creation Guidelines</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Generic CLI Creation Guidelines</h1>
       <P>A complete, self-contained blueprint for building production-quality CLI tools. Hand this spec to any AI or developer to implement a well-structured CLI from scratch.</P>
 
       {/* Section jump nav */}

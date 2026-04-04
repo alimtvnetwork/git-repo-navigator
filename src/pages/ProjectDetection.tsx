@@ -86,7 +86,7 @@ const ProjectDetectionPage = () => (
 
     {/* Detection Pipeline */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.05 }}>
-      <h2 className="text-xl font-mono font-semibold mt-6 mb-4 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-6 mb-4 flex items-center gap-2">
         <ArrowRight className="h-5 w-5 text-primary" />
         Detection Pipeline
       </h2>
@@ -108,7 +108,7 @@ const ProjectDetectionPage = () => (
 
     {/* Supported Types — Tabbed */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.1 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-4 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-4 flex items-center gap-2">
         <Layers className="h-5 w-5 text-primary" />
         Supported Project Types
       </h2>
@@ -153,7 +153,7 @@ const ProjectDetectionPage = () => (
 
     {/* Detection Rules Table */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.15 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <ShieldCheck className="h-5 w-5 text-primary" />
         Detection Rules
       </h2>
@@ -183,7 +183,7 @@ const ProjectDetectionPage = () => (
 
     {/* Metadata Extraction Deep Dive */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.2 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-4 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-4 flex items-center gap-2">
         <FileJson className="h-5 w-5 text-primary" />
         Metadata Extraction
       </h2>
@@ -269,7 +269,7 @@ const ProjectDetectionPage = () => (
 
     {/* Database Schema */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.25 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <Database className="h-5 w-5 text-primary" />
         Database Schema
       </h2>
@@ -311,7 +311,7 @@ const ProjectDetectionPage = () => (
 
     {/* Monorepo & C# Precedence */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.3 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <GitBranch className="h-5 w-5 text-primary" />
         Monorepo & Nesting
       </h2>
@@ -353,7 +353,7 @@ const ProjectDetectionPage = () => (
 
     {/* Query Commands */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.35 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <Terminal className="h-5 w-5 text-primary" />
         Query Commands
       </h2>
@@ -370,7 +370,7 @@ const ProjectDetectionPage = () => (
         ))}
       </div>
 
-      <h3 className="text-base font-mono font-semibold mt-6 mb-3">Usage Examples</h3>
+      <h3 className="text-base font-heading font-semibold mt-6 mb-3">Usage Examples</h3>
       <div className="space-y-2 mb-8">
         <CodeBlock code="gitmap go-repos" title="List all Go projects" />
         <CodeBlock code="gitmap go-repos --json" title="Go projects as JSON" />
@@ -382,7 +382,7 @@ const ProjectDetectionPage = () => (
 
     {/* JSON Output */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.4 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <FileJson className="h-5 w-5 text-primary" />
         JSON Output Files
       </h2>
@@ -402,7 +402,7 @@ const ProjectDetectionPage = () => (
 
     {/* Excluded dirs */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.45 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <ShieldCheck className="h-5 w-5 text-primary" />
         Excluded Directories
       </h2>
@@ -420,7 +420,7 @@ const ProjectDetectionPage = () => (
 
     {/* File layout */}
     <motion.div {...fade} transition={{ duration: 0.3, delay: 0.5 }}>
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3 flex items-center gap-2">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3 flex items-center gap-2">
         <Layers className="h-5 w-5 text-primary" />
         Package Layout
       </h2>

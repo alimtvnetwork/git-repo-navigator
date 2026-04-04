@@ -96,18 +96,18 @@ const releaseFlags = [
 
 const ZipGroupPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Zip Groups</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Zip Groups</h1>
     <p className="text-muted-foreground mb-6">
       Define named collections of files and folders that are automatically compressed
       into ZIP archives during a release. Supports one-step creation with paths and
       automatic file/folder detection.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2">Live Preview</h2>
     <TerminalPreview />
     <ShowPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-4">Features</h2>
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -118,7 +118,7 @@ const ZipGroupPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Path Resolution</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Path Resolution</h2>
     <div className="rounded-lg border border-border bg-card p-4 mb-8">
       <p className="text-sm text-muted-foreground mb-3">
         When you provide a path, gitmap resolves it into three components:
@@ -139,7 +139,7 @@ const ZipGroupPage = () => (
       </div>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Subcommands</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Subcommands</h2>
     <CodeBlock code={`gitmap z create "chrome extension" chrome-extension/dist`} title="Create group with path (one step)" />
     <CodeBlock code="gitmap z create docs-bundle" title="Create empty group" />
     <CodeBlock code="gitmap z add docs-bundle ./README.md ./CHANGELOG.md ./docs/" title="Add items to a group" />
@@ -150,7 +150,7 @@ const ZipGroupPage = () => (
     <CodeBlock code="gitmap z remove docs-bundle ./CHANGELOG.md" title="Remove an item from a group" />
     <CodeBlock code="gitmap z delete extras" title="Delete a zip group" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Release Integration</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Release Integration</h2>
     <p className="text-sm text-muted-foreground mb-4">
       Use persistent groups or ad-hoc items during a release. Each group produces a single
       <code className="text-primary font-mono"> .zip</code> archive attached as a release asset.
@@ -159,7 +159,7 @@ const ZipGroupPage = () => (
     <CodeBlock code="gitmap release v3.0.0 -Z ./dist/report.pdf -Z ./dist/manual.pdf --bundle docs.zip" title="Ad-hoc bundle" />
     <CodeBlock code="gitmap release v3.0.0 --zip-group docs-bundle -Z ./extras/notes.txt" title="Combined: group + ad-hoc" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Release Flags</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Release Flags</h2>
     <div className="rounded-lg border border-border overflow-hidden mb-8">
       <table className="w-full text-sm">
         <thead>
@@ -179,7 +179,7 @@ const ZipGroupPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Storage</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Storage</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       <div className="rounded-lg border border-border bg-card p-4">
         <h3 className="font-mono font-semibold text-sm mb-1 text-primary">SQLite Database</h3>
@@ -191,7 +191,7 @@ const ZipGroupPage = () => (
       </div>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Table Schema: ZipGroups</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Table Schema: ZipGroups</h2>
     <div className="rounded-lg border border-border overflow-hidden mb-6">
       <table className="w-full text-sm">
         <thead>
@@ -215,7 +215,7 @@ const ZipGroupPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Table Schema: ZipGroupItems</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Table Schema: ZipGroupItems</h2>
     <div className="rounded-lg border border-border overflow-hidden mb-8">
       <table className="w-full text-sm">
         <thead>
@@ -239,7 +239,7 @@ const ZipGroupPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
@@ -271,7 +271,7 @@ const ZipGroupPage = () => (
 
     {/* See Also */}
     <section className="mt-10">
-      <h2 className="text-xl font-mono font-bold text-foreground mb-4">See Also</h2>
+      <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">See Also</h2>
       <ul className="space-y-1 text-sm font-mono">
         <li><a href="/release" className="text-primary hover:underline">release</a> — Create a release with zip group assets <span className="text-muted-foreground">↗</span></li>
       </ul>

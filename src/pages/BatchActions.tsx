@@ -55,14 +55,14 @@ const BatchActions = () => {
       <div className="max-w-4xl">
         <div className="flex items-center gap-3 mb-2">
           <Zap className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-mono font-bold text-foreground">Batch Actions</h1>
+          <h1 className="text-3xl font-heading font-bold text-foreground docs-h1">Batch Actions</h1>
         </div>
         <p className="text-muted-foreground mb-8 text-lg">
           Perform git operations across multiple repositories at once from the Interactive TUI's Actions view.
         </p>
 
         {/* Terminal Demo */}
-        <section className="mb-10 animate-fade-in">
+        <section className="mb-10 ">
           <TerminalDemo
             title="gitmap interactive — batch pull"
             lines={[
@@ -101,7 +101,7 @@ const BatchActions = () => {
         </section>
 
         {/* Terminal Demo 2 — exec */}
-        <section className="mb-10 animate-fade-in">
+        <section className="mb-10 ">
           <TerminalDemo
             title="gitmap interactive — batch exec"
             lines={[
@@ -124,7 +124,7 @@ const BatchActions = () => {
         </section>
 
         {/* Terminal Demo 3 — status */}
-        <section className="mb-10 animate-fade-in">
+        <section className="mb-10 ">
           <TerminalDemo
             title="gitmap interactive — batch status"
             lines={[
@@ -148,7 +148,7 @@ const BatchActions = () => {
 
         {/* Workflow */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <Layers className="h-5 w-5 text-primary" />
             Workflow
           </h2>
@@ -169,7 +169,7 @@ const BatchActions = () => {
 
         {/* Actions Reference */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <Terminal className="h-5 w-5 text-primary" />
             Actions Reference
           </h2>
@@ -200,7 +200,7 @@ const BatchActions = () => {
 
         {/* Multi-Group Integration */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <FolderGit2 className="h-5 w-5 text-primary" />
             Multi-Group Integration
           </h2>
@@ -217,7 +217,7 @@ const BatchActions = () => {
 
         {/* CLI Equivalents */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">CLI Equivalents</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">CLI Equivalents</h2>
           <p className="text-muted-foreground mb-3">
             Every TUI batch action maps to a CLI command for scripting and automation:
           </p>
@@ -258,7 +258,7 @@ const BatchActions = () => {
 
         {/* Progress Tracking */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
             Progress Tracking
           </h2>
@@ -303,7 +303,7 @@ const BatchActions = () => {
 
         {/* Tips */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Tips</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Tips</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />

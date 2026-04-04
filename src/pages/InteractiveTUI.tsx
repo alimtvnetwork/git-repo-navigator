@@ -64,7 +64,7 @@ const InteractiveTUI = () => {
       <div className="max-w-4xl">
         <div className="flex items-center gap-3 mb-2">
           <Terminal className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-mono font-bold text-foreground">Interactive TUI</h1>
+          <h1 className="text-3xl font-heading font-bold text-foreground docs-h1">Interactive TUI</h1>
         </div>
         <p className="text-muted-foreground mb-8 text-lg">
           A full-screen terminal interface for browsing, searching, and managing repositories — built with Bubble Tea.
@@ -72,7 +72,7 @@ const InteractiveTUI = () => {
 
         {/* Usage */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3 flex items-center gap-2">
             <Settings2 className="h-5 w-5 text-primary" />
             Usage
           </h2>
@@ -81,7 +81,7 @@ const InteractiveTUI = () => {
 
         {/* Flags */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Flags</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Flags</h2>
           <div className="rounded-lg border border-border overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -107,7 +107,7 @@ const InteractiveTUI = () => {
 
         {/* Views */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <Layers className="h-5 w-5 text-primary" />
             Views
           </h2>
@@ -137,7 +137,7 @@ const InteractiveTUI = () => {
 
         {/* Key Bindings */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
             <Keyboard className="h-5 w-5 text-primary" />
             Key Bindings
           </h2>
@@ -167,7 +167,7 @@ const InteractiveTUI = () => {
 
         {/* Configuration */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Configuration</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Configuration</h2>
           <p className="text-muted-foreground mb-3">
             Set the default dashboard refresh interval in your <code className="font-mono text-primary">config.json</code>:
           </p>
@@ -183,7 +183,7 @@ const InteractiveTUI = () => {
 
         {/* Requirements */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Requirements</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Requirements</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />

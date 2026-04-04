@@ -28,7 +28,7 @@ const features = [
 const GoModPage = () => {
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2">GoMod Command</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">GoMod Command</h1>
       <p className="text-muted-foreground mb-6">
         Rename a Go module path across an entire repository — updates{" "}
         <code className="text-primary font-mono">go.mod</code> and every file
@@ -37,7 +37,7 @@ const GoModPage = () => {
       </p>
 
       {/* Features */}
-      <h2 className="text-xl font-mono font-semibold mt-8 mb-4">Features</h2>
+      <h2 className="text-xl font-heading font-semibold mt-8 mb-4">Features</h2>
       <div className="grid md:grid-cols-2 gap-4 mb-8">
         {features.map((f) => (
           <div
@@ -52,7 +52,7 @@ const GoModPage = () => {
       </div>
 
       {/* Usage */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Usage</h2>
 
       <CodeBlock
         code="gitmap gomod github.com/new/module"
@@ -76,7 +76,7 @@ const GoModPage = () => {
       />
 
       {/* Flags */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Flags</h2>
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Flags</h2>
       <div className="rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -107,7 +107,7 @@ const GoModPage = () => {
       </div>
 
       {/* Terminal preview */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         Example Output
       </h2>
       <div className="rounded-lg border border-border overflow-hidden my-4">
@@ -145,7 +145,7 @@ const GoModPage = () => {
       </div>
 
       {/* Dry run output */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         Dry Run Output
       </h2>
       <div className="rounded-lg border border-border overflow-hidden my-4">
@@ -186,7 +186,7 @@ const GoModPage = () => {
       </div>
 
       {/* Edge cases */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         Edge Cases
       </h2>
       <div className="rounded-lg border border-border overflow-hidden">
@@ -226,7 +226,7 @@ const GoModPage = () => {
       </div>
 
       {/* File layout */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         File Layout
       </h2>
       <div className="rounded-lg border border-border overflow-hidden">

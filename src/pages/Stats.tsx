@@ -54,18 +54,18 @@ const features = [
 
 const StatsPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Stats Command</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Stats Command</h1>
     <p className="text-muted-foreground mb-6">
       Aggregated usage statistics and performance metrics for all gitmap CLI commands.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2 docs-h2">Live Preview</h2>
     <p className="text-sm text-muted-foreground mb-2">
       Simulated terminal output showing per-command statistics.
     </p>
     <TerminalPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-4 docs-h2">Features</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -76,14 +76,14 @@ const StatsPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3 docs-h2">Usage</h2>
     <CodeBlock code="gitmap stats" title="Show all command stats" />
     <CodeBlock code="gitmap stats --command scan" title="Stats for a specific command" />
     <CodeBlock code="gitmap stats --json" title="JSON output for scripting" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Flags</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3 docs-h2">Flags</h2>
     <div className="rounded-lg border border-border overflow-hidden">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm docs-table">
         <thead>
           <tr className="bg-muted/50">
             <th className="text-left font-mono font-semibold px-4 py-2">Flag</th>
@@ -106,9 +106,9 @@ const StatsPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Output Fields</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3 docs-h2">Output Fields</h2>
     <div className="rounded-lg border border-border overflow-hidden">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm docs-table">
         <thead>
           <tr className="bg-muted/50">
             <th className="text-left font-mono font-semibold px-4 py-2">Field</th>
@@ -136,9 +136,9 @@ const StatsPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3 docs-h2">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm docs-table">
         <thead>
           <tr className="bg-muted/50">
             <th className="text-left font-mono font-semibold px-4 py-2">File</th>

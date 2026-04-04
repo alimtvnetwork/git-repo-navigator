@@ -82,7 +82,7 @@ const ReleasePage = () => {
       <div className="space-y-10">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-mono font-bold text-foreground mb-3">Release Command</h1>
+          <h1 className="text-3xl font-heading font-bold text-foreground mb-3 docs-h1">Release Command</h1>
           <p className="text-muted-foreground leading-relaxed max-w-2xl">
             Automate Git release workflows: create branches, tags, push to remote, cross-compile Go binaries,
             upload to GitHub, and track release history. Supports semver, compression, checksums,
@@ -105,7 +105,7 @@ const ReleasePage = () => {
 
         {/* Commands */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Commands</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Commands</h2>
           <div className="space-y-4">
             <div className="p-4 rounded-lg border border-border bg-card">
               <h3 className="font-mono font-semibold text-foreground mb-1">gitmap release [version] <span className="text-muted-foreground font-normal text-sm">(alias: r)</span></h3>
@@ -124,9 +124,9 @@ const ReleasePage = () => {
 
         {/* Workflow Diagram */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Release Workflow</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Release Workflow</h2>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">gitmap release [version]</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">gitmap release [version]</h3>
           <div className="p-5 rounded-lg border border-border bg-card font-mono text-sm space-y-1 mb-6">
             {[
               "1. Resolve version (CLI → --bump → version.json → error)",
@@ -149,7 +149,7 @@ const ReleasePage = () => {
             ))}
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">gitmap release-branch / release-pending</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">gitmap release-branch / release-pending</h3>
           <div className="p-5 rounded-lg border border-border bg-card font-mono text-sm space-y-1">
             {[
               "1. Validate branch exists / discover pending branches + metadata",
@@ -173,14 +173,14 @@ const ReleasePage = () => {
 
         {/* Go Cross-Compilation */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Go Cross-Compilation</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Go Cross-Compilation</h2>
           <p className="text-sm text-muted-foreground mb-4">
             When a <code className="font-mono text-primary">go.mod</code> file is detected, gitmap automatically
             cross-compiles binaries for all OS/arch targets using <code className="font-mono text-primary">CGO_ENABLED=0</code>.
             No external tools required — uses Go's native cross-compilation.
           </p>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Default Target Matrix</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Default Target Matrix</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -202,7 +202,7 @@ const ReleasePage = () => {
             </table>
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mt-6 mb-3">Target Resolution (Three-Layer)</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mt-6 mb-3">Target Resolution (Three-Layer)</h3>
           <div className="bg-card border border-border rounded-lg p-4 space-y-2">
             <div className="flex items-center gap-3 font-mono text-sm">
               <span className="bg-primary/20 text-primary px-3 py-1 rounded font-semibold">1. --targets flag</span>
@@ -232,7 +232,7 @@ const ReleasePage = () => {
 
         {/* Version Resolution */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Version Resolution</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Version Resolution</h2>
           <p className="text-sm text-muted-foreground mb-3">Version is resolved in priority order:</p>
           <div className="space-y-2 mb-6">
             {[
@@ -249,7 +249,7 @@ const ReleasePage = () => {
             ))}
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Partial Version Padding</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Partial Version Padding</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -276,7 +276,7 @@ const ReleasePage = () => {
 
         {/* Release Flags */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Release Flags</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Release Flags</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -296,7 +296,7 @@ const ReleasePage = () => {
             </table>
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mt-6 mb-3">Release-Branch / Release-Pending Flags</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mt-6 mb-3">Release-Branch / Release-Pending Flags</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -319,7 +319,7 @@ const ReleasePage = () => {
 
         {/* Auto-Increment */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Auto-Increment (--bump)</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Auto-Increment (--bump)</h2>
           <p className="text-sm text-muted-foreground mb-3">
             Reads the latest version from <span className="font-mono text-foreground">.gitmap/release/latest.json</span> and increments.
             Falls back to scanning local Git tags.
@@ -350,7 +350,7 @@ const ReleasePage = () => {
 
         {/* Usage Examples */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Usage Examples</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Usage Examples</h2>
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground mb-2">Full semver release from HEAD</p>
@@ -401,7 +401,7 @@ const ReleasePage = () => {
 
         {/* Dry-Run Output */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Dry-Run Preview</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Dry-Run Preview</h2>
           <div className="bg-card border border-border rounded-lg p-5 font-mono text-sm space-y-1">
             <p className="text-muted-foreground">{`$ gitmap release v1.2.3 --dry-run`}</p>
             <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Create branch release/v1.2.3 from main</p>
@@ -420,7 +420,7 @@ const ReleasePage = () => {
 
         {/* Orphaned Metadata Recovery */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Orphaned Metadata Recovery</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Orphaned Metadata Recovery</h2>
           <p className="text-sm text-muted-foreground mb-4 max-w-2xl">
             If a <code className="font-mono text-primary">.gitmap/release/vX.Y.Z.json</code> file exists but neither the
             Git tag nor the release branch is found, the release command detects orphaned metadata and prompts
@@ -439,7 +439,7 @@ const ReleasePage = () => {
             <p className="text-green-500">&nbsp;&nbsp;✓ Created tag v2.3.10</p>
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Detection Logic</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Detection Logic</h3>
           <div className="space-y-2 mb-4">
             {[
               { step: "1", text: "Release JSON exists for the target version" },
@@ -465,14 +465,14 @@ const ReleasePage = () => {
 
         {/* Zip Groups */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Zip Groups</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Zip Groups</h2>
           <p className="text-sm text-muted-foreground mb-4 max-w-2xl">
             Attach compressed file bundles to releases using persistent groups (stored in SQLite) or
             ad-hoc <code className="font-mono text-primary">-Z</code> items. Archives use maximum compression
             (Deflate level 9) and are placed in the staging directory before upload.
           </p>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Flags</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Flags</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm">
               <thead>
@@ -496,7 +496,7 @@ const ReleasePage = () => {
             </table>
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Archive Naming</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Archive Naming</h3>
           <div className="overflow-x-auto mb-6">
             <table className="w-full text-sm">
               <thead>
@@ -522,7 +522,7 @@ const ReleasePage = () => {
             </table>
           </div>
 
-          <h3 className="text-base font-mono font-semibold text-foreground mb-3">Metadata (zipGroups)</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mb-3">Metadata (zipGroups)</h3>
           <p className="text-sm text-muted-foreground mb-3">
             Release metadata in <code className="font-mono text-primary">.gitmap/release/vX.Y.Z.json</code> includes a
             <code className="font-mono text-primary"> zipGroups</code> array recording each group and its archive:
@@ -543,7 +543,7 @@ const ReleasePage = () => {
   ]
 }`} />
 
-          <h3 className="text-base font-mono font-semibold text-foreground mt-6 mb-3">Dry-Run Output</h3>
+          <h3 className="text-base font-heading font-semibold text-foreground mt-6 mb-3">Dry-Run Output</h3>
           <div className="bg-card border border-border rounded-lg p-5 font-mono text-sm space-y-1">
             <p className="text-muted-foreground">$ gitmap release v3.0.0 --zip-group docs-bundle -Z ./report.pdf --dry-run</p>
             <p className="text-foreground/80">&nbsp;&nbsp;[dry-run] Would create 2 zip archive(s):</p>
@@ -555,7 +555,7 @@ const ReleasePage = () => {
 
         {/* Error Scenarios */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Error Scenarios</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Error Scenarios</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -578,7 +578,7 @@ const ReleasePage = () => {
 
         {/* Package Layout */}
         <div>
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">Package Layout</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">Package Layout</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -614,7 +614,7 @@ const ReleasePage = () => {
 
         {/* See Also */}
         <section className="mt-10">
-          <h2 className="text-xl font-mono font-bold text-foreground mb-4">See Also</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4 docs-h2">See Also</h2>
           <ul className="space-y-1 text-sm font-mono">
             <li><a href="/zip-group" className="text-primary hover:underline">zip-group</a> — Manage named file/folder collections for release bundling <span className="text-muted-foreground">↗</span></li>
             <li><a href="/clear-release-json" className="text-primary hover:underline">clear-release-json</a> — Remove stale release metadata files <span className="text-muted-foreground">↗</span></li>
