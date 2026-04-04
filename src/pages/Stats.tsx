@@ -59,7 +59,7 @@ const StatsPage = () => (
       Aggregated usage statistics and performance metrics for all gitmap CLI commands.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2 docs-h2">Live Preview</h2>
     <p className="text-sm text-muted-foreground mb-2">
       Simulated terminal output showing per-command statistics.
     </p>
