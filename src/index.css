@@ -118,8 +118,19 @@
 
   /* Selection */
   ::selection {
-    background: hsl(var(--primary) / 0.2);
+    background: hsl(var(--primary) / 0.25);
     color: hsl(var(--foreground));
+  }
+  .dark ::selection {
+    background: hsl(142 71% 55% / 0.3);
+    color: hsl(220 10% 95%);
+  }
+  /* Code block text selection — always light text on green */
+  pre ::selection,
+  code ::selection,
+  .hljs ::selection {
+    background: hsl(142 65% 40% / 0.35);
+    color: hsl(0 0% 100%);
   }
 }
 
