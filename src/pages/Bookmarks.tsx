@@ -58,18 +58,18 @@ const schema = [
 
 const BookmarksPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Bookmarks</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2">Bookmarks</h1>
     <p className="text-muted-foreground mb-6">
       Save and replay frequently-used CLI command+flag combinations by name.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2">Live Preview</h2>
     <p className="text-sm text-muted-foreground mb-2">
       Simulated terminal output of the bookmark list command.
     </p>
     <TerminalPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-4">Features</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -80,7 +80,7 @@ const BookmarksPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Subcommands</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Subcommands</h2>
     <CodeBlock code='gitmap bookmark save ssh-scan scan --mode ssh' title="Save a command bookmark" />
     <CodeBlock code='gitmap bk save scan-projects scan ./projects --mode ssh --open' title="Save with args and multiple flags" />
     <CodeBlock code="gitmap bookmark list" title="List all saved bookmarks" />
@@ -88,7 +88,7 @@ const BookmarksPage = () => (
     <CodeBlock code="gitmap bookmark run ssh-scan" title="Replay a saved bookmark" />
     <CodeBlock code="gitmap bookmark delete ssh-scan" title="Remove a bookmark" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Replay Behavior</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Replay Behavior</h2>
     <div className="grid md:grid-cols-3 gap-4 mb-8">
       <div className="rounded-lg border border-border bg-card p-4">
         <h3 className="font-mono font-semibold text-sm mb-1 text-primary">1. Load</h3>
@@ -104,7 +104,7 @@ const BookmarksPage = () => (
       </div>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Table Schema</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Table Schema</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
@@ -128,7 +128,7 @@ const BookmarksPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Constraints</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Constraints</h2>
     <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 mb-8">
       <li>Bookmark names must be unique (enforced by UNIQUE constraint)</li>
       <li>Save refuses if name exists — user must delete first</li>
@@ -137,7 +137,7 @@ const BookmarksPage = () => (
       <li>All files under 200 lines, all functions 8–15 lines</li>
     </ul>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>

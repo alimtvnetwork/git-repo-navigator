@@ -154,13 +154,13 @@ const features = [
 const WatchPage = () => {
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2">Watch Command</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2">Watch Command</h1>
       <p className="text-muted-foreground mb-6">
         Real-time monitoring dashboard for all your tracked repositories.
       </p>
 
       {/* Interactive preview */}
-      <h2 className="text-xl font-mono font-semibold mt-8 mb-2">
+      <h2 className="text-xl font-heading font-semibold mt-8 mb-2">
         Live Preview
       </h2>
       <p className="text-sm text-muted-foreground mb-2">
@@ -170,7 +170,7 @@ const WatchPage = () => {
       <TerminalPreview />
 
       {/* Features */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-4">Features</h2>
       <div className="grid md:grid-cols-3 gap-4 mb-8">
         {features.map((f) => (
           <div
@@ -185,7 +185,7 @@ const WatchPage = () => {
       </div>
 
       {/* Usage */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Usage</h2>
 
       <CodeBlock code="gitmap watch" title="Basic — refresh every 30s" />
       <CodeBlock
@@ -206,7 +206,7 @@ const WatchPage = () => {
       />
 
       {/* Flags */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Flags</h2>
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Flags</h2>
       <div className="rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -236,7 +236,7 @@ const WatchPage = () => {
       </div>
 
       {/* JSON output */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         JSON Output
       </h2>
       <p className="text-sm text-muted-foreground mb-2">
@@ -266,7 +266,7 @@ const WatchPage = () => {
       />
 
       {/* File layout */}
-      <h2 className="text-xl font-mono font-semibold mt-10 mb-3">
+      <h2 className="text-xl font-heading font-semibold mt-10 mb-3">
         File Layout
       </h2>
       <div className="rounded-lg border border-border overflow-hidden">

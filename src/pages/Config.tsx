@@ -4,14 +4,14 @@ import CodeBlock from "@/components/docs/CodeBlock";
 const ConfigPage = () => {
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2 docs-h1">Configuration</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Configuration</h1>
       <p className="text-muted-foreground mb-8">
         Customize gitmap behavior through JSON config files, profiles, and the three-layer merge pattern.
       </p>
 
       <section className="space-y-8">
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">Three-Layer Config</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">Three-Layer Config</h2>
           <div className="bg-card border border-border rounded-lg p-4 mb-4">
             <div className="space-y-2 font-mono text-sm">
               <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">config.json</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">config.json</h2>
           <p className="text-muted-foreground mb-3">
             The main config file controls scan defaults and release settings. Located at <code className="docs-inline-code">./data/config.json</code>:
           </p>
@@ -65,7 +65,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">Config Fields</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">Config Fields</h2>
           <div className="rounded-lg border border-border overflow-hidden">
             <table className="w-full text-sm docs-table">
               <thead>
@@ -100,7 +100,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">Release Config</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">Release Config</h2>
           <p className="text-muted-foreground mb-3">
             The <code className="docs-inline-code">release</code> section configures cross-compilation defaults.
             CLI flags (<code className="docs-inline-code">--targets</code>, <code className="docs-inline-code">--compress</code>,{" "}
@@ -143,7 +143,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">git-setup.json</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">git-setup.json</h2>
           <p className="text-muted-foreground mb-3">
             Configure global Git settings applied by <code className="docs-inline-code">gitmap setup</code>:
           </p>
@@ -163,7 +163,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">Profiles</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">Profiles</h2>
           <p className="text-muted-foreground mb-3">
             Maintain separate database environments (work, personal, client) using profiles:
           </p>
@@ -181,7 +181,7 @@ const ConfigPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">CD Defaults</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">CD Defaults</h2>
           <p className="text-muted-foreground mb-3">
             Set default navigation paths for repos cloned to multiple locations:
           </p>

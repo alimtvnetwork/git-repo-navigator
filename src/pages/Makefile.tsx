@@ -47,7 +47,7 @@ const targets = [
 const MakefilePage = () => {
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2">Makefile</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2">Makefile</h1>
       <p className="text-muted-foreground mb-8">
         A thin wrapper around <code className="font-mono text-primary">run.sh</code> for
         standard <code className="font-mono text-primary">make</code> workflows on Linux and macOS.
@@ -55,12 +55,12 @@ const MakefilePage = () => {
 
       <section className="space-y-6">
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">Quick start</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 text-foreground">Quick start</h2>
           <CodeBlock code={`cd gitmap\nmake build          # full pipeline\nmake run ARGS="scan ~/code"   # build + run\nmake test           # tests with report`} title="Terminal" />
         </div>
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-4 text-foreground">Targets</h2>
+          <h2 className="text-xl font-heading font-semibold mb-4 text-foreground">Targets</h2>
           <div className="space-y-4">
             {targets.map((t) => (
               <div
@@ -78,7 +78,7 @@ const MakefilePage = () => {
         </div>
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">Passing arguments</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 text-foreground">Passing arguments</h2>
           <p className="text-muted-foreground mb-3">
             The <code className="font-mono text-primary">run</code> target forwards
             everything in <code className="font-mono text-primary">ARGS</code> to gitmap after building:
@@ -90,7 +90,7 @@ const MakefilePage = () => {
         </div>
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 text-foreground">How it works</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 text-foreground">How it works</h2>
           <p className="text-muted-foreground">
             Each target delegates to{" "}
             <code className="font-mono text-primary">run.sh</code> with the appropriate flag.

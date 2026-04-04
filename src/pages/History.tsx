@@ -59,18 +59,18 @@ const features = [
 
 const HistoryPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Command History</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2">Command History</h1>
     <p className="text-muted-foreground mb-6">
       Automatic audit trail of every gitmap CLI execution with queryable history and usage tracking.
     </p>
 
-    <h2 className="text-xl font-mono font-semibold mt-8 mb-2">Live Preview</h2>
+    <h2 className="text-xl font-heading font-semibold mt-8 mb-2">Live Preview</h2>
     <p className="text-sm text-muted-foreground mb-2">
       Simulated terminal output of the history command in standard detail mode.
     </p>
     <TerminalPreview />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-4">Features</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-4">Features</h2>
     <div className="grid md:grid-cols-2 gap-4 mb-8">
       {features.map((f) => (
         <div key={f.title} className="rounded-lg border border-border bg-card p-4">
@@ -81,14 +81,14 @@ const HistoryPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Usage</h2>
     <CodeBlock code="gitmap history" title="Show recent history (standard detail)" />
     <CodeBlock code="gitmap history --detail basic" title="Basic view" />
     <CodeBlock code="gitmap history --detail detailed --command scan" title="Detailed view filtered by command" />
     <CodeBlock code="gitmap history --json --limit 10" title="Last 10 entries as JSON" />
     <CodeBlock code="gitmap history-reset --confirm" title="Clear all history" />
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Flags — history</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Flags — history</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
@@ -115,7 +115,7 @@ const HistoryPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Detail Levels</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Detail Levels</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
@@ -135,7 +135,7 @@ const HistoryPage = () => (
       </table>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Audit Hook</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">Audit Hook</h2>
     <p className="text-sm text-muted-foreground mb-4">
       The audit system uses a two-phase approach in <code className="text-primary font-mono">root.go</code>:
     </p>
@@ -150,7 +150,7 @@ const HistoryPage = () => (
       </div>
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">File Layout</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3">File Layout</h2>
     <div className="rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>

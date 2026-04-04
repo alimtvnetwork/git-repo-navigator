@@ -8,7 +8,7 @@ const ChangelogGenerate = () => {
       <div className="max-w-4xl">
         <div className="flex items-center gap-3 mb-2">
           <GitCommit className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-mono font-bold text-foreground">Changelog Generate</h1>
+          <h1 className="text-3xl font-heading font-bold text-foreground">Changelog Generate</h1>
         </div>
         <p className="text-muted-foreground mb-8 text-lg">
           Auto-generate changelog entries from commit messages between Git tags.
@@ -16,7 +16,7 @@ const ChangelogGenerate = () => {
 
         {/* Usage */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3 flex items-center gap-2">
             <Terminal className="h-5 w-5 text-primary" />
             Usage
           </h2>
@@ -29,7 +29,7 @@ const ChangelogGenerate = () => {
 
         {/* Flags */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Flags</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Flags</h2>
           <div className="rounded-lg border border-border overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -62,7 +62,7 @@ const ChangelogGenerate = () => {
 
         {/* How It Works */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3 flex items-center gap-2">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3 flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
             How It Works
           </h2>
@@ -102,7 +102,7 @@ const ChangelogGenerate = () => {
 
         {/* Examples */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Examples</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Examples</h2>
           <div className="space-y-4">
             <div>
               <h3 className="font-mono text-sm font-semibold text-foreground mb-2">Generate between latest two tags</h3>
@@ -157,7 +157,7 @@ const ChangelogGenerate = () => {
 
         {/* Prerequisites */}
         <section className="mb-10">
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Prerequisites</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Prerequisites</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />

@@ -56,7 +56,7 @@ const ReleaseSelfPage = () => {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <Tag className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-mono font-bold text-foreground">release-self</h1>
+            <h1 className="text-3xl font-heading font-bold text-foreground">release-self</h1>
             <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rs</span>
             <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded text-muted-foreground">rself</span>
           </div>
@@ -80,7 +80,7 @@ const ReleaseSelfPage = () => {
 
         {/* Usage */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Usage</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Usage</h2>
           <CodeBlock code="gitmap release-self [version] [flags]" />
           <p className="text-sm text-muted-foreground mt-2">
             Accepts all flags supported by <code className="text-primary font-mono">release</code> —
@@ -95,7 +95,7 @@ const ReleaseSelfPage = () => {
 
         {/* How It Works */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">How It Works</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">How It Works</h2>
           <div className="space-y-3">
             {[
               { step: "1", title: "Resolve source repo", desc: "Tries os.Executable() + symlink resolution first. If that fails (e.g., binary installed outside source tree), falls back to the source_repo_path stored in the SQLite Settings table." },
@@ -119,7 +119,7 @@ const ReleaseSelfPage = () => {
 
         {/* Terminal Demos */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Examples</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Examples</h2>
           <div className="space-y-6">
             <div>
               <h3 className="text-sm font-mono font-semibold text-muted-foreground mb-2">Explicit self-release with bump</h3>
@@ -134,7 +134,7 @@ const ReleaseSelfPage = () => {
 
         {/* CLI Examples */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">More Examples</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">More Examples</h2>
           <div className="space-y-4">
             <div>
               <p className="text-sm text-muted-foreground mb-1">Dry-run self-release</p>
@@ -153,7 +153,7 @@ const ReleaseSelfPage = () => {
 
         {/* Error Scenarios */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">Error Scenarios</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">Error Scenarios</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
               <thead>
@@ -176,7 +176,7 @@ const ReleaseSelfPage = () => {
 
         {/* See Also */}
         <section>
-          <h2 className="text-xl font-mono font-semibold text-foreground mb-3">See Also</h2>
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-3">See Also</h2>
           <div className="flex flex-wrap gap-2">
             {[
               { label: "Release", url: "/release" },

@@ -4,14 +4,14 @@ import CodeBlock from "@/components/docs/CodeBlock";
 const GettingStartedPage = () => {
   return (
     <DocsLayout>
-      <h1 className="text-3xl font-mono font-bold mb-2 docs-h1">Getting Started</h1>
+      <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Getting Started</h1>
       <p className="text-muted-foreground mb-8">
         Get up and running with gitmap in under 5 minutes.
       </p>
 
       <section className="space-y-8">
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">1. Install gitmap</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">1. Install gitmap</h2>
           <p className="text-muted-foreground mb-3">
             Build from source using Go 1.21+:
           </p>
@@ -41,7 +41,7 @@ const GettingStartedPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">2. Run your first scan</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">2. Run your first scan</h2>
           <p className="text-muted-foreground mb-3">
             Point gitmap at a directory containing Git repositories:
           </p>
@@ -55,7 +55,7 @@ const GettingStartedPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">3. Clone on another machine</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">3. Clone on another machine</h2>
           <p className="text-muted-foreground mb-3">
             Copy the output files and restore the exact folder structure:
           </p>
@@ -73,7 +73,7 @@ const GettingStartedPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">4. Set up shell navigation</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">4. Set up shell navigation</h2>
           <p className="text-muted-foreground mb-3">
             Run <code className="docs-inline-code">gitmap setup</code> to auto-install the <code className="docs-inline-code">gcd</code> wrapper function. After restarting your terminal:
           </p>
@@ -89,7 +89,7 @@ const GettingStartedPage = () => {
         <hr className="docs-hr" />
 
         <div>
-          <h2 className="text-xl font-mono font-semibold mb-3 docs-h2">5. Monitor your repos</h2>
+          <h2 className="text-xl font-heading font-semibold mb-3 docs-h2">5. Monitor your repos</h2>
           <p className="text-muted-foreground mb-3">
             Start a live dashboard to watch all tracked repos:
           </p>
