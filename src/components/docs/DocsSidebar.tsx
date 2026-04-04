@@ -81,6 +81,7 @@ const navItems = [
   { title: "Doctor", url: "/doctor", icon: Stethoscope },
   { title: "Clone Next", url: "/clone-next", icon: GitBranch },
   { title: "Dashboard", url: "/dashboard", icon: BarChart3 },
+  { title: "Setup", url: "/setup", icon: Settings },
   { title: "Spec Index", url: "/spec", icon: BookOpen },
 ];
 
