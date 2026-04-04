@@ -244,6 +244,24 @@ const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
           </div>
           <div className="flex items-center gap-1">
             <button
+              onClick={() => cycleFontSize("down")}
+              className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
+              title="Decrease font size"
+            >
+              <AArrowDown className="h-3.5 w-3.5" />
+            </button>
+            <span className="text-[10px] font-mono text-[hsl(220,10%,45%)] min-w-[14px] text-center">
+              {FONT_SIZES[fontSizeIdx].label}
+            </span>
+            <button
+              onClick={() => cycleFontSize("up")}
+              className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
+              title="Increase font size"
+            >
+              <AArrowUp className="h-3.5 w-3.5" />
+            </button>
+            <div className="w-px h-4 bg-[hsl(220,10%,25%)] mx-0.5" />
+            <button
               onClick={handleCopy}
               className="p-1.5 rounded hover:bg-white/10 text-[hsl(220,10%,50%)] hover:text-white transition-colors"
               title="Copy"
