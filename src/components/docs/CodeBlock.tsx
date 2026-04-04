@@ -84,13 +84,28 @@ const LANG_EXTENSIONS: Record<string, string> = {
 
 const DEFAULT_ACCENT = "220 10% 50%";
 
+const FONT_SIZES = [
+  { label: "S", size: "13px" },
+  { label: "M", size: "15px" },
+  { label: "L", size: "17px" },
+];
+
 const CodeBlock = ({ code, language = "bash", title }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [pinnedLines, setPinnedLines] = useState<Set<number>>(new Set());
   const [lastPinned, setLastPinned] = useState<number | null>(null);
+  const [fontSizeIdx, setFontSizeIdx] = useState(1); // default Medium
 
   const hasPinned = pinnedLines.size > 0;
+  const fontSize = FONT_SIZES[fontSizeIdx].size;
+
+  const cycleFontSize = useCallback((direction: "up" | "down") => {
+    setFontSizeIdx((prev) => {
+      if (direction === "up") return Math.min(prev + 1, FONT_SIZES.length - 1);
+      return Math.max(prev - 1, 0);
+    });
+  }, []);
 
   const togglePin = useCallback((lineIndex: number, e?: React.MouseEvent) => {
     if (e?.shiftKey && lastPinned !== null) {
