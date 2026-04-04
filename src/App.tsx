@@ -89,6 +89,7 @@ const App = () => (
           <Route path="/clone-next" element={<CloneNextPage />} />
           <Route path="/spec" element={<SpecIndexPage />} />
           <Route path="/cd" element={<CdPage />} />
+          <Route path="/setup" element={<SetupPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
