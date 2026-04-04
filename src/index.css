@@ -127,15 +127,22 @@
 @layer components {
   .docs-h1,
   .docs-h2 {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(142 71% 60%));
+    background: linear-gradient(135deg, hsl(142 65% 32%), hsl(142 55% 42%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     transition: filter 0.3s ease;
   }
+  .dark .docs-h1,
+  .dark .docs-h2 {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(142 71% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .docs-h1:hover,
   .docs-h2:hover {
-    filter: brightness(1.2) saturate(1.1);
+    filter: brightness(1.15) saturate(1.1);
   }
 
   .docs-h3 {
