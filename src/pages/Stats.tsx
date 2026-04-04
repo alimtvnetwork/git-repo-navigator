@@ -76,7 +76,7 @@ const StatsPage = () => (
       ))}
     </div>
 
-    <h2 className="text-xl font-mono font-semibold mt-10 mb-3">Usage</h2>
+    <h2 className="text-xl font-heading font-semibold mt-10 mb-3 docs-h2">Usage</h2>
     <CodeBlock code="gitmap stats" title="Show all command stats" />
     <CodeBlock code="gitmap stats --command scan" title="Stats for a specific command" />
     <CodeBlock code="gitmap stats --json" title="JSON output for scripting" />
