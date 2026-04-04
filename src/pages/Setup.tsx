@@ -179,7 +179,7 @@ const Setup = () => {
         {/* Help Output */}
         <section className="mb-12">
           <h2 className="docs-h2">--help Output</h2>
-          <CodeBlock code={helpText} language="markdown" filename="gitmap setup --help" />
+          <CodeBlock code={helpText} language="markdown" title="gitmap setup --help" />
         </section>
 
         {/* Git Config Profile */}
@@ -189,7 +189,7 @@ const Setup = () => {
             Setup reads <code className="docs-inline-code">data/git-setup.json</code> and applies each key
             as a global Git config value. Existing values that already match are skipped.
           </p>
-          <CodeBlock code={gitSetupJson} language="json" filename="data/git-setup.json" />
+          <CodeBlock code={gitSetupJson} language="json" title="data/git-setup.json" />
         </section>
 
         {/* Shell Wrappers */}
@@ -202,9 +202,9 @@ const Setup = () => {
           </p>
 
           <div className="space-y-4">
-            <CodeBlock code={bashWrapper} language="bash" filename="Bash (~/.bashrc)" />
-            <CodeBlock code={zshWrapper} language="bash" filename="Zsh (~/.zshrc)" />
-            <CodeBlock code={powershellWrapper} language="powershell" filename="PowerShell ($PROFILE)" />
+            <CodeBlock code={bashWrapper} language="bash" title="Bash (~/.bashrc)" />
+            <CodeBlock code={zshWrapper} language="bash" title="Zsh (~/.zshrc)" />
+            <CodeBlock code={powershellWrapper} language="powershell" title="PowerShell ($PROFILE)" />
           </div>
 
           <div className="mt-4 p-3 rounded-lg border border-border bg-muted/30">
