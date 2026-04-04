@@ -54,7 +54,7 @@ const features = [
 
 const StatsPage = () => (
   <DocsLayout>
-    <h1 className="text-3xl font-mono font-bold mb-2">Stats Command</h1>
+    <h1 className="text-3xl font-heading font-bold mb-2 docs-h1">Stats Command</h1>
     <p className="text-muted-foreground mb-6">
       Aggregated usage statistics and performance metrics for all gitmap CLI commands.
     </p>
