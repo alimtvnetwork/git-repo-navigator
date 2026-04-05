@@ -93,7 +93,7 @@ func executeInstall(opts installOptions) {
 	}
 
 	if opts.Check {
-		fmt.Printf(constants.MsgInstallChecking, opts.Tool)
+		fmt.Printf(constants.MsgInstallNotFound, opts.Tool)
 
 		return
 	}
