@@ -37,7 +37,7 @@ func runSSHGenerate(args []string) {
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
 		if strings.TrimSpace(strings.ToLower(input)) != "y" {
-			fmt.Fprint(os.Stdout, constants.MsgSSHCancelled)
+			fmt.Fprint(os.Stdout, constants.MsgSSHCanceled)
 
 			return
 		}
