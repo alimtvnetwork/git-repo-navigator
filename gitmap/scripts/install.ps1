@@ -196,20 +196,21 @@ function Test-PathEntry([string]$pathValue, [string]$dir) {
     return $false
 }
 
-function Ensure-SessionPath([string]$dir) {
+function Rebuild-SessionPath([string]$dir) {
     # Rebuild session PATH from registry (Machine + User) to pick up any changes
     $machinePath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
     $userPath = [Environment]::GetEnvironmentVariable("PATH", "User")
-    $freshPath = @($machinePath, $userPath) | Where-Object { $_ } | ForEach-Object { $_.TrimEnd(";") }
-    $env:PATH = ($freshPath -join ";")
+    $parts = @()
+    if ($machinePath) { $parts += $machinePath.TrimEnd(";") }
+    if ($userPath) { $parts += $userPath.TrimEnd(";") }
+    $rebuilt = $parts -join ";"
 
     # Ensure install dir is present even if not yet persisted
-    if (-not (Test-PathEntry $env:PATH $dir)) {
-        $env:PATH = $env:PATH.TrimEnd(";") + ";" + $dir
-        return $true
+    if (-not (Test-PathEntry $rebuilt $dir)) {
+        $rebuilt = $rebuilt.TrimEnd(";") + ";" + $dir
     }
 
-    return $false
+    return $rebuilt
 }
 
 function Broadcast-EnvironmentChange {
