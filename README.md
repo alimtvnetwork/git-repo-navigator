@@ -384,14 +384,35 @@ gitmap dashboard --since 2025-06-01
 
 ---
 
-## Contributors
+## Author
 
-- [**Md. Alim Ul Karim**](https://www.linkedin.com/in/alimkarim) — Creator & Lead Architect. System architect with 20+ years of professional software engineering experience across enterprise, fintech, and distributed systems. Recognized as one of the top software architects globally. Alim's architectural philosophy — consistency over cleverness, convention over configuration — is the driving force behind every design decision in this framework.
-  - [Google Profile](https://www.google.com/search?q=Alim+Ul+Karim)
-- [Riseup Asia LLC (Top Leading Software Company in WY)](https://riseup-asia.com) (2026)
-  - [Facebook](https://www.facebook.com/riseupasia.talent/)
-  - [LinkedIn](https://www.linkedin.com/company/105304484/)
-  - [YouTube](https://www.youtube.com/@riseup-asia)
+### Md. Alim Ul Karim
+
+**Creator & Lead Architect** | Chief Software Engineer, Riseup Asia LLC
+
+A system architect with **20+ years** of professional software engineering experience across enterprise, fintech, and distributed systems. His technology stack spans **.NET/C# (18+ years)**, **JavaScript (10+ years)**, **TypeScript (6+ years)**, and **Golang (4+ years)**.
+
+Recognized as a **top 1% talent at Crossover** and one of the top software architects globally. He is also the **CEO of Riseup Asia LLC** and maintains an active presence on **Stack Overflow** (2,452+ reputation, member since 2010) and **LinkedIn** (12,500+ followers).
+
+His architectural philosophy — _consistency over cleverness, convention over configuration_ — is the driving force behind every design decision in this project. His published writings on clean function design and meaningful naming directly inform the coding principles encoded in this specification system.
+
+|  |  |
+|---|---|
+| **Website** | [alimkarim.com](https://alimkarim.com/) · [my.alimkarim.com](https://my.alimkarim.com/) |
+| **LinkedIn** | [linkedin.com/in/alimkarim](https://linkedin.com/in/alimkarim) |
+| **Google** | [Alim Ul Karim](https://www.google.com/search?q=Alim+Ul+Karim) |
+| **Role** | Chief Software Engineer, Riseup Asia LLC |
+
+### Riseup Asia LLC
+
+Top Leading Software Company in WY (2026)
+
+| | |
+|---|---|
+| **Website** | [riseup-asia.com](https://riseup-asia.com) |
+| **Facebook** | [riseupasia.talent](https://www.facebook.com/riseupasia.talent/) |
+| **LinkedIn** | [Riseup Asia](https://www.linkedin.com/company/105304484/) |
+| **YouTube** | [@riseup-asia](https://www.youtube.com/@riseup-asia) |
 
 ## License
 
