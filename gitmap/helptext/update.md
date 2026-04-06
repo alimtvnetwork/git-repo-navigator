@@ -72,6 +72,43 @@ None
     ✗ Failed to pull latest: network timeout
     → Check your internet connection and try again
 
+### Example 5: No source repo linked (installed from release)
+
+    gitmap update
+
+**Output:**
+
+    ✗ Source repository path not found.
+
+    This binary was installed without a linked source repo, so 'update'
+    cannot locate the code to pull and rebuild.
+
+    How to fix:
+
+      Option 1 — Re-install via the one-liner (recommended):
+        irm https://raw.githubusercontent.com/.../install.ps1 | iex
+
+      Option 2 — Clone the repo and build from source:
+        git clone https://github.com/.../git-repo-navigator.git C:\gitmap-src
+        cd C:\gitmap-src
+        .\run.ps1
+
+      Option 3 — Download the latest release manually:
+        https://github.com/.../git-repo-navigator/releases/latest
+
+      Option 4 — Use --repo-path to specify it manually:
+        gitmap update --repo-path C:\gitmap-src
+
+      After building from source, 'gitmap update' will work automatically.
+
+## Troubleshooting
+
+If you installed gitmap from a GitHub release (e.g. via the one-liner installer),
+the binary does not have a source repo path embedded. You have two choices:
+
+1. **Use `--repo-path`** to point at a local clone for a one-time update.
+2. **Clone and rebuild** from source so future updates work automatically.
+
 ## See Also
 
 - [version](version.md) — Check current version
