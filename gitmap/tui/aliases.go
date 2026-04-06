@@ -39,8 +39,8 @@ func (m aliasesModel) Update(msg tea.Msg) (aliasesModel, tea.Cmd) {
 		}
 	case keys.delete(keyMsg):
 		if len(m.aliases) > 0 {
-			name := m.aliases[m.cursor].Alias
-			m.message = fmt.Sprintf(constants.TUIAliasDeleteHint, string(name))
+			name := m.aliases[m.cursor].Alias.Alias
+			m.message = fmt.Sprintf(constants.TUIAliasDeleteHint, name)
 		}
 	case keys.refresh(keyMsg):
 		m.aliases, _ = m.db.ListAliasesWithRepo()
