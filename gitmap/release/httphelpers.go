@@ -31,6 +31,10 @@ func newGitHubRequest(method string, u *url.URL, body io.ReadCloser, contentLeng
 	return &http.Request{
 		Method:        method,
 		URL:           u,
+		Host:          u.Host,
+		Proto:         "HTTP/1.1",
+		ProtoMajor:    1,
+		ProtoMinor:    1,
 		Header:        make(http.Header),
 		Body:          body,
 		ContentLength: contentLength,
