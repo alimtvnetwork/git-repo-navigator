@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.49.0 — Opt-in Binary Builds & Gitignore Safety
+
+- Go binary cross-compilation is now opt-in: use `--bin` or `-b` to build executables during release.
+- Removed `--no-assets` flag (replaced by the inverse `--bin` flag).
+- `gitmap setup` now ensures `release-assets` and `.gitmap/release-assets` are in `.gitignore`.
+- Release workflow auto-appends missing release-related paths to `.gitignore` before each release.
+- Added `release-assets` and `.gitmap/release-assets` to `.gitignore` to prevent tracking build artifacts.
+
 ## v2.48.1 — Clone-Next Auto-Navigate
 
 - `clone-next` now automatically changes into the newly cloned directory after removing the old folder.
