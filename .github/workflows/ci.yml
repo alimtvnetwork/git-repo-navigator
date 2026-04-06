@@ -29,6 +29,24 @@ jobs:
         working-directory: gitmap
         run: staticcheck ./...
 
+  vulncheck:
+    name: Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: gitmap/go.mod
+          cache-dependency-path: gitmap/go.sum
+
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+
+      - name: Run govulncheck
+        working-directory: gitmap
+        run: govulncheck ./...
+
   test:
     name: Test
     runs-on: ubuntu-latest
