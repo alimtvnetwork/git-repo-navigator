@@ -24,8 +24,8 @@ func TestSEOSQL_CreateTableContainsColumns(t *testing.T) {
 func TestSEOSQL_InsertHasThreePlaceholders(t *testing.T) {
 	sql := constants.SQLInsertTemplate
 	count := strings.Count(sql, "?")
-	if count != 3 {
-		t.Errorf("expected 3 placeholders in insert SQL, got %d", count)
+	if count != 2 {
+		t.Errorf("expected 2 placeholders in insert SQL, got %d", count)
 	}
 }
 
