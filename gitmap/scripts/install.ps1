@@ -196,20 +196,21 @@ function Test-PathEntry([string]$pathValue, [string]$dir) {
     return $false
 }
 
-function Ensure-SessionPath([string]$dir) {
+function Rebuild-SessionPath([string]$dir) {
     # Rebuild session PATH from registry (Machine + User) to pick up any changes
     $machinePath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
     $userPath = [Environment]::GetEnvironmentVariable("PATH", "User")
-    $freshPath = @($machinePath, $userPath) | Where-Object { $_ } | ForEach-Object { $_.TrimEnd(";") }
-    $env:PATH = ($freshPath -join ";")
+    $parts = @()
+    if ($machinePath) { $parts += $machinePath.TrimEnd(";") }
+    if ($userPath) { $parts += $userPath.TrimEnd(";") }
+    $rebuilt = $parts -join ";"
 
     # Ensure install dir is present even if not yet persisted
-    if (-not (Test-PathEntry $env:PATH $dir)) {
-        $env:PATH = $env:PATH.TrimEnd(";") + ";" + $dir
-        return $true
+    if (-not (Test-PathEntry $rebuilt $dir)) {
+        $rebuilt = $rebuilt.TrimEnd(";") + ";" + $dir
     }
 
-    return $false
+    return $rebuilt
 }
 
 function Broadcast-EnvironmentChange {
@@ -250,30 +251,22 @@ public static class GitMapEnvNative {
 function Add-ToPath([string]$dir) {
     $currentUserPath = [Environment]::GetEnvironmentVariable("PATH", "User")
     $userHasDir = Test-PathEntry $currentUserPath $dir
-    $sessionUpdated = Ensure-SessionPath $dir
 
-    if ($userHasDir) {
-        if ($sessionUpdated) {
-            Write-OK "Already in PATH. Updated current session PATH."
+    if (-not $userHasDir) {
+        if ([string]::IsNullOrWhiteSpace($currentUserPath)) {
+            $newPath = $dir
         }
         else {
-            Write-Step "Already in PATH."
+            $newPath = $currentUserPath.TrimEnd(";") + ";" + $dir
         }
 
-        return
-    }
-
-    if ([string]::IsNullOrWhiteSpace($currentUserPath)) {
-        $newPath = $dir
+        [Environment]::SetEnvironmentVariable("PATH", $newPath, "User")
+        Broadcast-EnvironmentChange
+        Write-OK "Added to user PATH."
     }
     else {
-        $newPath = $currentUserPath.TrimEnd(";") + ";" + $dir
+        Write-Step "Already in user PATH."
     }
-
-    [Environment]::SetEnvironmentVariable("PATH", $newPath, "User")
-    Broadcast-EnvironmentChange
-    Ensure-SessionPath $dir
-    Write-OK "Added to PATH (current session updated; new terminals inherit it)."
 }
 
 # --- Main ---
@@ -307,17 +300,33 @@ function Main {
         try { refreshenv | Out-Null } catch {}
     }
 
-    # Verify
-    $binPath = Join-Path $resolvedDir $BinaryName
-    if (Test-Path $binPath) {
-        Write-Host ""
-        $versionOutput = & $binPath version 2>&1
-        Write-OK "gitmap $versionOutput"
-    }
-
-    Write-Host ""
-    Write-OK "Done! Run 'gitmap --help' to get started."
-    Write-Host ""
+    # Force-rebuild $env:PATH in this scope so gitmap is usable immediately
+    $script:NewPath = Rebuild-SessionPath $resolvedDir
+    return @{ InstallDir = $resolvedDir; NewPath = $script:NewPath }
 }
 
-Main
+$installResult = Main
+
+# Set $env:PATH at the TOP-LEVEL script scope (not inside a function)
+# This ensures the change persists in the caller's session when run via iex
+$env:PATH = $installResult.NewPath
+
+# Verify the binary works
+$binPath = Join-Path $installResult.InstallDir $BinaryName
+if (Test-Path $binPath) {
+    Write-Host ""
+    try {
+        $versionOutput = & $binPath version 2>&1
+        Write-OK "  gitmap $versionOutput"
+    }
+    catch {
+        Write-Err "  Binary found but failed to run: $_"
+    }
+}
+else {
+    Write-Err "  Binary not found at $binPath"
+}
+
+Write-Host ""
+Write-OK "  Done! Run 'gitmap --help' to get started."
+Write-Host ""
