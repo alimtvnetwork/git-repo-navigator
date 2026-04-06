@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 var githubTransport = http.DefaultTransport.(*http.Transport).Clone()
