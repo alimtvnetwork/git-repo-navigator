@@ -20,7 +20,7 @@ type logsModel struct {
 }
 
 func newLogsModel(db *store.DB) logsModel {
-	var entries []model.HistoryEntry
+	var entries []model.CommandHistoryRecord
 	if db != nil {
 		entries, _ = db.ListHistory()
 	}
