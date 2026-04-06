@@ -52,6 +52,10 @@ func openDBAt(dbPath string) (*DB, error) {
 		return nil, fmt.Errorf(constants.ErrDBOpen, err)
 	}
 
+	// SQLite does not support concurrent writes; pin to one connection
+	// so PRAGMAs (foreign_keys, etc.) persist across all operations.
+	conn.SetMaxOpenConns(1)
+
 	err = enableFK(conn)
 	if err != nil {
 		conn.Close()
