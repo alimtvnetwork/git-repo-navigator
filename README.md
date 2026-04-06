@@ -147,16 +147,13 @@ gitmap lb 5 --format csv
 
 ### Release & Versioning
 
+#### Release Workflow
+
 | Command | Alias | Description |
 |---------|-------|-------------|
 | `release` | `r` | Create release branch, tag, and push |
 | `release-self` | `rs` | Release gitmap itself from any directory |
 | `release-branch` | `rb` | Create a release branch without tagging |
-| `release-pending` | `rp` | Show unreleased commits since last tag |
-| `changelog` | `cl` | Show release notes |
-| `list-versions` | `lv` | List all available Git release tags |
-| `list-releases` | `lr` | List release metadata from the database |
-| `revert` | — | Revert to a specific release version |
 
 ```bash
 # Auto-bump patch version and release
@@ -168,22 +165,50 @@ gitmap release --bump minor --bin
 # Preview release without executing
 gitmap release --bump minor --dry-run
 
-# Release with notes and compressed assets
+# Release with notes, compressed assets, and checksums
 gitmap release v3.0.0 --bin --compress --checksums -N "Major redesign"
 
 # Release gitmap itself from any directory
 gitmap release-self --bump patch
 
+# Create a release branch without tagging
+gitmap release-branch v3.0.0-rc1 --branch develop
+```
+
+#### Release History & Info
+
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `changelog` | `cl` | Show release notes |
+| `list-versions` | `lv` | List all available Git release tags |
+| `list-releases` | `lr` | List release metadata from the database |
+| `release-pending` | `rp` | Show unreleased commits since last tag |
+| `revert` | — | Revert to a specific release version |
+| `clear-release-json` | `crj` | Remove orphaned release metadata files |
+
+```bash
+# View changelog for a version
+gitmap changelog v2.49.0
+
 # Show unreleased commits
 gitmap release-pending
 
-# List all versions
+# List all versions as JSON (last 5)
 gitmap list-versions --json --limit 5
+
+# List stored release records
+gitmap list-releases --limit 10
+
+# Revert to a previous release
+gitmap revert v2.48.0
+
+# Clean up orphaned release metadata
+gitmap clear-release-json v2.30.0
 ```
 
 > **CI Pipeline:** Pushing a `release/*` branch or `v*` tag triggers GitHub Actions to cross-compile all 6 targets, generate checksums, attach a version-pinned install script, and create a GitHub release with changelog, metadata, and install instructions. See [spec/01-app/12-release-command.md](spec/01-app/12-release-command.md#ci-release-pipeline-github-actions) for details.
 
-→ Full details: [release](gitmap/helptext/release.md) · [release-branch](gitmap/helptext/release-branch.md) · [release-pending](gitmap/helptext/release-pending.md) · [changelog](gitmap/helptext/changelog.md) · [list-versions](gitmap/helptext/list-versions.md) · [list-releases](gitmap/helptext/list-releases.md) · [revert](gitmap/helptext/revert.md)
+→ Full details: [release](gitmap/helptext/release.md) · [release-self](gitmap/helptext/release-self.md) · [release-branch](gitmap/helptext/release-branch.md) · [release-pending](gitmap/helptext/release-pending.md) · [changelog](gitmap/helptext/changelog.md) · [list-versions](gitmap/helptext/list-versions.md) · [list-releases](gitmap/helptext/list-releases.md) · [revert](gitmap/helptext/revert.md) · [clear-release-json](gitmap/helptext/clear-release-json.md)
 
 ### Navigation & Organization
 
