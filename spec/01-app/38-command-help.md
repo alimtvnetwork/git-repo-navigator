@@ -169,7 +169,7 @@ in the docs site:
 |----------|----------|
 | Scanning & Cloning | scan, clone, pull, rescan, desktop-sync |
 | Monitoring & Status | status, watch, exec, latest-branch |
-| Release & Versioning | release, release-branch, release-pending, changelog, list-versions, list-releases, revert, clear-release-json |
+| Release & Versioning | release, release-self, release-branch, release-pending, changelog, list-versions, list-releases, revert, clear-release-json |
 | Navigation & Organization | cd, list, group, multi-group, diff-profiles |
 | History & Stats | history, history-reset, stats, amend, amend-list |
 | Project Detection | go-repos, node-repos, react-repos, cpp-repos, csharp-repos |
@@ -193,13 +193,14 @@ For full details, each entry links to `gitmap/helptext/<command>.md`.
 | scan.md | scan | s |
 | clone.md | clone | c |
 | pull.md | pull | p |
-| rescan.md | rescan | rs |
+| rescan.md | rescan | rsc |
 | desktop-sync.md | desktop-sync | ds |
 | status.md | status | st |
 | watch.md | watch | w |
 | exec.md | exec | x |
 | latest-branch.md | latest-branch | lb |
 | release.md | release | r |
+| release-self.md | release-self | rs |
 | release-branch.md | release-branch | rb |
 | release-pending.md | release-pending | rp |
 | changelog.md | changelog | cl |
