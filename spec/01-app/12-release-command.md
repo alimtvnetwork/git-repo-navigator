@@ -304,6 +304,10 @@ gitmap release v1
 # With assets
 gitmap release v2.0.0 --assets ./dist
 
+# With Go binary cross-compilation
+gitmap release v2.0.0 --bin
+gitmap release v2.0.0 -b --assets ./dist
+
 # Alias
 gitmap r v1.5.0
 
@@ -315,7 +319,7 @@ gitmap release v1.0.0 --branch develop
 
 # Auto-increment
 gitmap release --bump patch
-gitmap release --bump minor --assets ./bin
+gitmap release --bump minor --bin
 
 # Draft release
 gitmap release v3.0.0-rc.1 --draft
