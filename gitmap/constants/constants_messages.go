@@ -156,7 +156,27 @@ const (
 	ErrOutputFailed           = "Output error: %v\n"
 	ErrCreateDir              = "Cannot create directory: %v\n"
 	ErrCreateFile             = "Cannot create file: %v\n"
-	ErrNoRepoPath             = "Error: repo path not embedded. Binary was not built with run.ps1."
+	ErrNoRepoPath = `
+  ✗ Source repository path not found.
+
+  This binary was installed without a linked source repo, so 'update'
+  cannot locate the code to pull and rebuild.
+
+  How to fix:
+
+    Option 1 — Re-install via the one-liner (recommended):
+      irm https://raw.githubusercontent.com/AliMTVNetworkSolutions/git-repo-navigator/main/gitmap/scripts/install.ps1 | iex
+
+    Option 2 — Clone the repo and build from source:
+      git clone https://github.com/AliMTVNetworkSolutions/git-repo-navigator.git C:\gitmap-src
+      cd C:\gitmap-src
+      .\run.ps1
+
+    Option 3 — Download the latest release manually:
+      https://github.com/AliMTVNetworkSolutions/git-repo-navigator/releases/latest
+
+  After building from source, 'gitmap update' will work automatically.
+`
 	ErrUpdateFailed           = "Update error: %v\n"
 	ErrPullSlugRequired       = "Error: repo name is required"
 	ErrPullUsage              = "Usage: gitmap pull <repo-name> [--verbose]"
