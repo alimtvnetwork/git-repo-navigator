@@ -161,6 +161,10 @@ func parseIntervalSafe(s string) (int, int, error) {
 
 func parseIntSafe(s string, target *int) (bool, error) {
 	val := 0
+	if len(s) == 0 {
+		return false, errInvalid()
+	}
+
 	for _, c := range s {
 		if c < '0' || c > '9' {
 			return false, errInvalid()
