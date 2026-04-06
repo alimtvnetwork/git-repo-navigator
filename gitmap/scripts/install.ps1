@@ -96,7 +96,7 @@ function Resolve-Version([string]$version) {
 # --- Download asset ---
 
 function Get-Asset([string]$version, [string]$arch) {
-    $assetName = "gitmap-windows-${arch}.zip"
+    $assetName = "gitmap-${version}-windows-${arch}.zip"
     $baseUrl = "https://github.com/$Repo/releases/download/$version"
     $assetUrl = "$baseUrl/$assetName"
     $checksumUrl = "$baseUrl/checksums.txt"
