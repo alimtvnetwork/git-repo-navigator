@@ -150,9 +150,6 @@ func TestDryRunSkipsAutoCommitWhenNoCommit(t *testing.T) {
 
 	output := captureStdout(t, func() {
 		printDryRun(v, branchName, tag, "main", opts)
-		fmt.Printf(constants.MsgReleaseDryRun, "Switch back to main")
-		// With NoCommit, auto-commit scanning should NOT be called.
-		fmt.Print(constants.MsgAutoCommitSkipped)
 	})
 
 	if !strings.Contains(output, constants.MsgAutoCommitSkipped) {
