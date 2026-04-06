@@ -230,7 +230,8 @@ func TestE2E_NoCommitSkipsAutoCommit(t *testing.T) {
 	}
 
 	// The metadata file should be uncommitted (in git status).
-	cmd := exec.Command("git", "status", "--porcelain")
+	// Use -uall to show individual files inside untracked directories.
+	cmd := exec.Command("git", "status", "--porcelain", "-uall")
 	out, err := cmd.Output()
 	if err != nil {
 		t.Fatalf("git status: %v", err)
@@ -238,7 +239,7 @@ func TestE2E_NoCommitSkipsAutoCommit(t *testing.T) {
 
 	output := string(out)
 	if !strings.Contains(output, "v2.0.0.json") {
-		t.Error("v2.0.0.json should appear in uncommitted changes with --no-commit")
+		t.Errorf("v2.0.0.json should appear in uncommitted changes with --no-commit, got: %q", output)
 	}
 }
 
