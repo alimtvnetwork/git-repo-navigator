@@ -317,13 +317,29 @@ The project uses a single PowerShell script (`run.ps1`) at the repo root for the
 
 Configuration lives in `gitmap/powershell.json`.
 
-## Web Frontend (React + Vite)
+## Web UI Dashboard
 
-A React + TypeScript + Tailwind CSS web application scaffold.
+GitMap includes a React-based documentation and dashboard UI. To run it locally:
 
-```sh
-npm i
+```bash
+# Install dependencies
+npm install
+
+# Start the dev server (opens at http://localhost:5173)
 npm run dev
+```
+
+You can also generate a per-repo HTML dashboard directly from the CLI:
+
+```bash
+# Generate and auto-open in browser
+gitmap dashboard --open
+
+# Last 50 commits, exclude merges
+gitmap db --limit 50 --no-merges --open
+
+# Commits since a specific date
+gitmap dashboard --since 2025-06-01
 ```
 
 ### Tech Stack
