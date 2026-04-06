@@ -87,7 +87,7 @@ jobs:
         run: |
           set -uo pipefail
           set +e
-          go test ${{ matrix.packages }} -v -count=1 2>&1 | tee test-output.txt
+          go test ${{ matrix.packages }} -v -count=1 -coverprofile=coverage-${{ matrix.name }}.out -covermode=atomic 2>&1 | tee test-output.txt
           exit_code=${PIPESTATUS[0]}
           set -e
 
@@ -107,7 +107,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results-${{ matrix.name }}
-          path: gitmap/test-output.txt
+          path: |
+            gitmap/test-output.txt
+            gitmap/coverage-${{ matrix.name }}.out
           retention-days: 7
 
   test-summary:
