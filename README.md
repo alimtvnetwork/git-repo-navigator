@@ -52,7 +52,7 @@ cd git-repo-navigator
 ./setup.sh
 ```
 
-The setup script installs the pre-commit hook (golangci-lint), verifies your Go toolchain, and downloads dependencies.
+The setup script installs the pre-commit hook (golangci-lint), verifies your Go toolchain, and downloads dependencies. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development workflow, coding standards, and PR requirements.
 
 ### Makefile Targets
 
