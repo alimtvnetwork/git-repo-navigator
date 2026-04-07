@@ -183,20 +183,3 @@ func printGroupVisualize() {
 	fmt.Println(constants.HelpGroupVisualize)
 	fmt.Println(constants.HelpDashboard)
 }
-
-// printGroupUtilities prints the utility commands.
-func printGroupUtilities() {
-	fmt.Println()
-	fmt.Println(constants.HelpGroupUtilities)
-	fmt.Println(constants.HelpSetup)
-	fmt.Println(constants.HelpDoctor)
-	fmt.Println(constants.HelpUpdate)
-	fmt.Println(constants.HelpUpdateCleanup)
-	fmt.Println(constants.HelpVersion)
-	fmt.Println(constants.HelpCompletion)
-	fmt.Println(constants.HelpInteractive)
-	fmt.Println(constants.HelpDocs)
-	fmt.Println(constants.HelpGoMod)
-	fmt.Println(constants.HelpSEOWrite)
-	fmt.Println(constants.HelpHelp)
-}
