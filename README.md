@@ -42,7 +42,34 @@ irm https://raw.githubusercontent.com/alimtvnetwork/git-repo-navigator/main/gitm
 curl -fsSL https://raw.githubusercontent.com/alimtvnetwork/git-repo-navigator/main/gitmap/scripts/install.sh | sh
 ```
 
-Options: pin a version with `-Version v2.49.0`, choose install dir with `-InstallDir C:\tools\gitmap`, or skip PATH with `-NoPath`.
+### Installer Options
+
+| Flag | Description | Example |
+|------|-------------|---------|
+| `-Version` | Pin a specific release | `-Version v2.49.1` |
+| `-InstallDir` | Custom install directory | `-InstallDir C:\tools\gitmap` |
+| `-Arch` | Force architecture (`amd64`, `arm64`) | `-Arch arm64` |
+| `-NoPath` | Skip adding to user PATH | `-NoPath` |
+
+**Custom directory install (one-liner):**
+
+```powershell
+irm https://raw.githubusercontent.com/alimtvnetwork/git-repo-navigator/main/gitmap/scripts/install.ps1 | iex; Install-Gitmap -InstallDir "D:\DevTools\gitmap"
+```
+
+**Custom directory install (downloaded script):**
+
+```powershell
+.\install.ps1 -InstallDir "D:\DevTools\gitmap"
+```
+
+**Pinned version + custom directory:**
+
+```powershell
+.\install.ps1 -Version v2.49.1 -InstallDir "C:\tools\gitmap"
+```
+
+> **Tip for other installers:** Use `-InstallDir` and `-NoPath` together to integrate gitmap into your own package layout without modifying the user's PATH.
 
 ### Clone & Setup (Development)
 
